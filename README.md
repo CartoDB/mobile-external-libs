@@ -6,4 +6,5 @@ In addition to the included libraries, a copy of recent version of boost library
 that boost library is linked or copied to external-libs/boost.
 
 ## Compiling
-No need to compile any of the libraries here.
+No need to compile any of the libraries here. For Windows Phone build, prebuilt/angle/angle.zip file
+should be unpacked in place (in prebuilt/angle folder).
