@@ -61,6 +61,12 @@ namespace cache {
                 return _cache_items_map.find(key) != _cache_items_map.end();
             }
 
+            void invalidate_all(std::chrono::steady_clock::time_point expiration_time) {
+                for (auto it = _cache_items_map.begin(); it != _cache_items_map.end(); it++) {
+                    _cache_expiration_map[it->first] = expiration_time;
+                }
+            }
+
             bool invalidate(const key_t& key, std::chrono::steady_clock::time_point expiration_time) {
                 auto it = _cache_items_map.find(key);
                 if (it == _cache_items_map.end()) {
