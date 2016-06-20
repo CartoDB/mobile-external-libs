@@ -707,7 +707,7 @@ namespace cglib
 			T t = m(i, 0) * v(0);
 			for_each_unrolled<N-1>([&](size_t j)
 			{
-				w(i) += m(i, j + 1) * v(j + 1);
+				t += m(i, j + 1) * v(j + 1);
 			});
 			w(i) = t;
 		}
