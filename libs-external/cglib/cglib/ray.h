@@ -146,7 +146,7 @@ namespace cglib
             T t = 0;
             if (intersect_plane(fru.planes[i], r, &t))
             {
-                vec<T, N, Traits> n = proj_o(fru.planes[i]);
+                vec<T, 3, Traits> n = proj_o(fru.planes[i]);
                 if (dot_product(n, r.direction) > 0)
                 {
                     tmin = std::min(tmin, t);
