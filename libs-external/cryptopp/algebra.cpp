@@ -206,7 +206,8 @@ template <class Element, class Iterator> Element GeneralCascadeMultiplication(co
 struct WindowSlider
 {
 	WindowSlider(const Integer &expIn, bool fastNegate, unsigned int windowSizeIn=0)
-		: exp(expIn), windowModulus(Integer::One()), windowSize(windowSizeIn), windowBegin(0), fastNegate(fastNegate), firstTime(true), finished(false)
+		: exp(expIn), windowModulus(Integer::One()), windowSize(windowSizeIn), windowBegin(0), expWindow(0)
+		, fastNegate(fastNegate), negateNext(false), firstTime(true), finished(false)
 	{
 		if (windowSize == 0)
 		{
@@ -329,24 +330,11 @@ template <class Element, class Iterator> Element GeneralCascadeExponentiation(co
 	return GeneralCascadeMultiplication<Element>(ring.MultiplicativeGroup(), begin, end);
 }
 
-#ifdef _WIN32
-template <class Element, class Iterator> Element GeneralCascadeMultiplication(const AbstractRing<Element> &ring, Iterator begin, Iterator end)
-{
-	return GeneralCascadeMultiplication<Element>(ring.MultiplicativeGroup(), begin, end);
-}
-#endif
-
 template <class T>
 void AbstractRing<T>::SimultaneousExponentiate(T *results, const T &base, const Integer *exponents, unsigned int expCount) const
 {
 	MultiplicativeGroup().AbstractGroup<T>::SimultaneousMultiply(results, base, exponents, expCount);
 }
-
-#ifdef _WIN32
-template class AbstractGroup<Integer>;
-template class AbstractRing<Integer>;
-template class AbstractEuclideanDomain<Integer>;
-#endif
 
 NAMESPACE_END
 

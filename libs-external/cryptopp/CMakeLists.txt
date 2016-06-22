@@ -2,7 +2,7 @@ project(cryptopp)
 
 set(CMAKE_BINARY_DIR "${CMAKE_SOURCE_DIR}/build")
 
-add_definitions(-DCRYPTOPP_DISABLE_ASM)
+add_definitions(-DCRYPTOPP_DISABLE_ASM -DCRYPTOPP_DISABLE_SSE2)
 
 file(GLOB cryptopp_SRC_FILES "*.cpp")
 

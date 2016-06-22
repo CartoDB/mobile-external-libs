@@ -5,43 +5,10 @@
 #ifndef CRYPTOPP_IMPORTS
 
 #include "eprecomp.h"
+#include "integer.h"
 #include "asn.h"
 
 NAMESPACE_BEGIN(CryptoPP)
-
-template <class Element, class Iterator> Element GeneralCascadeMultiplicationEx(const AbstractGroup<Element> &group, Iterator begin, Iterator end)
-{
-	if (end - begin == 1)
-		return group.ScalarMultiply(begin->base, begin->exponent);
-	else if (end - begin == 2)
-		return group.CascadeScalarMultiply(begin->base, begin->exponent, (begin + 1)->base, (begin + 1)->exponent);
-	else
-	{
-		Integer q, t;
-		Iterator last = end;
-		--last;
-
-		std::make_heap(begin, end);
-		std::pop_heap(begin, end);
-
-		while (!!begin->exponent)
-		{
-			// last->exponent is largest exponent, begin->exponent is next largest
-			t = last->exponent;
-			Integer::Divide(last->exponent, q, t, begin->exponent);
-
-			if (q == Integer::One())
-				group.Accumulate(begin->base, last->base);	// avoid overhead of ScalarMultiply()
-			else
-				group.Accumulate(begin->base, group.ScalarMultiply(last->base, q));
-
-			std::push_heap(begin, end);
-			std::pop_heap(begin, end);
-		}
-
-		return group.ScalarMultiply(last->base, last->exponent);
-	}
-}
 
 template <class T> void DL_FixedBasePrecomputationImpl<T>::SetBase(const DL_GroupPrecomputation<Element> &group, const Element &i_base)
 {
@@ -126,7 +93,7 @@ template <class T> T DL_FixedBasePrecomputationImpl<T>::Exponentiate(const DL_Gr
 	std::vector<BaseAndExponent<Element> > eb;	// array of segments of the exponent and precalculated bases
 	eb.reserve(m_bases.size());
 	PrepareCascade(group, eb, exponent);
-	return group.ConvertOut(GeneralCascadeMultiplicationEx<Element>(group.GetGroup(), eb.begin(), eb.end()));
+	return group.ConvertOut(GeneralCascadeMultiplication<Element>(group.GetGroup(), eb.begin(), eb.end()));
 }
 
 template <class T> T 
@@ -138,12 +105,8 @@ template <class T> T
 	eb.reserve(m_bases.size() + pc2.m_bases.size());
 	PrepareCascade(group, eb, exponent);
 	pc2.PrepareCascade(group, eb, exponent2);
-	return group.ConvertOut(GeneralCascadeMultiplicationEx<Element>(group.GetGroup(), eb.begin(), eb.end()));
+	return group.ConvertOut(GeneralCascadeMultiplication<Element>(group.GetGroup(), eb.begin(), eb.end()));
 }
-
-#ifdef _WIN32
-template class DL_FixedBasePrecomputationImpl<Integer>;
-#endif
 
 NAMESPACE_END
 
