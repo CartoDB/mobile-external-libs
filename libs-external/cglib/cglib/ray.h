@@ -29,7 +29,10 @@ namespace cglib
         
         inline explicit ray(const vec<T, N, Traits> & origin, const vec<T, N, Traits> & direction) : origin(origin), direction(direction) { }
 
-        inline vec<T, N, Traits> operator () (T t) const { return origin + direction * t; }
+        inline vec<T, N, Traits> operator () (T t) const
+        {
+            return origin + direction * t;
+        }
         
         template <typename S, typename TraitsS>
             static ray<T, N, Traits> convert(const ray<S, N, TraitsS> & r)
@@ -122,10 +125,13 @@ namespace cglib
         T tmax =  Traits::infinity();
         for (size_t i = 0; i < N; i++)
         {
-            T t1 = (b.min(i) - r.origin(i)) / r.direction(i);
-            T t2 = (b.max(i) - r.origin(i)) / r.direction(i);
-            tmin = std::max(tmin, std::min(t1, t2));
-            tmax = std::min(tmax, std::max(t1, t2));
+            if (r.direction(i) != 0)
+            {
+                T t1 = (b.min(i) - r.origin(i)) / r.direction(i);
+                T t2 = (b.max(i) - r.origin(i)) / r.direction(i);
+                tmin = std::max(tmin, std::min(t1, t2));
+                tmax = std::min(tmax, std::max(t1, t2));
+            }
         }
 
         if (tmax < 0 || tmin > tmax)
