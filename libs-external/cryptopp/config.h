@@ -382,7 +382,7 @@ NAMESPACE_END
 #endif
 	
 // Apple's Clang prior to 5.0 cannot handle SSE2 (and Apple does not use LLVM Clang numbering...)
-#if defined(CRYPTOPP_APPLE_CLANG_VERSION) && (CRYPTOPP_APPLE_CLANG_VERSION < 50000)
+#if defined(CRYPTOPP_APPLE_CLANG_VERSION) // && (CRYPTOPP_APPLE_CLANG_VERSION < 50000)
 # define CRYPTOPP_DISABLE_ASM
 #endif
 
