@@ -265,9 +265,9 @@ typedef struct {
   INT32 volume;
   /* The number of nonzero histogram cells within this box */
   long colorcount;
-} box;
+} box_s;
 
-typedef box * boxptr;
+typedef box_s * boxptr;
 
 
 LOCAL(boxptr)
@@ -546,7 +546,7 @@ select_colors (j_decompress_ptr cinfo, int desired_colors)
 
   /* Allocate workspace for box list */
   boxlist = (boxptr) (*cinfo->mem->alloc_small)
-    ((j_common_ptr) cinfo, JPOOL_IMAGE, desired_colors * SIZEOF(box));
+    ((j_common_ptr) cinfo, JPOOL_IMAGE, desired_colors * SIZEOF(box_s));
   /* Initialize one box containing whole space */
   numboxes = 1;
   boxlist[0].c0min = 0;
