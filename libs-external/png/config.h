@@ -2,7 +2,7 @@
 /* config.h.in.  Generated from configure.ac by autoheader.  */
 
 /* Define to 1 if you have the <dlfcn.h> header file. */
-#define HAVE_DLFCN_H 1
+/* #undef HAVE_DLFCN_H */
 
 /* Define to 1 if you have the `feenableexcept' function. */
 /* #undef HAVE_FEENABLEEXCEPT */
@@ -63,7 +63,7 @@
 #define PACKAGE_NAME "libpng"
 
 /* Define to the full name and version of this package. */
-#define PACKAGE_STRING "libpng 1.5.10"
+#define PACKAGE_STRING "libpng 1.6.23"
 
 /* Define to the one symbol short name of this package. */
 #define PACKAGE_TARNAME "libpng"
@@ -72,7 +72,7 @@
 #define PACKAGE_URL ""
 
 /* Define to the version of this package. */
-#define PACKAGE_VERSION "1.5.10"
+#define PACKAGE_VERSION "1.6.23"
 
 /* Align row buffers */
 /* #undef PNG_ALIGNED_MEMORY_SUPPORTED */
@@ -87,7 +87,7 @@
 /* #undef TM_IN_SYS_TIME */
 
 /* Version number of package */
-#define VERSION "1.5.10"
+#define VERSION "1.6.23"
 
 /* Define to empty if `const' does not conform to ANSI C. */
 /* #undef const */

@@ -1,9 +1,9 @@
 
 /* pngconf.h - machine configurable file for libpng
  *
- * libpng version 1.6.19, July 23, 2015
+ * libpng version 1.6.23, June 9, 2016
  *
- * Copyright (c) 1998-2015 Glenn Randers-Pehrson
+ * Copyright (c) 1998-2002,2004,2006-2015 Glenn Randers-Pehrson
  * (Version 0.96 Copyright (c) 1996, 1997 Andreas Dilger)
  * (Version 0.88 Copyright (c) 1995, 1996 Guy Eric Schalnat, Group 42, Inc.)
  *
@@ -172,9 +172,83 @@
  *                PNG_USE_DLL is set.
  */
 
-#ifndef PNG_DLL_EXPORT
-#  define PNG_DLL_EXPORT
-#endif
+/* System specific discovery.
+ * ==========================
+ * This code is used at build time to find PNG_IMPEXP, the API settings
+ * and PNG_EXPORT_TYPE(), it may also set a macro to indicate the DLL
+ * import processing is possible.  On Windows systems it also sets
+ * compiler-specific macros to the values required to change the calling
+ * conventions of the various functions.
+ */
+#if defined(_Windows) || defined(_WINDOWS) || defined(WIN32) ||\
+    defined(_WIN32) || defined(__WIN32__) || defined(__CYGWIN__)
+  /* Windows system (DOS doesn't support DLLs).  Includes builds under Cygwin or
+   * MinGW on any architecture currently supported by Windows.  Also includes
+   * Watcom builds but these need special treatment because they are not
+   * compatible with GCC or Visual C because of different calling conventions.
+   */
+#  if PNG_API_RULE == 2
+    /* If this line results in an error, either because __watcall is not
+     * understood or because of a redefine just below you cannot use *this*
+     * build of the library with the compiler you are using.  *This* build was
+     * build using Watcom and applications must also be built using Watcom!
+     */
+#    define PNGCAPI __watcall
+#  endif
+
+#  if defined(__GNUC__) || (defined(_MSC_VER) && (_MSC_VER >= 800))
+#    define PNGCAPI __cdecl
+#    if PNG_API_RULE == 1
+       /* If this line results in an error __stdcall is not understood and
+        * PNG_API_RULE should not have been set to '1'.
+        */
+#      define PNGAPI __stdcall
+#    endif
+#  else
+    /* An older compiler, or one not detected (erroneously) above,
+     * if necessary override on the command line to get the correct
+     * variants for the compiler.
+     */
+#    ifndef PNGCAPI
+#      define PNGCAPI _cdecl
+#    endif
+#    if PNG_API_RULE == 1 && !defined(PNGAPI)
+#      define PNGAPI _stdcall
+#    endif
+#  endif /* compiler/api */
+
+  /* NOTE: PNGCBAPI always defaults to PNGCAPI. */
+
+#  if defined(PNGAPI) && !defined(PNG_USER_PRIVATEBUILD)
+#     error "PNG_USER_PRIVATEBUILD must be defined if PNGAPI is changed"
+#  endif
+
+#  if (defined(_MSC_VER) && _MSC_VER < 800) ||\
+      (defined(__BORLANDC__) && __BORLANDC__ < 0x500)
+    /* older Borland and MSC
+     * compilers used '__export' and required this to be after
+     * the type.
+     */
+#    ifndef PNG_EXPORT_TYPE
+#      define PNG_EXPORT_TYPE(type) type PNG_IMPEXP
+#    endif
+#    define PNG_DLL_EXPORT __export
+#  else /* newer compiler */
+#    define PNG_DLL_EXPORT __declspec(dllexport)
+#    ifndef PNG_DLL_IMPORT
+#      define PNG_DLL_IMPORT __declspec(dllimport)
+#    endif
+#  endif /* compiler */
+
+#else /* !Windows */
+#  if (defined(__IBMC__) || defined(__IBMCPP__)) && defined(__OS2__)
+#    define PNGAPI _System
+#  else /* !Windows/x86 && !OS/2 */
+    /* Use the defaults, or define PNG*API on the command line (but
+     * this will have to be done for every compile!)
+     */
+#  endif /* other system, !OS/2 */
+#endif /* !Windows/x86 */
 
 /* Now do all the defaulting . */
 #ifndef PNGCAPI

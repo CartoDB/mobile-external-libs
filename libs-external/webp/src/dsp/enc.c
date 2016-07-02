@@ -40,10 +40,27 @@ const int VP8DspScan[16 + 4 + 4] = {
   8 + 0 * BPS,  12 + 0 * BPS, 8 + 4 * BPS, 12 + 4 * BPS     // V
 };
 
+// general-purpose util function
+void VP8SetHistogramData(const int distribution[MAX_COEFF_THRESH + 1],
+                         VP8Histogram* const histo) {
+  int max_value = 0, last_non_zero = 1;
+  int k;
+  for (k = 0; k <= MAX_COEFF_THRESH; ++k) {
+    const int value = distribution[k];
+    if (value > 0) {
+      if (value > max_value) max_value = value;
+      last_non_zero = k;
+    }
+  }
+  histo->max_value = max_value;
+  histo->last_non_zero = last_non_zero;
+}
+
 static void CollectHistogram(const uint8_t* ref, const uint8_t* pred,
                              int start_block, int end_block,
                              VP8Histogram* const histo) {
   int j;
+  int distribution[MAX_COEFF_THRESH + 1] = { 0 };
   for (j = start_block; j < end_block; ++j) {
     int k;
     int16_t out[16];
@@ -54,9 +71,10 @@ static void CollectHistogram(const uint8_t* ref, const uint8_t* pred,
     for (k = 0; k < 16; ++k) {
       const int v = abs(out[k]) >> 3;  // TODO(skal): add rounding?
       const int clipped_value = clip_max(v, MAX_COEFF_THRESH);
-      histo->distribution[clipped_value]++;
+      ++distribution[clipped_value];
     }
   }
+  VP8SetHistogramData(distribution, histo);
 }
 
 //------------------------------------------------------------------------------
@@ -68,7 +86,7 @@ static uint8_t clip1[255 + 510 + 1];    // clips [-255,510] to [0,255]
 // and make sure it's set to true _last_ (so as to be thread-safe)
 static volatile int tables_ok = 0;
 
-static void InitTables(void) {
+static WEBP_TSAN_IGNORE_FUNCTION void InitTables(void) {
   if (!tables_ok) {
     int i;
     for (i = -255; i <= 255 + 255; ++i) {
@@ -159,31 +177,9 @@ static void FTransform(const uint8_t* src, const uint8_t* ref, int16_t* out) {
   }
 }
 
-static void ITransformWHT(const int16_t* in, int16_t* out) {
-  int tmp[16];
-  int i;
-  for (i = 0; i < 4; ++i) {
-    const int a0 = in[0 + i] + in[12 + i];
-    const int a1 = in[4 + i] + in[ 8 + i];
-    const int a2 = in[4 + i] - in[ 8 + i];
-    const int a3 = in[0 + i] - in[12 + i];
-    tmp[0  + i] = a0 + a1;
-    tmp[8  + i] = a0 - a1;
-    tmp[4  + i] = a3 + a2;
-    tmp[12 + i] = a3 - a2;
-  }
-  for (i = 0; i < 4; ++i) {
-    const int dc = tmp[0 + i * 4] + 3;    // w/ rounder
-    const int a0 = dc             + tmp[3 + i * 4];
-    const int a1 = tmp[1 + i * 4] + tmp[2 + i * 4];
-    const int a2 = tmp[1 + i * 4] - tmp[2 + i * 4];
-    const int a3 = dc             - tmp[3 + i * 4];
-    out[ 0] = (a0 + a1) >> 3;
-    out[16] = (a3 + a2) >> 3;
-    out[32] = (a0 - a1) >> 3;
-    out[48] = (a3 - a2) >> 3;
-    out += 64;
-  }
+static void FTransform2(const uint8_t* src, const uint8_t* ref, int16_t* out) {
+  VP8FTransform(src, ref, out);
+  VP8FTransform(src + 4, ref + 4, out + 16);
 }
 
 static void FTransformWHT(const int16_t* in, int16_t* out) {
@@ -222,8 +218,6 @@ static void FTransformWHT(const int16_t* in, int16_t* out) {
 //------------------------------------------------------------------------------
 // Intra predictions
 
-#define DST(x, y) dst[(x) + (y) * BPS]
-
 static WEBP_INLINE void Fill(uint8_t* dst, int value, int size) {
   int j;
   for (j = 0; j < size; ++j) {
@@ -234,7 +228,7 @@ static WEBP_INLINE void Fill(uint8_t* dst, int value, int size) {
 static WEBP_INLINE void VerticalPred(uint8_t* dst,
                                      const uint8_t* top, int size) {
   int j;
-  if (top) {
+  if (top != NULL) {
     for (j = 0; j < size; ++j) memcpy(dst + j * BPS, top, size);
   } else {
     Fill(dst, 127, size);
@@ -243,7 +237,7 @@ static WEBP_INLINE void VerticalPred(uint8_t* dst,
 
 static WEBP_INLINE void HorizontalPred(uint8_t* dst,
                                        const uint8_t* left, int size) {
-  if (left) {
+  if (left != NULL) {
     int j;
     for (j = 0; j < size; ++j) {
       memset(dst + j * BPS, left[j], size);
@@ -256,8 +250,8 @@ static WEBP_INLINE void HorizontalPred(uint8_t* dst,
 static WEBP_INLINE void TrueMotion(uint8_t* dst, const uint8_t* left,
                                    const uint8_t* top, int size) {
   int y;
-  if (left) {
-    if (top) {
+  if (left != NULL) {
+    if (top != NULL) {
       const uint8_t* const clip = clip1 + 255 - left[-1];
       for (y = 0; y < size; ++y) {
         const uint8_t* const clip_table = clip + left[y];
@@ -275,7 +269,7 @@ static WEBP_INLINE void TrueMotion(uint8_t* dst, const uint8_t* left,
     // is equivalent to VE prediction where you just copy the top samples.
     // Note that if top samples are not available, the default value is
     // then 129, and not 127 as in the VerticalPred case.
-    if (top) {
+    if (top != NULL) {
       VerticalPred(dst, top, size);
     } else {
       Fill(dst, 129, size);
@@ -288,15 +282,15 @@ static WEBP_INLINE void DCMode(uint8_t* dst, const uint8_t* left,
                                int size, int round, int shift) {
   int DC = 0;
   int j;
-  if (top) {
+  if (top != NULL) {
     for (j = 0; j < size; ++j) DC += top[j];
-    if (left) {   // top and left present
+    if (left != NULL) {   // top and left present
       for (j = 0; j < size; ++j) DC += left[j];
     } else {      // top, but no left
       DC += DC;
     }
     DC = (DC + round) >> shift;
-  } else if (left) {   // left but no top
+  } else if (left != NULL) {   // left but no top
     for (j = 0; j < size; ++j) DC += left[j];
     DC += DC;
     DC = (DC + round) >> shift;
@@ -318,8 +312,8 @@ static void IntraChromaPreds(uint8_t* dst, const uint8_t* left,
   TrueMotion(C8TM8 + dst, left, top, 8);
   // V block
   dst += 8;
-  if (top) top += 8;
-  if (left) left += 16;
+  if (top != NULL) top += 8;
+  if (left != NULL) left += 16;
   DCMode(C8DC8 + dst, left, top, 8, 8, 4);
   VerticalPred(C8VE8 + dst, top, 8);
   HorizontalPred(C8HE8 + dst, left, 8);
@@ -340,6 +334,7 @@ static void Intra16Preds(uint8_t* dst,
 //------------------------------------------------------------------------------
 // luma 4x4 prediction
 
+#define DST(x, y) dst[(x) + (y) * BPS]
 #define AVG3(a, b, c) (((a) + 2 * (b) + (c) + 2) >> 2)
 #define AVG2(a, b) (((a) + (b) + 1) >> 1)
 
@@ -362,10 +357,10 @@ static void HE4(uint8_t* dst, const uint8_t* top) {    // horizontal
   const int J = top[-3];
   const int K = top[-4];
   const int L = top[-5];
-  *(uint32_t*)(dst + 0 * BPS) = 0x01010101U * AVG3(X, I, J);
-  *(uint32_t*)(dst + 1 * BPS) = 0x01010101U * AVG3(I, J, K);
-  *(uint32_t*)(dst + 2 * BPS) = 0x01010101U * AVG3(J, K, L);
-  *(uint32_t*)(dst + 3 * BPS) = 0x01010101U * AVG3(K, L, L);
+  WebPUint32ToMem(dst + 0 * BPS, 0x01010101U * AVG3(X, I, J));
+  WebPUint32ToMem(dst + 1 * BPS, 0x01010101U * AVG3(I, J, K));
+  WebPUint32ToMem(dst + 2 * BPS, 0x01010101U * AVG3(J, K, L));
+  WebPUint32ToMem(dst + 3 * BPS, 0x01010101U * AVG3(K, L, L));
 }
 
 static void DC4(uint8_t* dst, const uint8_t* top) {
@@ -627,21 +622,23 @@ static const uint8_t kZigzag[16] = {
 
 // Simple quantization
 static int QuantizeBlock(int16_t in[16], int16_t out[16],
-                         int n, const VP8Matrix* const mtx) {
+                         const VP8Matrix* const mtx) {
   int last = -1;
-  for (; n < 16; ++n) {
+  int n;
+  for (n = 0; n < 16; ++n) {
     const int j = kZigzag[n];
     const int sign = (in[j] < 0);
-    const int coeff = (sign ? -in[j] : in[j]) + mtx->sharpen_[j];
+    const uint32_t coeff = (sign ? -in[j] : in[j]) + mtx->sharpen_[j];
     if (coeff > mtx->zthresh_[j]) {
-      const int Q = mtx->q_[j];
-      const int iQ = mtx->iq_[j];
-      const int B = mtx->bias_[j];
-      out[n] = QUANTDIV(coeff, iQ, B);
-      if (out[n] > MAX_LEVEL) out[n] = MAX_LEVEL;
-      if (sign) out[n] = -out[n];
-      in[j] = out[n] * Q;
-      if (out[n]) last = n;
+      const uint32_t Q = mtx->q_[j];
+      const uint32_t iQ = mtx->iq_[j];
+      const uint32_t B = mtx->bias_[j];
+      int level = QUANTDIV(coeff, iQ, B);
+      if (level > MAX_LEVEL) level = MAX_LEVEL;
+      if (sign) level = -level;
+      in[j] = level * Q;
+      out[n] = level;
+      if (level) last = n;
     } else {
       out[n] = 0;
       in[j] = 0;
@@ -650,23 +647,32 @@ static int QuantizeBlock(int16_t in[16], int16_t out[16],
   return (last >= 0);
 }
 
+static int Quantize2Blocks(int16_t in[32], int16_t out[32],
+                           const VP8Matrix* const mtx) {
+  int nz;
+  nz  = VP8EncQuantizeBlock(in + 0 * 16, out + 0 * 16, mtx) << 0;
+  nz |= VP8EncQuantizeBlock(in + 1 * 16, out + 1 * 16, mtx) << 1;
+  return nz;
+}
+
 static int QuantizeBlockWHT(int16_t in[16], int16_t out[16],
                             const VP8Matrix* const mtx) {
   int n, last = -1;
   for (n = 0; n < 16; ++n) {
     const int j = kZigzag[n];
     const int sign = (in[j] < 0);
-    const int coeff = sign ? -in[j] : in[j];
+    const uint32_t coeff = sign ? -in[j] : in[j];
     assert(mtx->sharpen_[j] == 0);
     if (coeff > mtx->zthresh_[j]) {
-      const int Q = mtx->q_[j];
-      const int iQ = mtx->iq_[j];
-      const int B = mtx->bias_[j];
-      out[n] = QUANTDIV(coeff, iQ, B);
-      if (out[n] > MAX_LEVEL) out[n] = MAX_LEVEL;
-      if (sign) out[n] = -out[n];
-      in[j] = out[n] * Q;
-      if (out[n]) last = n;
+      const uint32_t Q = mtx->q_[j];
+      const uint32_t iQ = mtx->iq_[j];
+      const uint32_t B = mtx->bias_[j];
+      int level = QUANTDIV(coeff, iQ, B);
+      if (level > MAX_LEVEL) level = MAX_LEVEL;
+      if (sign) level = -level;
+      in[j] = level * Q;
+      out[n] = level;
+      if (level) last = n;
     } else {
       out[n] = 0;
       in[j] = 0;
@@ -678,16 +684,22 @@ static int QuantizeBlockWHT(int16_t in[16], int16_t out[16],
 //------------------------------------------------------------------------------
 // Block copy
 
-static WEBP_INLINE void Copy(const uint8_t* src, uint8_t* dst, int size) {
+static WEBP_INLINE void Copy(const uint8_t* src, uint8_t* dst, int w, int h) {
   int y;
-  for (y = 0; y < size; ++y) {
-    memcpy(dst, src, size);
+  for (y = 0; y < h; ++y) {
+    memcpy(dst, src, w);
     src += BPS;
     dst += BPS;
   }
 }
 
-static void Copy4x4(const uint8_t* src, uint8_t* dst) { Copy(src, dst, 4); }
+static void Copy4x4(const uint8_t* src, uint8_t* dst) {
+  Copy(src, dst, 4, 4);
+}
+
+static void Copy16x8(const uint8_t* src, uint8_t* dst) {
+  Copy(src, dst, 16, 8);
+}
 
 //------------------------------------------------------------------------------
 // Initialization
@@ -697,7 +709,7 @@ static void Copy4x4(const uint8_t* src, uint8_t* dst) { Copy(src, dst, 4); }
 VP8CHisto VP8CollectHistogram;
 VP8Idct VP8ITransform;
 VP8Fdct VP8FTransform;
-VP8WHT VP8ITransformWHT;
+VP8Fdct VP8FTransform2;
 VP8WHT VP8FTransformWHT;
 VP8Intra4Preds VP8EncPredLuma4;
 VP8IntraPreds VP8EncPredLuma16;
@@ -709,20 +721,32 @@ VP8Metric VP8SSE4x4;
 VP8WMetric VP8TDisto4x4;
 VP8WMetric VP8TDisto16x16;
 VP8QuantizeBlock VP8EncQuantizeBlock;
+VP8Quantize2Blocks VP8EncQuantize2Blocks;
 VP8QuantizeBlockWHT VP8EncQuantizeBlockWHT;
 VP8BlockCopy VP8Copy4x4;
+VP8BlockCopy VP8Copy16x8;
 
 extern void VP8EncDspInitSSE2(void);
+extern void VP8EncDspInitSSE41(void);
+extern void VP8EncDspInitAVX2(void);
 extern void VP8EncDspInitNEON(void);
+extern void VP8EncDspInitMIPS32(void);
+extern void VP8EncDspInitMIPSdspR2(void);
 
-void VP8EncDspInit(void) {
+static volatile VP8CPUInfo enc_last_cpuinfo_used =
+    (VP8CPUInfo)&enc_last_cpuinfo_used;
+
+WEBP_TSAN_IGNORE_FUNCTION void VP8EncDspInit(void) {
+  if (enc_last_cpuinfo_used == VP8GetCPUInfo) return;
+
+  VP8DspInit();  // common inverse transforms
   InitTables();
 
   // default C implementations
   VP8CollectHistogram = CollectHistogram;
   VP8ITransform = ITransform;
   VP8FTransform = FTransform;
-  VP8ITransformWHT = ITransformWHT;
+  VP8FTransform2 = FTransform2;
   VP8FTransformWHT = FTransformWHT;
   VP8EncPredLuma4 = Intra4Preds;
   VP8EncPredLuma16 = Intra16Preds;
@@ -734,20 +758,43 @@ void VP8EncDspInit(void) {
   VP8TDisto4x4 = Disto4x4;
   VP8TDisto16x16 = Disto16x16;
   VP8EncQuantizeBlock = QuantizeBlock;
+  VP8EncQuantize2Blocks = Quantize2Blocks;
   VP8EncQuantizeBlockWHT = QuantizeBlockWHT;
   VP8Copy4x4 = Copy4x4;
+  VP8Copy16x8 = Copy16x8;
 
   // If defined, use CPUInfo() to overwrite some pointers with faster versions.
-  if (VP8GetCPUInfo) {
+  if (VP8GetCPUInfo != NULL) {
 #if defined(WEBP_USE_SSE2)
     if (VP8GetCPUInfo(kSSE2)) {
       VP8EncDspInitSSE2();
+#if defined(WEBP_USE_SSE41)
+      if (VP8GetCPUInfo(kSSE4_1)) {
+        VP8EncDspInitSSE41();
+      }
+#endif
     }
-#elif defined(WEBP_USE_NEON)
+#endif
+#if defined(WEBP_USE_AVX2)
+    if (VP8GetCPUInfo(kAVX2)) {
+      VP8EncDspInitAVX2();
+    }
+#endif
+#if defined(WEBP_USE_NEON)
     if (VP8GetCPUInfo(kNEON)) {
       VP8EncDspInitNEON();
     }
 #endif
+#if defined(WEBP_USE_MIPS32)
+    if (VP8GetCPUInfo(kMIPS32)) {
+      VP8EncDspInitMIPS32();
+    }
+#endif
+#if defined(WEBP_USE_MIPS_DSP_R2)
+    if (VP8GetCPUInfo(kMIPSdspR2)) {
+      VP8EncDspInitMIPSdspR2();
+    }
+#endif
   }
+  enc_last_cpuinfo_used = VP8GetCPUInfo;
 }
-

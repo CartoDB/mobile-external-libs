@@ -2,7 +2,23 @@ project(zlib)
 
 set(CMAKE_BINARY_DIR "${CMAKE_SOURCE_DIR}/build")
 
-file(GLOB zlib_SRC_FILES "*.c")
+set(zlib_SRC_FILES
+  adler32.c
+  crc32.c
+  deflate.c
+  infback.c
+  inffast.c
+  inflate.c
+  inftrees.c
+  trees.c
+  zutil.c
+  compress.c
+  uncompr.c
+  gzclose.c
+  gzlib.c
+  gzread.c
+  gzwrite.c
+)
 
 include_directories("${PROJECT_SOURCE_DIR}")
 

@@ -43,10 +43,15 @@ int WebPConfigInitInternal(WebPConfig* config,
   config->alpha_filtering = 1;
   config->alpha_quality = 100;
   config->lossless = 0;
+  config->exact = 0;
   config->image_hint = WEBP_HINT_DEFAULT;
   config->emulate_jpeg_size = 0;
   config->thread_level = 0;
   config->low_memory = 0;
+  config->near_lossless = 100;
+#ifdef WEBP_EXPERIMENTAL_FEATURES
+  config->delta_palettization = 0;
+#endif // WEBP_EXPERIMENTAL_FEATURES
 
   // TODO(skal): tune.
   switch (preset) {
@@ -111,7 +116,7 @@ int WebPValidateConfig(const WebPConfig* config) {
     return 0;
   if (config->show_compressed < 0 || config->show_compressed > 1)
     return 0;
-  if (config->preprocessing < 0 || config->preprocessing > 3)
+  if (config->preprocessing < 0 || config->preprocessing > 7)
     return 0;
   if (config->partitions < 0 || config->partitions > 3)
     return 0;
@@ -125,6 +130,8 @@ int WebPValidateConfig(const WebPConfig* config) {
     return 0;
   if (config->lossless < 0 || config->lossless > 1)
     return 0;
+  if (config->near_lossless < 0 || config->near_lossless > 100)
+    return 0;
   if (config->image_hint >= WEBP_HINT_LAST)
     return 0;
   if (config->emulate_jpeg_size < 0 || config->emulate_jpeg_size > 1)
@@ -133,8 +140,34 @@ int WebPValidateConfig(const WebPConfig* config) {
     return 0;
   if (config->low_memory < 0 || config->low_memory > 1)
     return 0;
+  if (config->exact < 0 || config->exact > 1)
+    return 0;
+#ifdef WEBP_EXPERIMENTAL_FEATURES
+  if (config->delta_palettization < 0 || config->delta_palettization > 1)
+    return 0;
+#endif  // WEBP_EXPERIMENTAL_FEATURES
   return 1;
 }
 
 //------------------------------------------------------------------------------
 
+#define MAX_LEVEL 9
+
+// Mapping between -z level and -m / -q parameter settings.
+static const struct {
+  uint8_t method_;
+  uint8_t quality_;
+} kLosslessPresets[MAX_LEVEL + 1] = {
+  { 0,  0 }, { 1, 20 }, { 2, 25 }, { 3, 30 }, { 3, 50 },
+  { 4, 50 }, { 4, 75 }, { 4, 90 }, { 5, 90 }, { 6, 100 }
+};
+
+int WebPConfigLosslessPreset(WebPConfig* config, int level) {
+  if (config == NULL || level < 0 || level > MAX_LEVEL) return 0;
+  config->lossless = 1;
+  config->method = kLosslessPresets[level].method_;
+  config->quality = kLosslessPresets[level].quality_;
+  return 1;
+}
+
+//------------------------------------------------------------------------------

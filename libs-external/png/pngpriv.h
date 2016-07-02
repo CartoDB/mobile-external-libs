@@ -1,8 +1,8 @@
 
 /* pngpriv.h - private declarations for use inside libpng
  *
- * Last changed in libpng 1.6.18 [July 23, 2015]
- * Copyright (c) 1998-2015 Glenn Randers-Pehrson
+ * Last changed in libpng 1.6.22 [May 26, 2016]
+ * Copyright (c) 1998-2002,2004,2006-2016 Glenn Randers-Pehrson
  * (Version 0.96 Copyright (c) 1996, 1997 Andreas Dilger)
  * (Version 0.88 Copyright (c) 1995, 1996 Guy Eric Schalnat, Group 42, Inc.)
  *
@@ -41,6 +41,7 @@
 /* Standard library headers not required by png.h: */
 #  include <stdlib.h>
 #  include <string.h>
+#  include <assert.h>
 #endif
 
 #define PNGLIB_BUILD /*libpng is being built, not used*/
@@ -458,7 +459,7 @@
 /* Memory model/platform independent fns */
 #ifndef PNG_ABORT
 #  ifdef _WINDOWS_
-#    define PNG_ABORT() 
+#    define PNG_ABORT() assert(0)
 #  else
 #    define PNG_ABORT() abort()
 #  endif
@@ -1215,6 +1216,14 @@ PNG_INTERNAL_FUNCTION(void,png_read_finish_row,(png_structrp png_ptr),
 /* Initialize the row buffers, etc. */
 PNG_INTERNAL_FUNCTION(void,png_read_start_row,(png_structrp png_ptr),PNG_EMPTY);
 
+#if PNG_ZLIB_VERNUM >= 0x1240
+PNG_INTERNAL_FUNCTION(int,png_zlib_inflate,(png_structrp png_ptr, int flush),
+      PNG_EMPTY);
+#  define PNG_INFLATE(pp, flush) png_zlib_inflate(pp, flush)
+#else /* Zlib < 1.2.4 */
+#  define PNG_INFLATE(pp, flush) inflate(&(pp)->zstream, flush)
+#endif /* Zlib < 1.2.4 */
+
 #ifdef PNG_READ_TRANSFORMS_SUPPORTED
 /* Optional call to update the users info structure */
 PNG_INTERNAL_FUNCTION(void,png_read_transform_info,(png_structrp png_ptr,
@@ -1908,6 +1917,9 @@ PNG_INTERNAL_FUNCTION(void, PNG_FILTER_OPTIMIZATIONS, (png_structp png_ptr,
 PNG_INTERNAL_FUNCTION(void, png_init_filter_functions_neon,
    (png_structp png_ptr, unsigned int bpp), PNG_EMPTY);
 #endif
+
+PNG_INTERNAL_FUNCTION(png_uint_32, png_check_keyword, (png_structrp png_ptr,
+   png_const_charp key, png_bytep new_key), PNG_EMPTY);
 
 /* Maintainer: Put new private prototypes here ^ */
 

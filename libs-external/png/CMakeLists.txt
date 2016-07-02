@@ -2,7 +2,12 @@ project(png)
 
 set(CMAKE_BINARY_DIR "${CMAKE_SOURCE_DIR}/build")
 
-file(GLOB png_SRC_FILES "*.c")
+file(GLOB png_SRC_FILES
+  png.c pngerror.c
+  pngget.c pngset.c pngmem.c pngtrans.c pngpread.c
+  pngread.c pngrio.c pngrtran.c pngrutil.c
+  pngwrite.c pngwio.c pngwtran.c pngwutil.c
+)
 
 include_directories("${PROJECT_SOURCE_DIR}")
 

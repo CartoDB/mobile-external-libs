@@ -14,15 +14,32 @@
 #ifndef WEBP_ENC_COST_H_
 #define WEBP_ENC_COST_H_
 
+#include <assert.h>
+#include <stdlib.h>
 #include "./vp8enci.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-// approximate cost per level:
-extern const uint16_t VP8LevelFixedCosts[MAX_LEVEL + 1];
-extern const uint16_t VP8EntropyCost[256];        // 8bit fixed-point log(p)
+// On-the-fly info about the current set of residuals. Handy to avoid
+// passing zillions of params.
+typedef struct VP8Residual VP8Residual;
+struct VP8Residual {
+  int first;
+  int last;
+  const int16_t* coeffs;
+
+  int coeff_type;
+  ProbaArray*   prob;
+  StatsArray*   stats;
+  CostArrayPtr  costs;
+};
+
+void VP8InitResidual(int first, int coeff_type,
+                     VP8Encoder* const enc, VP8Residual* const res);
+
+int VP8RecordCoeffs(int ctx, const VP8Residual* const res);
 
 // Cost of coding one event with probability 'proba'.
 static WEBP_INLINE int VP8BitCost(int bit, uint8_t proba) {
@@ -31,7 +48,7 @@ static WEBP_INLINE int VP8BitCost(int bit, uint8_t proba) {
 
 // Level cost calculations
 extern const uint16_t VP8LevelCodes[MAX_VARIABLE_LEVEL][2];
-void VP8CalculateLevelCosts(VP8Proba* const proba);
+void VP8CalculateLevelCosts(VP8EncProba* const proba);
 static WEBP_INLINE int VP8LevelCost(const uint16_t* const table, int level) {
   return VP8LevelFixedCosts[level]
        + table[(level > MAX_VARIABLE_LEVEL) ? MAX_VARIABLE_LEVEL : level];

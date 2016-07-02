@@ -16,6 +16,7 @@
 #include "./vp8i.h"
 #include "./vp8li.h"
 #include "./webpi.h"
+#include "../utils/utils.h"
 #include "../webp/mux_types.h"  // ALPHA_FLAG
 
 //------------------------------------------------------------------------------
@@ -43,22 +44,15 @@
 // All sizes are in little-endian order.
 // Note: chunk data size must be padded to multiple of 2 when written.
 
-static WEBP_INLINE uint32_t get_le24(const uint8_t* const data) {
-  return data[0] | (data[1] << 8) | (data[2] << 16);
-}
-
-static WEBP_INLINE uint32_t get_le32(const uint8_t* const data) {
-  return (uint32_t)get_le24(data) | (data[3] << 24);
-}
-
 // Validates the RIFF container (if detected) and skips over it.
-// If a RIFF container is detected,
-// Returns VP8_STATUS_BITSTREAM_ERROR for invalid header, and
-//         VP8_STATUS_OK otherwise.
+// If a RIFF container is detected, returns:
+//     VP8_STATUS_BITSTREAM_ERROR for invalid header,
+//     VP8_STATUS_NOT_ENOUGH_DATA for truncated data if have_all_data is true,
+// and VP8_STATUS_OK otherwise.
 // In case there are not enough bytes (partial RIFF container), return 0 for
 // *riff_size. Else return the RIFF size extracted from the header.
 static VP8StatusCode ParseRIFF(const uint8_t** const data,
-                               size_t* const data_size,
+                               size_t* const data_size, int have_all_data,
                                size_t* const riff_size) {
   assert(data != NULL);
   assert(data_size != NULL);
@@ -69,13 +63,16 @@ static VP8StatusCode ParseRIFF(const uint8_t** const data,
     if (memcmp(*data + 8, "WEBP", TAG_SIZE)) {
       return VP8_STATUS_BITSTREAM_ERROR;  // Wrong image file signature.
     } else {
-      const uint32_t size = get_le32(*data + TAG_SIZE);
+      const uint32_t size = GetLE32(*data + TAG_SIZE);
       // Check that we have at least one chunk (i.e "WEBP" + "VP8?nnnn").
       if (size < TAG_SIZE + CHUNK_HEADER_SIZE) {
         return VP8_STATUS_BITSTREAM_ERROR;
       }
       if (size > MAX_CHUNK_PAYLOAD) {
         return VP8_STATUS_BITSTREAM_ERROR;
+      }
+      if (have_all_data && (size > *data_size - CHUNK_HEADER_SIZE)) {
+        return VP8_STATUS_NOT_ENOUGH_DATA;  // Truncated bitstream.
       }
       // We have a RIFF container. Skip it.
       *riff_size = size;
@@ -112,7 +109,7 @@ static VP8StatusCode ParseVP8X(const uint8_t** const data,
   if (!memcmp(*data, "VP8X", TAG_SIZE)) {
     int width, height;
     uint32_t flags;
-    const uint32_t chunk_size = get_le32(*data + TAG_SIZE);
+    const uint32_t chunk_size = GetLE32(*data + TAG_SIZE);
     if (chunk_size != VP8X_CHUNK_SIZE) {
       return VP8_STATUS_BITSTREAM_ERROR;  // Wrong chunk size.
     }
@@ -121,9 +118,9 @@ static VP8StatusCode ParseVP8X(const uint8_t** const data,
     if (*data_size < vp8x_size) {
       return VP8_STATUS_NOT_ENOUGH_DATA;  // Insufficient data.
     }
-    flags = get_le32(*data + 8);
-    width = 1 + get_le24(*data + 12);
-    height = 1 + get_le24(*data + 15);
+    flags = GetLE32(*data + 8);
+    width = 1 + GetLE24(*data + 12);
+    height = 1 + GetLE24(*data + 15);
     if (width * (uint64_t)height >= MAX_IMAGE_AREA) {
       return VP8_STATUS_BITSTREAM_ERROR;  // image is too large
     }
@@ -177,7 +174,7 @@ static VP8StatusCode ParseOptionalChunks(const uint8_t** const data,
       return VP8_STATUS_NOT_ENOUGH_DATA;
     }
 
-    chunk_size = get_le32(buf + TAG_SIZE);
+    chunk_size = GetLE32(buf + TAG_SIZE);
     if (chunk_size > MAX_CHUNK_PAYLOAD) {
       return VP8_STATUS_BITSTREAM_ERROR;          // Not a valid chunk size.
     }
@@ -223,9 +220,8 @@ static VP8StatusCode ParseOptionalChunks(const uint8_t** const data,
 // extracted from the VP8/VP8L chunk header.
 // The flag '*is_lossless' is set to 1 in case of VP8L chunk / raw VP8L data.
 static VP8StatusCode ParseVP8Header(const uint8_t** const data_ptr,
-                                    size_t* const data_size,
-                                    size_t riff_size,
-                                    size_t* const chunk_size,
+                                    size_t* const data_size, int have_all_data,
+                                    size_t riff_size, size_t* const chunk_size,
                                     int* const is_lossless) {
   const uint8_t* const data = *data_ptr;
   const int is_vp8 = !memcmp(data, "VP8 ", TAG_SIZE);
@@ -244,9 +240,12 @@ static VP8StatusCode ParseVP8Header(const uint8_t** const data_ptr,
 
   if (is_vp8 || is_vp8l) {
     // Bitstream contains VP8/VP8L header.
-    const uint32_t size = get_le32(data + TAG_SIZE);
+    const uint32_t size = GetLE32(data + TAG_SIZE);
     if ((riff_size >= minimal_size) && (size > riff_size - minimal_size)) {
       return VP8_STATUS_BITSTREAM_ERROR;  // Inconsistent size information.
+    }
+    if (have_all_data && (size > *data_size - CHUNK_HEADER_SIZE)) {
+      return VP8_STATUS_NOT_ENOUGH_DATA;  // Truncated bitstream.
     }
     // Skip over CHUNK_HEADER_SIZE bytes from VP8/VP8L Header.
     *chunk_size = size;
@@ -291,6 +290,7 @@ static VP8StatusCode ParseHeadersInternal(const uint8_t* data,
   int found_vp8x = 0;
   int animation_present = 0;
   int fragments_present = 0;
+  const int have_all_data = (headers != NULL) ? headers->have_all_data : 0;
 
   VP8StatusCode status;
   WebPHeaderStructure hdrs;
@@ -303,7 +303,7 @@ static VP8StatusCode ParseHeadersInternal(const uint8_t* data,
   hdrs.data_size = data_size;
 
   // Skip over RIFF header.
-  status = ParseRIFF(&data, &data_size, &hdrs.riff_size);
+  status = ParseRIFF(&data, &data_size, have_all_data, &hdrs.riff_size);
   if (status != VP8_STATUS_OK) {
     return status;   // Wrong RIFF header / insufficient data.
   }
@@ -353,7 +353,7 @@ static VP8StatusCode ParseHeadersInternal(const uint8_t* data,
   }
 
   // Skip over VP8/VP8L header.
-  status = ParseVP8Header(&data, &data_size, hdrs.riff_size,
+  status = ParseVP8Header(&data, &data_size, have_all_data, hdrs.riff_size,
                           &hdrs.compressed_size, &hdrs.is_lossless);
   if (status != VP8_STATUS_OK) {
     goto ReturnWidthHeight;  // Wrong VP8/VP8L chunk-header / insufficient data.
@@ -452,6 +452,7 @@ static VP8StatusCode DecodeInto(const uint8_t* const data, size_t data_size,
 
   headers.data = data;
   headers.data_size = data_size;
+  headers.have_all_data = 1;
   status = WebPParseHeaders(&headers);   // Process Pre-VP8 chunks.
   if (status != VP8_STATUS_OK) {
     return status;
@@ -511,6 +512,10 @@ static VP8StatusCode DecodeInto(const uint8_t* const data, size_t data_size,
 
   if (status != VP8_STATUS_OK) {
     WebPFreeDecBuffer(params->output);
+  }
+
+  if (params->options != NULL && params->options->flip) {
+    status = WebPFlipBuffer(params->output);
   }
   return status;
 }
@@ -776,9 +781,9 @@ int WebPIoInitFromOptions(const WebPDecoderOptions* const options,
     h = options->crop_height;
     x = options->crop_left;
     y = options->crop_top;
-    if (!WebPIsRGBMode(src_colorspace)) {   // only snap for YUV420 or YUV422
+    if (!WebPIsRGBMode(src_colorspace)) {   // only snap for YUV420
       x &= ~1;
-      y &= ~1;    // TODO(later): only for YUV420, not YUV422.
+      y &= ~1;
     }
     if (x < 0 || y < 0 || w <= 0 || h <= 0 || x + w > W || y + h > H) {
       return 0;  // out of frame boundary error
@@ -794,11 +799,13 @@ int WebPIoInitFromOptions(const WebPDecoderOptions* const options,
   // Scaling
   io->use_scaling = (options != NULL) && (options->use_scaling > 0);
   if (io->use_scaling) {
-    if (options->scaled_width <= 0 || options->scaled_height <= 0) {
+    int scaled_width = options->scaled_width;
+    int scaled_height = options->scaled_height;
+    if (!WebPRescalerGetScaledDimensions(w, h, &scaled_width, &scaled_height)) {
       return 0;
     }
-    io->scaled_width = options->scaled_width;
-    io->scaled_height = options->scaled_height;
+    io->scaled_width = scaled_width;
+    io->scaled_height = scaled_height;
   }
 
   // Filter

@@ -186,8 +186,8 @@ static int PutWebPHeaders(const VP8Encoder* const enc, size_t size0,
 // Segmentation header
 static void PutSegmentHeader(VP8BitWriter* const bw,
                              const VP8Encoder* const enc) {
-  const VP8SegmentHeader* const hdr = &enc->segment_hdr_;
-  const VP8Proba* const proba = &enc->proba_;
+  const VP8EncSegmentHeader* const hdr = &enc->segment_hdr_;
+  const VP8EncProba* const proba = &enc->proba_;
   if (VP8PutBitUniform(bw, (hdr->num_segments_ > 1))) {
     // We always 'update' the quant and filter strength values
     const int update_data = 1;
@@ -197,16 +197,16 @@ static void PutSegmentHeader(VP8BitWriter* const bw,
       // we always use absolute values, not relative ones
       VP8PutBitUniform(bw, 1);   // (segment_feature_mode = 1. Paragraph 9.3.)
       for (s = 0; s < NUM_MB_SEGMENTS; ++s) {
-        VP8PutSignedValue(bw, enc->dqm_[s].quant_, 7);
+        VP8PutSignedBits(bw, enc->dqm_[s].quant_, 7);
       }
       for (s = 0; s < NUM_MB_SEGMENTS; ++s) {
-        VP8PutSignedValue(bw, enc->dqm_[s].fstrength_, 6);
+        VP8PutSignedBits(bw, enc->dqm_[s].fstrength_, 6);
       }
     }
     if (hdr->update_map_) {
       for (s = 0; s < 3; ++s) {
         if (VP8PutBitUniform(bw, (proba->segments_[s] != 255u))) {
-          VP8PutValue(bw, proba->segments_[s], 8);
+          VP8PutBits(bw, proba->segments_[s], 8);
         }
       }
     }
@@ -215,20 +215,20 @@ static void PutSegmentHeader(VP8BitWriter* const bw,
 
 // Filtering parameters header
 static void PutFilterHeader(VP8BitWriter* const bw,
-                            const VP8FilterHeader* const hdr) {
+                            const VP8EncFilterHeader* const hdr) {
   const int use_lf_delta = (hdr->i4x4_lf_delta_ != 0);
   VP8PutBitUniform(bw, hdr->simple_);
-  VP8PutValue(bw, hdr->level_, 6);
-  VP8PutValue(bw, hdr->sharpness_, 3);
+  VP8PutBits(bw, hdr->level_, 6);
+  VP8PutBits(bw, hdr->sharpness_, 3);
   if (VP8PutBitUniform(bw, use_lf_delta)) {
     // '0' is the default value for i4x4_lf_delta_ at frame #0.
     const int need_update = (hdr->i4x4_lf_delta_ != 0);
     if (VP8PutBitUniform(bw, need_update)) {
       // we don't use ref_lf_delta => emit four 0 bits
-      VP8PutValue(bw, 0, 4);
+      VP8PutBits(bw, 0, 4);
       // we use mode_lf_delta for i4x4
-      VP8PutSignedValue(bw, hdr->i4x4_lf_delta_, 6);
-      VP8PutValue(bw, 0, 3);    // all others unused
+      VP8PutSignedBits(bw, hdr->i4x4_lf_delta_, 6);
+      VP8PutBits(bw, 0, 3);    // all others unused
     }
   }
 }
@@ -236,12 +236,12 @@ static void PutFilterHeader(VP8BitWriter* const bw,
 // Nominal quantization parameters
 static void PutQuant(VP8BitWriter* const bw,
                      const VP8Encoder* const enc) {
-  VP8PutValue(bw, enc->base_quant_, 7);
-  VP8PutSignedValue(bw, enc->dq_y1_dc_, 4);
-  VP8PutSignedValue(bw, enc->dq_y2_dc_, 4);
-  VP8PutSignedValue(bw, enc->dq_y2_ac_, 4);
-  VP8PutSignedValue(bw, enc->dq_uv_dc_, 4);
-  VP8PutSignedValue(bw, enc->dq_uv_ac_, 4);
+  VP8PutBits(bw, enc->base_quant_, 7);
+  VP8PutSignedBits(bw, enc->dq_y1_dc_, 4);
+  VP8PutSignedBits(bw, enc->dq_y2_dc_, 4);
+  VP8PutSignedBits(bw, enc->dq_y2_ac_, 4);
+  VP8PutSignedBits(bw, enc->dq_uv_dc_, 4);
+  VP8PutSignedBits(bw, enc->dq_uv_ac_, 4);
 }
 
 // Partition sizes
@@ -263,60 +263,23 @@ static int EmitPartitionsSize(const VP8Encoder* const enc,
 
 //------------------------------------------------------------------------------
 
-#ifdef WEBP_EXPERIMENTAL_FEATURES
-
-#define KTRAILER_SIZE 8
-
-static int WriteExtensions(VP8Encoder* const enc) {
-  uint8_t buffer[KTRAILER_SIZE];
-  VP8BitWriter* const bw = &enc->bw_;
-  WebPPicture* const pic = enc->pic_;
-
-  // Layer (bytes 0..3)
-  PutLE24(buffer + 0, enc->layer_data_size_);
-  buffer[3] = enc->pic_->colorspace & WEBP_CSP_UV_MASK;
-  if (enc->layer_data_size_ > 0) {
-    assert(enc->use_layer_);
-    // append layer data to last partition
-    if (!VP8BitWriterAppend(&enc->parts_[enc->num_parts_ - 1],
-                            enc->layer_data_, enc->layer_data_size_)) {
-      return WebPEncodingSetError(pic, VP8_ENC_ERROR_BITSTREAM_OUT_OF_MEMORY);
-    }
-  }
-
-  buffer[KTRAILER_SIZE - 1] = 0x01;  // marker
-  if (!VP8BitWriterAppend(bw, buffer, KTRAILER_SIZE)) {
-    return WebPEncodingSetError(pic, VP8_ENC_ERROR_BITSTREAM_OUT_OF_MEMORY);
-  }
-  return 1;
-}
-
-#endif    /* WEBP_EXPERIMENTAL_FEATURES */
-
-//------------------------------------------------------------------------------
-
-static size_t GeneratePartition0(VP8Encoder* const enc) {
+static int GeneratePartition0(VP8Encoder* const enc) {
   VP8BitWriter* const bw = &enc->bw_;
   const int mb_size = enc->mb_w_ * enc->mb_h_;
   uint64_t pos1, pos2, pos3;
-#ifdef WEBP_EXPERIMENTAL_FEATURES
-  const int need_extensions = enc->use_layer_;
-#endif
 
   pos1 = VP8BitWriterPos(bw);
-  VP8BitWriterInit(bw, mb_size * 7 / 8);        // ~7 bits per macroblock
-#ifdef WEBP_EXPERIMENTAL_FEATURES
-  VP8PutBitUniform(bw, need_extensions);   // extensions
-#else
+  if (!VP8BitWriterInit(bw, mb_size * 7 / 8)) {        // ~7 bits per macroblock
+    return WebPEncodingSetError(enc->pic_, VP8_ENC_ERROR_OUT_OF_MEMORY);
+  }
   VP8PutBitUniform(bw, 0);   // colorspace
-#endif
   VP8PutBitUniform(bw, 0);   // clamp type
 
   PutSegmentHeader(bw, enc);
   PutFilterHeader(bw, &enc->filter_hdr_);
-  VP8PutValue(bw, enc->num_parts_ == 8 ? 3 :
-                  enc->num_parts_ == 4 ? 2 :
-                  enc->num_parts_ == 2 ? 1 : 0, 2);
+  VP8PutBits(bw, enc->num_parts_ == 8 ? 3 :
+                 enc->num_parts_ == 4 ? 2 :
+                 enc->num_parts_ == 2 ? 1 : 0, 2);
   PutQuant(bw, enc);
   VP8PutBitUniform(bw, 0);   // no proba update
   VP8WriteProbas(bw, &enc->proba_);
@@ -324,21 +287,17 @@ static size_t GeneratePartition0(VP8Encoder* const enc) {
   VP8CodeIntraModes(enc);
   VP8BitWriterFinish(bw);
 
-#ifdef WEBP_EXPERIMENTAL_FEATURES
-  if (need_extensions && !WriteExtensions(enc)) {
-    return 0;
-  }
-#endif
-
   pos3 = VP8BitWriterPos(bw);
 
   if (enc->pic_->stats) {
     enc->pic_->stats->header_bytes[0] = (int)((pos2 - pos1 + 7) >> 3);
     enc->pic_->stats->header_bytes[1] = (int)((pos3 - pos2 + 7) >> 3);
     enc->pic_->stats->alpha_data_size = (int)enc->alpha_data_size_;
-    enc->pic_->stats->layer_data_size = (int)enc->layer_data_size_;
   }
-  return !bw->error_;
+  if (bw->error_) {
+    return WebPEncodingSetError(enc->pic_, VP8_ENC_ERROR_OUT_OF_MEMORY);
+  }
+  return 1;
 }
 
 void VP8EncFreeBitWriters(VP8Encoder* const enc) {
@@ -360,7 +319,8 @@ int VP8EncWrite(VP8Encoder* const enc) {
   int p;
 
   // Partition #0 with header and partition sizes
-  ok = !!GeneratePartition0(enc);
+  ok = GeneratePartition0(enc);
+  if (!ok) return 0;
 
   // Compute VP8 size
   vp8_size = VP8_FRAME_HEADER_SIZE +
