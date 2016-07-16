@@ -63,7 +63,7 @@ namespace utf8_filesystem {
 #endif
     }
 
-    inline int stat64(const char* fileName, stat* st) {
+    inline int fstat(const char* fileName, stat* st) {
 #ifdef _WIN32
         std::wstring wfileName;
         utf8::utf8to16(fileName, fileName + strlen(fileName), std::back_inserter(wfileName));
