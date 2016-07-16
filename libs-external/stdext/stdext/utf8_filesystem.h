@@ -17,9 +17,9 @@
 namespace utf8_filesystem {
 
 #ifdef _WIN32
-    typedef struct __stat64 stat;
+    typedef struct ::__stat64 stat;
 #else
-    typedef struct stat stat;
+    typedef struct ::stat stat;
 #endif
     
     inline FILE* fopen(const char* fileName, const char* mode) {
