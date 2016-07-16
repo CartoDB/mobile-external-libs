@@ -1,5 +1,5 @@
 #ifndef _TIMED_LRU_CACHE_H_INCLUDED_
-#define	_TIMED_LRU_CACHE_H_INCLUDED_
+#define _TIMED_LRU_CACHE_H_INCLUDED_
 
 #include <unordered_map>
 #include <unordered_set>
