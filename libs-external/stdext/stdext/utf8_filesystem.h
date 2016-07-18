@@ -7,12 +7,13 @@
 #ifdef _WIN32
 #include <utf8.h>
 #include <io.h>
+#else
+#include <unistd.h>
 #endif
 #include <stdio.h>
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <fcntl.h>
-#include <unistd.h>
 
 namespace utf8_filesystem {
 
