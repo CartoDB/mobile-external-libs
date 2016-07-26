@@ -24,23 +24,12 @@ namespace cglib
         
         typedef T value_type;
         typedef Traits traits_type;
+        typedef T * iterator;
+        typedef const T * const_iterator;
 
-        inline mat() = default;
+        constexpr mat() = default;
         
-#if defined(__clang__) // XCode 7.2 seems to generate buggy code for ARM64 for default constructor
-        inline mat(const mat<T, N, Traits> & m)
-        {
-            for (size_t i = 0; i < N; i++)
-            {
-                for_each_unrolled<N>([&](size_t j)
-                {
-                    _colrow[i][j] = m._colrow[i][j];
-                });
-            }
-        }
-#endif
-
-        inline explicit mat(const std::array<std::array<T, N>, N> & colrow)
+        constexpr explicit mat(const std::array<std::array<T, N>, N> & colrow)
         {
             for (size_t i = 0; i < N; i++)
             {
@@ -51,7 +40,7 @@ namespace cglib
             }
         }
         
-        inline mat(std::initializer_list<std::initializer_list<T> > list)
+        constexpr mat(std::initializer_list<std::initializer_list<T> > list)
         {
             assert(list.size() == N);
             for (size_t i = 0; i < N; i++)
@@ -64,36 +53,56 @@ namespace cglib
             }
         }
         
-        inline T operator () (size_t r, size_t c) const
+        constexpr T operator () (size_t r, size_t c) const
         {
             assert(r < N && c < N);
             return _colrow[c][r];
         }
         
-        inline T & operator () (size_t r, size_t c)
+        CGLIB_FORCEINLINE T & operator () (size_t r, size_t c)
         {
             assert(r < N && c < N);
             return _colrow[c][r];
         }
         
-        inline const std::array<T, N> & operator [] (size_t c) const
+        constexpr const std::array<T, N> & operator [] (size_t c) const
         {
             assert(c < N);
             return _colrow[c];
         }
 
-        inline std::array<T, N> & operator [] (size_t c)
+        CGLIB_FORCEINLINE std::array<T, N> & operator [] (size_t c)
         {
             assert(c < N);
             return _colrow[c];
         }
         
-        inline const T * data() const
+        constexpr const_iterator cbegin() const
+        {
+            return &_colrow[0];
+        }
+        
+        constexpr const_iterator cend() const
+        {
+            return &_colrow[0] + N * N;
+        }
+        
+        CGLIB_FORCEINLINE iterator begin()
+        {
+            return &_colrow[0];
+        }
+        
+        CGLIB_FORCEINLINE iterator end()
+        {
+            return &_colrow[0] + N * N;
+        }
+        
+        constexpr const T * data() const
         {
             return &_colrow[0][0];
         }
         
-        inline T * data()
+        CGLIB_FORCEINLINE T * data()
         {
             return &_colrow[0][0];
         }
@@ -212,7 +221,7 @@ namespace cglib
             }
         }
 
-        inline void swap(mat<T, N, Traits> & m)
+        void swap(mat<T, N, Traits> & m)
         {
             for (size_t i = 0; i < N; i++)
             {
@@ -280,7 +289,7 @@ namespace cglib
      * @relates vec
      */
 
-    template <typename T, size_t N, typename Traits> inline vec<T, N, Traits>
+    template <typename T, size_t N, typename Traits> vec<T, N, Traits>
         col_vector(const mat<T, N, Traits> & m, size_t c)
     {
         vec<T, N, Traits> v;
@@ -296,7 +305,7 @@ namespace cglib
      * @relates vec
      */
 
-    template <typename T, size_t N, typename Traits> inline vec<T, N, Traits>
+    template <typename T, size_t N, typename Traits> vec<T, N, Traits>
         row_vector(const mat<T, N, Traits> & m, size_t r)
     {
         vec<T, N, Traits> v;
@@ -314,7 +323,7 @@ namespace cglib
      * @relates mat
      */
     
-    template <typename T, typename Traits> inline mat<T, 3, Traits>
+    template <typename T, typename Traits> mat<T, 3, Traits>
         star_matrix(const vec<T, 3, Traits> & v)
     {
         mat<T, 3, Traits> m;
@@ -329,7 +338,7 @@ namespace cglib
      * @relates mat
      */
 
-    template <typename T, typename Traits> inline mat<T, 3, Traits>
+    template <typename T, typename Traits> mat<T, 3, Traits>
         scale3_matrix(const vec<T, 3, Traits> & s)
     {
         mat<T, 3, Traits> m;
@@ -344,7 +353,7 @@ namespace cglib
      * @relates mat
      */
 
-    template <typename T, typename Traits> inline mat<T, 4, Traits>
+    template <typename T, typename Traits> mat<T, 4, Traits>
         scale4_matrix(const vec<T, 3, Traits> & s)
     {
         mat<T, 4, Traits> m;
@@ -360,7 +369,7 @@ namespace cglib
      * @relates mat
      */
 
-    template <typename T, typename Traits> inline mat<T, 3, Traits>
+    template <typename T, typename Traits> mat<T, 3, Traits>
         translate3_matrix(const vec<T, 3, Traits> & t)
     {
         mat<T, 3, Traits> m;
@@ -375,7 +384,7 @@ namespace cglib
      * @relates mat
      */
 
-    template <typename T, typename Traits> inline mat<T, 4, Traits>
+    template <typename T, typename Traits> mat<T, 4, Traits>
         translate4_matrix(const vec<T, 3, Traits> & t)
     {
         mat<T, 4, Traits> m;
@@ -391,7 +400,7 @@ namespace cglib
      * @relates mat
      */
 
-    template <typename T, typename Traits> inline mat<T, 3, Traits>
+    template <typename T, typename Traits> mat<T, 3, Traits>
         euler3_matrix(const vec<T, 3, Traits> & hpb)
     {
         mat<T, 3, Traits> m;
@@ -415,7 +424,7 @@ namespace cglib
      * @relates mat
      */
 
-    template <typename T, typename Traits> inline mat<T, 4, Traits>
+    template <typename T, typename Traits> mat<T, 4, Traits>
         euler4_matrix(const vec<T, 3, Traits> & hpb)
     {
         mat<T, 4, Traits> m;
@@ -441,7 +450,7 @@ namespace cglib
      * @relates mat
      */
 
-    template <typename T, typename Traits> inline mat<T, 4, Traits>
+    template <typename T, typename Traits> mat<T, 4, Traits>
         rotate4_xyz_matrix(const vec<T, 3, Traits> & xyz)
     {
         T s1 = 0, c1 = 1;
@@ -483,7 +492,7 @@ namespace cglib
      * @relates mat
      */
 
-    template <typename T, typename Traits> inline mat<T, 3, Traits>
+    template <typename T, typename Traits> mat<T, 3, Traits>
         rotate3_matrix(const vec<T, 3, Traits> & v, T a)
     {
         mat<T, 3, Traits> m;
@@ -505,7 +514,7 @@ namespace cglib
      * @relates mat
      */
 
-    template <typename T, typename Traits> inline mat<T, 4, Traits>
+    template <typename T, typename Traits> mat<T, 4, Traits>
         rotate4_matrix(const vec<T, 3, Traits> & v, T a)
     {
         mat<T, 4, Traits> m;
@@ -523,7 +532,7 @@ namespace cglib
         return m;
     }
 
-    template <typename T, typename Traits = float_traits<T> > inline mat<T, 4, Traits>
+    template <typename T, typename Traits = float_traits<T> > mat<T, 4, Traits>
         frustum4_matrix(T left, T right, T bottom, T top, T znear, T zfar)
     {
         T dxinv = 1 / (right - left);
@@ -542,7 +551,7 @@ namespace cglib
         return proj;
     }
 
-    template <typename T, typename Traits = float_traits<T> > inline mat<T, 4, Traits>
+    template <typename T, typename Traits = float_traits<T> > mat<T, 4, Traits>
         perspective4_matrix(T fovy, T xaspect, T yaspect, T znear, T zfar)
     {
         T c = znear * Traits::tan(fovy / 2);
@@ -553,7 +562,7 @@ namespace cglib
         return frustum4_matrix<T, Traits>(xmin, xmax, ymin, ymax, znear, zfar);
     }
 
-    template <typename T, typename Traits = float_traits<T> > inline mat<T, 4, Traits>
+    template <typename T, typename Traits = float_traits<T> > mat<T, 4, Traits>
         ortho4_matrix(T left, T right, T bottom, T top, T znear, T zfar)
     {
         T dxinv = 1 / (right - left);
@@ -571,7 +580,7 @@ namespace cglib
         return proj;
     }
 
-    template <typename T, typename Traits> inline mat<T, 4, Traits>
+    template <typename T, typename Traits> mat<T, 4, Traits>
         lookat4_matrix(const vec<T, 3, Traits> & eye, const vec<T, 3, Traits> & center, const vec<T, 3, Traits> & up)
     {
         vec<T, 3, Traits> f = unit(center - eye);
@@ -596,7 +605,7 @@ namespace cglib
         return m;
     }
 
-    template <typename T, typename Traits> inline mat<T, 4, Traits>
+    template <typename T, typename Traits> mat<T, 4, Traits>
         reflection4_matrix(const vec<T, 4, Traits> & plane)
     {
         mat<T, 4, Traits> m;
@@ -630,7 +639,7 @@ namespace cglib
      * @relates vec
      */
 
-    template <typename T, size_t N, typename Traits> inline vec<T, N, Traits>
+    template <typename T, size_t N, typename Traits> vec<T, N, Traits>
         transform(const vec<T, N, Traits> & v, const mat<T, N, Traits> & m)
     {
         vec<T, N, Traits> w;
@@ -651,7 +660,7 @@ namespace cglib
      * @relates vec
      */
 
-    template <typename T, size_t N, typename Traits> inline vec<T, N, Traits>
+    template <typename T, size_t N, typename Traits> vec<T, N, Traits>
         transform_point(const vec<T, N, Traits> & v, const mat<T, N+1, Traits> & m)
     {
         T s = m(N, N);
@@ -678,7 +687,7 @@ namespace cglib
      * @relates vec
      */
 
-    template <typename T, size_t N, typename Traits> inline vec<T, N, Traits>
+    template <typename T, size_t N, typename Traits> vec<T, N, Traits>
         transform_point_affine(const vec<T, N, Traits> & v, const mat<T, N + 1, Traits> & m)
     {
         vec<T, N, Traits> w;
@@ -699,7 +708,7 @@ namespace cglib
      * @relates vec
      */
 
-    template <typename T, size_t N, typename Traits> inline vec<T, N, Traits>
+    template <typename T, size_t N, typename Traits> vec<T, N, Traits>
         transform_vector(const vec<T, N, Traits> & v, const mat<T, N+1, Traits> & m)
     {
         vec<T, N, Traits> w;
@@ -721,7 +730,7 @@ namespace cglib
      * @relates mat
      */
     
-    template <typename T, size_t N, typename Traits> inline T
+    template <typename T, size_t N, typename Traits> T
         fast_subdet(const mat<T, N, Traits> & m, size_t n)
     {
         assert(n < 4);
@@ -772,7 +781,7 @@ namespace cglib
      * @relates mat
      */
     
-    template <typename T, size_t N, typename Traits> inline T
+    template <typename T, size_t N, typename Traits> CGLIB_FORCEINLINE T
         determinant(const mat<T, N, Traits> & m)
     {
         return subdeterminant(m, N);
@@ -865,7 +874,7 @@ namespace cglib
      * @relates mat
      */
     
-    template <typename T, size_t N, typename Traits> inline bool
+    template <typename T, size_t N, typename Traits> CGLIB_FORCEINLINE bool
         operator != (const mat<T, N, Traits> & m1, const mat<T, N, Traits> & m2)
     {
         return !(m1 == m2);
@@ -896,7 +905,7 @@ namespace cglib
      * @relates mat
      */
     
-    template <typename T, size_t N, typename Traits> inline mat<T, N, Traits>
+    template <typename T, size_t N, typename Traits> CGLIB_FORCEINLINE mat<T, N, Traits>
         operator + (const mat<T, N, Traits> & m1, const mat<T, N, Traits> & m2)
     {
         mat<T, N, Traits> ms(m1);
@@ -907,7 +916,7 @@ namespace cglib
      * @relates mat
      */
     
-    template <typename T, size_t N, typename Traits> inline mat<T, N, Traits>
+    template <typename T, size_t N, typename Traits> CGLIB_FORCEINLINE mat<T, N, Traits>
         operator - (const mat<T, N, Traits> & m1, const mat<T, N, Traits> & m2)
     {
         mat<T, N, Traits> md(m1);
@@ -918,7 +927,7 @@ namespace cglib
      * @relates mat
      */
     
-    template <typename T, size_t N, typename Traits> inline mat<T, N, Traits>
+    template <typename T, size_t N, typename Traits> CGLIB_FORCEINLINE mat<T, N, Traits>
         operator * (const mat<T, N, Traits> & m, T s)
     {
         mat<T, N, Traits> mp(m);
@@ -929,7 +938,7 @@ namespace cglib
      * @relates mat
      */
     
-    template <typename T, size_t N, typename Traits> inline mat<T, N, Traits>
+    template <typename T, size_t N, typename Traits> CGLIB_FORCEINLINE mat<T, N, Traits>
         operator * (const mat<T, N, Traits> & m1, const mat<T, N, Traits> & m2)
     {
         mat<T, N, Traits> mp(m1);
@@ -940,7 +949,7 @@ namespace cglib
      * @relates mat
      */
     
-    template <typename T, size_t N, typename Traits> mat<T, N, Traits> 
+    template <typename T, size_t N, typename Traits> CGLIB_FORCEINLINE mat<T, N, Traits> 
         operator / (const mat<T, N, Traits> & m1, const mat<T, N, Traits> & m2)
     {
         mat<T, N, Traits> md(m1);

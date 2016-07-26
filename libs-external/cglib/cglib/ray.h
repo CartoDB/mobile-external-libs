@@ -25,11 +25,11 @@ namespace cglib
         typedef T value_type;
         typedef Traits traits_type;
 
-        inline ray() = default;
+        constexpr ray() = default;
         
-        inline explicit ray(const vec<T, N, Traits> & origin, const vec<T, N, Traits> & direction) : origin(origin), direction(direction) { }
+        constexpr explicit ray(const vec<T, N, Traits> & origin, const vec<T, N, Traits> & direction) : origin(origin), direction(direction) { }
 
-        inline vec<T, N, Traits> operator () (T t) const
+        constexpr vec<T, N, Traits> operator () (T t) const
         {
             return origin + direction * t;
         }
@@ -50,13 +50,13 @@ namespace cglib
      * Operators
      */
 
-    template <typename T, size_t N, typename Traits> inline
+    template <typename T, size_t N, typename Traits> CGLIB_FORCEINLINE
         bool operator == (const ray<T, N, Traits> & r1, const ray<T, N, Traits> & r2)
     {
         return r1.origin == r2.direction && r1.direction == r2.direction;
     }
 
-    template <typename T, size_t N, typename Traits> inline
+    template <typename T, size_t N, typename Traits> CGLIB_FORCEINLINE
         bool operator != (const ray<T, N, Traits> & r1, const ray<T, N, Traits> & r2)
     {
         return !(r1 == r2);

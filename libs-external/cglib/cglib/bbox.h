@@ -25,11 +25,11 @@ namespace cglib
         typedef Traits traits_type;
         typedef vec<T, N, Traits> point_type;
 
-        inline bbox() = default;
+        constexpr bbox() = default;
         
-        inline explicit bbox(const point_type & point) : min(point), max(point) { }
+        constexpr explicit bbox(const point_type & point) : min(point), max(point) { }
         
-        inline explicit bbox(const point_type & min, const point_type & max) : min(min), max(max) { }
+        constexpr explicit bbox(const point_type & min, const point_type & max) : min(min), max(max) { }
 
         bool empty() const
         {
@@ -159,7 +159,7 @@ namespace cglib
             max.swap(b.max);
         }
 
-        inline static bbox<T, N, Traits> smallest()
+        static bbox<T, N, Traits> smallest()
         {
             T val = traits_type::infinity();
             vec<T, N, Traits> min, max;
@@ -171,7 +171,7 @@ namespace cglib
             return bbox<T, N, Traits>(min, max);
         }
         
-        inline static bbox<T, N, Traits> largest()
+        static bbox<T, N, Traits> largest()
         {
             T val = traits_type::infinity();
             vec<T, N, Traits> min, max;
@@ -206,26 +206,26 @@ namespace cglib
      * Operators
      */
 
-    template <typename T, size_t N, typename Traits> inline
+    template <typename T, size_t N, typename Traits> CGLIB_FORCEINLINE
         bool operator == (const bbox<T, N, Traits> & b1, const bbox<T, N, Traits> & b2)
     {
         return b1.min == b2.min && b1.max == b2.max;
     }
 
-    template <typename T, size_t N, typename Traits> inline
+    template <typename T, size_t N, typename Traits> CGLIB_FORCEINLINE
         bool operator != (const bbox<T, N, Traits> & b1, const bbox<T, N, Traits> & b2)
     {
         return !(b1 == b2);
     }
 
-    template <typename T, size_t N, typename Traits> inline
+    template <typename T, size_t N, typename Traits> CGLIB_FORCEINLINE
         bbox<T, N, Traits> operator + (const bbox<T, N, Traits> & b1, const typename bbox<T, N, Traits>::point_type & p)
     {
         bbox<T, N, Traits> b2(b1);
         return b2 += p;
     }
 
-    template <typename T, size_t N, typename Traits> inline
+    template <typename T, size_t N, typename Traits> CGLIB_FORCEINLINE
         bbox<T, N, Traits> operator - (const bbox<T, N, Traits> & b1, const typename bbox<T, N, Traits>::point_type & p)
     {
         bbox<T, N, Traits> b2(b1);
@@ -249,14 +249,14 @@ namespace cglib
         return b_trans;
     }
 
-    template <typename T, size_t N, typename Traits>
+    template <typename T, size_t N, typename Traits> CGLIB_FORCEINLINE
         bbox<T, N, Traits> add(const bbox<T, N, Traits> & b1, const bbox<T, N, Traits> & b2)
     {
         bbox<T, N, Traits> b3(b1);
         return b3.add(b2);
     }
 
-    template <typename T, size_t N, typename Traits>
+    template <typename T, size_t N, typename Traits> CGLIB_FORCEINLINE
         bbox<T, N, Traits> intersect(const bbox<T, N, Traits> & b1, const bbox<T, N, Traits> & b2)
     {
         bbox<T, N, Traits> b3(b1);

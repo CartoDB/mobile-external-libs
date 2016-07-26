@@ -26,9 +26,9 @@ namespace cglib
         typedef vec4<T, Traits> plane_type;
         typedef bbox3<T, Traits> bbox_type;
 
-        inline frustum3() = default;
+        constexpr frustum3() = default;
         
-        inline explicit frustum3(const std::array<plane_type, 6> & planes) : planes(planes) { }
+        constexpr explicit frustum3(const std::array<plane_type, 6> & planes) : planes(planes) { }
 
         point_type extreme_point(size_t i1, size_t i2, size_t i3) const
         {
@@ -175,13 +175,13 @@ namespace cglib
      * Operators
      */
 
-    template <typename T, typename Traits> inline
+    template <typename T, typename Traits> CGLIB_FORCEINLINE
         bool operator == (const frustum3<T, Traits> & fru1, const frustum3<T, Traits> & fru2)
     {
         return fru1.planes == fru2.planes;
     }
 
-    template <typename T, typename Traits> inline
+    template <typename T, typename Traits> CGLIB_FORCEINLINE
         bool operator != (const frustum3<T, Traits> & fru1, const frustum3<T, Traits> & fru2)
     {
         return !(fru1 == fru2);
