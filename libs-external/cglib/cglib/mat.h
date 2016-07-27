@@ -29,7 +29,7 @@ namespace cglib
 
         constexpr mat() = default;
         
-        constexpr explicit mat(const std::array<std::array<T, N>, N> & colrow)
+        explicit mat(const std::array<std::array<T, N>, N> & colrow)
         {
             for (size_t i = 0; i < N; i++)
             {
@@ -40,40 +40,34 @@ namespace cglib
             }
         }
         
-        constexpr mat(std::initializer_list<std::initializer_list<T> > list)
+        mat(std::initializer_list<std::initializer_list<T> > list)
         {
-            assert(list.size() == N);
-            for (size_t i = 0; i < N; i++)
+            for (size_t i = 0; i < N && i < list.size(); i++)
             {
-                for_each_unrolled<N>([&](size_t j)
+                for (size_t j = 0; j < N && j < list[i].size(); j++)
                 {
-                    assert((list.begin() + j)->size() == N);
-                    _colrow[i][j] = *((list.begin() + j)->begin() + i);
-                });
+                    _colrow[j][i] = list[i][j];
+                }
             }
         }
         
         constexpr T operator () (size_t r, size_t c) const
         {
-            assert(r < N && c < N);
             return _colrow[c][r];
         }
         
         CGLIB_FORCEINLINE T & operator () (size_t r, size_t c)
         {
-            assert(r < N && c < N);
             return _colrow[c][r];
         }
         
         constexpr const std::array<T, N> & operator [] (size_t c) const
         {
-            assert(c < N);
             return _colrow[c];
         }
 
         CGLIB_FORCEINLINE std::array<T, N> & operator [] (size_t c)
         {
-            assert(c < N);
             return _colrow[c];
         }
         
@@ -733,7 +727,6 @@ namespace cglib
     template <typename T, size_t N, typename Traits> T
         fast_subdet(const mat<T, N, Traits> & m, size_t n)
     {
-        assert(n < 4);
         switch (n)
         {
         case 1:

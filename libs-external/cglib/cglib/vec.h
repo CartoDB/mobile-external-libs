@@ -28,7 +28,7 @@ namespace cglib
 
         constexpr vec() = default;
         
-        constexpr explicit vec(const std::array<T, N> & col)
+        explicit vec(const std::array<T, N> & col)
         {
             for_each_unrolled<N>([&](size_t i)
             {
@@ -51,24 +51,21 @@ namespace cglib
             static_assert(N == 4, "Wrong number of constructor arguments");
         }
 
-        constexpr vec(std::initializer_list<T> list)
+        vec(std::initializer_list<T> list)
         {
-            assert(list.size() == N);
-            for_each_unrolled<N>([&](size_t i)
+            for (size_t i = 0; i < N && i < list.size(); i++)
             {
-                _col[i] = *(list.begin() + i);
-            });
+                _col[i] = list[i];
+            }
         }
         
         constexpr T operator () (size_t c) const
         {
-            assert(c < N);
             return _col[c];
         }
         
         CGLIB_FORCEINLINE T & operator () (size_t c)
         {
-            assert(c < N);
             return _col[c];
         }
         

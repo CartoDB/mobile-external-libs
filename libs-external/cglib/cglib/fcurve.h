@@ -245,9 +245,9 @@ namespace cglib
     };
 
     /**
-    * Reads fcurve key info from stream.
-    * @relates fcurve
-    */
+     * Reads fcurve key info from stream.
+     * @relates fcurve
+     */
 
     template <typename V, typename CharT, typename CharTraits> std::basic_istream<CharT, CharTraits> &
         operator >> (std::basic_istream<CharT, CharTraits> & is, typename fcurve<V>::key_type & key)
@@ -277,19 +277,18 @@ namespace cglib
      */
 
     template <typename V, typename CharT, typename CharTraits> std::basic_istream<CharT, CharTraits> &
-        operator >> (std::basic_istream<CharT, CharTraits> & is, fcurve<V> & fcurve)
+        operator >> (std::basic_istream<CharT, CharTraits> & is, fcurve<V> & curve)
     {
-        fcurve.clear();
+        curve.clear();
         CharT ch;
         is >> ch;
         if (ch == '[')
         {
-            size_t i = 0;
             while (ch != ')')
             {
-                fcurve<V>::key_type key;
+                typename fcurve<V>::key_type key;
                 is >> key;
-                fcurve.insert(key);
+                curve.insert(key);
                 is >> ch;
                 if (ch != ']' && ch != ';')
                 {
