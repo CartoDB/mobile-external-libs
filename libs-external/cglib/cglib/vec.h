@@ -55,7 +55,7 @@ namespace cglib
         {
             for (size_t i = 0; i < N && i < list.size(); i++)
             {
-                _col[i] = list[i];
+                _col[i] = *(list.begin() + i);
             }
         }
         

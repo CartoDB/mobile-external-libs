@@ -40,13 +40,14 @@ namespace cglib
             }
         }
         
-        mat(std::initializer_list<std::initializer_list<T> > list)
+        mat(std::initializer_list<std::initializer_list<T> > lists)
         {
-            for (size_t i = 0; i < N && i < list.size(); i++)
+            for (size_t i = 0; i < N && i < lists.size(); i++)
             {
-                for (size_t j = 0; j < N && j < list[i].size(); j++)
+                const std::initializer_list<T> & list = *(lists.begin() + i);
+                for (size_t j = 0; j < N && j < list.size(); j++)
                 {
-                    _colrow[j][i] = list[i][j];
+                    _colrow[j][i] = *(list.begin() + j);
                 }
             }
         }

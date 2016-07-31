@@ -11,6 +11,17 @@ namespace cglib
 {
 
     /**
+     * Cubic type.
+     */
+
+    enum class fcurve_type
+    {
+        step,
+        linear,
+        cubic
+    };
+
+    /**
      * Cubic curve class. Parametrized by value type.
      * It is assumed that V is an instance of cglib::vec
      * template.
@@ -24,13 +35,6 @@ namespace cglib
 
         typedef V value_type;
         typedef typename V::value_type scalar_type;
-
-        enum curve_type
-        {
-            step_curve,
-            linear_curve,
-            cubic_curve
-        };
 
         struct key_type
         {
@@ -57,8 +61,8 @@ namespace cglib
             }
         };
 
-        fcurve() = delete;
-        explicit fcurve(curve_type ty) : _type(ty), _keys() { }
+        fcurve() : _type(fcurve_type::linear), _keys() { }
+        explicit fcurve(fcurve_type ty) : _type(ty), _keys() { }
 
         void clear()
         {
@@ -149,7 +153,7 @@ namespace cglib
                 if (ir == 0)
                     return value_type();
                 const key_type & k = _keys.back();
-                if (_type == step_curve || k.dpos_right(0) <= epsilon)
+                if (_type == fcurve_type::step || k.dpos_right(0) <= epsilon)
                     return k.pos;
                 scalar_type dt = t - k.pos(0);
                 return k.pos + k.dpos_right * (dt / k.dpos_right(0));
@@ -159,7 +163,7 @@ namespace cglib
             if (ir == 0)
             {
                 const key_type & k = _keys.front();
-                if (_type == step_curve || -k.dpos_left(0) <= epsilon)
+                if (_type == fcurve_type::step || -k.dpos_left(0) <= epsilon)
                     return k.pos;
                 scalar_type dt = k.pos(0) - t;
                 return k.pos + k.dpos_left * (dt / k.dpos_left(0));
@@ -170,11 +174,11 @@ namespace cglib
             const key_type & kr = _keys.at(ir - 0);
 
             // Step/Linear fcurve?
-            if (_type == step_curve)
+            if (_type == fcurve_type::step)
             {
                 return kl.pos;
             }
-            else if (_type == linear_curve)
+            else if (_type == fcurve_type::linear)
             {
                 value_type dpos = kr.pos - kl.pos;
                 if (dpos(0) <= epsilon)
@@ -202,7 +206,7 @@ namespace cglib
         }
 
         template <typename It>
-            static fcurve<V> create(curve_type ty, It begin, It end)
+            static fcurve<V> create(fcurve_type ty, It begin, It end)
         {
             fcurve<V> curve(ty);
 
@@ -213,7 +217,7 @@ namespace cglib
             }
 
             // Calculate tangents, if cubic curve
-            if (ty == cubic_curve)
+            if (ty == fcurve_type::cubic)
             {
                 for (size_t i = 0; i < curve._keys.size(); i++)
                 {
@@ -240,7 +244,7 @@ namespace cglib
             return kl.pos * h1 + kr.pos * h2 + kl.dpos_right * h3 + kr.dpos_left * h4;
         }
 
-        curve_type _type;
+        fcurve_type _type;
         std::vector<key_type> _keys; // sorted array of keys
     };
 
