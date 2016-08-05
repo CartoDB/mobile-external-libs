@@ -491,7 +491,7 @@ namespace cglib
     }
 
     /**
-     * Commonly used instances for 2D, 3D and 4D cases
+     * Commonly used instances for 2D, 3D and 4D cases.
      */
     
     template <typename T, typename Traits = float_traits<T> > using vec2 = vec<T, 2, Traits>;

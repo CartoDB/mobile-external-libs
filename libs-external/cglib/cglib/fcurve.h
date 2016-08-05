@@ -11,7 +11,7 @@ namespace cglib
 {
 
     /**
-     * Cubic type.
+     * Curve type.
      */
 
     enum class fcurve_type
@@ -22,19 +22,18 @@ namespace cglib
     };
 
     /**
-     * Cubic curve class. Parametrized by value type.
-     * It is assumed that V is an instance of cglib::vec
-     * template.
+     * Curve class that support stepwise, linear and cubic curves.
+     * Parametrized by value type, dimension and value type traits.
      */
 
-    template <typename V>
-    class fcurve
+    template <typename T, size_t N, typename Traits = float_traits<T> >
+        class fcurve
     {
 
     public:
 
-        typedef V value_type;
-        typedef typename V::value_type scalar_type;
+        typedef T scalar_type;
+        typedef cglib::vec<T, N, Traits> value_type;
 
         struct key_type
         {
@@ -206,9 +205,9 @@ namespace cglib
         }
 
         template <typename It>
-            static fcurve<V> create(fcurve_type ty, It begin, It end)
+            static fcurve<T, N, Traits> create(fcurve_type ty, It begin, It end)
         {
-            fcurve<V> curve(ty);
+            fcurve<T, N, Traits> curve(ty);
 
             // Build the curve by inserting each key frame
             for (It it = begin; it != end; it++)
@@ -253,8 +252,8 @@ namespace cglib
      * @relates fcurve
      */
 
-    template <typename V, typename CharT, typename CharTraits> std::basic_istream<CharT, CharTraits> &
-        operator >> (std::basic_istream<CharT, CharTraits> & is, typename fcurve<V>::key_type & key)
+    template <typename T, size_t N, typename Traits, typename CharT, typename CharTraits> std::basic_istream<CharT, CharTraits> &
+        operator >> (std::basic_istream<CharT, CharTraits> & is, typename fcurve<T, N, Traits>::key_type & key)
     {
         CharT ch;
         is >> key.pos;
@@ -280,8 +279,8 @@ namespace cglib
      * @relates fcurve
      */
 
-    template <typename V, typename CharT, typename CharTraits> std::basic_istream<CharT, CharTraits> &
-        operator >> (std::basic_istream<CharT, CharTraits> & is, fcurve<V> & curve)
+    template <typename T, size_t N, typename Traits, typename CharT, typename CharTraits> std::basic_istream<CharT, CharTraits> &
+        operator >> (std::basic_istream<CharT, CharTraits> & is, fcurve<T, N, Traits> & curve)
     {
         curve.clear();
         CharT ch;
@@ -290,7 +289,7 @@ namespace cglib
         {
             while (ch != ')')
             {
-                typename fcurve<V>::key_type key;
+                typename fcurve<T, N, Traits>::key_type key;
                 is >> key;
                 curve.insert(key);
                 is >> ch;
@@ -313,8 +312,8 @@ namespace cglib
      * @relates fcurve
      */
 
-    template <typename V, typename CharT, typename CharTraits> std::basic_ostream<CharT, CharTraits> &
-        operator << (std::basic_ostream<CharT, CharTraits> & os, const typename fcurve<V>::key_type & key)
+    template <typename T, size_t N, typename Traits, typename CharT, typename CharTraits> std::basic_ostream<CharT, CharTraits> &
+        operator << (std::basic_ostream<CharT, CharTraits> & os, const typename fcurve<T, N, Traits>::key_type & key)
     {
         os << key.pos << ',' << key.dpos_left << ',' << key.dpos_right;
         return os;
@@ -325,8 +324,8 @@ namespace cglib
      * @relates fcurve
      */
 
-    template <typename V, typename CharT, typename CharTraits> std::basic_ostream<CharT, CharTraits> &
-        operator << (std::basic_ostream<CharT, CharTraits> & os, const fcurve<V> & fcurve)
+    template <typename T, size_t N, typename Traits, typename CharT, typename CharTraits> std::basic_ostream<CharT, CharTraits> &
+        operator << (std::basic_ostream<CharT, CharTraits> & os, const fcurve<T, N, Traits> & fcurve)
     {
         os << '[';
         for (size_t i = 0; i < fcurve.size(); i++)
@@ -339,6 +338,14 @@ namespace cglib
         return os;
     }
 
+    /**
+     * Commonly used instances for 2D, 3D, 4D and 5D cases.
+     */
+    
+    template <typename T, typename Traits = float_traits<T> > using fcurve2 = fcurve<T, 2, Traits>;
+    template <typename T, typename Traits = float_traits<T> > using fcurve3 = fcurve<T, 3, Traits>;
+    template <typename T, typename Traits = float_traits<T> > using fcurve4 = fcurve<T, 4, Traits>;
+    template <typename T, typename Traits = float_traits<T> > using fcurve5 = fcurve<T, 5, Traits>;
 }
 
 #endif
