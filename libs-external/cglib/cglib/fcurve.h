@@ -63,6 +63,11 @@ namespace cglib
         fcurve() : _type(fcurve_type::linear), _keys() { }
         explicit fcurve(fcurve_type ty) : _type(ty), _keys() { }
 
+        fcurve_type type() const
+        {
+            return _type;
+        }
+
         void clear()
         {
             _keys.clear();
@@ -248,30 +253,32 @@ namespace cglib
     };
 
     /**
-     * Reads fcurve key info from stream.
      * @relates fcurve
      */
-
-    template <typename T, size_t N, typename Traits, typename CharT, typename CharTraits> std::basic_istream<CharT, CharTraits> &
-        operator >> (std::basic_istream<CharT, CharTraits> & is, typename fcurve<T, N, Traits>::key_type & key)
+    
+    template <typename T, size_t N, typename Traits> bool
+        operator == (const fcurve<T, N, Traits> & curve1, const fcurve<T, N, Traits> & curve2)
     {
-        CharT ch;
-        is >> key.pos;
-        is >> ch;
-        if (ch != ',')
+        if (curve1.type() != curve2.type() || curve1.size() != curve2.size())
+            return false;
+        for (size_t i = 0; i < curve1.size(); i++)
         {
-            is.setstate(std::ios_base::failbit);
-            return is;
+            const typename fcurve<T, N, Traits>::key_type & key1 = curve1.at(i);
+            const typename fcurve<T, N, Traits>::key_type & key2 = curve2.at(i);
+            if (key1.pos != key2.pos || key1.dpos_left != key2.dpos_left || key1.dpos_right != key2.dpos_right)
+                return false;
         }
-        is >> key.dpos_left;
-        is >> ch;
-        if (ch != ',')
-        {
-            is.setstate(std::ios_base::failbit);
-            return is;
-        }
-        is >> key.dpos_right;
-        return is;
+        return true;
+    }
+    
+    /**
+     * @relates fcurve
+     */
+    
+    template <typename T, size_t N, typename Traits> bool
+        operator != (const fcurve<T, N, Traits> & curve1, const fcurve<T, N, Traits> & curve2)
+    {
+        return !(curve1 == curve2);
     }
 
     /**
@@ -282,41 +289,68 @@ namespace cglib
     template <typename T, size_t N, typename Traits, typename CharT, typename CharTraits> std::basic_istream<CharT, CharTraits> &
         operator >> (std::basic_istream<CharT, CharTraits> & is, fcurve<T, N, Traits> & curve)
     {
-        curve.clear();
         CharT ch;
         is >> ch;
-        if (ch == '[')
+        if (ch != '[')
         {
-            while (ch != ')')
-            {
-                typename fcurve<T, N, Traits>::key_type key;
-                is >> key;
-                curve.insert(key);
-                is >> ch;
-                if (ch != ']' && ch != ';')
-                {
-                    is.setstate(std::ios_base::failbit);
-                    break;
-                }
-            }
+            is.setstate(std::ios_base::failbit);
+            return is;
+        }
+
+        char type;
+        is >> type;
+        if (type == 's')
+        {
+            curve = fcurve<T, N, Traits>(fcurve_type::step);
+        }
+        else if (type == 'l')
+        {
+            curve = fcurve<T, N, Traits>(fcurve_type::linear);
+        }
+        else if (type == 'c')
+        {
+            curve = fcurve<T, N, Traits>(fcurve_type::cubic);
         }
         else
         {
             is.setstate(std::ios_base::failbit);
+            return is;
         }
+
+        is >> ch;
+        if (ch != ';')
+        {
+            is.setstate(std::ios_base::failbit);
+            return is;
+        }
+
+        do
+        {
+            typename fcurve<T, N, Traits>::key_type key;
+            is >> key.pos;
+            is >> ch;
+            if (ch != ',')
+            {
+                is.setstate(std::ios_base::failbit);
+                break;
+            }
+            is >> key.dpos_left;
+            is >> ch;
+            if (ch != ',')
+            {
+                is.setstate(std::ios_base::failbit);
+                break;
+            }
+            is >> key.dpos_right;
+            curve.insert(key);
+            is >> ch;
+            if (ch != ']' && ch != ';')
+            {
+                is.setstate(std::ios_base::failbit);
+                break;
+            }
+        } while (ch == ';');
         return is;
-    }
-
-    /**
-     * Writes fcurve key info to stream.
-     * @relates fcurve
-     */
-
-    template <typename T, size_t N, typename Traits, typename CharT, typename CharTraits> std::basic_ostream<CharT, CharTraits> &
-        operator << (std::basic_ostream<CharT, CharTraits> & os, const typename fcurve<T, N, Traits>::key_type & key)
-    {
-        os << key.pos << ',' << key.dpos_left << ',' << key.dpos_right;
-        return os;
     }
 
     /**
@@ -325,14 +359,27 @@ namespace cglib
      */
 
     template <typename T, size_t N, typename Traits, typename CharT, typename CharTraits> std::basic_ostream<CharT, CharTraits> &
-        operator << (std::basic_ostream<CharT, CharTraits> & os, const fcurve<T, N, Traits> & fcurve)
+        operator << (std::basic_ostream<CharT, CharTraits> & os, const fcurve<T, N, Traits> & curve)
     {
         os << '[';
-        for (size_t i = 0; i < fcurve.size(); i++)
+        switch (curve.type())
         {
-            os << fcurve.at(i);
-            if (i + 1 != fcurve.size())
-                os << ';';
+        case fcurve_type::step:
+            os << 's';
+            break;
+        case fcurve_type::linear:
+            os << 'l';
+            break;
+        case fcurve_type::cubic:
+            os << 'c';
+            break;
+        }
+        
+        for (size_t i = 0; i < curve.size(); i++)
+        {
+            os << ";";
+            const typename fcurve<T, N, Traits>::key_type & key = curve.at(i);
+            os << key.pos << ',' << key.dpos_left << ',' << key.dpos_right;
         }
         os << ']';
         return os;
