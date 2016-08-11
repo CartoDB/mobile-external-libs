@@ -1,5 +1,7 @@
 # External dependencies for Carto Mobile SDK
 
+Here are copies of external libraries used on CARTO Mobile SDK. Some projects are modified to port them to work on all required mobile platforms.
+
 ## Dependencies
 In addition to the included libraries, a copy of recent version of boost library 
 (http://www.boost.org, version should be 1.58 or newer) is needed. It is expected
