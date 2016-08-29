@@ -48,6 +48,17 @@ namespace cache {
             }
         }
 
+        bool peek(const key_t& key, value_t& value) const {
+            auto it = _cache_items_map.find(key);
+            if (it == _cache_items_map.end()) {
+                return false;
+            }
+            else {
+                value = it->second->second;
+                return true;
+            }
+        }
+        
         bool read(const key_t& key, value_t& value) {
             auto it = _cache_items_map.find(key);
             if (it == _cache_items_map.end()) {
