@@ -270,6 +270,21 @@ namespace cglib
      * @relates vec
      */
 
+    template <typename T, size_t N, typename Traits> vec<T, N, Traits>
+        sign(const vec<T, N, Traits> & v)
+    {
+        vec<T, N, Traits> u;
+        for_each_unrolled<N>([&](size_t i)
+        {
+            u(i) = (v(i) < 0 ? -1 : (v(i) > 0 ? 1 : 0));
+        });
+        return u;
+    }
+
+    /**
+     * @relates vec
+     */
+
     template <typename T, size_t N, typename Traits> CGLIB_FORCEINLINE T
         norm(const vec<T, N, Traits> & v)
     {
