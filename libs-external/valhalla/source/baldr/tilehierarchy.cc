@@ -8,9 +8,9 @@ namespace baldr {
 
 TileHierarchy::TileHierarchy(const std::string& tile_dir):tile_dir_(tile_dir) {
   levels_ = {
-    {(uint8_t)2, TileLevel{(uint8_t)2, stringToRoadClass.find("ServiceOther")->second, "local", Tiles<PointLL>{{{-180, -90}, {180, 90}}, .25, (unsigned short)kBinsDim}}},
-    {(uint8_t)1, TileLevel{(uint8_t)1, stringToRoadClass.find("Tertiary")->second, "arterial", Tiles<PointLL>{{{-180, -90}, {180, 90}}, 1, (unsigned short)kBinsDim}}},
-    {(uint8_t)0, TileLevel{(uint8_t)0, stringToRoadClass.find("Primary")->second, "highway", Tiles<PointLL>{{{-180, -90}, {180, 90}}, 4, (unsigned short)kBinsDim}}}
+    {2, TileLevel{2, stringToRoadClass.find("ServiceOther")->second, "local", Tiles<PointLL>{{{-180, -90}, {180, 90}}, .25, static_cast<unsigned short>(kBinsDim)}}},
+    {1, TileLevel{1, stringToRoadClass.find("Tertiary")->second, "arterial", Tiles<PointLL>{{{-180, -90}, {180, 90}}, 1, static_cast<unsigned short>(kBinsDim)}}},
+    {0, TileLevel{0, stringToRoadClass.find("Primary")->second, "highway", Tiles<PointLL>{{{-180, -90}, {180, 90}}, 4, static_cast<unsigned short>(kBinsDim)}}}
   };
 }
 

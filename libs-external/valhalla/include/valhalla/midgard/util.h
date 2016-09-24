@@ -170,10 +170,14 @@ std::ostream& operator<<(std::ostream& stream, const memory_status& s);
 /**
  * Implement the missing make_unique for C++11.
  */
+#ifndef _MSC_VER
 template<typename T, typename... Args>
 std::unique_ptr<T> make_unique(Args&&... args) {
   return std::unique_ptr<T>{new T{std::forward<Args>(args)...}};
 }
+#else
+using std::make_unique;
+#endif
 
 /* circular range clamp
  */

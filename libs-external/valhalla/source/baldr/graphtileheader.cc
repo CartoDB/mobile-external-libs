@@ -4,6 +4,7 @@
 #include "baldr/directededge.h"
 #include "baldr/edgeinfo.h"
 #include "baldr/datetime.h"
+#include "config.h"
 
 #ifndef PACKAGE_VERSION
 #define PACKAGE_VERSION "unstable"

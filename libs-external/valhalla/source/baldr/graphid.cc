@@ -16,18 +16,19 @@ constexpr uint32_t kMaxGraphHierarchy = 7;
 // Maximum unique identifier within a graph hierarchy.
 constexpr uint64_t kMaxGraphId = 68719476735;
 
-#ifdef _WIN32
+#ifdef _MSC_VER
 inline int ffs(int x) {
-  if (x == 0)
-    return 0;
-  int t = 1, r = 1;
-  while ((x & t) == 0) {
-    t <<= 1;
-    r++;
-  }
-  return r;
+    if (x == 0)
+        return 0;
+    int t = 1, r = 1;
+    while ((x & t) == 0) {
+        t <<= 1;
+        r++;
+    }
+    return r;
 }
 #endif
+
 }
 
 namespace valhalla {
