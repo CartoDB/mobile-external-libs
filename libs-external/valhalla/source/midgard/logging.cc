@@ -11,6 +11,14 @@
 
 namespace {
 
+#ifdef _MSC_VER
+void gmtime_r(std::time_t* tt, std::tm* gmt) {
+  if (auto gmptr = gmtime(tt)) {
+    *gmt = *gmptr;
+  }
+}
+#endif
+
 //returns formated to: 'year/mo/dy hr:mn:sc.xxxxxx'
 std::string TimeStamp() {
   //get the time
