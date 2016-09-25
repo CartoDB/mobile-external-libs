@@ -15,6 +15,9 @@
 #include <cmath>
 #include <boost/algorithm/string.hpp>
 
+#define MINIZ_HEADER_FILE_ONLY
+#include <miniz.c>
+
 namespace {
   struct dir_facet : public std::numpunct<char> {
    protected:
@@ -70,6 +73,7 @@ GraphTile::GraphTile(const TileHierarchy& hierarchy, const GraphId& graphid)
   if (!graphid.Is_Valid())
     return;
 
+/*
   // Open to the end of the file so we can immediately get size;
   std::string file_location = hierarchy.tile_dir() + "/" +
                 FileSuffix(graphid.Tile_Base(), hierarchy);
@@ -82,6 +86,24 @@ GraphTile::GraphTile(const TileHierarchy& hierarchy, const GraphId& graphid)
     file.seekg(0, std::ios::beg);
     file.read(graphtile_.get(), filesize);
     file.close();
+*/
+
+  mz_zip_archive zip;
+  memset(&zip, 0, sizeof(mz_zip_archive));
+  if (mz_zip_reader_init_file(&zip, hierarchy.tile_dir().c_str(), 0)) {
+    std::string file_location = FileSuffix(graphid.Tile_Base(), hierarchy);
+    
+    size_t filesize = 0;
+    std::shared_ptr<char> filedata(static_cast<char*>(mz_zip_reader_extract_file_to_heap(&zip, file_location.c_str(), &filesize, 0)), mz_free);
+    mz_zip_reader_end(&zip);
+
+    if (!filedata) {
+      LOG_DEBUG("Tile " + file_location + " was not found");
+      return;
+    }
+    
+    graphtile_.reset(new char[filesize]);
+    memcpy(graphtile_.get(), filedata.get(), filesize);
 
     // Set a pointer to the header (first structure in the binary data).
     char* ptr = graphtile_.get();
