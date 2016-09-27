@@ -5,6 +5,10 @@
 #include <mutex>
 #include <unordered_map>
 
+#ifdef DEBUG
+#undef DEBUG
+#endif
+
 namespace valhalla {
 namespace midgard {
 
