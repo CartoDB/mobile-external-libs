@@ -2,6 +2,8 @@ project(jpeg)
 
 set(CMAKE_BINARY_DIR "${CMAKE_SOURCE_DIR}/build")
 
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DNO_GETENV")
+
 file(GLOB jpeg_SRC_FILES
   jaricom.c jcapimin.c jcapistd.c jcarith.c jccoefct.c jccolor.c
   jcdctmgr.c jchuff.c jcinit.c jcmainct.c jcmarker.c jcmaster.c
