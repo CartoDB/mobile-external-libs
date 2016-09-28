@@ -1,6 +1,9 @@
 // -*- mode: c++ -*-
 #ifndef MMP_MAP_MATCHING_H_
 #define MMP_MAP_MATCHING_H_
+
+#include <valhalla/midgard/logging.h>
+
 #include <valhalla/sif/edgelabel.h>
 #include <valhalla/sif/costconstants.h>
 

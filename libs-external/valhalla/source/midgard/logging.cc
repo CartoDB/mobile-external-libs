@@ -9,6 +9,8 @@
 #include <ctime>
 #include <cstdlib>
 
+#include <boost/lexical_cast.hpp>
+
 namespace {
 
 #ifdef _MSC_VER
@@ -155,7 +157,7 @@ class FileLogger : public Logger {
     if(interval != config.end())
     {
       try {        
-        reopen_interval = std::chrono::seconds(std::stoul(interval->second));
+        reopen_interval = std::chrono::seconds(boost::lexical_cast<unsigned long>(interval->second));
       }
       catch(...) {
         throw std::runtime_error(interval->second + " is not a valid reopen interval");

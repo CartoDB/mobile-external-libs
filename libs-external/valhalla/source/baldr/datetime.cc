@@ -8,6 +8,7 @@
 #include <boost/algorithm/string/classification.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <boost/algorithm/string.hpp>
+#include <boost/lexical_cast.hpp>
 
 #include <valhalla/baldr/datetime.h>
 #include <valhalla/baldr/graphconstants.h>
@@ -638,8 +639,8 @@ bool is_iso_local(const std::string& date_time) {
 
     std::size_t found = date_time.find("T"); //YYYY-MM-DDTHH:MM
     std::string time = date_time.substr(found+1);
-    uint32_t hour = std::stoi(time.substr(0,2));
-    uint32_t min = std::stoi(time.substr(3));
+    uint32_t hour = boost::lexical_cast<uint32_t>(time.substr(0,2));
+    uint32_t min = boost::lexical_cast<uint32_t>(time.substr(3));
 
     if (hour > 23 || min > 59)
       return false;

@@ -6,6 +6,8 @@
 
 #include <valhalla/proto/trippath.pb.h>
 #include <valhalla/odin/transitstop.h>
+#include <valhalla/midgard/logging.h>
+
 
 namespace valhalla {
 namespace odin {

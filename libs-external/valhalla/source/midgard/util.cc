@@ -328,7 +328,7 @@ memory_status::memory_status(const std::unordered_set<std::string> interest){
       std::remove_if(line.begin(), line.end(), [](const char c) {return !std::isdigit(c);});
       if(line.size() == 0)
         continue;
-      auto bytes = std::stod(line) * 1024.0;
+      auto bytes = boost::lexical_cast<double>(line) * 1024.0;
       //get the units and scale
       std::pair<double, std::string> metric = std::make_pair(bytes, "b");
       for(auto unit : { "B", "KB", "MB", "GB" }){

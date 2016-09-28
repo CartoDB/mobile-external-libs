@@ -4,6 +4,7 @@
 
 #include <valhalla/midgard/pointll.h>
 #include <boost/filesystem.hpp>
+#include <boost/lexical_cast.hpp>
 #include <list>
 #include <iomanip>
 #include <random>
@@ -215,7 +216,7 @@ namespace valhalla {
       for (uint32_t tile_level = 0; tile_level <= transit_level; tile_level++) {
         try {
           auto& level_colors = colors.insert({tile_level, std::unordered_map<uint32_t, size_t>{}}).first->second;
-          boost::filesystem::path root_dir(tile_hierarchy.tile_dir() + '/' + std::to_string(tile_level) + '/');
+          boost::filesystem::path root_dir(tile_hierarchy.tile_dir() + '/' + boost::lexical_cast<std::string>(tile_level) + '/');
           if(boost::filesystem::exists(root_dir) && boost::filesystem::is_directory(root_dir)) {
             for (boost::filesystem::recursive_directory_iterator i(root_dir), end; i != end; ++i) {
               if (!boost::filesystem::is_directory(i->path())) {

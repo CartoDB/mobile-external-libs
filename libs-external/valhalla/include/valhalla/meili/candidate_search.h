@@ -12,6 +12,7 @@
 #include <valhalla/midgard/distanceapproximator.h>
 #include <valhalla/midgard/linesegment2.h>
 #include <valhalla/midgard/pointll.h>
+#include <valhalla/midgard/logging.h>
 #include <valhalla/baldr/location.h>
 #include <valhalla/baldr/graphreader.h>
 #include <valhalla/baldr/directededge.h>

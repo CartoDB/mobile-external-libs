@@ -852,13 +852,13 @@ TripPath_Edge* TripPathBuilder::AddTripEdge(const uint32_t idx,
           TripPath_Traversability::TripPath_Traversability_kNone);
 
     trip_edge->set_begin_heading(
-        std::round(
+        std::ceil(0.5 +
             PointLL::HeadingAlongPolyline(
                 edgeinfo->shape(),
                 GetOffsetForHeading(directededge->classification(),
                                     directededge->use()))));
     trip_edge->set_end_heading(
-        std::round(
+        std::ceil(0.5 +
             PointLL::HeadingAtEndOfPolyline(
                 edgeinfo->shape(),
                 GetOffsetForHeading(directededge->classification(),
@@ -882,7 +882,7 @@ TripPath_Edge* TripPathBuilder::AddTripEdge(const uint32_t idx,
           TripPath_Traversability::TripPath_Traversability_kNone);
 
     trip_edge->set_begin_heading(
-        std::round(
+        std::floor(0.5 +
             fmod(
                 (PointLL::HeadingAtEndOfPolyline(
                     edgeinfo->shape(),
@@ -891,7 +891,7 @@ TripPath_Edge* TripPathBuilder::AddTripEdge(const uint32_t idx,
                 360)));
 
     trip_edge->set_end_heading(
-        std::round(
+        std::floor(0.5 +
             fmod(
                 (PointLL::HeadingAlongPolyline(
                     edgeinfo->shape(),

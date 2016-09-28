@@ -150,8 +150,8 @@ std::vector<TimeDistance> CostMatrix::SourceToTarget(
   uint32_t idx = 0;
   std::vector<TimeDistance> td;
   for (const auto& connection : best_connection_) {
-    td.emplace_back(std::round(connection.cost.secs),
-                    std::round(connection.distance));
+    td.emplace_back(std::floor(connection.cost.secs + 0.5),
+                    std::floor(connection.distance + 0.5));
     idx++;
   }
   return td;
@@ -651,12 +651,12 @@ void CostMatrix::SetSources(baldr::GraphReader& graphreader,
       // Get cost. Get distance along the remainder of this edge.
       Cost edgecost = costing->EdgeCost(directededge, graphreader.GetEdgeDensity(edgeid));
       Cost cost = edgecost * (1.0f - edge.dist);
-      uint32_t d = std::round(directededge->length() * (1.0f - edge.dist));
+      uint32_t d = std::floor(directededge->length() * (1.0f - edge.dist) + 0.5);
 
       // Store the edge cost and length in the transition cost (so we can
       // recover the full length and cost for cases where origin and
       // destination are on the same edge
-      Cost ec(std::round(edgecost.secs), static_cast<uint32_t>(directededge->length()));
+      Cost ec(std::floor(edgecost.secs + 0.5), static_cast<uint32_t>(directededge->length()));
 
       // Add EdgeLabel to the adjacency list (but do not set its status).
       // Set the predecessor edge index to invalid to indicate the origin
@@ -733,12 +733,12 @@ void CostMatrix::SetTargets(baldr::GraphReader& graphreader,
       Cost edgecost = costing->EdgeCost(opp_dir_edge,
                          graphreader.GetEdgeDensity(opp_edge_id));
       Cost cost = edgecost * edge.dist;
-      uint32_t d = std::round(directededge->length() * edge.dist);
+      uint32_t d = std::floor(directededge->length() * edge.dist + 0.5);
 
       // Store the edge cost and length in the transition cost (so we can
       // recover the full length and cost for cases where origin and
       // destination are on the same edge
-      Cost ec(std::round(edgecost.secs), static_cast<uint32_t>(directededge->length()));
+      Cost ec(std::floor(edgecost.secs + 0.5), static_cast<uint32_t>(directededge->length()));
 
       // Add EdgeLabel to the adjacency list (but do not set its status).
       // Set the predecessor edge index to invalid to indicate the origin

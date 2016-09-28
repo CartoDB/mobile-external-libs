@@ -2,6 +2,7 @@
 #include <boost/algorithm/string/split.hpp>
 #include <boost/algorithm/string/classification.hpp>
 #include <boost/property_tree/json_parser.hpp>
+#include <boost/lexical_cast.hpp>
 
 #include "baldr/location.h"
 #include <valhalla/midgard/pointll.h>
@@ -74,10 +75,10 @@ Location Location::FromCsv(const std::string& csv) {
   if (parts.size() < 2)
     throw std::runtime_error("Bad format for csv formated location");
 
-  float lat = std::stof(parts[0]);
+  float lat = boost::lexical_cast<float>(parts[0]);
   if (lat < -90.0f || lat > 90.0f)
     throw std::runtime_error("Latitude must be in the range [-90, 90] degrees");
-  float lon = midgard::circular_range_clamp<float>(std::stof(parts[1]), -180, 180);
+  float lon = midgard::circular_range_clamp<float>(boost::lexical_cast<float>(parts[1]), -180, 180);
 
   //make the lng, lat and check for info about the stop type
   Location l(
