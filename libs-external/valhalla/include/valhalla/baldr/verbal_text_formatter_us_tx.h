@@ -12,13 +12,13 @@ namespace valhalla {
 namespace baldr {
 
 // Farm to Market
-const boost::regex kFmRegex("(\\bF[ -]?M)([ -])?(\\d{1,4})",
-                          boost::regex_constants::icase);
+const std::regex kFmRegex("(\\bF[ -]?M)([ -])?(\\d{1,4})",
+                          std::regex_constants::icase);
 const std::string kFmOutPattern = "Farm to Market Road $3";
 
 // Ranch to Market
-const boost::regex kRmRegex("(\\bR[ -]?M)([ -])?(\\d{1,4})",
-                          boost::regex_constants::icase);
+const std::regex kRmRegex("(\\bR[ -]?M)([ -])?(\\d{1,4})",
+                          std::regex_constants::icase);
 const std::string kRmOutPattern = "Ranch to Market Road $3";
 
 /**
