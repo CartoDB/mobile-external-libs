@@ -328,10 +328,8 @@ bool PointLL::WithinConvexPolygon(const container_t& poly) const {
 bool PointLL::IsSpherical() { return true; }
 
 // Explicit instantiations
-#ifndef _MSC_VER
 template bool PointLL::WithinConvexPolygon(const std::vector<PointLL>&) const;
 template bool PointLL::WithinConvexPolygon(const std::list<PointLL>&) const;
-#endif
 
 }
 }

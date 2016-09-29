@@ -4,7 +4,7 @@
 #include <iostream>
 #include <fstream>
 #include <sys/stat.h>
-#include <boost/filesystem.hpp>
+//#include <boost/filesystem.hpp>
 
 #include <valhalla/midgard/logging.h>
 #include "baldr/connectivity_map.h"

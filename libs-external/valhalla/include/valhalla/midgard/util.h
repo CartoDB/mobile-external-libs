@@ -10,6 +10,7 @@
 #include <unordered_set>
 #include <memory>
 #include <limits>
+#include <algorithm>
 
 #include <valhalla/midgard/pointll.h>
 

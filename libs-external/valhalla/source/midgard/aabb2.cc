@@ -392,10 +392,8 @@ void AABB2<coord_t>::Expand(const AABB2<coord_t>& r2) {
 }
 
 // Explicit instantiation
-#ifndef _MSC_VER
 template class AABB2<Point2>;
 template class AABB2<PointLL>;
-#endif
 
 }
 }
