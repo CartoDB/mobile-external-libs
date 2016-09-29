@@ -61,6 +61,20 @@ namespace io {
 
 namespace {
 
+#ifdef _WIN32
+int read(int file, void* buffer, size_t size) {
+  return _read(file, buffer, size);
+}
+
+int write(int file, const void* buffer, size_t size) {
+  return _write(file, buffer, size);
+}
+
+int close(int file) {
+  return _close(file);
+}
+#endif
+
 // EINTR sucks.
 int close_no_eintr(int fd) {
   int result;
