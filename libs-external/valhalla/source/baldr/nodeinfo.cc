@@ -5,6 +5,7 @@
 
 #include <baldr/datetime.h>
 #include <baldr/graphtile.h>
+#include "config.h"
 
 using namespace valhalla::baldr;
 
@@ -357,7 +358,7 @@ void NodeInfo::set_name_consistency(const uint32_t from,
 uint32_t NodeInfo::heading(const uint32_t localidx) const {
   // Make sure everything is 64 bit!
   uint64_t shift = localidx * 8;     // 8 bits per index
-  return static_cast<uint32_t>(std::floor(0.5 +
+  return static_cast<uint32_t>(std::round(
       ((headings_ & (static_cast<uint64_t>(255) << shift)) >> shift)
           * kHeadingExpandFactor));
 }
@@ -369,7 +370,7 @@ void NodeInfo::set_heading(uint32_t localidx, uint32_t heading) {
     LOG_WARN("Local index exceeds max in set_heading, skip");
   } else {
     // Has to be 64 bit!
-    uint64_t hdg = static_cast<uint64_t>(std::floor(0.5 +
+    uint64_t hdg = static_cast<uint64_t>(std::round(
         (heading % 360) * kHeadingShrinkFactor));
     headings_ |= hdg << static_cast<uint64_t>(localidx * 8);
   }

@@ -50,22 +50,6 @@ class GraphTile {
   virtual ~GraphTile();
 
   /**
-   * Gets the directory like filename suffix given the graphId
-   * @param  graphid  Graph Id to construct filename.
-   * @param  hierarchy The tile hierarchy structure to get info about how many tiles can exist at this level
-   * @return  Returns a filename including directory path as a suffix to be appended to another uri
-   */
-  static std::string FileSuffix(const GraphId& graphid, const TileHierarchy& hierarchy);
-
-  /**
-   * Get the tile Id given the full path to the file.
-   * @param  fname    Filename with complete path.
-   * @param  tile_dir Base tile directory.
-   * @return  Returns the tile Id.
-   */
-  static GraphId GetTileId(const std::string& fname, const std::string& tile_dir);
-
-  /**
    * Get the bounding box of this graph tile.
    * @param  hierarchy the tile hierarchy this tile is under.
    * @return Returns the bounding box of the tile.

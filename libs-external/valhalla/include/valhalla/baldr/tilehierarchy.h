@@ -4,6 +4,7 @@
 #include <map>
 #include <string>
 #include <cstdint>
+#include <memory>
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/json_parser.hpp>
 
@@ -15,6 +16,7 @@
 namespace valhalla {
 namespace baldr {
 
+class GraphTileStorage;
 
 /**
  * class used to get information about a given hierarchy of tiles
@@ -24,7 +26,7 @@ class TileHierarchy {
   /**
    * Constructor
    */
-  TileHierarchy(const std::string& tile_dir);
+  TileHierarchy(const std::shared_ptr<GraphTileStorage>& tile_storage);
 
   /**
    * Encapsulates a few types together to define a level in the hierarchy
@@ -49,7 +51,7 @@ class TileHierarchy {
    *
    * @return string directory
    */
-  const std::string& tile_dir() const;
+  const std::shared_ptr<GraphTileStorage>& tile_storage() const;
 
   /**
    * Returns the graphid of the requested tile based on a lat,lng and a level
@@ -66,7 +68,7 @@ class TileHierarchy {
   // a place to keep each level of the hierarchy
   std::map<uint8_t, TileLevel> levels_;
   // the tiles are stored
-  std::string tile_dir_;
+  std::shared_ptr<GraphTileStorage> tile_storage_;
 };
 
 }

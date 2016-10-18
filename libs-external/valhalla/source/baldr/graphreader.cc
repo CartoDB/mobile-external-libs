@@ -2,9 +2,6 @@
 
 #include <string>
 #include <iostream>
-#include <fstream>
-#include <sys/stat.h>
-//#include <boost/filesystem.hpp>
 
 #include <valhalla/midgard/logging.h>
 #include "baldr/connectivity_map.h"
@@ -19,7 +16,7 @@ namespace valhalla {
 namespace baldr {
 
 //this constructor delegates to the other
-GraphReader::GraphReader(const boost::property_tree::ptree& pt):tile_hierarchy_(pt.get<std::string>("tile_dir")), cache_size_(0) {
+GraphReader::GraphReader(const std::shared_ptr<GraphTileStorage>& tile_storage, const boost::property_tree::ptree& pt):tile_hierarchy_(tile_storage), cache_size_(0) {
   max_cache_size_ = pt.get<size_t>("max_cache_size", DEFAULT_MAX_CACHE_SIZE);
 
   //assume avg of 10 megs per tile
@@ -30,11 +27,9 @@ GraphReader::GraphReader(const boost::property_tree::ptree& pt):tile_hierarchy_(
 bool GraphReader::DoesTileExist(const GraphId& graphid) const {
   return DoesTileExist(tile_hierarchy_, graphid);
 }
+
 bool GraphReader::DoesTileExist(const TileHierarchy& tile_hierarchy, const GraphId& graphid) {
-  std::string file_location = tile_hierarchy.tile_dir() + "/" +
-    GraphTile::FileSuffix(graphid.Tile_Base(), tile_hierarchy);
-  struct stat buffer;
-  return stat(file_location.c_str(), &buffer) == 0;
+  return tile_hierarchy.tile_storage()->DoesTileExist(graphid, tile_hierarchy);
 }
 
 // Get a pointer to a graph tile object given a GraphId.

@@ -2,9 +2,7 @@
 #define VALHALLA_SIF_HIERARCHYLIMITS_H_
 
 #include <limits>
-
 #include <boost/property_tree/ptree.hpp>
-#include <valhalla/midgard/logging.h>
 
 // Default hierarchy transitions. Note that this corresponds to a 3 level
 // strategy: highway, arterial, local. Any changes to this will require

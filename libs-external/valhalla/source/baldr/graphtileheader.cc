@@ -6,10 +6,6 @@
 #include "baldr/datetime.h"
 #include "config.h"
 
-#ifndef PACKAGE_VERSION
-#define PACKAGE_VERSION "unstable"
-#endif
-
 using namespace valhalla::baldr;
 
 namespace valhalla {

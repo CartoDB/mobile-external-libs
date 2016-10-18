@@ -9,17 +9,7 @@
 #include <ctime>
 #include <cstdlib>
 
-#include <boost/lexical_cast.hpp>
-
 namespace {
-
-#ifdef _MSC_VER
-void gmtime_r(std::time_t* tt, std::tm* gmt) {
-  if (auto gmptr = gmtime(tt)) {
-    *gmt = *gmptr;
-  }
-}
-#endif
 
 //returns formated to: 'year/mo/dy hr:mn:sc.xxxxxx'
 std::string TimeStamp() {
@@ -157,7 +147,7 @@ class FileLogger : public Logger {
     if(interval != config.end())
     {
       try {        
-        reopen_interval = std::chrono::seconds(boost::lexical_cast<unsigned long>(interval->second));
+        reopen_interval = std::chrono::seconds(std::stoul(interval->second));
       }
       catch(...) {
         throw std::runtime_error(interval->second + " is not a valid reopen interval");

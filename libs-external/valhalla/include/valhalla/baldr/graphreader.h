@@ -6,6 +6,7 @@
 #include <valhalla/baldr/graphid.h>
 #include <valhalla/baldr/graphtile.h>
 #include <valhalla/baldr/tilehierarchy.h>
+#include <valhalla/baldr/graphtilestorage.h>
 #include <boost/property_tree/ptree.hpp>
 
 namespace valhalla {
@@ -19,10 +20,10 @@ class GraphReader {
  public:
   /**
    * Constructor
-   *
-   * @param ptree  the configuration for the tilehierarchy
+   * @param tile_storage the tile storage to use
+   * @param pt the configuration for the tilehierarchy
    */
-  GraphReader(const boost::property_tree::ptree& pt);
+  GraphReader(const std::shared_ptr<GraphTileStorage>& tile_storage, const boost::property_tree::ptree& pt);
 
   /**
    * Test if tile exists

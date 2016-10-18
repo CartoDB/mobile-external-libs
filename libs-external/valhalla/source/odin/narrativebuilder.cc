@@ -15,6 +15,7 @@
 #include "odin/enhancedtrippath.h"
 #include "odin/maneuver.h"
 #include "odin/util.h"
+#include "config.h"
 
 namespace {
 // Text instruction initial capacity
@@ -3253,7 +3254,7 @@ std::string NarrativeBuilder::FormMetricLength(
   std::stringstream distance;
   distance.imbue(dictionary_.GetLocale());
   // These will determine what we say
-  int tenths = std::floor(kilometers * 10 + 0.5);
+  int tenths = std::round(kilometers * 10);
 
   if (tenths > 10) {
     // 0 "<KILOMETERS> kilometers"
@@ -3266,7 +3267,7 @@ std::string NarrativeBuilder::FormMetricLength(
     // 2 "a half kilometer"
     length_string += metric_lengths.at(kHalfKilometerIndex);
   } else {
-    int meters = std::floor(kilometers * 1000 + 0.5);
+    int meters = std::round(kilometers * 1000);
     if (meters > 94) {
       // 3 "<METERS> meters" (100-400 and 600-900 meters)
       length_string += metric_lengths.at(kMetersIndex);
@@ -3307,7 +3308,7 @@ std::string NarrativeBuilder::FormUsCustomaryLength(
   std::stringstream distance;
   distance.imbue(dictionary_.GetLocale());
   // These will determine what we say
-  int tenths = std::floor(miles * 10 + 0.5);
+  int tenths = std::round(miles * 10);
 
   if (tenths > 10) {
     // 0  "<MILES> miles"
@@ -3327,7 +3328,7 @@ std::string NarrativeBuilder::FormUsCustomaryLength(
     // 4  "1 tenth of a mile"
     length_string += us_customary_lengths.at(kOneTenthOfMileIndex);
   } else {
-    int feet = std::floor(miles * 5280 + 0.5);
+    int feet = std::round(miles * 5280);
     if (feet > 94) {
       // 5  "<FEET> feet" (100-500)
       length_string += us_customary_lengths.at(kFeetIndex);

@@ -5,7 +5,6 @@
 
 #include <valhalla/proto/trippath.pb.h>
 #include <valhalla/proto/tripdirections.pb.h>
-#include <valhalla/midgard/logging.h>
 
 namespace valhalla {
 namespace odin {

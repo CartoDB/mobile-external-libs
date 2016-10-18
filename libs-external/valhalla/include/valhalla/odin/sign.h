@@ -2,7 +2,6 @@
 #define VALHALLA_ODIN_SIGN_H_
 
 #include <string>
-#include <valhalla/midgard/logging.h>
 
 namespace valhalla {
 namespace odin {

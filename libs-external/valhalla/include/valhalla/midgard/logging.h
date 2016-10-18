@@ -4,17 +4,7 @@
 #include <string>
 #include <mutex>
 #include <unordered_map>
-
-#ifdef DEBUG
-#undef DEBUG
-#endif
-
-#ifdef __ANDROID__
-#include <boost/lexical_cast.hpp>
-namespace std {
-template<typename T> std::string to_string(T val) { return boost::lexical_cast<std::string>(val); }
-}
-#endif
+#include "config.h"
 
 namespace valhalla {
 namespace midgard {

@@ -6,7 +6,6 @@
 
 #include <boost/property_tree/ptree.hpp>
 
-#include <valhalla/midgard/logging.h>
 #include <valhalla/baldr/graphreader.h>
 
 #include <valhalla/meili/candidate_search.h>

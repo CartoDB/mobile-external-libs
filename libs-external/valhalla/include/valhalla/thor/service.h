@@ -7,7 +7,7 @@
 #include <prime_server/http_protocol.hpp>
 
 #include <valhalla/baldr/pathlocation.h>
-#include <valhalla/baldr/graphreader.h>
+#include <valhalla/baldr/graphfsreader.h>
 #include <valhalla/baldr/location.h>
 #include <valhalla/sif/costfactory.h>
 #include <valhalla/thor/bidirectional_astar.h>
@@ -62,7 +62,7 @@ namespace valhalla {
       std::vector<baldr::PathLocation> correlated_t;
       sif::CostFactory<sif::DynamicCost> factory;
       valhalla::sif::cost_ptr_t mode_costing[4];    // TODO - max # of modes?
-      valhalla::baldr::GraphReader reader;
+      valhalla::baldr::GraphFsReader reader;
       // Path algorithms (TODO - perhaps use a map?))
       AStarPathAlgorithm astar;
       BidirectionalAStar bidir_astar;

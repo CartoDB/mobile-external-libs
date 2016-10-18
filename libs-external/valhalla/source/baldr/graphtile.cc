@@ -1,46 +1,13 @@
 #include "baldr/graphtile.h"
+#include "baldr/graphtilestorage.h"
 #include "baldr/datetime.h"
-#include <valhalla/midgard/tiles.h>
-#include <valhalla/midgard/aabb2.h>
-#include <valhalla/midgard/pointll.h>
 #include <valhalla/midgard/logging.h>
 
 #include <ctime>
 #include <string>
 #include <vector>
 #include <iostream>
-#include <fstream>
-#include <locale>
-#include <iomanip>
-#include <cmath>
-#include <boost/algorithm/string.hpp>
-
-#define MINIZ_HEADER_FILE_ONLY
-#include <miniz.c>
-
-namespace {
-  struct dir_facet : public std::numpunct<char> {
-   protected:
-    virtual char do_thousands_sep() const {
-        return '/';
-    }
-
-    virtual std::string do_grouping() const {
-        return "\03";
-    }
-  };
-  template <class numeric_t>
-  size_t digits(numeric_t number) {
-    size_t digits = (number < 0 ? 1 : 0);
-    while (static_cast<long long int>(number)) {
-        number /= 10;
-        digits++;
-    }
-    return digits;
-  }
-  const std::locale dir_locale(std::locale("C"), new dir_facet());
-  const AABB2<PointLL> world_box(PointLL(-180, -90), PointLL(180, 90));
-}
+#include <algorithm>
 
 namespace valhalla {
 namespace baldr {
@@ -73,37 +40,10 @@ GraphTile::GraphTile(const TileHierarchy& hierarchy, const GraphId& graphid)
   if (!graphid.Is_Valid())
     return;
 
-/*
-  // Open to the end of the file so we can immediately get size;
-  std::string file_location = hierarchy.tile_dir() + "/" +
-                FileSuffix(graphid.Tile_Base(), hierarchy);
-  std::ifstream file(file_location, std::ios::in | std::ios::binary | std::ios::ate);
-  if (file.is_open()) {
-    // Read binary file into memory. TODO - protect against failure to
-    // allocate memory
-    size_t filesize = file.tellg();
-    graphtile_.reset(new char[filesize]);
-    file.seekg(0, std::ios::beg);
-    file.read(graphtile_.get(), filesize);
-    file.close();
-*/
-
-  mz_zip_archive zip;
-  memset(&zip, 0, sizeof(mz_zip_archive));
-  if (mz_zip_reader_init_file(&zip, hierarchy.tile_dir().c_str(), 0)) {
-    std::string file_location = FileSuffix(graphid.Tile_Base(), hierarchy);
-    
-    size_t filesize = 0;
-    std::shared_ptr<char> filedata(static_cast<char*>(mz_zip_reader_extract_file_to_heap(&zip, file_location.c_str(), &filesize, 0)), mz_free);
-    mz_zip_reader_end(&zip);
-
-    if (!filedata) {
-      LOG_DEBUG("Tile " + file_location + " was not found");
-      return;
-    }
-    
-    graphtile_.reset(new char[filesize]);
-    memcpy(graphtile_.get(), filedata.get(), filesize);
+  std::vector<char> tile_data;
+  if (hierarchy.tile_storage()->ReadTile(graphid, hierarchy, tile_data)) {
+    graphtile_.reset(new char[tile_data.size()]);
+    std::copy(tile_data.begin(), tile_data.end(), graphtile_.get());
 
     // Set a pointer to the header (first structure in the binary data).
     char* ptr = graphtile_.get();
@@ -166,7 +106,7 @@ LOG_INFO("Departures: " + std::to_string(header_->departurecount()) +
 
     // Start of text list and its size
     textlist_ = graphtile_.get() + header_->textlist_offset();
-    textlist_size_ = filesize - header_->textlist_offset();
+    textlist_size_ = tile_data.size() - header_->textlist_offset();
 
     //if this tile is transit then we need to save off the pair<tileid,lineid> lookup via
     //onestop_ids.  This will be used for including or excluding transit lines for transit
@@ -207,7 +147,7 @@ LOG_INFO("Departures: " + std::to_string(header_->departurecount()) +
     }
 
     // Set the size to indicate success
-    size_ = filesize;
+    size_ = tile_data.size();
   }
   else {
     LOG_DEBUG("Tile " + file_location + " was not found");
@@ -215,85 +155,6 @@ LOG_INFO("Departures: " + std::to_string(header_->departurecount()) +
 }
 
 GraphTile::~GraphTile() {
-}
-
-std::string GraphTile::FileSuffix(const GraphId& graphid, const TileHierarchy& hierarchy) {
-  /*
-  if you have a graphid where level == 8 and tileid == 24134109851
-  you should get: 8/024/134/109/851.gph
-  since the number of levels is likely to be very small this limits
-  the total number of objects in any one directory to 1000, which is an
-  empirically derived good choice for mechanical harddrives
-  this should be fine for s3 (even though it breaks the rule of most
-  unique part of filename first) because there will be just so few
-  objects in general in practice
-  */
-
-  //figure the largest id for this level
-  auto level = hierarchy.levels().find(graphid.level());
-  if(level == hierarchy.levels().end() &&
-     graphid.level() == ((hierarchy.levels().rbegin())->second.level + 1))
-    level = hierarchy.levels().begin();
-
-  if(level == hierarchy.levels().end())
-    throw std::runtime_error("Could not compute FileSuffix for non-existent level");
-
-  const uint32_t max_id = Tiles<PointLL>::MaxTileId(world_box, level->second.tiles.TileSize());
-
-  //figure out how many digits
-  //TODO: dont convert it to a string to get the length there are faster ways..
-  size_t max_length = digits<uint32_t>(max_id);
-  const size_t remainder = max_length % 3;
-  if(remainder)
-    max_length += 3 - remainder;
-
-  //make a locale to use as a formatter for numbers
-  std::ostringstream stream;
-  stream.imbue(dir_locale);
-
-  //if it starts with a zero the pow trick doesn't work
-  if(graphid.level() == 0) {
-    stream << static_cast<uint32_t>(std::pow(10, max_length)) + graphid.tileid() << ".gph";
-    std::string suffix = stream.str();
-    suffix[0] = '0';
-    return suffix;
-  }
-  //it was something else
-  stream << graphid.level() * static_cast<uint32_t>(std::pow(10, max_length)) + graphid.tileid() << ".gph";
-  return stream.str();
-}
-
-// Get the tile Id given the full path to the file.
-GraphId GraphTile::GetTileId(const std::string& fname, const std::string& tile_dir) {
-  //strip off the unuseful part
-  auto pos = fname.find(tile_dir);
-  if(pos == std::string::npos)
-    throw std::runtime_error("File name for tile does not match hierarchy root dir");
-  auto name = fname.substr(pos + tile_dir.size());
-  boost::algorithm::trim_if(name, boost::is_any_of("/.gph"));
-
-  //split on slash
-  std::vector<std::string> tokens;
-  boost::split(tokens, name, boost::is_any_of("/"));
-
-  //need at least level and id
-  if(tokens.size() < 2)
-    throw std::runtime_error("Invalid tile path");
-
-  // Compute the Id
-  uint32_t id = 0;
-  uint32_t multiplier = std::pow(1000, tokens.size() - 2);
-  bool first = true;
-  for(const auto& token : tokens) {
-    if(first) {
-      first = false;
-      continue;
-    }
-    id += std::atoi(token.c_str()) * multiplier;
-    multiplier /= 1000;
-  }
-  uint32_t level = std::atoi(tokens.front().c_str());
-  return {id, level, 0};
 }
 
 // Get the bounding box of this graph tile.

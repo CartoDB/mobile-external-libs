@@ -7,7 +7,7 @@
 #include <boost/property_tree/ptree.hpp>
 
 #include <valhalla/sif/costconstants.h>
-#include <valhalla/baldr/graphreader.h>
+#include <valhalla/baldr/graphfsreader.h>
 
 #include <valhalla/meili/candidate_search.h>
 #include <valhalla/meili/map_matcher.h>
@@ -64,7 +64,7 @@ private:
 
   boost::property_tree::ptree config_;
 
-  baldr::GraphReader graphreader_;
+  baldr::GraphFsReader graphreader_;
 
   sif::cost_ptr_t mode_costing_[kModeCostingCount];
 

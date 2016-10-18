@@ -48,7 +48,7 @@ struct TimeDistance {
  */
 struct LocationStatus {
   int  threshold;
-  std::set<std::uint32_t> remaining_locations;
+  std::set<uint32_t> remaining_locations;
 
   LocationStatus(const int t)
       : threshold(t) {

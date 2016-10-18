@@ -13,6 +13,7 @@
 #include <valhalla/baldr/graphconstants.h>
 #include <valhalla/midgard/pointll.h>
 #include <valhalla/midgard/logging.h>
+#include "config.h"
 
 using namespace valhalla::baldr;
 using namespace valhalla::midgard;
@@ -852,13 +853,13 @@ TripPath_Edge* TripPathBuilder::AddTripEdge(const uint32_t idx,
           TripPath_Traversability::TripPath_Traversability_kNone);
 
     trip_edge->set_begin_heading(
-        std::ceil(0.5 +
+        std::round(
             PointLL::HeadingAlongPolyline(
                 edgeinfo->shape(),
                 GetOffsetForHeading(directededge->classification(),
                                     directededge->use()))));
     trip_edge->set_end_heading(
-        std::ceil(0.5 +
+        std::round(
             PointLL::HeadingAtEndOfPolyline(
                 edgeinfo->shape(),
                 GetOffsetForHeading(directededge->classification(),
@@ -882,7 +883,7 @@ TripPath_Edge* TripPathBuilder::AddTripEdge(const uint32_t idx,
           TripPath_Traversability::TripPath_Traversability_kNone);
 
     trip_edge->set_begin_heading(
-        std::floor(0.5 +
+        std::round(
             fmod(
                 (PointLL::HeadingAtEndOfPolyline(
                     edgeinfo->shape(),
@@ -891,7 +892,7 @@ TripPath_Edge* TripPathBuilder::AddTripEdge(const uint32_t idx,
                 360)));
 
     trip_edge->set_end_heading(
-        std::floor(0.5 +
+        std::round(
             fmod(
                 (PointLL::HeadingAlongPolyline(
                     edgeinfo->shape(),

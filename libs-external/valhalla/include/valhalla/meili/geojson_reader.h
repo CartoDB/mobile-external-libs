@@ -8,7 +8,7 @@
 #include <rapidjson/document.h>
 
 #include <valhalla/meili/measurement.h>
-#include <valhalla/midgard/logging.h>
+
 
 namespace valhalla {
 namespace meili {

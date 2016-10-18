@@ -1,20 +1,16 @@
 #include "baldr/connectivity_map.h"
 #include "baldr/json.h"
 #include "baldr/graphtile.h"
-
+#include "baldr/graphtilestorage.h"
 #include <valhalla/midgard/pointll.h>
-//#include <boost/filesystem.hpp>
-#include <boost/lexical_cast.hpp>
+#include <valhalla/midgard/logging.h>
+
 #include <list>
 #include <iomanip>
 #include <random>
 #include <sstream>
 #include <unordered_set>
 
-#include <valhalla/midgard/logging.h>
-
-#define MINIZ_HEADER_FILE_ONLY
-#include <miniz.c>
 
 using namespace valhalla::baldr;
 using namespace valhalla::midgard;
@@ -219,28 +215,8 @@ namespace valhalla {
       for (uint32_t tile_level = 0; tile_level <= transit_level; tile_level++) {
         try {
           auto& level_colors = colors.insert({tile_level, std::unordered_map<uint32_t, size_t>{}}).first->second;
-          /*
-          boost::filesystem::path root_dir(tile_hierarchy.tile_dir() + '/' + boost::lexical_cast<std::string>(tile_level) + '/');
-          if(boost::filesystem::exists(root_dir) && boost::filesystem::is_directory(root_dir)) {
-            for (boost::filesystem::recursive_directory_iterator i(root_dir), end; i != end; ++i) {
-              if (!boost::filesystem::is_directory(i->path())) {
-                GraphId id = GraphTile::GetTileId(i->path().string(), tile_hierarchy.tile_dir());
-                level_colors.insert({id.tileid(), 0});
-              }
-            }
-          }
-          */
-          mz_zip_archive zip;
-          memset(&zip, 0, sizeof(mz_zip_archive));
-          if (mz_zip_reader_init_file(&zip, tile_hierarchy.tile_dir().c_str(), 0)) {
-              for (int i = 0; i < mz_zip_reader_get_num_files(&zip); i++) {
-                  char filename[1024];
-                  memset(filename, 0, sizeof(filename));
-                  mz_zip_reader_get_filename(&zip, i, filename, sizeof(filename) - 1);
-                  GraphId id = GraphTile::GetTileId(filename, "");
-                  level_colors.insert({ id.tileid(), 0 });
-              }
-              mz_zip_reader_end(&zip);
+          for (const auto& id : tile_hierarchy.tile_storage()->FindTiles(tile_hierarchy)) {
+            level_colors.insert({ id.tileid(), 0 });
           }
 
           // All tiles have color 0 (not connected), go through and connect

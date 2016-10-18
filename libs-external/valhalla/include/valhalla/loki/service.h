@@ -9,7 +9,7 @@
 #include <prime_server/http_protocol.hpp>
 
 #include <valhalla/baldr/location.h>
-#include <valhalla/baldr/graphreader.h>
+#include <valhalla/baldr/graphfsreader.h>
 #include <valhalla/baldr/connectivity_map.h>
 #include <valhalla/sif/costfactory.h>
 
@@ -52,7 +52,7 @@ namespace valhalla {
       sif::CostFactory<sif::DynamicCost> factory;
       sif::EdgeFilter edge_filter;
       sif::NodeFilter node_filter;
-      valhalla::baldr::GraphReader reader;
+      valhalla::baldr::GraphFsReader reader;
       valhalla::baldr::connectivity_map_t connectivity_map;
       std::string action_str;
       std::unordered_map<std::string, size_t> max_locations;
