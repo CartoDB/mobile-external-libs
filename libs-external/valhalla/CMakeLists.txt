@@ -11,7 +11,8 @@ list(REMOVE_ITEM valhalla_SRC_FILES "${PROJECT_SOURCE_DIR}/source/meili/service.
 list(REMOVE_ITEM valhalla_SRC_FILES "${PROJECT_SOURCE_DIR}/source/thor/service.cc" "${PROJECT_SOURCE_DIR}/source/thor/attributes_action.cc" "${PROJECT_SOURCE_DIR}/source/thor/isochrone_action.cc" "${PROJECT_SOURCE_DIR}/source/thor/route_action.cc" "${PROJECT_SOURCE_DIR}/source/thor/optimized_route_action.cc" "${PROJECT_SOURCE_DIR}/source/thor/matrix_action.cc" "${PROJECT_SOURCE_DIR}/source/thor/formlocalpath.cc" "${PROJECT_SOURCE_DIR}/source/thor/timedistancematrix.cc")
 list(REMOVE_ITEM valhalla_SRC_FILES "${PROJECT_SOURCE_DIR}/source/loki/service.cc" "${PROJECT_SOURCE_DIR}/source/loki/attributes_action.cc" "${PROJECT_SOURCE_DIR}/source/loki/isochrone_action.cc" "${PROJECT_SOURCE_DIR}/source/loki/locate_action.cc" "${PROJECT_SOURCE_DIR}/source/loki/route_action.cc" "${PROJECT_SOURCE_DIR}/source/loki/matrix_action.cc")
 
-list(APPEND valhalla_SRC_FILES "${PROJECT_SOURCE_DIR}/../boost/libs/system/src/error_code.cpp")
+file(GLOB boost_datetime_SRC_FILES "${PROJECT_SOURCE_DIR}/../boost/libs/date_time/src/gregorian/*.cpp")
+list(APPEND valhalla_SRC_FILES "${PROJECT_SOURCE_DIR}/../boost/libs/system/src/error_code.cpp" "${boost_datetime_SRC_FILES}")
 
 include_directories("${PROJECT_SOURCE_DIR}/include/valhalla" "${PROJECT_SOURCE_DIR}/../protobuf-2.5.0/src")
 
