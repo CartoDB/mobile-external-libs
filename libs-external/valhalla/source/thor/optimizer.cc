@@ -1,3 +1,4 @@
+#include "config.h"
 #include "thor/optimizer.h"
 #include <valhalla/midgard/logging.h>
 

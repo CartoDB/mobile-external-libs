@@ -1,3 +1,4 @@
+#include "config.h"
 #include "sif/dynamiccost.h"
 
 using namespace valhalla::baldr;

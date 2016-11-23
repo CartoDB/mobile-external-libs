@@ -2,6 +2,7 @@
 #include "baldr/graphtilestorage.h"
 #include "baldr/datetime.h"
 #include <valhalla/midgard/logging.h>
+#include "config.h"
 
 #include <ctime>
 #include <string>

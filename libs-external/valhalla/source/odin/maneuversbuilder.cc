@@ -19,6 +19,7 @@
 #include <valhalla/baldr/verbal_text_formatter_us.h>
 #include <valhalla/baldr/verbal_text_formatter_factory.h>
 
+#include "config.h"
 #include "proto/tripdirections.pb.h"
 #include "proto/directions_options.pb.h"
 #include "odin/maneuversbuilder.h"

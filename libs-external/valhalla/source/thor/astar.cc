@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <valhalla/baldr/datetime.h>
 #include <valhalla/midgard/logging.h>
+#include "config.h"
 #include "thor/astar.h"
 
 using namespace valhalla::baldr;

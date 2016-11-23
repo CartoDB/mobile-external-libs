@@ -15,6 +15,7 @@
 #include "rapidjson/stringbuffer.h"
 #include "rapidjson/error/en.h"
 
+#include "config.h"
 #include "meili/universal_cost.h"
 #include "meili/geojson_reader.h"
 #include "meili/geojson_writer.h"

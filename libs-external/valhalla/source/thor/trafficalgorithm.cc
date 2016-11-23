@@ -1,6 +1,7 @@
 #include <iostream> // TODO remove if not needed
 #include <map>
 #include <algorithm>
+#include "config.h"
 #include "thor/trafficalgorithm.h"
 #include <valhalla/baldr/datetime.h>
 #include <valhalla/midgard/logging.h>

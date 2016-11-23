@@ -1,3 +1,4 @@
+#include "config.h"
 #include "sif/truckcost.h"
 
 #include <iostream>

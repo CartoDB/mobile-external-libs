@@ -1,3 +1,4 @@
+#include "config.h"
 #include <valhalla/midgard/logging.h>
 #include <valhalla/sif/dynamiccost.h>
 

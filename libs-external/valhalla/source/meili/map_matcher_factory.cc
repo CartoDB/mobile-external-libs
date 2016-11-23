@@ -9,6 +9,7 @@
 #include <valhalla/meili/candidate_search.h>
 #include <valhalla/meili/map_matcher.h>
 
+#include "config.h"
 #include "meili/universal_cost.h"
 #include "meili/map_matcher_factory.h"
 

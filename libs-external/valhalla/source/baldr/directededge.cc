@@ -2,6 +2,7 @@
 #include "baldr/nodeinfo.h"
 #include <boost/functional/hash.hpp>
 #include <valhalla/midgard/logging.h>
+#include "config.h"
 
 using namespace valhalla::baldr;
 

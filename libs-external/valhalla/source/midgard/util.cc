@@ -2,6 +2,7 @@
 #include "valhalla/midgard/constants.h"
 #include "valhalla/midgard/point2.h"
 #include "valhalla/midgard/distanceapproximator.h"
+#include "config.h"
 
 #include <cstdint>
 #include <cctype>

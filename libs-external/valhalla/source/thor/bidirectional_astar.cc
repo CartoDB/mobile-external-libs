@@ -1,5 +1,6 @@
 #include <map>
 #include <algorithm>
+#include "config.h"
 #include "thor/bidirectional_astar.h"
 #include <valhalla/baldr/datetime.h>
 #include <valhalla/midgard/logging.h>

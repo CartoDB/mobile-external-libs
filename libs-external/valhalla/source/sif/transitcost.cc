@@ -1,3 +1,4 @@
+#include "config.h"
 #include "sif/transitcost.h"
 
 #include <valhalla/baldr/accessrestriction.h>

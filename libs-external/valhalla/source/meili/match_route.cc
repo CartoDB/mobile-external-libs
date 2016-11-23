@@ -5,6 +5,7 @@
 #include <valhalla/baldr/graphreader.h>
 #include <valhalla/baldr/graphid.h>
 
+#include "config.h"
 #include "meili/geometry_helpers.h"
 #include "meili/graph_helpers.h"
 #include "meili/match_result.h"

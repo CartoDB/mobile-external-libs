@@ -1,3 +1,4 @@
+#include "config.h"
 #include "loki/search.h"
 #include <valhalla/midgard/linesegment2.h>
 

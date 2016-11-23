@@ -1,6 +1,7 @@
 #include <valhalla/midgard/logging.h>
 #include <valhalla/baldr/pathlocation.h>
 
+#include "config.h"
 #include "meili/candidate_search.h"
 #include "meili/routing.h"
 #include "meili/graph_helpers.h"

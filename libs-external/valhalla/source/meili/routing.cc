@@ -2,6 +2,7 @@
 #include <unordered_set>
 #include <unordered_map>
 
+#include "config.h"
 #include <valhalla/midgard/distanceapproximator.h>
 #include <valhalla/baldr/graphid.h>
 #include <valhalla/baldr/graphreader.h>
