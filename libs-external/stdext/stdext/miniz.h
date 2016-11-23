@@ -1,4 +1,5 @@
-#pragma once
+#ifndef _MINIZ_H_INCLUDED_
+#define _MINIZ_H_INCLUDED_
 
 #define MINIZ_HEADER_FILE_ONLY
 #define MINIZ_NO_ZLIB_COMPATIBLE_NAMES
@@ -9,7 +10,7 @@
 namespace miniz {
 
     template <typename T>
-    inline bool inflate(const void* in_data, std::size_t in_size, std::vector<T>& out) {
+    inline bool inflate_gzip(const void* in_data, std::size_t in_size, std::vector<T>& out) {
         if (in_size < 14) {
             return false;
         }
@@ -72,3 +73,6 @@ namespace miniz {
     }
 
 }
+
+#endif
+
