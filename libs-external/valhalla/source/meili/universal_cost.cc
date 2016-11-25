@@ -1,4 +1,3 @@
-#include "config.h"
 #include <valhalla/midgard/logging.h>
 #include <valhalla/sif/dynamiccost.h>
 
@@ -27,6 +26,10 @@ class UniversalCost : public sif::DynamicCost
     return true;
   }
 
+  uint32_t access_mode() const override {
+    return 0;
+  }
+
   bool AllowedReverse(const baldr::DirectedEdge* edge,
                       const sif::EdgeLabel& pred,
                       const baldr::DirectedEdge* opp_edge,
@@ -37,8 +40,7 @@ class UniversalCost : public sif::DynamicCost
   bool Allowed(const baldr::NodeInfo* node) const override
   { return true; }
 
-  sif::Cost EdgeCost(const baldr::DirectedEdge* edge,
-                     const uint32_t density) const override
+  sif::Cost EdgeCost(const baldr::DirectedEdge* edge) const override
   {
     float length = edge->length();
     return { length, length };

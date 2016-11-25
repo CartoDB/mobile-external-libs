@@ -16,9 +16,9 @@ class GraphTileFsStorage : public GraphTileStorage {
 
   /**
    * Constructor
-   * @param tile_dir The base directory that stores the tiles.
+   * @param pt The configuration for the storage (tile_dir, tile_extract).
    */
-  GraphTileFsStorage(const std::string& tile_dir);
+  GraphTileFsStorage(const boost::property_tree::ptree& pt);
 
   /**
    * Destructor
@@ -30,7 +30,7 @@ class GraphTileFsStorage : public GraphTileStorage {
    * @param  tile_hierarchy The tile hierachy to use.
    * @return Returns the list of all available tile ids.
    */
-  std::vector<GraphId> FindTiles(const TileHierarchy& tile_hierarchy) const override;
+  std::unordered_set<GraphId> FindTiles(const TileHierarchy& tile_hierarchy) const override;
 
   /**
    * Checks if the specified tile exists.
@@ -59,7 +59,13 @@ class GraphTileFsStorage : public GraphTileStorage {
   bool ReadTileRealTimeSpeeds(const GraphId& graphid, const TileHierarchy& tile_hierarchy, std::vector<uint8_t>& rts_data) const override;
 
   /**
-   * Get the tile Id given the full path to the file.
+   * Gets the tile directory.
+   * @return The tile directory.
+   */
+  const std::string& GetTileDir() const;
+
+  /**
+   * Gets the tile Id given the full path to the file.
    * @param  fname    Filename with complete path.
    * @param  tile_dir Base tile directory.
    * @return  Returns the tile Id.
@@ -75,6 +81,11 @@ class GraphTileFsStorage : public GraphTileStorage {
   static std::string FileSuffix(const GraphId& graphid, const TileHierarchy& tile_hierarchy);
 
  private:
+
+  // (Tar) extract of tiles - the contents are empty if not being used
+  struct tile_extract_t;
+  std::shared_ptr<const tile_extract_t> tile_extract_;
+  static std::shared_ptr<const GraphFsStorage::tile_extract_t> get_extract_instance(const boost::property_tree::ptree& pt);
 
   std::string tile_dir_;
 

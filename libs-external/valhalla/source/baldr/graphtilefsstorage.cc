@@ -2,10 +2,12 @@
 #include <valhalla/midgard/pointll.h>
 #include <valhalla/midgard/aabb2.h>
 #include <valhalla/midgard/tiles.h>
+#include <valhalla/midgard/logging.h>
 
 #include <cmath>
 #include <locale>
 #include <iomanip>
+#include <mutex>
 #include <sys/stat.h>
 #include <boost/filesystem.hpp>
 #include <boost/algorithm/string.hpp>
@@ -37,23 +39,74 @@ namespace {
 namespace valhalla {
 namespace baldr {
 
-GraphTileFsStorage::GraphTileFsStorage(const std::string& tile_dir)
-    : tile_dir_(tile_dir) {
+struct GraphTileFsStorage::tile_extract_t : public midgard::tar {
+  tile_extract_t(const boost::property_tree::ptree& pt):tar(pt.get<std::string>("tile_extract","")) {
+    //if you really meant to load it
+    if(pt.get_optional<std::string>("tile_extract")) {
+      //map files to graph ids
+      for(auto& c : contents) {
+        try {
+          auto id = GraphTile::GetTileId(c.first);
+          tiles[id] = std::make_pair(const_cast<char*>(c.second.first), c.second.second);
+        }
+        catch(...){}
+      }
+      //couldn't load it
+      if(tiles.empty()) {
+        LOG_WARN("Tile extract could not be loaded");
+      }//loaded ok but with possibly bad blocks
+      else {
+        LOG_INFO("Tile extract successfully loaded");
+        if(corrupt_blocks)
+          LOG_WARN("Tile extract had " + std::to_string(corrupt_blocks) + " corrupt blocks");
+      }
+    }
+  }
+  // TODO: dont remove constness, and actually make graphtile read only?
+  std::unordered_map<uint64_t, std::pair<char*, size_t> > tiles;
+};
+
+std::shared_ptr<const GraphTileFsStorage::tile_extract_t> GraphTileFsStorage::get_extract_instance(const boost::property_tree::ptree& pt) {
+  static std::mutex mutex;
+  static std::vector<std::pair<boost::property_tree::ptree, std::shared_ptr<const GraphTileFsStorage::tile_extract_t>>> instances;
+
+  std::lock_guard<std::mutex> lock(mutex);
+  for (const auto& instance : instances) {
+    if (instance.first == pt) {
+      return instance.second;
+    }
+  }
+  std::shared_ptr<const GraphTileFsStorage::tile_extract_t> tile_extract(new GraphTileFsStorage::tile_extract_t(pt));
+  instances.emplace_back(pt, tile_extract);
+  return tile_extract;
 }
 
-std::vector<GraphId> GraphTileFsStorage::FindTiles(const TileHierarchy& tile_hierarchy) const {
-  // Set the transit level
-  transit_level = tile_hierarchy.levels().rbegin()->second.level + 1;
+GraphTileFsStorage::GraphTileFsStorage(const std::string& tile_dir)
+    : tile_dir_(tile_dir),
+      tile_extract_(get_extract_instance(pt)) {
+}
 
-  // Populate a map for each level of the tiles that exist
-  std::vector<GraphId> graphids;
-  for (uint32_t tile_level = 0; tile_level <= transit_level; tile_level++) {
-    boost::filesystem::path root_dir(tile_dir_ + '/' + std::to_string<std::string>(tile_level) + '/');
-    if(boost::filesystem::exists(root_dir) && boost::filesystem::is_directory(root_dir)) {
-      for (boost::filesystem::recursive_directory_iterator i(root_dir), end; i != end; ++i) {
-        if (!boost::filesystem::is_directory(i->path())) {
-          GraphId id = GetTileId(i->path().string(), tile_dir_);
-          graphids.push_back(id);
+std::unordered_set<GraphId> GraphTileFsStorage::FindTiles(const TileHierarchy& tile_hierarchy) const {
+  std::unordered_setr<GraphId> graphids;
+  if (tile_extract_->tiles.size()) {
+    for (const auto& t : tile_extract_->tiles) {
+      graphids.emplace(t.first);
+    }
+  } else {
+    // Set the transit level
+    auto transit_level = tile_hierarchy.levels().rbegin()->second.level + 1;
+
+    // Populate a map for each level of the tiles that exist
+    for (uint32_t tile_level = 0; tile_level <= transit_level; tile_level++) {
+      boost::filesystem::path root_dir(tile_dir_ + '/' + std::to_string(tile_level) + '/');
+      if(boost::filesystem::exists(root_dir) && boost::filesystem::is_directory(root_dir)) {
+        for (boost::filesystem::recursive_directory_iterator i(root_dir), end; i != end; ++i) {
+          if (!boost::filesystem::is_directory(i->path())) {
+            try {
+              //add it if it can be parsed as a valid tile file name
+              graphids.emplace(GetTileId(i->path().string(), tile_dir_));
+            } catch (...) { }
+          }
         }
       }
     }
@@ -62,43 +115,59 @@ std::vector<GraphId> GraphTileFsStorage::FindTiles(const TileHierarchy& tile_hie
 }
 
 bool GraphTileFsStorage::DoesTileExist(const GraphId& graphid, const TileHierarchy& tile_hierarchy) const {
+  if(tile_extract_->tiles.find(graphid) != tile_extract_->tiles.cend())
+    return true;
+
   std::string file_location = tile_dir_ + "/" + FileSuffix(graphid.Tile_Base(), tile_hierarchy);
   struct stat buffer;
   return stat(file_location.c_str(), &buffer) == 0;
 }
 
 bool GraphTileFsStorage::ReadTile(const GraphId& graphid, const TileHierarchy& tile_hierarchy, std::vector<char>& tile_data) const {
-  // Open to the end of the file so we can immediately get size;
-  std::string file_location = tile_dir + "/" + FileSuffix(graphid.Tile_Base(), tile_hierarchy);
-  std::ifstream file(file_location, std::ios::in | std::ios::binary | std::ios::ate);
-  if (file.is_open()) {
-    // Read binary file into memory. TODO - protect against failure to
-    // allocate memory
-    size_t filesize = file.tellg();
-    tile_data.resize(filesize);
-    file.seekg(0, std::ios::beg);
-    size_t readsize = file.read(tile_data.data(), filesize);
-    file.close();
-    return readsize == filesize;
+  if (tile_extract_->tiles.size()) {
+    auto it = tile_extract_->tiles.find(graphid);
+    if (it != tile_extract_->tiles.cend()) {
+      tile_data = std::vector<char>(it->second.first, it->second.first + it->second.second);
+      return true;
+    }
+  } else {
+    // Open to the end of the file so we can immediately get size;
+    std::string file_location = tile_dir_ + "/" + FileSuffix(graphid.Tile_Base(), tile_hierarchy);
+    std::ifstream file(file_location, std::ios::in | std::ios::binary | std::ios::ate);
+    if (file.is_open()) {
+      // Read binary file into memory. TODO - protect against failure to
+      // allocate memory
+      auto filesize = file.tellg();
+      tile_data.resize(filesize);
+      file.seekg(0, std::ios::beg);
+      file.read(tile_data.data(), filesize);
+      file.close();
+      return !file.fail();
+    }
   }
   return false;
 }
 
 bool GraphTileFsStorage::ReadTileRealTimeSpeeds(const GraphId& graphid, const TileHierarchy& tile_hierarchy, std::vector<uint8_t>& rts_data) const {
   // Try to load the speeds file
+  auto tileid = graphid.tileid();
   std::string traffic_dir = tile_dir_ + "/traffic/";
   std::string file_location = traffic_dir + std::to_string(tileid) + ".spd";
   std::ifstream rtsfile(file_location, std::ios::binary | std::ios::in | std::ios::ate);
   if (rtsfile.is_open()) {
-    size_t filesize = rtsfile.tellg();
+    auto filesize = rtsfile.tellg();
     LOG_INFO("Load real time speeds: count = " + std::to_string(filesize));
     rts_data.resize(filesize);
     rtsfile.seekg(0, std::ios::beg);
-    size_t readsize = rtsfile.read((char*)(&rts_data.front()), filesize);
+    rtsfile.read((char*)(&rts_data.front()), filesize);
     rtsfile.close();
-    return readsize == filesize;
+    return !rtsfile.fail();
   }
   return false;
+}
+
+const std::string& GraphTileFsStorage::GetTileDir() const {
+  return tile_dir_;
 }
 
 // Get the tile Id given the full path to the file.

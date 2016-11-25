@@ -1,5 +1,5 @@
-#include "config.h"
 #include "sif/autocost.h"
+#include "sif/costconstants.h"
 
 #include <iostream>
 #include <valhalla/midgard/constants.h>
@@ -17,7 +17,7 @@ namespace sif {
 namespace {
 constexpr float kDefaultManeuverPenalty         = 5.0f;   // Seconds
 constexpr float kDefaultDestinationOnlyPenalty  = 600.0f; // Seconds
-constexpr float kDefaultAlleyPenalty            = 30.0f;  // Seconds
+constexpr float kDefaultAlleyPenalty            = 5.0f;   // Seconds
 constexpr float kDefaultGateCost                = 30.0f;  // Seconds
 constexpr float kDefaultGatePenalty             = 300.0f; // Seconds
 constexpr float kDefaultTollBoothCost           = 15.0f;  // Seconds
@@ -66,18 +66,17 @@ class AutoCost : public DynamicCost {
   virtual ~AutoCost();
 
   /**
-   * Does the costing allow hierarchy transitions. Auto costing will allow
-   * transitions by default.
-   * @return  Returns true if the costing model allows hierarchy transitions).
-   */
-   virtual bool AllowTransitions() const;
-
-  /**
    * Does the costing method allow multiple passes (with relaxed hierarchy
    * limits).
    * @return  Returns true if the costing model allows multiple passes.
    */
   virtual bool AllowMultiPass() const;
+
+  /**
+   * Get the access mode used by this costing method.
+   * @return  Returns access mode.
+   */
+  uint32_t access_mode() const;
 
   /**
    * Checks if access is allowed for the provided directed edge.
@@ -124,11 +123,9 @@ class AutoCost : public DynamicCost {
    * Get the cost to traverse the specified directed edge. Cost includes
    * the time (seconds) to traverse the edge.
    * @param   edge  Pointer to a directed edge.
-   * @param   density  Relative road density.
    * @return  Returns the cost and time (seconds)
    */
-  virtual Cost EdgeCost(const baldr::DirectedEdge* edge,
-                        const uint32_t density) const;
+  virtual Cost EdgeCost(const baldr::DirectedEdge* edge) const;
 
   /**
    * Returns the cost to make the transition from the predecessor edge.
@@ -170,6 +167,12 @@ class AutoCost : public DynamicCost {
   virtual float AStarCostFactor() const;
 
   /**
+   * Get the current travel type.
+   * @return  Returns the current travel type.
+   */
+  virtual uint8_t travel_type() const;
+
+  /**
    * Returns a function/functor to be used in location searching which will
    * exclude and allow ranking results from the search by looking at each
    * edges attribution and suitability for use as a location by the travel
@@ -179,7 +182,7 @@ class AutoCost : public DynamicCost {
   virtual const EdgeFilter GetEdgeFilter() const {
     // Throw back a lambda that checks the access for this type of costing
     return [](const baldr::DirectedEdge* edge) {
-      if (edge->trans_up() || edge->trans_down() ||
+      if (edge->trans_up() || edge->trans_down() || edge->is_shortcut() ||
          !(edge->forwardaccess() & kAutoAccess))
         return 0.0f;
       else {
@@ -202,6 +205,7 @@ class AutoCost : public DynamicCost {
   }
 
  protected:
+  VehicleType type_;                // Vehicle type: car (default), motorcycle, etc
   float speedfactor_[256];
   float density_factor_[16];        // Density factor
   float maneuver_penalty_;          // Penalty (seconds) when inconsistent names
@@ -229,6 +233,19 @@ AutoCost::AutoCost(const boost::property_tree::ptree& pt)
                              1.0f, 1.1f, 1.2f, 1.3f,
                              1.4f, 1.6f, 1.9f, 2.2f,
                              2.5f, 2.8f, 3.1f, 3.5f } {
+
+  // Get the vehicle type - enter as string and convert to enum
+  std::string type = pt.get<std::string>("type", "car");
+  if (type == "motorcycle") {
+    type_ = VehicleType::kMotorcycle;
+  } else if (type == "bus") {
+    type_ = VehicleType::kBus;
+  } else if (type == "tractor_trailer") {
+    type_ = VehicleType::kTractorTrailer;
+  } else {
+    type_ = VehicleType::kCar;
+  }
+
   maneuver_penalty_ = pt.get<float>("maneuver_penalty",
                                     kDefaultManeuverPenalty);
   destination_only_penalty_ = pt.get<float>("destination_only_penalty",
@@ -271,6 +288,8 @@ AutoCost::AutoCost(const boost::property_tree::ptree& pt)
   for (uint32_t s = 1; s < 255; s++) {
     speedfactor_[s] = (kSecPerHour * 0.001f) / static_cast<float>(s);
   }
+
+  // Set density factors - used to penalize edges in dense, urban areas
   for (uint32_t d = 0; d < 16; d++) {
     density_factor_[d] = 0.85f + (d * 0.025f);
   }
@@ -280,15 +299,15 @@ AutoCost::AutoCost(const boost::property_tree::ptree& pt)
 AutoCost::~AutoCost() {
 }
 
-// Auto costing will allow hierarchy transitions by default.
-bool AutoCost::AllowTransitions() const {
-  return true;
-}
-
 // Does the costing method allow multiple passes (with relaxed hierarchy
 // limits).
 bool AutoCost::AllowMultiPass() const {
   return true;
+}
+
+// Get the access mode used by this costing method.
+uint32_t AutoCost::access_mode() const {
+  return kAutoAccess;
 }
 
 // Check if access is allowed on the specified edge.
@@ -337,10 +356,9 @@ bool AutoCost::Allowed(const baldr::NodeInfo* node) const  {
 }
 
 // Get the cost to traverse the edge in seconds
-Cost AutoCost::EdgeCost(const DirectedEdge* edge,
-                        const uint32_t density) const {
+Cost AutoCost::EdgeCost(const DirectedEdge* edge) const {
   float factor = (edge->use() == Use::kFerry) ?
-        ferry_weight_ : density_factor_[density];
+        ferry_weight_ : density_factor_[edge->density()];
   float sec = (edge->length() * speedfactor_[edge->speed()]);
   return Cost(sec * factor, sec);
 }
@@ -472,6 +490,11 @@ float AutoCost::AStarCostFactor() const {
   return speedfactor_[kMaxSpeedKph];
 }
 
+// Returns the current travel type.
+uint8_t AutoCost::travel_type() const {
+  return static_cast<uint8_t>(type_);
+}
+
 cost_ptr_t CreateAutoCost(const boost::property_tree::ptree& config) {
   return std::make_shared<AutoCost>(config);
 }
@@ -495,11 +518,9 @@ class AutoShorterCost : public AutoCost {
    * Returns the cost to traverse the edge and an estimate of the actual time
    * (in seconds) to traverse the edge.
    * @param  edge     Pointer to a directed edge.
-   * @param   density  Relative road density.
    * @return  Returns the cost to traverse the edge.
    */
-  virtual Cost EdgeCost(const baldr::DirectedEdge* edge,
-                        const uint32_t density) const;
+  virtual Cost EdgeCost(const baldr::DirectedEdge* edge) const;
 
   /**
    * Get the cost factor for A* heuristics. This factor is multiplied
@@ -532,8 +553,7 @@ AutoShorterCost::~AutoShorterCost() {
 
 // Returns the cost to traverse the edge and an estimate of the actual time
 // (in seconds) to traverse the edge.
-Cost AutoShorterCost::EdgeCost(const baldr::DirectedEdge* edge,
-                               const uint32_t density) const {
+Cost AutoShorterCost::EdgeCost(const baldr::DirectedEdge* edge) const {
   float factor = (edge->use() == Use::kFerry) ? ferry_weight_ : 1.0f;
   return Cost(edge->length() * adjspeedfactor_[edge->speed()] * factor,
               edge->length() * speedfactor_[edge->speed()]);
@@ -560,6 +580,12 @@ class BusCost : public AutoCost {
   BusCost(const boost::property_tree::ptree& config);
 
   virtual ~BusCost();
+
+  /**
+   * Get the access mode used by this costing method.
+   * @return  Returns access mode.
+   */
+  uint32_t access_mode() const;
 
   /**
    * Checks if access is allowed for the provided directed edge.
@@ -639,10 +665,16 @@ class BusCost : public AutoCost {
 // Constructor
 BusCost::BusCost(const boost::property_tree::ptree& pt)
     : AutoCost(pt) {
+  type_ = VehicleType::kBus;
 }
 
 // Destructor
 BusCost::~BusCost() {
+}
+
+// Get the access mode used by this costing method.
+uint32_t BusCost::access_mode() const {
+  return kBusAccess;
 }
 
 // Check if access is allowed on the specified edge.

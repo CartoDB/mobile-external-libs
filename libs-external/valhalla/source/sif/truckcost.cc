@@ -1,4 +1,3 @@
-#include "config.h"
 #include "sif/truckcost.h"
 
 #include <iostream>
@@ -17,7 +16,7 @@ namespace sif {
 namespace {
 constexpr float kDefaultManeuverPenalty         = 5.0f;   // Seconds
 constexpr float kDefaultDestinationOnlyPenalty  = 600.0f; // Seconds
-constexpr float kDefaultAlleyPenalty            = 30.0f;  // Seconds
+constexpr float kDefaultAlleyPenalty            = 5.0f;   // Seconds
 constexpr float kDefaultLowClassPenalty         = 30.0f;  // Seconds
 constexpr float kDefaultGateCost                = 30.0f;  // Seconds
 constexpr float kDefaultGatePenalty             = 300.0f; // Seconds
@@ -96,6 +95,12 @@ class TruckCost : public DynamicCost {
   virtual bool AllowMultiPass() const;
 
   /**
+   * Get the access mode used by this costing method.
+   * @return  Returns access mode.
+   */
+  uint32_t access_mode() const;
+
+  /**
    * Checks if access is allowed for the provided directed edge.
    * This is generally based on mode of travel and the access modes
    * allowed on the edge. However, it can be extended to exclude access
@@ -140,11 +145,9 @@ class TruckCost : public DynamicCost {
    * Get the cost to traverse the specified directed edge. Cost includes
    * the time (seconds) to traverse the edge.
    * @param   edge  Pointer to a directed edge.
-   * @param   density  Relative road density.
    * @return  Returns the cost and time (seconds)
    */
-  virtual Cost EdgeCost(const baldr::DirectedEdge* edge,
-                        const uint32_t density) const;
+  virtual Cost EdgeCost(const baldr::DirectedEdge* edge) const;
 
   /**
    * Returns the cost to make the transition from the predecessor edge.
@@ -186,6 +189,12 @@ class TruckCost : public DynamicCost {
   virtual float AStarCostFactor() const;
 
   /**
+   * Get the current travel type.
+   * @return  Returns the current travel type.
+   */
+  virtual uint8_t travel_type() const;
+
+  /**
    * Returns a function/functor to be used in location searching which will
    * exclude and allow ranking results from the search by looking at each
    * edges attribution and suitability for use as a location by the travel
@@ -195,7 +204,7 @@ class TruckCost : public DynamicCost {
   virtual const EdgeFilter GetEdgeFilter() const {
     // Throw back a lambda that checks the access for this type of costing
     return [](const baldr::DirectedEdge* edge) {
-      if (edge->trans_up() || edge->trans_down() ||
+      if (edge->trans_up() || edge->trans_down() || edge->is_shortcut() ||
          !(edge->forwardaccess() & kTruckAccess))
         return 0.0f;
       else {
@@ -218,6 +227,7 @@ class TruckCost : public DynamicCost {
   }
 
  protected:
+  VehicleType type_;                // Vehicle type: tractor trailer
   float speedfactor_[256];
   float density_factor_[16];        // Density factor
   float maneuver_penalty_;          // Penalty (seconds) when inconsistent names
@@ -251,6 +261,7 @@ TruckCost::TruckCost(const boost::property_tree::ptree& pt)
                              1.0f, 1.1f, 1.2f, 1.3f,
                              1.4f, 1.6f, 1.9f, 2.2f,
                              2.5f, 2.8f, 3.1f, 3.5f } {
+  type_ = VehicleType::kTractorTrailer;
   maneuver_penalty_ = pt.get<float>("maneuver_penalty",
                                     kDefaultManeuverPenalty);
   destination_only_penalty_ = pt.get<float>("destination_only_penalty",
@@ -300,6 +311,11 @@ bool TruckCost::AllowTransitions() const {
 // limits).
 bool TruckCost::AllowMultiPass() const {
   return true;
+}
+
+// Get the access mode used by this costing method.
+uint32_t TruckCost::access_mode() const {
+  return kTruckAccess;
 }
 
 // Check if access is allowed on the specified edge.
@@ -422,10 +438,9 @@ bool TruckCost::Allowed(const baldr::NodeInfo* node) const  {
 }
 
 // Get the cost to traverse the edge in seconds
-Cost TruckCost::EdgeCost(const DirectedEdge* edge,
-                        const uint32_t density) const {
+Cost TruckCost::EdgeCost(const DirectedEdge* edge) const {
 
-  float factor = density_factor_[density];
+  float factor = density_factor_[edge->density()];
 
   if (edge->truck_route() > 0) {
     factor *= kTruckRouteFactor;
@@ -565,6 +580,11 @@ Cost TruckCost::TransitionCostReverse(const uint32_t idx,
 // estimate is less than the least possible time along roads.
 float TruckCost::AStarCostFactor() const {
   return speedfactor_[kMaxSpeedKph];
+}
+
+// Returns the current travel type.
+uint8_t TruckCost::travel_type() const {
+  return static_cast<uint8_t>(type_);
 }
 
 cost_ptr_t CreateTruckCost(const boost::property_tree::ptree& config) {

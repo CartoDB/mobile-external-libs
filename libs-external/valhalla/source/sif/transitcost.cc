@@ -1,4 +1,3 @@
-#include "config.h"
 #include "sif/transitcost.h"
 
 #include <valhalla/baldr/accessrestriction.h>
@@ -50,10 +49,28 @@ class TransitCost : public DynamicCost {
   virtual ~TransitCost();
 
   /**
+   * Get the wheelchair required flag.
+   * @return  Returns true if wheelchair is required.
+   */
+  bool wheelchair() const;
+
+  /**
+   * Get the bicycle required flag.
+   * @return  Returns true if bicycle is required.
+   */
+  bool bicycle() const;
+
+  /**
    * This method overrides the weight for this mode.  The higher the value
    * the more the mode is favored.
    */
   virtual float GetModeWeight();
+
+  /**
+   * Get the access mode used by this costing method.
+   * @return  Returns access mode.
+   */
+  uint32_t access_mode() const;
 
   /**
    * Checks if access is allowed for the provided directed edge.
@@ -100,11 +117,9 @@ class TransitCost : public DynamicCost {
    * Get the cost to traverse the specified directed edge. Cost includes
    * the time (seconds) to traverse the edge.
    * @param   edge  Pointer to a directed edge.
-   * @param   density  Relative road density.
    * @return  Returns the cost and time (seconds)
    */
-  virtual Cost EdgeCost(const baldr::DirectedEdge* edge,
-                        const uint32_t density) const;
+  virtual Cost EdgeCost(const baldr::DirectedEdge* edge) const;
 
   /**
    * Get the cost to traverse the specified directed edge using a transit
@@ -172,7 +187,7 @@ class TransitCost : public DynamicCost {
   virtual const EdgeFilter GetEdgeFilter() const {
     // Throw back a lambda that checks the access for this type of costing
     return [](const baldr::DirectedEdge* edge) {
-      if (edge->trans_up() || edge->trans_down() ||
+      if (edge->trans_up() || edge->trans_down() || edge->is_shortcut() ||
           edge->use() >= Use::kFerry ||
          !(edge->forwardaccess() & kPedestrianAccess))
         return 0.0f;
@@ -215,6 +230,9 @@ class TransitCost : public DynamicCost {
                           const baldr::NodeInfo* node);
 
  protected:
+  // Are wheelchair or bicycle required
+  bool wheelchair_;
+  bool bicycle_;
 
   // This is the weight for this mode.  The higher the value the more the
   // mode is favored.
@@ -279,6 +297,9 @@ TransitCost::TransitCost(const boost::property_tree::ptree& pt)
     : DynamicCost(pt, TravelMode::kPublicTransit) {
 
   mode_weight_ = pt.get<float>("mode_weight", kModeWeight);
+
+  wheelchair_ = pt.get<bool>("wheelchair", false);
+  bicycle_ = pt.get<bool>("bicycle", false);
 
   // Willingness to use buses. Make sure this is within range [0, 1].
   use_bus_ = pt.get<float>("use_bus", kDefaultUseBusFactor);
@@ -366,6 +387,16 @@ TransitCost::TransitCost(const boost::property_tree::ptree& pt)
 
 // Destructor
 TransitCost::~TransitCost() {
+}
+
+// Get the wheelchair required flag.
+bool TransitCost::wheelchair() const {
+  return wheelchair_;
+}
+
+// Get the bicycle required flag.
+bool TransitCost::bicycle() const {
+  return bicycle_;
 }
 
 // This method overrides the weight for this mode.  The higher the value
@@ -473,6 +504,11 @@ bool TransitCost::IsExcluded(const baldr::GraphTile*& tile,
                                              node->stop_index())) != exclude_stops_.end());
 }
 
+// Get the access mode used by this costing method.
+uint32_t TransitCost::access_mode() const {
+  return 0;
+}
+
 // Check if access is allowed on the specified edge.
 bool TransitCost::Allowed(const baldr::DirectedEdge* edge,
                           const EdgeLabel& pred,
@@ -518,8 +554,7 @@ bool TransitCost::Allowed(const baldr::NodeInfo* node) const {
 
 // Returns the cost to traverse the edge and an estimate of the actual time
 // (in seconds) to traverse the edge.
-Cost TransitCost::EdgeCost(const baldr::DirectedEdge* edge,
-                           const uint32_t density) const {
+Cost TransitCost::EdgeCost(const baldr::DirectedEdge* edge) const {
   LOG_ERROR("Wrong transit edge cost called");
   return { 0.0f, 0.0f };
 }

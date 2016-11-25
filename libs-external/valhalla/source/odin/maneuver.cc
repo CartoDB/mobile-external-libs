@@ -7,7 +7,6 @@
 #include <valhalla/baldr/streetnames.h>
 #include <valhalla/baldr/streetnames_us.h>
 
-#include "config.h"
 #include "proto/tripdirections.pb.h"
 #include "proto/directions_options.pb.h"
 #include "odin/maneuver.h"

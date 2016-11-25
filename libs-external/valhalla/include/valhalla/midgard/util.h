@@ -6,11 +6,11 @@
 #include <string>
 #include <ostream>
 #include <utility>
+#include <algorithm>
 #include <unordered_map>
 #include <unordered_set>
 #include <memory>
 #include <limits>
-#include <algorithm>
 
 #include <valhalla/midgard/pointll.h>
 
@@ -84,44 +84,6 @@ float length(const container_t& pts) {
    length += p->Distance(*std::prev(p));
  return length;
 }
-
-/**
- * Polyline encode a container of points into a string suitable for web use
- * Note: newer versions of this algorithm allow one to specify a zoom level
- * which allows displaying simplified versions of the encoded linestring
- *
- * @param points    the list of points to encode
- * @return string   the encoded container of points
- */
-template<class container_t>
-std::string encode(const container_t& points);
-
-/**
- * Varint encode a container of points into a string
- *
- * @param points    the list of points to encode
- * @return string   the encoded container of points
- */
-template<class container_t>
-std::string encode7(const container_t& points);
-
-/**
- * Polyline decode a string into a container of points
- *
- * @param string    the encoded points
- * @return points   the container of points
- */
-template<class container_t>
-container_t decode(const std::string& encoded);
-
-/**
- * Varint decode a string into a container of points
- *
- * @param string    the encoded points
- * @return points   the container of points
- */
-template<class container_t>
-container_t decode7(const std::string& encoded);
 
 //useful in converting from one iteratable map to another
 //for example: ToMap<boost::property_tree::ptree, std::unordered_map<std::string, std::string> >(some_ptree)

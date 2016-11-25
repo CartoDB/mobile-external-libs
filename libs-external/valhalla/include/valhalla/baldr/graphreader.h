@@ -109,7 +109,14 @@ class GraphReader {
    */
   uint32_t GetEdgeDensity(const GraphId& edgeid);
 
+  /**
+   * Gets back a set of available tiles
+   * @return  returns the list of available tiles
+   */
+  std::unordered_set<GraphId> GetTileSet() const;
+
  protected:
+
   // Information about where the tiles are kept
   const TileHierarchy tile_hierarchy_;
 

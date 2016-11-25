@@ -1,6 +1,5 @@
 #include <valhalla/midgard/distanceapproximator.h>
 
-#include "config.h"
 #include "meili/graph_helpers.h"
 #include "meili/routing.h"
 #include "meili/geometry_helpers.h"
@@ -67,7 +66,7 @@ InterpolateMeasurement(const MapMatching& mapmatching,
 
     const auto edgeinfo = tile->edgeinfo(directededge->edgeinfo_offset());
 
-    const auto& shape = edgeinfo->shape();
+    const auto& shape = edgeinfo.shape();
     if (shape.empty()) {
       continue;
     }
@@ -260,7 +259,7 @@ FindMatchResult(const MapMatching::state_iterator& previous_state,
   const auto& c = state.candidate();
   //Note: technically a candidate can have correlated to more than one place in the graph
   //but the way its used in meili we only correlated it to one place so .front() is safe
-  return {c.edges.front().projected, c.distance(), edgeid, state.id()};
+  return {c.edges.front().projected, std::sqrt(c.edges.front().score), edgeid, state.id()};
 }
 
 

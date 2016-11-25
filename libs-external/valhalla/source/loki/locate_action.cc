@@ -32,16 +32,17 @@ namespace {
                   (edge.sos == PathLocation::RIGHT ? std::string("right") : std::string("neither"))
               },
               {"percent_along", json::fp_t{edge.dist, 5} },
+              {"score", json::fp_t{edge.score, 1}},
               {"edge_id", edge.id.json()},
               {"edge", directed_edge->json()},
-              {"edge_info", edge_info->json()},
+              {"edge_info", edge_info.json()},
             })
           );
         }//they want it lean and mean
         else {
           array->emplace_back(
             json::map({
-              {"way_id", edge_info->wayid()},
+              {"way_id", edge_info.wayid()},
               {"correlated_lat", json::fp_t{edge.projected.lat(), 6}},
               {"correlated_lon", json::fp_t{edge.projected.lng(), 6}},
               {"side_of_street",
@@ -106,7 +107,7 @@ namespace {
   json::MapPtr serialize(const boost::optional<std::string>& id, const PointLL& ll, const std::string& reason, bool verbose) {
     auto m = json::map({
       {"edges", static_cast<std::nullptr_t>(nullptr)},
-      {"node", static_cast<std::nullptr_t>(nullptr)},
+      {"nodes", static_cast<std::nullptr_t>(nullptr)},
       {"input_lat", json::fp_t{ll.lat(), 6}},
       {"input_lon", json::fp_t{ll.lng(), 6}},
     });
@@ -125,7 +126,7 @@ namespace valhalla {
     void loki_worker_t::init_locate(const boost::property_tree::ptree& request) {
       parse_locations(request);
       if(locations.size() < 1)
-        throw std::runtime_error("Insufficient number of locations provided");
+        throw valhalla_exception_t{400, 120};
       auto costing = request.get_optional<std::string>("costing");
       if (costing)
         parse_costing(request);

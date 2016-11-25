@@ -43,8 +43,8 @@ GraphTileZipStorage::GraphTileZipStorage(const std::string& zip_file)
     : zip_file_(zip_file) {
 }
 
-std::vector<GraphId> GraphTileZipStorage::FindTiles(const TileHierarchy& tile_hierarchy) const {
-  std::vector<GraphId> graphids;
+std::unordered_set<GraphId> GraphTileZipStorage::FindTiles(const TileHierarchy& tile_hierarchy) const {
+  std::unordered_set<GraphId> graphids;
   mz_zip_archive zip;
   memset(&zip, 0, sizeof(mz_zip_archive));
   if (mz_zip_reader_init_file(&zip, zip_file_.c_str(), 0)) {
@@ -53,7 +53,7 @@ std::vector<GraphId> GraphTileZipStorage::FindTiles(const TileHierarchy& tile_hi
       memset(filename, 0, sizeof(filename));
       mz_zip_reader_get_filename(&zip, i, filename, sizeof(filename) - 1);
       GraphId id = GetTileId(filename, "");
-      graphids.push_back(id);
+      graphids.emplace(id);
     }
     mz_zip_reader_end(&zip);
   }

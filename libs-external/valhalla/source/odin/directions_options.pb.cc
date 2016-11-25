@@ -2,7 +2,7 @@
 // source: directions_options.proto
 
 #define INTERNAL_SUPPRESS_PROTOBUF_FIELD_DEPRECATION
-#include "proto/directions_options.pb.h"
+#include "valhalla/proto/directions_options.pb.h"
 
 #include <algorithm>
 

@@ -9,10 +9,12 @@
 #include <boost/property_tree/json_parser.hpp>
 
 #include <valhalla/midgard/logging.h>
+#include <valhalla/midgard/encoded.h>
 #include <valhalla/sif/autocost.h>
 #include <valhalla/sif/bicyclecost.h>
 #include <valhalla/sif/pedestriancost.h>
 #include <valhalla/baldr/json.h>
+#include <valhalla/baldr/errorcode_util.h>
 
 #include "loki/service.h"
 #include "loki/search.h"
@@ -36,7 +38,8 @@ namespace {
     {"/sources_to_targets", loki_worker_t::SOURCES_TO_TARGETS},
     {"/optimized_route", loki_worker_t::OPTIMIZED_ROUTE},
     {"/isochrone", loki_worker_t::ISOCHRONE},
-    {"/attributes", loki_worker_t::ATTRIBUTES},
+    {"/trace_route", loki_worker_t::TRACE_ROUTE},
+    {"/trace_attributes", loki_worker_t::TRACE_ATTRIBUTES}
   };
 
   const headers_t::value_type CORS{"Access-Control-Allow-Origin", "*"};
@@ -50,7 +53,7 @@ namespace {
     try {
       //throw the json into the ptree
       auto json = request.query.find("json");
-    if (json != request.query.end() && json->second.size()
+      if (json != request.query.end() && json->second.size()
         && json->second.front().size()) {
         std::istringstream is(json->second.front());
         boost::property_tree::read_json(is, pt);
@@ -61,7 +64,7 @@ namespace {
       }
     }
     catch(...) {
-      throw std::runtime_error("Failed to parse json request");
+      throw valhalla_exception_t{400, 100};
     }
 
     //throw the query params into the ptree
@@ -105,14 +108,14 @@ namespace {
 
 namespace valhalla {
   namespace loki {
-
-   worker_t::result_t loki_worker_t::jsonify_error(uint64_t code, const std::string& status, const std::string& error, http_request_t::info_t& request_info) const {
+    worker_t::result_t loki_worker_t::jsonify_error(const valhalla_exception_t& exception, http_request_t::info_t& request_info) const {
 
       //build up the json map
       auto json_error = json::map({});
-      json_error->emplace("error", error);
-      json_error->emplace("status", status);
-      json_error->emplace("code", code);
+      json_error->emplace("status", exception.status_code_body);
+      json_error->emplace("status_code", static_cast<uint64_t>(exception.status_code));
+      json_error->emplace("error", std::string(exception.error_code_message));
+      json_error->emplace("error_code", static_cast<uint64_t>(exception.error_code));
 
       //serialize it
       std::stringstream ss;
@@ -123,7 +126,7 @@ namespace valhalla {
         ss << ')';
 
       worker_t::result_t result{false};
-      http_response_t response(code, status, ss.str(), headers_t{CORS, jsonp ? JS_MIME : JSON_MIME});
+      http_response_t response(exception.status_code, exception.status_code_body, ss.str(), headers_t{CORS, jsonp ? JS_MIME : JSON_MIME});
       response.from_info(request_info);
       result.messages.emplace_back(response.to_string());
 
@@ -134,86 +137,131 @@ namespace valhalla {
       //we require locations
       auto request_locations = request.get_child_optional("locations");
       if (!request_locations)
-        throw std::runtime_error("Insufficiently specified required parameter 'locations'");
+        throw valhalla_exception_t{400, 110};
 
       for(const auto& location : *request_locations) {
         try{
           locations.push_back(baldr::Location::FromPtree(location.second));
         }
         catch (...) {
-          throw std::runtime_error("Failed to parse location");
+          throw valhalla_exception_t{400, 130};
         }
       }
       valhalla::midgard::logging::Log("location_count::" + std::to_string(request_locations->size()), " [ANALYTICS] ");
     }
 
+    void loki_worker_t::parse_trace(boost::property_tree::ptree& request) {
+      //we require uncompressed shape or encoded polyline
+      auto input_shape = request.get_child_optional("shape");
+      auto encoded_polyline = request.get_optional<std::string>("encoded_polyline");
+      boost::property_tree::ptree shape_child;
+      size_t shape_count = 0;
+
+      //we require shape or encoded polyline but we dont know which at first
+      try {
+        //uncompressed shape
+        //we dont need to do this unless we want to add some validation
+        if (input_shape) {
+          shape_count = input_shape->size();
+          for (auto& latlng : *input_shape) {
+            auto ll = baldr::Location::FromPtree(latlng.second).latlng_;
+            latlng.second.put("lon", ll.first);
+            latlng.second.put("lat", ll.second);
+          }
+        }//compressed shape
+        //if we receive as encoded then we need to add as shape to request
+        else if (encoded_polyline) {
+          auto shape = midgard::decode<std::list<midgard::PointLL> >(*encoded_polyline);
+          shape_count = shape.size();
+          for(const auto& pt : shape) {
+            boost::property_tree::ptree point_child;
+            point_child.put("lon", pt.first);
+            point_child.put("lat", pt.second);
+            shape_child.push_back(std::make_pair("",point_child));
+          }
+          request.add_child("shape", shape_child);
+        }/* else if (gpx) {
+          //TODO:Add support
+        } else if (geojson){
+          //TODO:Add support
+        }*/
+        else
+          throw valhalla_exception_t{400, 126};
+      }
+      catch (const std::exception& e) {
+        //TODO: pass on e.what() to generic exception
+        throw valhalla_exception_t{400, 114};
+      }
+
+      //not enough
+      if(shape_count < 2)
+        throw valhalla_exception_t{400, 123};
+      //too much
+      else if(shape_count > max_shape)
+        throw valhalla_exception_t{400, 153, "(" + std::to_string(shape_count) +"). The limit is " + std::to_string(max_shape)};
+
+      valhalla::midgard::logging::Log("trace_size::" + std::to_string(shape_count), " [ANALYTICS] ");
+
+    }
+
     void loki_worker_t::parse_costing(const boost::property_tree::ptree& request) {
       //using the costing we can determine what type of edge filtering to use
-       auto costing = request.get_optional<std::string>("costing");
-       if (costing)
-         valhalla::midgard::logging::Log("costing_type::" + *costing, " [ANALYTICS] ");
-       else
-         throw std::runtime_error("No edge/node costing provided");
+      auto costing = request.get_optional<std::string>("costing");
+      if (costing)
+        valhalla::midgard::logging::Log("costing_type::" + *costing, " [ANALYTICS] ");
+      else
+        throw valhalla_exception_t{400, 124};
 
-       // TODO - have a way of specifying mode at the location
-       if(*costing == "multimodal")
-         *costing = "pedestrian";
+      // TODO - have a way of specifying mode at the location
+      if(*costing == "multimodal")
+        *costing = "pedestrian";
 
-       // Get the costing options. Get the base options from the config and the
-       // options for the specified costing method
-       std::string method_options = "costing_options." + *costing;
-       auto config_costing = config.get_child_optional(method_options);
-       if(!config_costing)
-         throw std::runtime_error("No costing method found for '" + *costing + "'");
-       auto request_costing = request.get_child_optional(method_options);
-       if(request_costing) {
-         // If the request has any options for this costing type, merge the 2
-         // costing options - override any config options that are in the request.
-         // and add any request options not in the config.
-         // TODO: suboptions are probably getting smashed when we do this, preserve them
-         boost::property_tree::ptree overridden = *config_costing;
-         for(const auto& r : *request_costing)
-           overridden.put_child(r.first, r.second);
-         auto c = factory.Create(*costing, overridden);
-         edge_filter = c->GetEdgeFilter();
-         node_filter = c->GetNodeFilter();
-       }// No options to override so use the config options verbatim
-       else {
-         auto c = factory.Create(*costing, *config_costing);
-         edge_filter = c->GetEdgeFilter();
-         node_filter = c->GetNodeFilter();
-       }
+      // Get the costing options if in the config or get the empty default.
+      // Creates the cost in the cost factory
+      std::string method_options = "costing_options." + *costing;
+      auto costing_options = request.get_child(method_options,{});
+      try{
+        auto c = factory.Create(*costing, costing_options);
+        edge_filter = c->GetEdgeFilter();
+        node_filter = c->GetNodeFilter();
+      }
+      catch(const std::runtime_error&) {
+        throw valhalla_exception_t{400, 125, "'" + *costing + "'"};
+      }
     }
 
     loki_worker_t::loki_worker_t(const boost::property_tree::ptree& config):
-        config(config), reader(config.get_child("mjolnir")), connectivity_map(reader.GetTileHierarchy()),
+        config(config), reader(config.get_child("mjolnir")), connectivity_map(config.get_child("mjolnir")),
         long_request(config.get<float>("loki.logging.long_request")),
         max_contours(config.get<unsigned int>("service_limits.isochrone.max_contours")),
-        max_time(config.get<unsigned int>("service_limits.isochrone.max_time")) {
+        max_time(config.get<unsigned int>("service_limits.isochrone.max_time")),
+        max_shape(config.get<size_t>("service_limits.trace_route.max_shape")) {
 
       // Keep a string noting which actions we support, throw if one isnt supported
       for (const auto& kv : config.get_child("loki.actions")) {
         auto path = "/" + kv.second.get_value<std::string>();
         if(PATH_TO_ACTION.find(path) == PATH_TO_ACTION.cend())
-          throw std::runtime_error("Path action '" + path + "' not supported");
+          throw valhalla_exception_t{400, 105, path};
         action_str.append("'" + path + "' ");
+        actions.insert(path);
       }
       // Make sure we have at least something to support!
       if(action_str.empty())
-        throw std::runtime_error("The config actions for Loki are incorrectly loaded.");
+        throw valhalla_exception_t{400, 102};
 
       //Build max_locations and max_distance maps
-      for (const auto& kv : config.get_child("costing_options")) {
-        max_locations.emplace(kv.first, config.get<size_t>("service_limits." + kv.first + ".max_locations"));
-        max_distance.emplace(kv.first, config.get<float>("service_limits." + kv.first + ".max_distance"));
+      for (const auto& kv : config.get_child("service_limits")) {
+        if (kv.first != "skadi" && kv.first != "trace_route")
+          max_locations.emplace(kv.first, config.get<size_t>("service_limits." + kv.first + ".max_locations"));
+        if (kv.first != "skadi" && kv.first != "isochrone" && kv.first != "trace_route")
+          max_distance.emplace(kv.first, config.get<float>("service_limits." + kv.first + ".max_distance"));
       }
-      max_locations.emplace("sources_to_targets", config.get<size_t>("service_limits.sources_to_targets.max_locations"));
-      max_distance.emplace("sources_to_targets", config.get<float>("service_limits.sources_to_targets.max_distance"));
-      max_locations.emplace("isochrone", config.get<size_t>("service_limits.isochrone.max_locations"));
+      //this should never happen
       if (max_locations.empty())
-        throw std::runtime_error("Missing max_locations configuration.");
+        throw valhalla_exception_t{400, 103};
+
       if (max_distance.empty())
-        throw std::runtime_error("Missing max_distance configuration.");
+        throw valhalla_exception_t{400, 104};
 
       min_transit_walking_dis =
         config.get<int>("service_limits.pedestrian.min_transit_walking_distance");
@@ -244,12 +292,12 @@ namespace valhalla {
 
         //block all but get and post
         if(request.method != method_t::POST && request.method != method_t::GET)
-          return jsonify_error(405, "Method Not Allowed", "Try a POST or GET request instead", info);
+          return jsonify_error({405, 101}, info);
 
         //is the request path action in the action set?
         auto action = PATH_TO_ACTION.find(request.path);
-        if (action == PATH_TO_ACTION.cend())
-          return jsonify_error(404, "Not Found", "Try any of: " + action_str, info);
+        if (action == PATH_TO_ACTION.cend() || actions.find(request.path) == actions.cend())
+          return jsonify_error({404, 106, action_str}, info);
 
         //parse the query's json
         auto request_pt = from_request(action->second, request);
@@ -277,12 +325,13 @@ namespace valhalla {
           case ISOCHRONE:
             result = isochrones(request_pt, info);
             break;
-          case ATTRIBUTES:
-            result = attributes(request_pt, info);
+          case TRACE_ATTRIBUTES:
+          case TRACE_ROUTE:
+            result = trace_route(request_pt, info);
             break;
           default:
             //apparently you wanted something that we figured we'd support but havent written yet
-            return jsonify_error(501, "Not Implemented", "Not Implemented", info);
+            return jsonify_error({501, 107}, info);
         }
         //get processing time for loki
         auto e = std::chrono::system_clock::now();
@@ -299,9 +348,13 @@ namespace valhalla {
 
         return result;
       }
+      catch(const valhalla_exception_t& e) {
+        valhalla::midgard::logging::Log("400::" + std::string(e.what()), " [ANALYTICS] ");
+        return jsonify_error({e.status_code, e.error_code, e.extra}, info);
+      }
       catch(const std::exception& e) {
         valhalla::midgard::logging::Log("400::" + std::string(e.what()), " [ANALYTICS] ");
-        return jsonify_error(400, "Bad Request", e.what(), info);
+        return jsonify_error({400, 199, std::string(e.what())}, info);
       }
     }
 

@@ -30,7 +30,7 @@ class GraphTileMBTStorage : public GraphTileStorage {
    * @param  tile_hierarchy The tile hierachy to use.
    * @return Returns the list of all available tile ids.
    */
-  std::vector<GraphId> FindTiles(const TileHierarchy& tile_hierarchy) const override;
+  std::unordered_set<GraphId> FindTiles(const TileHierarchy& tile_hierarchy) const override;
 
   /**
    * Checks if the specified tile exists.

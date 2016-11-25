@@ -4,16 +4,19 @@
 #include <valhalla/baldr/accessrestriction.h>
 #include <valhalla/baldr/graphid.h>
 #include <valhalla/baldr/graphtileheader.h>
+#include <valhalla/baldr/complexrestriction.h>
 #include <valhalla/baldr/directededge.h>
 #include <valhalla/baldr/nodeinfo.h>
 #include <valhalla/baldr/transitdeparture.h>
 #include <valhalla/baldr/transitroute.h>
 #include <valhalla/baldr/transitstop.h>
 #include <valhalla/baldr/transitschedule.h>
+#include <valhalla/baldr/transittransfer.h>
 #include <valhalla/baldr/sign.h>
 #include <valhalla/baldr/edgeinfo.h>
 #include <valhalla/baldr/admininfo.h>
 #include <valhalla/baldr/tilehierarchy.h>
+
 #include <valhalla/midgard/util.h>
 
 #include <boost/shared_array.hpp>
@@ -45,9 +48,30 @@ class GraphTile {
   GraphTile(const TileHierarchy& hierarchy, const GraphId& graphid);
 
   /**
+   * Constructor given the graph Id ... used for mmap
+   */
+  GraphTile(const GraphId& graphid, char* ptr, size_t size);
+
+  /**
    * Destructor
    */
   virtual ~GraphTile();
+
+  /**
+   * Gets the directory like filename suffix given the graphId
+   * @param  graphid  Graph Id to construct filename.
+   * @param  hierarchy The tile hierarchy structure to get info about how many tiles can exist at this level
+   * @return  Returns a filename including directory path as a suffix to be appended to another uri
+   */
+  static std::string FileSuffix(const GraphId& graphid, const TileHierarchy& hierarchy);
+
+  /**
+   * Get the tile Id given the full path to the file.
+   * @param  fname    Filename with complete path.
+   * @param  tile_dir Base tile directory.
+   * @return  Returns the tile Id.
+   */
+  static GraphId GetTileId(const std::string& fname);
 
   /**
    * Get the bounding box of this graph tile.
@@ -55,14 +79,6 @@ class GraphTile {
    * @return Returns the bounding box of the tile.
    */
   midgard::AABB2<PointLL> BoundingBox(const TileHierarchy& hierarchy) const;
-
-  /**
-   * Gets the size of the tile in bytes. A value of 0 indicates an empty tile. A value
-   * of 0 indicates an error reading the tile data.
-   * or unsuccessful read.
-   * @return  Returns the size of the tile in bytes.
-   */
-  size_t size() const;
 
   /**
    * Gets the id of the graph tile
@@ -115,7 +131,19 @@ class GraphTile {
    * Get a pointer to edge info.
    * @return  Returns edge info.
    */
-  std::unique_ptr<const EdgeInfo> edgeinfo(const size_t offset) const;
+  EdgeInfo edgeinfo(const size_t offset) const;
+
+  /**
+   * Get the complex restrictions in the forward or reverse order.
+   * @param   forward - do we want the restrictions in reverse order?
+   * @param   id - edge id
+   * @param   modes - access modes
+   * @return  Returns the vector of complex restrictions in the order requested
+   *          based on the id and modes.
+   */
+  std::vector<ComplexRestriction> GetRestrictions(const bool forward,
+                                                  const GraphId id,
+                                                  const uint64_t modes) const;
 
   /**
    * Convenience method to get the directed edges originating at a node.
@@ -174,6 +202,8 @@ class GraphTile {
    * @param   dow               Day of week (see graphconstants.h)
    * @param   date_before_tile  Is the date that was inputed before
    *                            the tile creation date?
+   * @param   wheelchair        Only find departures with wheelchair access if true
+   * @param   bicyle            Only find departures with bicycle access if true
    * @return  Returns a pointer to the transit departure information.
    *          Returns nullptr if no departures are found.
    */
@@ -181,7 +211,9 @@ class GraphTile {
                                            const uint32_t current_time,
                                            const uint32_t day,
                                            const uint32_t dow,
-                                           bool  date_before_tile) const;
+                                           bool  date_before_tile,
+                                           bool wheelchair,
+                                           bool bicycle) const;
 
   /**
    * Get the departure given the directed edge Id and tripid
@@ -271,9 +303,6 @@ class GraphTile {
 
  protected:
 
-  // Size of the tile in bytes
-  size_t size_;
-
   // Graph tile memory, this must be shared so that we can put it into cache
   // Apparently you can std::move a non-copyable
   boost::shared_array<char> graphtile_;
@@ -302,6 +331,9 @@ class GraphTile {
   // Transit schedules (index by schedule index within the tile)
   TransitSchedule* transit_schedules_;
 
+  // Transit transfer records.
+  TransitTransfer* transit_transfers_;
+
   // Access restrictions, 1 or more per edge id
   AccessRestriction* access_restrictions_;
 
@@ -311,6 +343,18 @@ class GraphTile {
   // List of admins. This is a fixed size structure so it can be
   // indexed directly.
   Admin* admins_;
+
+  // List of complex_restrictions in the forward direction.
+  char* complex_restriction_forward_;
+
+  // Size of the complex restrictions in the forward direction
+  std::size_t complex_restriction_forward_size_;
+
+  // List of complex_restrictions in the reverse direction.
+  char* complex_restriction_reverse_;
+
+  // Size of the complex restrictions in the reverse direction
+  std::size_t complex_restriction_reverse_size_;
 
   // List of edge info structures. Since edgeinfo is not fixed size we
   // use offsets in directed edges.
@@ -339,6 +383,16 @@ class GraphTile {
   // Map of operator one stops in this tile.
   std::unordered_map<std::string, std::list<tile_index_pair>> oper_one_stops;
 
+  /**
+   * Set pointers to internal tile data structures.
+   * @param  graphid    Graph Id for the tile.
+   * @param  tile_ptr   Pointer to the start of the tile.
+   * @param  tile_size  Tile size in bytes.
+   */
+  void Initialize(const GraphId& graphid, char* tile_ptr,
+                  const size_t tile_size);
+
+  void AssociateOneStopIds(const GraphId& graphid);
 };
 
 }

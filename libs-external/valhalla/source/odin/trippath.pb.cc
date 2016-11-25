@@ -2,7 +2,7 @@
 // source: trippath.proto
 
 #define INTERNAL_SUPPRESS_PROTOBUF_FIELD_DEPRECATION
-#include "proto/trippath.pb.h"
+#include "valhalla/proto/trippath.pb.h"
 
 #include <algorithm>
 
@@ -54,11 +54,13 @@ const ::google::protobuf::EnumDescriptor* TripPath_TransitStopInfo_Type_descript
 const ::google::protobuf::Descriptor* TripPath_Node_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   TripPath_Node_reflection_ = NULL;
+const ::google::protobuf::EnumDescriptor* TripPath_Node_Type_descriptor_ = NULL;
 const ::google::protobuf::Descriptor* TripPath_Admin_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   TripPath_Admin_reflection_ = NULL;
 const ::google::protobuf::EnumDescriptor* TripPath_Traversability_descriptor_ = NULL;
 const ::google::protobuf::EnumDescriptor* TripPath_RoadClass_descriptor_ = NULL;
+const ::google::protobuf::EnumDescriptor* TripPath_Use_descriptor_ = NULL;
 const ::google::protobuf::EnumDescriptor* TripPath_TravelMode_descriptor_ = NULL;
 const ::google::protobuf::EnumDescriptor* TripPath_VehicleType_descriptor_ = NULL;
 const ::google::protobuf::EnumDescriptor* TripPath_PedestrianType_descriptor_ = NULL;
@@ -200,7 +202,7 @@ void protobuf_AssignDesc_trippath_2eproto() {
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(TripPath_TransitRouteInfo));
   TripPath_Edge_descriptor_ = TripPath_descriptor_->nested_type(5);
-  static const int TripPath_Edge_offsets_[44] = {
+  static const int TripPath_Edge_offsets_[30] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_Edge, name_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_Edge, length_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_Edge, speed_),
@@ -210,16 +212,14 @@ void protobuf_AssignDesc_trippath_2eproto() {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_Edge, begin_shape_index_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_Edge, end_shape_index_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_Edge, traversability_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_Edge, ramp_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_Edge, turn_channel_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_Edge, ferry_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_Edge, rail_ferry_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_Edge, use_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_Edge, toll_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_Edge, unpaved_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_Edge, tunnel_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_Edge, bridge_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_Edge, roundabout_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_Edge, internal_intersection_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_Edge, drive_on_right_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_Edge, end_node_index_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_Edge, sign_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_Edge, travel_mode_),
@@ -227,24 +227,12 @@ void protobuf_AssignDesc_trippath_2eproto() {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_Edge, pedestrian_type_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_Edge, bicycle_type_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_Edge, transit_type_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_Edge, drive_on_right_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_Edge, road_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_Edge, track_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_Edge, driveway_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_Edge, alley_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_Edge, parking_aisle_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_Edge, emergency_access_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_Edge, drive_thru_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_Edge, culdesac_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_Edge, footway_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_Edge, stairs_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_Edge, cycleway_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_Edge, mountain_bike_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_Edge, rail_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_Edge, bus_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_Edge, transit_connection_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_Edge, other_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_Edge, transit_route_info_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_Edge, id_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_Edge, way_id_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_Edge, weighted_grade_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_Edge, max_upward_grade_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_Edge, max_downward_grade_),
   };
   TripPath_Edge_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -301,18 +289,12 @@ void protobuf_AssignDesc_trippath_2eproto() {
       sizeof(TripPath_TransitStopInfo));
   TripPath_TransitStopInfo_Type_descriptor_ = TripPath_TransitStopInfo_descriptor_->enum_type(0);
   TripPath_Node_descriptor_ = TripPath_descriptor_->nested_type(8);
-  static const int TripPath_Node_offsets_[13] = {
+  static const int TripPath_Node_offsets_[7] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_Node, edge_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_Node, intersecting_edge_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_Node, elapsed_time_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_Node, admin_index_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_Node, street_intersection_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_Node, gate_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_Node, bollard_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_Node, toll_booth_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_Node, bike_share_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_Node, parking_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_Node, motorway_junction_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_Node, type_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_Node, fork_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_Node, transit_stop_info_),
   };
@@ -327,6 +309,7 @@ void protobuf_AssignDesc_trippath_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(TripPath_Node));
+  TripPath_Node_Type_descriptor_ = TripPath_Node_descriptor_->enum_type(0);
   TripPath_Admin_descriptor_ = TripPath_descriptor_->nested_type(9);
   static const int TripPath_Admin_offsets_[4] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_Admin, country_code_),
@@ -347,11 +330,12 @@ void protobuf_AssignDesc_trippath_2eproto() {
       sizeof(TripPath_Admin));
   TripPath_Traversability_descriptor_ = TripPath_descriptor_->enum_type(0);
   TripPath_RoadClass_descriptor_ = TripPath_descriptor_->enum_type(1);
-  TripPath_TravelMode_descriptor_ = TripPath_descriptor_->enum_type(2);
-  TripPath_VehicleType_descriptor_ = TripPath_descriptor_->enum_type(3);
-  TripPath_PedestrianType_descriptor_ = TripPath_descriptor_->enum_type(4);
-  TripPath_BicycleType_descriptor_ = TripPath_descriptor_->enum_type(5);
-  TripPath_TransitType_descriptor_ = TripPath_descriptor_->enum_type(6);
+  TripPath_Use_descriptor_ = TripPath_descriptor_->enum_type(2);
+  TripPath_TravelMode_descriptor_ = TripPath_descriptor_->enum_type(3);
+  TripPath_VehicleType_descriptor_ = TripPath_descriptor_->enum_type(4);
+  TripPath_PedestrianType_descriptor_ = TripPath_descriptor_->enum_type(5);
+  TripPath_BicycleType_descriptor_ = TripPath_descriptor_->enum_type(6);
+  TripPath_TransitType_descriptor_ = TripPath_descriptor_->enum_type(7);
 }
 
 namespace {
@@ -422,7 +406,7 @@ void protobuf_AddDesc_trippath_2eproto() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-    "\n\016trippath.proto\022\rvalhalla.odin\"\350\037\n\010Trip"
+    "\n\016trippath.proto\022\rvalhalla.odin\"\256\"\n\010Trip"
     "Path\022\017\n\007trip_id\030\001 \001(\004\022\016\n\006leg_id\030\002 \001(\r\022\021\n"
     "\tleg_count\030\003 \001(\r\0222\n\010location\030\004 \003(\0132 .val"
     "halla.odin.TripPath.Location\022*\n\004node\030\005 \003"
@@ -452,79 +436,87 @@ void protobuf_AddDesc_trippath_2eproto() {
     "r\030\007 \001(\r\022\022\n\ntext_color\030\010 \001(\r\022\023\n\013descripti"
     "on\030\t \001(\t\022\033\n\023operator_onestop_id\030\n \001(\t\022\025\n"
     "\roperator_name\030\013 \001(\t\022\024\n\014operator_url\030\014 \001"
-    "(\t\032\273\t\n\004Edge\022\014\n\004name\030\001 \003(\t\022\016\n\006length\030\002 \001("
+    "(\t\032\343\007\n\004Edge\022\014\n\004name\030\001 \003(\t\022\016\n\006length\030\002 \001("
     "\002\022\r\n\005speed\030\003 \001(\002\0225\n\nroad_class\030\004 \001(\0162!.v"
     "alhalla.odin.TripPath.RoadClass\022\025\n\rbegin"
     "_heading\030\005 \001(\r\022\023\n\013end_heading\030\006 \001(\r\022\031\n\021b"
     "egin_shape_index\030\007 \001(\r\022\027\n\017end_shape_inde"
     "x\030\010 \001(\r\022>\n\016traversability\030\t \001(\0162&.valhal"
-    "la.odin.TripPath.Traversability\022\014\n\004ramp\030"
-    "\n \001(\010\022\024\n\014turn_channel\030\013 \001(\010\022\r\n\005ferry\030\014 \001"
-    "(\010\022\022\n\nrail_ferry\030\r \001(\010\022\014\n\004toll\030\016 \001(\010\022\017\n\007"
-    "unpaved\030\017 \001(\010\022\016\n\006tunnel\030\020 \001(\010\022\016\n\006bridge\030"
-    "\021 \001(\010\022\022\n\nroundabout\030\022 \001(\010\022\035\n\025internal_in"
-    "tersection\030\023 \001(\010\022\026\n\016end_node_index\030\024 \001(\r"
-    "\022*\n\004sign\030\025 \001(\0132\034.valhalla.odin.TripPath."
-    "Sign\0227\n\013travel_mode\030\026 \001(\0162\".valhalla.odi"
-    "n.TripPath.TravelMode\0229\n\014vehicle_type\030\027 "
-    "\001(\0162#.valhalla.odin.TripPath.VehicleType"
-    "\022\?\n\017pedestrian_type\030\030 \001(\0162&.valhalla.odi"
-    "n.TripPath.PedestrianType\0229\n\014bicycle_typ"
-    "e\030\031 \001(\0162#.valhalla.odin.TripPath.Bicycle"
-    "Type\0229\n\014transit_type\030\032 \001(\0162#.valhalla.od"
-    "in.TripPath.TransitType\022\034\n\016drive_on_righ"
-    "t\030\033 \001(\010:\004true\022\014\n\004road\030\034 \001(\010\022\r\n\005track\030\035 \001"
-    "(\010\022\020\n\010driveway\030\036 \001(\010\022\r\n\005alley\030\037 \001(\010\022\025\n\rp"
-    "arking_aisle\030  \001(\010\022\030\n\020emergency_access\030!"
-    " \001(\010\022\022\n\ndrive_thru\030\" \001(\010\022\020\n\010culdesac\030# \001"
-    "(\010\022\017\n\007footway\030$ \001(\010\022\016\n\006stairs\030% \001(\010\022\020\n\010c"
-    "ycleway\030& \001(\010\022\025\n\rmountain_bike\030\' \001(\010\022\014\n\004"
-    "rail\030( \001(\010\022\013\n\003bus\030) \001(\010\022\032\n\022transit_conne"
-    "ction\030* \001(\010\022\r\n\005other\030+ \001(\010\022D\n\022transit_ro"
-    "ute_info\030, \001(\0132(.valhalla.odin.TripPath."
-    "TransitRouteInfo\032\237\002\n\020IntersectingEdge\022\025\n"
-    "\rbegin_heading\030\001 \001(\r\022\035\n\025prev_name_consis"
-    "tency\030\002 \001(\010\022\035\n\025curr_name_consistency\030\003 \001"
-    "(\010\022<\n\014driveability\030\004 \001(\0162&.valhalla.odin"
-    ".TripPath.Traversability\022;\n\013cyclability\030"
-    "\005 \001(\0162&.valhalla.odin.TripPath.Traversab"
-    "ility\022;\n\013walkability\030\006 \001(\0162&.valhalla.od"
-    "in.TripPath.Traversability\032\246\002\n\017TransitSt"
-    "opInfo\022:\n\004type\030\001 \001(\0162,.valhalla.odin.Tri"
-    "pPath.TransitStopInfo.Type\022\022\n\nonestop_id"
-    "\030\002 \001(\t\022\014\n\004name\030\003 \001(\t\022\031\n\021arrival_date_tim"
-    "e\030\004 \001(\t\022\033\n\023departure_date_time\030\005 \001(\t\022\026\n\016"
-    "is_parent_stop\030\006 \001(\010\022\030\n\020assumed_schedule"
-    "\030\007 \001(\010\022*\n\002ll\030\010 \001(\0132\036.valhalla.odin.TripP"
-    "ath.LatLng\"\037\n\004Type\022\t\n\005kStop\020\000\022\014\n\010kStatio"
-    "n\020\001\032\204\003\n\004Node\022*\n\004edge\030\001 \001(\0132\034.valhalla.od"
-    "in.TripPath.Edge\022C\n\021intersecting_edge\030\002 "
-    "\003(\0132(.valhalla.odin.TripPath.Intersectin"
-    "gEdge\022\024\n\014elapsed_time\030\003 \001(\r\022\023\n\013admin_ind"
-    "ex\030\004 \001(\r\022\033\n\023street_intersection\030\005 \001(\010\022\014\n"
-    "\004gate\030\006 \001(\010\022\017\n\007bollard\030\007 \001(\010\022\022\n\ntoll_boo"
-    "th\030\010 \001(\010\022\022\n\nbike_share\030\t \001(\010\022\017\n\007parking\030"
-    "\n \001(\010\022\031\n\021motorway_junction\030\013 \001(\010\022\014\n\004fork"
-    "\030\014 \001(\010\022B\n\021transit_stop_info\030\r \001(\0132\'.valh"
-    "alla.odin.TripPath.TransitStopInfo\032[\n\005Ad"
-    "min\022\024\n\014country_code\030\001 \001(\t\022\024\n\014country_tex"
-    "t\030\002 \001(\t\022\022\n\nstate_code\030\003 \001(\t\022\022\n\nstate_tex"
-    "t\030\004 \001(\t\"C\n\016Traversability\022\t\n\005kNone\020\000\022\014\n\010"
-    "kForward\020\001\022\r\n\tkBackward\020\002\022\t\n\005kBoth\020\003\"\213\001\n"
-    "\tRoadClass\022\r\n\tkMotorway\020\000\022\n\n\006kTrunk\020\001\022\014\n"
-    "\010kPrimary\020\002\022\016\n\nkSecondary\020\003\022\r\n\tkTertiary"
-    "\020\004\022\021\n\rkUnclassified\020\005\022\020\n\014kResidential\020\006\022"
-    "\021\n\rkServiceOther\020\007\"E\n\nTravelMode\022\n\n\006kDri"
-    "ve\020\000\022\017\n\013kPedestrian\020\001\022\014\n\010kBicycle\020\002\022\014\n\010k"
-    "Transit\020\003\"S\n\013VehicleType\022\010\n\004kCar\020\000\022\017\n\013kM"
-    "otorcycle\020\001\022\023\n\017kFourWheelDrive\020\002\022\024\n\020kTra"
-    "ctorTrailers\020\003\"9\n\016PedestrianType\022\t\n\005kFoo"
-    "t\020\000\022\017\n\013kWheelChair\020\001\022\013\n\007kSegway\020\002\"K\n\013Bic"
-    "ycleType\022\t\n\005kRoad\020\000\022\013\n\007kHybrid\020\001\022\t\n\005kCit"
-    "y\020\002\022\n\n\006kCross\020\003\022\r\n\tkMountain\020\004\"r\n\013Transi"
-    "tType\022\t\n\005kTram\020\000\022\n\n\006kMetro\020\001\022\t\n\005kRail\020\002\022"
-    "\010\n\004kBus\020\003\022\n\n\006kFerry\020\004\022\r\n\tkCableCar\020\005\022\014\n\010"
-    "kGondola\020\006\022\016\n\nkFunicular\020\007", 4106);
+    "la.odin.TripPath.Traversability\022(\n\003use\030\n"
+    " \001(\0162\033.valhalla.odin.TripPath.Use\022\014\n\004tol"
+    "l\030\013 \001(\010\022\017\n\007unpaved\030\014 \001(\010\022\016\n\006tunnel\030\r \001(\010"
+    "\022\016\n\006bridge\030\016 \001(\010\022\022\n\nroundabout\030\017 \001(\010\022\035\n\025"
+    "internal_intersection\030\020 \001(\010\022\034\n\016drive_on_"
+    "right\030\021 \001(\010:\004true\022\026\n\016end_node_index\030\022 \001("
+    "\r\022*\n\004sign\030\023 \001(\0132\034.valhalla.odin.TripPath"
+    ".Sign\0227\n\013travel_mode\030\024 \001(\0162\".valhalla.od"
+    "in.TripPath.TravelMode\0229\n\014vehicle_type\030\025"
+    " \001(\0162#.valhalla.odin.TripPath.VehicleTyp"
+    "e\022\?\n\017pedestrian_type\030\026 \001(\0162&.valhalla.od"
+    "in.TripPath.PedestrianType\0229\n\014bicycle_ty"
+    "pe\030\027 \001(\0162#.valhalla.odin.TripPath.Bicycl"
+    "eType\0229\n\014transit_type\030\030 \001(\0162#.valhalla.o"
+    "din.TripPath.TransitType\022D\n\022transit_rout"
+    "e_info\030\031 \001(\0132(.valhalla.odin.TripPath.Tr"
+    "ansitRouteInfo\022\n\n\002id\030\032 \001(\004\022\016\n\006way_id\030\033 \001"
+    "(\004\022\026\n\016weighted_grade\030\034 \001(\002\022\030\n\020max_upward"
+    "_grade\030\035 \001(\005\022\032\n\022max_downward_grade\030\036 \001(\005"
+    "\032\237\002\n\020IntersectingEdge\022\025\n\rbegin_heading\030\001"
+    " \001(\r\022\035\n\025prev_name_consistency\030\002 \001(\010\022\035\n\025c"
+    "urr_name_consistency\030\003 \001(\010\022<\n\014driveabili"
+    "ty\030\004 \001(\0162&.valhalla.odin.TripPath.Traver"
+    "sability\022;\n\013cyclability\030\005 \001(\0162&.valhalla"
+    ".odin.TripPath.Traversability\022;\n\013walkabi"
+    "lity\030\006 \001(\0162&.valhalla.odin.TripPath.Trav"
+    "ersability\032\246\002\n\017TransitStopInfo\022:\n\004type\030\001"
+    " \001(\0162,.valhalla.odin.TripPath.TransitSto"
+    "pInfo.Type\022\022\n\nonestop_id\030\002 \001(\t\022\014\n\004name\030\003"
+    " \001(\t\022\031\n\021arrival_date_time\030\004 \001(\t\022\033\n\023depar"
+    "ture_date_time\030\005 \001(\t\022\026\n\016is_parent_stop\030\006"
+    " \001(\010\022\030\n\020assumed_schedule\030\007 \001(\010\022*\n\002ll\030\010 \001"
+    "(\0132\036.valhalla.odin.TripPath.LatLng\"\037\n\004Ty"
+    "pe\022\t\n\005kStop\020\000\022\014\n\010kStation\020\001\032\323\003\n\004Node\022*\n\004"
+    "edge\030\001 \001(\0132\034.valhalla.odin.TripPath.Edge"
+    "\022C\n\021intersecting_edge\030\002 \003(\0132(.valhalla.o"
+    "din.TripPath.IntersectingEdge\022\024\n\014elapsed"
+    "_time\030\003 \001(\r\022\023\n\013admin_index\030\004 \001(\r\022/\n\004type"
+    "\030\005 \001(\0162!.valhalla.odin.TripPath.Node.Typ"
+    "e\022\014\n\004fork\030\006 \001(\010\022B\n\021transit_stop_info\030\007 \001"
+    "(\0132\'.valhalla.odin.TripPath.TransitStopI"
+    "nfo\"\253\001\n\004Type\022\027\n\023kStreetIntersection\020\000\022\t\n"
+    "\005kGate\020\001\022\014\n\010kBollard\020\002\022\016\n\nkTollBooth\020\003\022\030"
+    "\n\024kMultiUseTransitStop\020\006\022\016\n\nkBikeShare\020\007"
+    "\022\014\n\010kParking\020\010\022\025\n\021kMotorwayJunction\020\t\022\022\n"
+    "\016kBorderControl\020\n\032[\n\005Admin\022\024\n\014country_co"
+    "de\030\001 \001(\t\022\024\n\014country_text\030\002 \001(\t\022\022\n\nstate_"
+    "code\030\003 \001(\t\022\022\n\nstate_text\030\004 \001(\t\"C\n\016Traver"
+    "sability\022\t\n\005kNone\020\000\022\014\n\010kForward\020\001\022\r\n\tkBa"
+    "ckward\020\002\022\t\n\005kBoth\020\003\"\213\001\n\tRoadClass\022\r\n\tkMo"
+    "torway\020\000\022\n\n\006kTrunk\020\001\022\014\n\010kPrimary\020\002\022\016\n\nkS"
+    "econdary\020\003\022\r\n\tkTertiary\020\004\022\021\n\rkUnclassifi"
+    "ed\020\005\022\020\n\014kResidential\020\006\022\021\n\rkServiceOther\020"
+    "\007\"\337\003\n\003Use\022\014\n\010kRoadUse\020\000\022\014\n\010kRampUse\020\001\022\023\n"
+    "\017kTurnChannelUse\020\002\022\r\n\tkTrackUse\020\003\022\020\n\014kDr"
+    "ivewayUse\020\004\022\r\n\tkAlleyUse\020\005\022\024\n\020kParkingAi"
+    "sleUse\020\006\022\027\n\023kEmergencyAccessUse\020\007\022\021\n\rkDr"
+    "iveThruUse\020\010\022\020\n\014kCuldesacUse\020\t\022\020\n\014kCycle"
+    "wayUse\020\024\022\024\n\020kMountainBikeUse\020\025\022\020\n\014kSidew"
+    "alkUse\020\030\022\017\n\013kFootwayUse\020\031\022\r\n\tkStepsUse\020\032"
+    "\022\014\n\010kPathUse\020\033\022\022\n\016kPedestrianUse\020\034\022\021\n\rkB"
+    "ridlewayUse\020\035\022\r\n\tkOtherUse\020(\022\r\n\tkFerryUs"
+    "e\020)\022\021\n\rkRailFerryUse\020*\022\014\n\010kRailUse\0202\022\013\n\007"
+    "kBusUse\0203\022\026\n\022kRailConnectionUse\0204\022\025\n\021kBu"
+    "sConnectionUse\0205\022\031\n\025kTransitConnectionUs"
+    "e\0206\"E\n\nTravelMode\022\n\n\006kDrive\020\000\022\017\n\013kPedest"
+    "rian\020\001\022\014\n\010kBicycle\020\002\022\014\n\010kTransit\020\003\"K\n\013Ve"
+    "hicleType\022\010\n\004kCar\020\000\022\017\n\013kMotorcycle\020\001\022\014\n\010"
+    "kAutoBus\020\002\022\023\n\017kTractorTrailer\020\003\"9\n\016Pedes"
+    "trianType\022\t\n\005kFoot\020\000\022\017\n\013kWheelchair\020\001\022\013\n"
+    "\007kSegway\020\002\"@\n\013BicycleType\022\t\n\005kRoad\020\000\022\n\n\006"
+    "kCross\020\001\022\013\n\007kHybrid\020\002\022\r\n\tkMountain\020\003\"r\n\013"
+    "TransitType\022\t\n\005kTram\020\000\022\n\n\006kMetro\020\001\022\t\n\005kR"
+    "ail\020\002\022\010\n\004kBus\020\003\022\n\n\006kFerry\020\004\022\r\n\tkCableCar"
+    "\020\005\022\014\n\010kGondola\020\006\022\016\n\nkFunicular\020\007", 4432);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "trippath.proto", &protobuf_RegisterTypes);
   TripPath::default_instance_ = new TripPath();
@@ -619,6 +611,75 @@ const TripPath_RoadClass TripPath::RoadClass_MIN;
 const TripPath_RoadClass TripPath::RoadClass_MAX;
 const int TripPath::RoadClass_ARRAYSIZE;
 #endif  // _MSC_VER
+const ::google::protobuf::EnumDescriptor* TripPath_Use_descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return TripPath_Use_descriptor_;
+}
+bool TripPath_Use_IsValid(int value) {
+  switch(value) {
+    case 0:
+    case 1:
+    case 2:
+    case 3:
+    case 4:
+    case 5:
+    case 6:
+    case 7:
+    case 8:
+    case 9:
+    case 20:
+    case 21:
+    case 24:
+    case 25:
+    case 26:
+    case 27:
+    case 28:
+    case 29:
+    case 40:
+    case 41:
+    case 42:
+    case 50:
+    case 51:
+    case 52:
+    case 53:
+    case 54:
+      return true;
+    default:
+      return false;
+  }
+}
+
+#ifndef _MSC_VER
+const TripPath_Use TripPath::kRoadUse;
+const TripPath_Use TripPath::kRampUse;
+const TripPath_Use TripPath::kTurnChannelUse;
+const TripPath_Use TripPath::kTrackUse;
+const TripPath_Use TripPath::kDrivewayUse;
+const TripPath_Use TripPath::kAlleyUse;
+const TripPath_Use TripPath::kParkingAisleUse;
+const TripPath_Use TripPath::kEmergencyAccessUse;
+const TripPath_Use TripPath::kDriveThruUse;
+const TripPath_Use TripPath::kCuldesacUse;
+const TripPath_Use TripPath::kCyclewayUse;
+const TripPath_Use TripPath::kMountainBikeUse;
+const TripPath_Use TripPath::kSidewalkUse;
+const TripPath_Use TripPath::kFootwayUse;
+const TripPath_Use TripPath::kStepsUse;
+const TripPath_Use TripPath::kPathUse;
+const TripPath_Use TripPath::kPedestrianUse;
+const TripPath_Use TripPath::kBridlewayUse;
+const TripPath_Use TripPath::kOtherUse;
+const TripPath_Use TripPath::kFerryUse;
+const TripPath_Use TripPath::kRailFerryUse;
+const TripPath_Use TripPath::kRailUse;
+const TripPath_Use TripPath::kBusUse;
+const TripPath_Use TripPath::kRailConnectionUse;
+const TripPath_Use TripPath::kBusConnectionUse;
+const TripPath_Use TripPath::kTransitConnectionUse;
+const TripPath_Use TripPath::Use_MIN;
+const TripPath_Use TripPath::Use_MAX;
+const int TripPath::Use_ARRAYSIZE;
+#endif  // _MSC_VER
 const ::google::protobuf::EnumDescriptor* TripPath_TravelMode_descriptor() {
   protobuf_AssignDescriptorsOnce();
   return TripPath_TravelMode_descriptor_;
@@ -663,8 +724,8 @@ bool TripPath_VehicleType_IsValid(int value) {
 #ifndef _MSC_VER
 const TripPath_VehicleType TripPath::kCar;
 const TripPath_VehicleType TripPath::kMotorcycle;
-const TripPath_VehicleType TripPath::kFourWheelDrive;
-const TripPath_VehicleType TripPath::kTractorTrailers;
+const TripPath_VehicleType TripPath::kAutoBus;
+const TripPath_VehicleType TripPath::kTractorTrailer;
 const TripPath_VehicleType TripPath::VehicleType_MIN;
 const TripPath_VehicleType TripPath::VehicleType_MAX;
 const int TripPath::VehicleType_ARRAYSIZE;
@@ -686,7 +747,7 @@ bool TripPath_PedestrianType_IsValid(int value) {
 
 #ifndef _MSC_VER
 const TripPath_PedestrianType TripPath::kFoot;
-const TripPath_PedestrianType TripPath::kWheelChair;
+const TripPath_PedestrianType TripPath::kWheelchair;
 const TripPath_PedestrianType TripPath::kSegway;
 const TripPath_PedestrianType TripPath::PedestrianType_MIN;
 const TripPath_PedestrianType TripPath::PedestrianType_MAX;
@@ -702,7 +763,6 @@ bool TripPath_BicycleType_IsValid(int value) {
     case 1:
     case 2:
     case 3:
-    case 4:
       return true;
     default:
       return false;
@@ -711,9 +771,8 @@ bool TripPath_BicycleType_IsValid(int value) {
 
 #ifndef _MSC_VER
 const TripPath_BicycleType TripPath::kRoad;
-const TripPath_BicycleType TripPath::kHybrid;
-const TripPath_BicycleType TripPath::kCity;
 const TripPath_BicycleType TripPath::kCross;
+const TripPath_BicycleType TripPath::kHybrid;
 const TripPath_BicycleType TripPath::kMountain;
 const TripPath_BicycleType TripPath::BicycleType_MIN;
 const TripPath_BicycleType TripPath::BicycleType_MAX;
@@ -3203,16 +3262,14 @@ const int TripPath_Edge::kEndHeadingFieldNumber;
 const int TripPath_Edge::kBeginShapeIndexFieldNumber;
 const int TripPath_Edge::kEndShapeIndexFieldNumber;
 const int TripPath_Edge::kTraversabilityFieldNumber;
-const int TripPath_Edge::kRampFieldNumber;
-const int TripPath_Edge::kTurnChannelFieldNumber;
-const int TripPath_Edge::kFerryFieldNumber;
-const int TripPath_Edge::kRailFerryFieldNumber;
+const int TripPath_Edge::kUseFieldNumber;
 const int TripPath_Edge::kTollFieldNumber;
 const int TripPath_Edge::kUnpavedFieldNumber;
 const int TripPath_Edge::kTunnelFieldNumber;
 const int TripPath_Edge::kBridgeFieldNumber;
 const int TripPath_Edge::kRoundaboutFieldNumber;
 const int TripPath_Edge::kInternalIntersectionFieldNumber;
+const int TripPath_Edge::kDriveOnRightFieldNumber;
 const int TripPath_Edge::kEndNodeIndexFieldNumber;
 const int TripPath_Edge::kSignFieldNumber;
 const int TripPath_Edge::kTravelModeFieldNumber;
@@ -3220,24 +3277,12 @@ const int TripPath_Edge::kVehicleTypeFieldNumber;
 const int TripPath_Edge::kPedestrianTypeFieldNumber;
 const int TripPath_Edge::kBicycleTypeFieldNumber;
 const int TripPath_Edge::kTransitTypeFieldNumber;
-const int TripPath_Edge::kDriveOnRightFieldNumber;
-const int TripPath_Edge::kRoadFieldNumber;
-const int TripPath_Edge::kTrackFieldNumber;
-const int TripPath_Edge::kDrivewayFieldNumber;
-const int TripPath_Edge::kAlleyFieldNumber;
-const int TripPath_Edge::kParkingAisleFieldNumber;
-const int TripPath_Edge::kEmergencyAccessFieldNumber;
-const int TripPath_Edge::kDriveThruFieldNumber;
-const int TripPath_Edge::kCuldesacFieldNumber;
-const int TripPath_Edge::kFootwayFieldNumber;
-const int TripPath_Edge::kStairsFieldNumber;
-const int TripPath_Edge::kCyclewayFieldNumber;
-const int TripPath_Edge::kMountainBikeFieldNumber;
-const int TripPath_Edge::kRailFieldNumber;
-const int TripPath_Edge::kBusFieldNumber;
-const int TripPath_Edge::kTransitConnectionFieldNumber;
-const int TripPath_Edge::kOtherFieldNumber;
 const int TripPath_Edge::kTransitRouteInfoFieldNumber;
+const int TripPath_Edge::kIdFieldNumber;
+const int TripPath_Edge::kWayIdFieldNumber;
+const int TripPath_Edge::kWeightedGradeFieldNumber;
+const int TripPath_Edge::kMaxUpwardGradeFieldNumber;
+const int TripPath_Edge::kMaxDownwardGradeFieldNumber;
 #endif  // !_MSC_VER
 
 TripPath_Edge::TripPath_Edge()
@@ -3266,16 +3311,14 @@ void TripPath_Edge::SharedCtor() {
   begin_shape_index_ = 0u;
   end_shape_index_ = 0u;
   traversability_ = 0;
-  ramp_ = false;
-  turn_channel_ = false;
-  ferry_ = false;
-  rail_ferry_ = false;
+  use_ = 0;
   toll_ = false;
   unpaved_ = false;
   tunnel_ = false;
   bridge_ = false;
   roundabout_ = false;
   internal_intersection_ = false;
+  drive_on_right_ = true;
   end_node_index_ = 0u;
   sign_ = NULL;
   travel_mode_ = 0;
@@ -3283,24 +3326,12 @@ void TripPath_Edge::SharedCtor() {
   pedestrian_type_ = 0;
   bicycle_type_ = 0;
   transit_type_ = 0;
-  drive_on_right_ = true;
-  road_ = false;
-  track_ = false;
-  driveway_ = false;
-  alley_ = false;
-  parking_aisle_ = false;
-  emergency_access_ = false;
-  drive_thru_ = false;
-  culdesac_ = false;
-  footway_ = false;
-  stairs_ = false;
-  cycleway_ = false;
-  mountain_bike_ = false;
-  rail_ = false;
-  bus_ = false;
-  transit_connection_ = false;
-  other_ = false;
   transit_route_info_ = NULL;
+  id_ = GOOGLE_ULONGLONG(0);
+  way_id_ = GOOGLE_ULONGLONG(0);
+  weighted_grade_ = 0;
+  max_upward_grade_ = 0;
+  max_downward_grade_ = 0;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -3348,18 +3379,16 @@ void TripPath_Edge::Clear() {
   }
   if (_has_bits_[8 / 32] & (0xffu << (8 % 32))) {
     traversability_ = 0;
-    ramp_ = false;
-    turn_channel_ = false;
-    ferry_ = false;
-    rail_ferry_ = false;
+    use_ = 0;
     toll_ = false;
     unpaved_ = false;
     tunnel_ = false;
-  }
-  if (_has_bits_[16 / 32] & (0xffu << (16 % 32))) {
     bridge_ = false;
     roundabout_ = false;
     internal_intersection_ = false;
+  }
+  if (_has_bits_[16 / 32] & (0xffu << (16 % 32))) {
+    drive_on_right_ = true;
     end_node_index_ = 0u;
     if (has_sign()) {
       if (sign_ != NULL) sign_->::valhalla::odin::TripPath_Sign::Clear();
@@ -3367,34 +3396,18 @@ void TripPath_Edge::Clear() {
     travel_mode_ = 0;
     vehicle_type_ = 0;
     pedestrian_type_ = 0;
-  }
-  if (_has_bits_[24 / 32] & (0xffu << (24 % 32))) {
     bicycle_type_ = 0;
     transit_type_ = 0;
-    drive_on_right_ = true;
-    road_ = false;
-    track_ = false;
-    driveway_ = false;
-    alley_ = false;
-    parking_aisle_ = false;
   }
-  if (_has_bits_[32 / 32] & (0xffu << (32 % 32))) {
-    emergency_access_ = false;
-    drive_thru_ = false;
-    culdesac_ = false;
-    footway_ = false;
-    stairs_ = false;
-    cycleway_ = false;
-    mountain_bike_ = false;
-    rail_ = false;
-  }
-  if (_has_bits_[40 / 32] & (0xffu << (40 % 32))) {
-    bus_ = false;
-    transit_connection_ = false;
-    other_ = false;
+  if (_has_bits_[24 / 32] & (0xffu << (24 % 32))) {
     if (has_transit_route_info()) {
       if (transit_route_info_ != NULL) transit_route_info_->::valhalla::odin::TripPath_TransitRouteInfo::Clear();
     }
+    id_ = GOOGLE_ULONGLONG(0);
+    way_id_ = GOOGLE_ULONGLONG(0);
+    weighted_grade_ = 0;
+    max_upward_grade_ = 0;
+    max_downward_grade_ = 0;
   }
   name_.Clear();
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
@@ -3560,76 +3573,33 @@ bool TripPath_Edge::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(80)) goto parse_ramp;
+        if (input->ExpectTag(80)) goto parse_use;
         break;
       }
 
-      // optional bool ramp = 10;
+      // optional .valhalla.odin.TripPath.Use use = 10;
       case 10: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-         parse_ramp:
+         parse_use:
+          int value;
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
-                 input, &ramp_)));
-          set_has_ramp();
+                   int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
+                 input, &value)));
+          if (::valhalla::odin::TripPath_Use_IsValid(value)) {
+            set_use(static_cast< ::valhalla::odin::TripPath_Use >(value));
+          } else {
+            mutable_unknown_fields()->AddVarint(10, value);
+          }
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(88)) goto parse_turn_channel;
+        if (input->ExpectTag(88)) goto parse_toll;
         break;
       }
 
-      // optional bool turn_channel = 11;
+      // optional bool toll = 11;
       case 11: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-         parse_turn_channel:
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
-                 input, &turn_channel_)));
-          set_has_turn_channel();
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(96)) goto parse_ferry;
-        break;
-      }
-
-      // optional bool ferry = 12;
-      case 12: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-         parse_ferry:
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
-                 input, &ferry_)));
-          set_has_ferry();
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(104)) goto parse_rail_ferry;
-        break;
-      }
-
-      // optional bool rail_ferry = 13;
-      case 13: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-         parse_rail_ferry:
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
-                 input, &rail_ferry_)));
-          set_has_rail_ferry();
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(112)) goto parse_toll;
-        break;
-      }
-
-      // optional bool toll = 14;
-      case 14: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
          parse_toll:
@@ -3640,12 +3610,12 @@ bool TripPath_Edge::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(120)) goto parse_unpaved;
+        if (input->ExpectTag(96)) goto parse_unpaved;
         break;
       }
 
-      // optional bool unpaved = 15;
-      case 15: {
+      // optional bool unpaved = 12;
+      case 12: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
          parse_unpaved:
@@ -3656,12 +3626,12 @@ bool TripPath_Edge::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(128)) goto parse_tunnel;
+        if (input->ExpectTag(104)) goto parse_tunnel;
         break;
       }
 
-      // optional bool tunnel = 16;
-      case 16: {
+      // optional bool tunnel = 13;
+      case 13: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
          parse_tunnel:
@@ -3672,12 +3642,12 @@ bool TripPath_Edge::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(136)) goto parse_bridge;
+        if (input->ExpectTag(112)) goto parse_bridge;
         break;
       }
 
-      // optional bool bridge = 17;
-      case 17: {
+      // optional bool bridge = 14;
+      case 14: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
          parse_bridge:
@@ -3688,12 +3658,12 @@ bool TripPath_Edge::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(144)) goto parse_roundabout;
+        if (input->ExpectTag(120)) goto parse_roundabout;
         break;
       }
 
-      // optional bool roundabout = 18;
-      case 18: {
+      // optional bool roundabout = 15;
+      case 15: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
          parse_roundabout:
@@ -3704,12 +3674,12 @@ bool TripPath_Edge::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(152)) goto parse_internal_intersection;
+        if (input->ExpectTag(128)) goto parse_internal_intersection;
         break;
       }
 
-      // optional bool internal_intersection = 19;
-      case 19: {
+      // optional bool internal_intersection = 16;
+      case 16: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
          parse_internal_intersection:
@@ -3720,147 +3690,12 @@ bool TripPath_Edge::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(160)) goto parse_end_node_index;
+        if (input->ExpectTag(136)) goto parse_drive_on_right;
         break;
       }
 
-      // optional uint32 end_node_index = 20;
-      case 20: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-         parse_end_node_index:
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
-                 input, &end_node_index_)));
-          set_has_end_node_index();
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(170)) goto parse_sign;
-        break;
-      }
-
-      // optional .valhalla.odin.TripPath.Sign sign = 21;
-      case 21: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
-         parse_sign:
-          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
-               input, mutable_sign()));
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(176)) goto parse_travel_mode;
-        break;
-      }
-
-      // optional .valhalla.odin.TripPath.TravelMode travel_mode = 22;
-      case 22: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-         parse_travel_mode:
-          int value;
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
-                 input, &value)));
-          if (::valhalla::odin::TripPath_TravelMode_IsValid(value)) {
-            set_travel_mode(static_cast< ::valhalla::odin::TripPath_TravelMode >(value));
-          } else {
-            mutable_unknown_fields()->AddVarint(22, value);
-          }
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(184)) goto parse_vehicle_type;
-        break;
-      }
-
-      // optional .valhalla.odin.TripPath.VehicleType vehicle_type = 23;
-      case 23: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-         parse_vehicle_type:
-          int value;
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
-                 input, &value)));
-          if (::valhalla::odin::TripPath_VehicleType_IsValid(value)) {
-            set_vehicle_type(static_cast< ::valhalla::odin::TripPath_VehicleType >(value));
-          } else {
-            mutable_unknown_fields()->AddVarint(23, value);
-          }
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(192)) goto parse_pedestrian_type;
-        break;
-      }
-
-      // optional .valhalla.odin.TripPath.PedestrianType pedestrian_type = 24;
-      case 24: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-         parse_pedestrian_type:
-          int value;
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
-                 input, &value)));
-          if (::valhalla::odin::TripPath_PedestrianType_IsValid(value)) {
-            set_pedestrian_type(static_cast< ::valhalla::odin::TripPath_PedestrianType >(value));
-          } else {
-            mutable_unknown_fields()->AddVarint(24, value);
-          }
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(200)) goto parse_bicycle_type;
-        break;
-      }
-
-      // optional .valhalla.odin.TripPath.BicycleType bicycle_type = 25;
-      case 25: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-         parse_bicycle_type:
-          int value;
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
-                 input, &value)));
-          if (::valhalla::odin::TripPath_BicycleType_IsValid(value)) {
-            set_bicycle_type(static_cast< ::valhalla::odin::TripPath_BicycleType >(value));
-          } else {
-            mutable_unknown_fields()->AddVarint(25, value);
-          }
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(208)) goto parse_transit_type;
-        break;
-      }
-
-      // optional .valhalla.odin.TripPath.TransitType transit_type = 26;
-      case 26: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-         parse_transit_type:
-          int value;
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
-                 input, &value)));
-          if (::valhalla::odin::TripPath_TransitType_IsValid(value)) {
-            set_transit_type(static_cast< ::valhalla::odin::TripPath_TransitType >(value));
-          } else {
-            mutable_unknown_fields()->AddVarint(26, value);
-          }
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(216)) goto parse_drive_on_right;
-        break;
-      }
-
-      // optional bool drive_on_right = 27 [default = true];
-      case 27: {
+      // optional bool drive_on_right = 17 [default = true];
+      case 17: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
          parse_drive_on_right:
@@ -3871,273 +3706,232 @@ bool TripPath_Edge::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(224)) goto parse_road;
+        if (input->ExpectTag(144)) goto parse_end_node_index;
         break;
       }
 
-      // optional bool road = 28;
-      case 28: {
+      // optional uint32 end_node_index = 18;
+      case 18: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-         parse_road:
+         parse_end_node_index:
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
-                 input, &road_)));
-          set_has_road();
+                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
+                 input, &end_node_index_)));
+          set_has_end_node_index();
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(232)) goto parse_track;
+        if (input->ExpectTag(154)) goto parse_sign;
         break;
       }
 
-      // optional bool track = 29;
-      case 29: {
+      // optional .valhalla.odin.TripPath.Sign sign = 19;
+      case 19: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-         parse_track:
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
-                 input, &track_)));
-          set_has_track();
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_sign:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+               input, mutable_sign()));
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(240)) goto parse_driveway;
+        if (input->ExpectTag(160)) goto parse_travel_mode;
         break;
       }
 
-      // optional bool driveway = 30;
-      case 30: {
+      // optional .valhalla.odin.TripPath.TravelMode travel_mode = 20;
+      case 20: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-         parse_driveway:
+         parse_travel_mode:
+          int value;
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
-                 input, &driveway_)));
-          set_has_driveway();
+                   int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
+                 input, &value)));
+          if (::valhalla::odin::TripPath_TravelMode_IsValid(value)) {
+            set_travel_mode(static_cast< ::valhalla::odin::TripPath_TravelMode >(value));
+          } else {
+            mutable_unknown_fields()->AddVarint(20, value);
+          }
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(248)) goto parse_alley;
+        if (input->ExpectTag(168)) goto parse_vehicle_type;
         break;
       }
 
-      // optional bool alley = 31;
-      case 31: {
+      // optional .valhalla.odin.TripPath.VehicleType vehicle_type = 21;
+      case 21: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-         parse_alley:
+         parse_vehicle_type:
+          int value;
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
-                 input, &alley_)));
-          set_has_alley();
+                   int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
+                 input, &value)));
+          if (::valhalla::odin::TripPath_VehicleType_IsValid(value)) {
+            set_vehicle_type(static_cast< ::valhalla::odin::TripPath_VehicleType >(value));
+          } else {
+            mutable_unknown_fields()->AddVarint(21, value);
+          }
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(256)) goto parse_parking_aisle;
+        if (input->ExpectTag(176)) goto parse_pedestrian_type;
         break;
       }
 
-      // optional bool parking_aisle = 32;
-      case 32: {
+      // optional .valhalla.odin.TripPath.PedestrianType pedestrian_type = 22;
+      case 22: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-         parse_parking_aisle:
+         parse_pedestrian_type:
+          int value;
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
-                 input, &parking_aisle_)));
-          set_has_parking_aisle();
+                   int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
+                 input, &value)));
+          if (::valhalla::odin::TripPath_PedestrianType_IsValid(value)) {
+            set_pedestrian_type(static_cast< ::valhalla::odin::TripPath_PedestrianType >(value));
+          } else {
+            mutable_unknown_fields()->AddVarint(22, value);
+          }
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(264)) goto parse_emergency_access;
+        if (input->ExpectTag(184)) goto parse_bicycle_type;
         break;
       }
 
-      // optional bool emergency_access = 33;
-      case 33: {
+      // optional .valhalla.odin.TripPath.BicycleType bicycle_type = 23;
+      case 23: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-         parse_emergency_access:
+         parse_bicycle_type:
+          int value;
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
-                 input, &emergency_access_)));
-          set_has_emergency_access();
+                   int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
+                 input, &value)));
+          if (::valhalla::odin::TripPath_BicycleType_IsValid(value)) {
+            set_bicycle_type(static_cast< ::valhalla::odin::TripPath_BicycleType >(value));
+          } else {
+            mutable_unknown_fields()->AddVarint(23, value);
+          }
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(272)) goto parse_drive_thru;
+        if (input->ExpectTag(192)) goto parse_transit_type;
         break;
       }
 
-      // optional bool drive_thru = 34;
-      case 34: {
+      // optional .valhalla.odin.TripPath.TransitType transit_type = 24;
+      case 24: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-         parse_drive_thru:
+         parse_transit_type:
+          int value;
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
-                 input, &drive_thru_)));
-          set_has_drive_thru();
+                   int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
+                 input, &value)));
+          if (::valhalla::odin::TripPath_TransitType_IsValid(value)) {
+            set_transit_type(static_cast< ::valhalla::odin::TripPath_TransitType >(value));
+          } else {
+            mutable_unknown_fields()->AddVarint(24, value);
+          }
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(280)) goto parse_culdesac;
+        if (input->ExpectTag(202)) goto parse_transit_route_info;
         break;
       }
 
-      // optional bool culdesac = 35;
-      case 35: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-         parse_culdesac:
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
-                 input, &culdesac_)));
-          set_has_culdesac();
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(288)) goto parse_footway;
-        break;
-      }
-
-      // optional bool footway = 36;
-      case 36: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-         parse_footway:
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
-                 input, &footway_)));
-          set_has_footway();
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(296)) goto parse_stairs;
-        break;
-      }
-
-      // optional bool stairs = 37;
-      case 37: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-         parse_stairs:
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
-                 input, &stairs_)));
-          set_has_stairs();
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(304)) goto parse_cycleway;
-        break;
-      }
-
-      // optional bool cycleway = 38;
-      case 38: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-         parse_cycleway:
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
-                 input, &cycleway_)));
-          set_has_cycleway();
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(312)) goto parse_mountain_bike;
-        break;
-      }
-
-      // optional bool mountain_bike = 39;
-      case 39: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-         parse_mountain_bike:
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
-                 input, &mountain_bike_)));
-          set_has_mountain_bike();
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(320)) goto parse_rail;
-        break;
-      }
-
-      // optional bool rail = 40;
-      case 40: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-         parse_rail:
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
-                 input, &rail_)));
-          set_has_rail();
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(328)) goto parse_bus;
-        break;
-      }
-
-      // optional bool bus = 41;
-      case 41: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-         parse_bus:
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
-                 input, &bus_)));
-          set_has_bus();
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(336)) goto parse_transit_connection;
-        break;
-      }
-
-      // optional bool transit_connection = 42;
-      case 42: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-         parse_transit_connection:
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
-                 input, &transit_connection_)));
-          set_has_transit_connection();
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(344)) goto parse_other;
-        break;
-      }
-
-      // optional bool other = 43;
-      case 43: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-         parse_other:
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
-                 input, &other_)));
-          set_has_other();
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(354)) goto parse_transit_route_info;
-        break;
-      }
-
-      // optional .valhalla.odin.TripPath.TransitRouteInfo transit_route_info = 44;
-      case 44: {
+      // optional .valhalla.odin.TripPath.TransitRouteInfo transit_route_info = 25;
+      case 25: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
          parse_transit_route_info:
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
                input, mutable_transit_route_info()));
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(208)) goto parse_id;
+        break;
+      }
+
+      // optional uint64 id = 26;
+      case 26: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_id:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::uint64, ::google::protobuf::internal::WireFormatLite::TYPE_UINT64>(
+                 input, &id_)));
+          set_has_id();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(216)) goto parse_way_id;
+        break;
+      }
+
+      // optional uint64 way_id = 27;
+      case 27: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_way_id:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::uint64, ::google::protobuf::internal::WireFormatLite::TYPE_UINT64>(
+                 input, &way_id_)));
+          set_has_way_id();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(229)) goto parse_weighted_grade;
+        break;
+      }
+
+      // optional float weighted_grade = 28;
+      case 28: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_FIXED32) {
+         parse_weighted_grade:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
+                 input, &weighted_grade_)));
+          set_has_weighted_grade();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(232)) goto parse_max_upward_grade;
+        break;
+      }
+
+      // optional int32 max_upward_grade = 29;
+      case 29: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_max_upward_grade:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &max_upward_grade_)));
+          set_has_max_upward_grade();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(240)) goto parse_max_downward_grade;
+        break;
+      }
+
+      // optional int32 max_downward_grade = 30;
+      case 30: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_max_downward_grade:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &max_downward_grade_)));
+          set_has_max_downward_grade();
         } else {
           goto handle_uninterpreted;
         }
@@ -4214,186 +4008,117 @@ void TripPath_Edge::SerializeWithCachedSizes(
       9, this->traversability(), output);
   }
 
-  // optional bool ramp = 10;
-  if (has_ramp()) {
-    ::google::protobuf::internal::WireFormatLite::WriteBool(10, this->ramp(), output);
+  // optional .valhalla.odin.TripPath.Use use = 10;
+  if (has_use()) {
+    ::google::protobuf::internal::WireFormatLite::WriteEnum(
+      10, this->use(), output);
   }
 
-  // optional bool turn_channel = 11;
-  if (has_turn_channel()) {
-    ::google::protobuf::internal::WireFormatLite::WriteBool(11, this->turn_channel(), output);
-  }
-
-  // optional bool ferry = 12;
-  if (has_ferry()) {
-    ::google::protobuf::internal::WireFormatLite::WriteBool(12, this->ferry(), output);
-  }
-
-  // optional bool rail_ferry = 13;
-  if (has_rail_ferry()) {
-    ::google::protobuf::internal::WireFormatLite::WriteBool(13, this->rail_ferry(), output);
-  }
-
-  // optional bool toll = 14;
+  // optional bool toll = 11;
   if (has_toll()) {
-    ::google::protobuf::internal::WireFormatLite::WriteBool(14, this->toll(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteBool(11, this->toll(), output);
   }
 
-  // optional bool unpaved = 15;
+  // optional bool unpaved = 12;
   if (has_unpaved()) {
-    ::google::protobuf::internal::WireFormatLite::WriteBool(15, this->unpaved(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteBool(12, this->unpaved(), output);
   }
 
-  // optional bool tunnel = 16;
+  // optional bool tunnel = 13;
   if (has_tunnel()) {
-    ::google::protobuf::internal::WireFormatLite::WriteBool(16, this->tunnel(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteBool(13, this->tunnel(), output);
   }
 
-  // optional bool bridge = 17;
+  // optional bool bridge = 14;
   if (has_bridge()) {
-    ::google::protobuf::internal::WireFormatLite::WriteBool(17, this->bridge(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteBool(14, this->bridge(), output);
   }
 
-  // optional bool roundabout = 18;
+  // optional bool roundabout = 15;
   if (has_roundabout()) {
-    ::google::protobuf::internal::WireFormatLite::WriteBool(18, this->roundabout(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteBool(15, this->roundabout(), output);
   }
 
-  // optional bool internal_intersection = 19;
+  // optional bool internal_intersection = 16;
   if (has_internal_intersection()) {
-    ::google::protobuf::internal::WireFormatLite::WriteBool(19, this->internal_intersection(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteBool(16, this->internal_intersection(), output);
   }
 
-  // optional uint32 end_node_index = 20;
+  // optional bool drive_on_right = 17 [default = true];
+  if (has_drive_on_right()) {
+    ::google::protobuf::internal::WireFormatLite::WriteBool(17, this->drive_on_right(), output);
+  }
+
+  // optional uint32 end_node_index = 18;
   if (has_end_node_index()) {
-    ::google::protobuf::internal::WireFormatLite::WriteUInt32(20, this->end_node_index(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteUInt32(18, this->end_node_index(), output);
   }
 
-  // optional .valhalla.odin.TripPath.Sign sign = 21;
+  // optional .valhalla.odin.TripPath.Sign sign = 19;
   if (has_sign()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      21, this->sign(), output);
+      19, this->sign(), output);
   }
 
-  // optional .valhalla.odin.TripPath.TravelMode travel_mode = 22;
+  // optional .valhalla.odin.TripPath.TravelMode travel_mode = 20;
   if (has_travel_mode()) {
     ::google::protobuf::internal::WireFormatLite::WriteEnum(
-      22, this->travel_mode(), output);
+      20, this->travel_mode(), output);
   }
 
-  // optional .valhalla.odin.TripPath.VehicleType vehicle_type = 23;
+  // optional .valhalla.odin.TripPath.VehicleType vehicle_type = 21;
   if (has_vehicle_type()) {
     ::google::protobuf::internal::WireFormatLite::WriteEnum(
-      23, this->vehicle_type(), output);
+      21, this->vehicle_type(), output);
   }
 
-  // optional .valhalla.odin.TripPath.PedestrianType pedestrian_type = 24;
+  // optional .valhalla.odin.TripPath.PedestrianType pedestrian_type = 22;
   if (has_pedestrian_type()) {
     ::google::protobuf::internal::WireFormatLite::WriteEnum(
-      24, this->pedestrian_type(), output);
+      22, this->pedestrian_type(), output);
   }
 
-  // optional .valhalla.odin.TripPath.BicycleType bicycle_type = 25;
+  // optional .valhalla.odin.TripPath.BicycleType bicycle_type = 23;
   if (has_bicycle_type()) {
     ::google::protobuf::internal::WireFormatLite::WriteEnum(
-      25, this->bicycle_type(), output);
+      23, this->bicycle_type(), output);
   }
 
-  // optional .valhalla.odin.TripPath.TransitType transit_type = 26;
+  // optional .valhalla.odin.TripPath.TransitType transit_type = 24;
   if (has_transit_type()) {
     ::google::protobuf::internal::WireFormatLite::WriteEnum(
-      26, this->transit_type(), output);
+      24, this->transit_type(), output);
   }
 
-  // optional bool drive_on_right = 27 [default = true];
-  if (has_drive_on_right()) {
-    ::google::protobuf::internal::WireFormatLite::WriteBool(27, this->drive_on_right(), output);
-  }
-
-  // optional bool road = 28;
-  if (has_road()) {
-    ::google::protobuf::internal::WireFormatLite::WriteBool(28, this->road(), output);
-  }
-
-  // optional bool track = 29;
-  if (has_track()) {
-    ::google::protobuf::internal::WireFormatLite::WriteBool(29, this->track(), output);
-  }
-
-  // optional bool driveway = 30;
-  if (has_driveway()) {
-    ::google::protobuf::internal::WireFormatLite::WriteBool(30, this->driveway(), output);
-  }
-
-  // optional bool alley = 31;
-  if (has_alley()) {
-    ::google::protobuf::internal::WireFormatLite::WriteBool(31, this->alley(), output);
-  }
-
-  // optional bool parking_aisle = 32;
-  if (has_parking_aisle()) {
-    ::google::protobuf::internal::WireFormatLite::WriteBool(32, this->parking_aisle(), output);
-  }
-
-  // optional bool emergency_access = 33;
-  if (has_emergency_access()) {
-    ::google::protobuf::internal::WireFormatLite::WriteBool(33, this->emergency_access(), output);
-  }
-
-  // optional bool drive_thru = 34;
-  if (has_drive_thru()) {
-    ::google::protobuf::internal::WireFormatLite::WriteBool(34, this->drive_thru(), output);
-  }
-
-  // optional bool culdesac = 35;
-  if (has_culdesac()) {
-    ::google::protobuf::internal::WireFormatLite::WriteBool(35, this->culdesac(), output);
-  }
-
-  // optional bool footway = 36;
-  if (has_footway()) {
-    ::google::protobuf::internal::WireFormatLite::WriteBool(36, this->footway(), output);
-  }
-
-  // optional bool stairs = 37;
-  if (has_stairs()) {
-    ::google::protobuf::internal::WireFormatLite::WriteBool(37, this->stairs(), output);
-  }
-
-  // optional bool cycleway = 38;
-  if (has_cycleway()) {
-    ::google::protobuf::internal::WireFormatLite::WriteBool(38, this->cycleway(), output);
-  }
-
-  // optional bool mountain_bike = 39;
-  if (has_mountain_bike()) {
-    ::google::protobuf::internal::WireFormatLite::WriteBool(39, this->mountain_bike(), output);
-  }
-
-  // optional bool rail = 40;
-  if (has_rail()) {
-    ::google::protobuf::internal::WireFormatLite::WriteBool(40, this->rail(), output);
-  }
-
-  // optional bool bus = 41;
-  if (has_bus()) {
-    ::google::protobuf::internal::WireFormatLite::WriteBool(41, this->bus(), output);
-  }
-
-  // optional bool transit_connection = 42;
-  if (has_transit_connection()) {
-    ::google::protobuf::internal::WireFormatLite::WriteBool(42, this->transit_connection(), output);
-  }
-
-  // optional bool other = 43;
-  if (has_other()) {
-    ::google::protobuf::internal::WireFormatLite::WriteBool(43, this->other(), output);
-  }
-
-  // optional .valhalla.odin.TripPath.TransitRouteInfo transit_route_info = 44;
+  // optional .valhalla.odin.TripPath.TransitRouteInfo transit_route_info = 25;
   if (has_transit_route_info()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      44, this->transit_route_info(), output);
+      25, this->transit_route_info(), output);
+  }
+
+  // optional uint64 id = 26;
+  if (has_id()) {
+    ::google::protobuf::internal::WireFormatLite::WriteUInt64(26, this->id(), output);
+  }
+
+  // optional uint64 way_id = 27;
+  if (has_way_id()) {
+    ::google::protobuf::internal::WireFormatLite::WriteUInt64(27, this->way_id(), output);
+  }
+
+  // optional float weighted_grade = 28;
+  if (has_weighted_grade()) {
+    ::google::protobuf::internal::WireFormatLite::WriteFloat(28, this->weighted_grade(), output);
+  }
+
+  // optional int32 max_upward_grade = 29;
+  if (has_max_upward_grade()) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(29, this->max_upward_grade(), output);
+  }
+
+  // optional int32 max_downward_grade = 30;
+  if (has_max_downward_grade()) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(30, this->max_downward_grade(), output);
   }
 
   if (!unknown_fields().empty()) {
@@ -4455,188 +4180,119 @@ void TripPath_Edge::SerializeWithCachedSizes(
       9, this->traversability(), target);
   }
 
-  // optional bool ramp = 10;
-  if (has_ramp()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(10, this->ramp(), target);
+  // optional .valhalla.odin.TripPath.Use use = 10;
+  if (has_use()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
+      10, this->use(), target);
   }
 
-  // optional bool turn_channel = 11;
-  if (has_turn_channel()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(11, this->turn_channel(), target);
-  }
-
-  // optional bool ferry = 12;
-  if (has_ferry()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(12, this->ferry(), target);
-  }
-
-  // optional bool rail_ferry = 13;
-  if (has_rail_ferry()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(13, this->rail_ferry(), target);
-  }
-
-  // optional bool toll = 14;
+  // optional bool toll = 11;
   if (has_toll()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(14, this->toll(), target);
+    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(11, this->toll(), target);
   }
 
-  // optional bool unpaved = 15;
+  // optional bool unpaved = 12;
   if (has_unpaved()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(15, this->unpaved(), target);
+    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(12, this->unpaved(), target);
   }
 
-  // optional bool tunnel = 16;
+  // optional bool tunnel = 13;
   if (has_tunnel()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(16, this->tunnel(), target);
+    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(13, this->tunnel(), target);
   }
 
-  // optional bool bridge = 17;
+  // optional bool bridge = 14;
   if (has_bridge()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(17, this->bridge(), target);
+    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(14, this->bridge(), target);
   }
 
-  // optional bool roundabout = 18;
+  // optional bool roundabout = 15;
   if (has_roundabout()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(18, this->roundabout(), target);
+    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(15, this->roundabout(), target);
   }
 
-  // optional bool internal_intersection = 19;
+  // optional bool internal_intersection = 16;
   if (has_internal_intersection()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(19, this->internal_intersection(), target);
+    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(16, this->internal_intersection(), target);
   }
 
-  // optional uint32 end_node_index = 20;
+  // optional bool drive_on_right = 17 [default = true];
+  if (has_drive_on_right()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(17, this->drive_on_right(), target);
+  }
+
+  // optional uint32 end_node_index = 18;
   if (has_end_node_index()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(20, this->end_node_index(), target);
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(18, this->end_node_index(), target);
   }
 
-  // optional .valhalla.odin.TripPath.Sign sign = 21;
+  // optional .valhalla.odin.TripPath.Sign sign = 19;
   if (has_sign()) {
     target = ::google::protobuf::internal::WireFormatLite::
       WriteMessageNoVirtualToArray(
-        21, this->sign(), target);
+        19, this->sign(), target);
   }
 
-  // optional .valhalla.odin.TripPath.TravelMode travel_mode = 22;
+  // optional .valhalla.odin.TripPath.TravelMode travel_mode = 20;
   if (has_travel_mode()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
-      22, this->travel_mode(), target);
+      20, this->travel_mode(), target);
   }
 
-  // optional .valhalla.odin.TripPath.VehicleType vehicle_type = 23;
+  // optional .valhalla.odin.TripPath.VehicleType vehicle_type = 21;
   if (has_vehicle_type()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
-      23, this->vehicle_type(), target);
+      21, this->vehicle_type(), target);
   }
 
-  // optional .valhalla.odin.TripPath.PedestrianType pedestrian_type = 24;
+  // optional .valhalla.odin.TripPath.PedestrianType pedestrian_type = 22;
   if (has_pedestrian_type()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
-      24, this->pedestrian_type(), target);
+      22, this->pedestrian_type(), target);
   }
 
-  // optional .valhalla.odin.TripPath.BicycleType bicycle_type = 25;
+  // optional .valhalla.odin.TripPath.BicycleType bicycle_type = 23;
   if (has_bicycle_type()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
-      25, this->bicycle_type(), target);
+      23, this->bicycle_type(), target);
   }
 
-  // optional .valhalla.odin.TripPath.TransitType transit_type = 26;
+  // optional .valhalla.odin.TripPath.TransitType transit_type = 24;
   if (has_transit_type()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
-      26, this->transit_type(), target);
+      24, this->transit_type(), target);
   }
 
-  // optional bool drive_on_right = 27 [default = true];
-  if (has_drive_on_right()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(27, this->drive_on_right(), target);
-  }
-
-  // optional bool road = 28;
-  if (has_road()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(28, this->road(), target);
-  }
-
-  // optional bool track = 29;
-  if (has_track()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(29, this->track(), target);
-  }
-
-  // optional bool driveway = 30;
-  if (has_driveway()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(30, this->driveway(), target);
-  }
-
-  // optional bool alley = 31;
-  if (has_alley()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(31, this->alley(), target);
-  }
-
-  // optional bool parking_aisle = 32;
-  if (has_parking_aisle()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(32, this->parking_aisle(), target);
-  }
-
-  // optional bool emergency_access = 33;
-  if (has_emergency_access()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(33, this->emergency_access(), target);
-  }
-
-  // optional bool drive_thru = 34;
-  if (has_drive_thru()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(34, this->drive_thru(), target);
-  }
-
-  // optional bool culdesac = 35;
-  if (has_culdesac()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(35, this->culdesac(), target);
-  }
-
-  // optional bool footway = 36;
-  if (has_footway()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(36, this->footway(), target);
-  }
-
-  // optional bool stairs = 37;
-  if (has_stairs()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(37, this->stairs(), target);
-  }
-
-  // optional bool cycleway = 38;
-  if (has_cycleway()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(38, this->cycleway(), target);
-  }
-
-  // optional bool mountain_bike = 39;
-  if (has_mountain_bike()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(39, this->mountain_bike(), target);
-  }
-
-  // optional bool rail = 40;
-  if (has_rail()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(40, this->rail(), target);
-  }
-
-  // optional bool bus = 41;
-  if (has_bus()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(41, this->bus(), target);
-  }
-
-  // optional bool transit_connection = 42;
-  if (has_transit_connection()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(42, this->transit_connection(), target);
-  }
-
-  // optional bool other = 43;
-  if (has_other()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(43, this->other(), target);
-  }
-
-  // optional .valhalla.odin.TripPath.TransitRouteInfo transit_route_info = 44;
+  // optional .valhalla.odin.TripPath.TransitRouteInfo transit_route_info = 25;
   if (has_transit_route_info()) {
     target = ::google::protobuf::internal::WireFormatLite::
       WriteMessageNoVirtualToArray(
-        44, this->transit_route_info(), target);
+        25, this->transit_route_info(), target);
+  }
+
+  // optional uint64 id = 26;
+  if (has_id()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt64ToArray(26, this->id(), target);
+  }
+
+  // optional uint64 way_id = 27;
+  if (has_way_id()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt64ToArray(27, this->way_id(), target);
+  }
+
+  // optional float weighted_grade = 28;
+  if (has_weighted_grade()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteFloatToArray(28, this->weighted_grade(), target);
+  }
+
+  // optional int32 max_upward_grade = 29;
+  if (has_max_upward_grade()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(29, this->max_upward_grade(), target);
+  }
+
+  // optional int32 max_downward_grade = 30;
+  if (has_max_downward_grade()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(30, this->max_downward_grade(), target);
   }
 
   if (!unknown_fields().empty()) {
@@ -4702,198 +4358,133 @@ int TripPath_Edge::ByteSize() const {
         ::google::protobuf::internal::WireFormatLite::EnumSize(this->traversability());
     }
 
-    // optional bool ramp = 10;
-    if (has_ramp()) {
-      total_size += 1 + 1;
+    // optional .valhalla.odin.TripPath.Use use = 10;
+    if (has_use()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::EnumSize(this->use());
     }
 
-    // optional bool turn_channel = 11;
-    if (has_turn_channel()) {
-      total_size += 1 + 1;
-    }
-
-    // optional bool ferry = 12;
-    if (has_ferry()) {
-      total_size += 1 + 1;
-    }
-
-    // optional bool rail_ferry = 13;
-    if (has_rail_ferry()) {
-      total_size += 1 + 1;
-    }
-
-    // optional bool toll = 14;
+    // optional bool toll = 11;
     if (has_toll()) {
       total_size += 1 + 1;
     }
 
-    // optional bool unpaved = 15;
+    // optional bool unpaved = 12;
     if (has_unpaved()) {
       total_size += 1 + 1;
     }
 
-    // optional bool tunnel = 16;
+    // optional bool tunnel = 13;
     if (has_tunnel()) {
+      total_size += 1 + 1;
+    }
+
+    // optional bool bridge = 14;
+    if (has_bridge()) {
+      total_size += 1 + 1;
+    }
+
+    // optional bool roundabout = 15;
+    if (has_roundabout()) {
+      total_size += 1 + 1;
+    }
+
+    // optional bool internal_intersection = 16;
+    if (has_internal_intersection()) {
       total_size += 2 + 1;
     }
 
   }
   if (_has_bits_[16 / 32] & (0xffu << (16 % 32))) {
-    // optional bool bridge = 17;
-    if (has_bridge()) {
+    // optional bool drive_on_right = 17 [default = true];
+    if (has_drive_on_right()) {
       total_size += 2 + 1;
     }
 
-    // optional bool roundabout = 18;
-    if (has_roundabout()) {
-      total_size += 2 + 1;
-    }
-
-    // optional bool internal_intersection = 19;
-    if (has_internal_intersection()) {
-      total_size += 2 + 1;
-    }
-
-    // optional uint32 end_node_index = 20;
+    // optional uint32 end_node_index = 18;
     if (has_end_node_index()) {
       total_size += 2 +
         ::google::protobuf::internal::WireFormatLite::UInt32Size(
           this->end_node_index());
     }
 
-    // optional .valhalla.odin.TripPath.Sign sign = 21;
+    // optional .valhalla.odin.TripPath.Sign sign = 19;
     if (has_sign()) {
       total_size += 2 +
         ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
           this->sign());
     }
 
-    // optional .valhalla.odin.TripPath.TravelMode travel_mode = 22;
+    // optional .valhalla.odin.TripPath.TravelMode travel_mode = 20;
     if (has_travel_mode()) {
       total_size += 2 +
         ::google::protobuf::internal::WireFormatLite::EnumSize(this->travel_mode());
     }
 
-    // optional .valhalla.odin.TripPath.VehicleType vehicle_type = 23;
+    // optional .valhalla.odin.TripPath.VehicleType vehicle_type = 21;
     if (has_vehicle_type()) {
       total_size += 2 +
         ::google::protobuf::internal::WireFormatLite::EnumSize(this->vehicle_type());
     }
 
-    // optional .valhalla.odin.TripPath.PedestrianType pedestrian_type = 24;
+    // optional .valhalla.odin.TripPath.PedestrianType pedestrian_type = 22;
     if (has_pedestrian_type()) {
       total_size += 2 +
         ::google::protobuf::internal::WireFormatLite::EnumSize(this->pedestrian_type());
     }
 
-  }
-  if (_has_bits_[24 / 32] & (0xffu << (24 % 32))) {
-    // optional .valhalla.odin.TripPath.BicycleType bicycle_type = 25;
+    // optional .valhalla.odin.TripPath.BicycleType bicycle_type = 23;
     if (has_bicycle_type()) {
       total_size += 2 +
         ::google::protobuf::internal::WireFormatLite::EnumSize(this->bicycle_type());
     }
 
-    // optional .valhalla.odin.TripPath.TransitType transit_type = 26;
+    // optional .valhalla.odin.TripPath.TransitType transit_type = 24;
     if (has_transit_type()) {
       total_size += 2 +
         ::google::protobuf::internal::WireFormatLite::EnumSize(this->transit_type());
     }
 
-    // optional bool drive_on_right = 27 [default = true];
-    if (has_drive_on_right()) {
-      total_size += 2 + 1;
-    }
-
-    // optional bool road = 28;
-    if (has_road()) {
-      total_size += 2 + 1;
-    }
-
-    // optional bool track = 29;
-    if (has_track()) {
-      total_size += 2 + 1;
-    }
-
-    // optional bool driveway = 30;
-    if (has_driveway()) {
-      total_size += 2 + 1;
-    }
-
-    // optional bool alley = 31;
-    if (has_alley()) {
-      total_size += 2 + 1;
-    }
-
-    // optional bool parking_aisle = 32;
-    if (has_parking_aisle()) {
-      total_size += 2 + 1;
-    }
-
   }
-  if (_has_bits_[32 / 32] & (0xffu << (32 % 32))) {
-    // optional bool emergency_access = 33;
-    if (has_emergency_access()) {
-      total_size += 2 + 1;
-    }
-
-    // optional bool drive_thru = 34;
-    if (has_drive_thru()) {
-      total_size += 2 + 1;
-    }
-
-    // optional bool culdesac = 35;
-    if (has_culdesac()) {
-      total_size += 2 + 1;
-    }
-
-    // optional bool footway = 36;
-    if (has_footway()) {
-      total_size += 2 + 1;
-    }
-
-    // optional bool stairs = 37;
-    if (has_stairs()) {
-      total_size += 2 + 1;
-    }
-
-    // optional bool cycleway = 38;
-    if (has_cycleway()) {
-      total_size += 2 + 1;
-    }
-
-    // optional bool mountain_bike = 39;
-    if (has_mountain_bike()) {
-      total_size += 2 + 1;
-    }
-
-    // optional bool rail = 40;
-    if (has_rail()) {
-      total_size += 2 + 1;
-    }
-
-  }
-  if (_has_bits_[40 / 32] & (0xffu << (40 % 32))) {
-    // optional bool bus = 41;
-    if (has_bus()) {
-      total_size += 2 + 1;
-    }
-
-    // optional bool transit_connection = 42;
-    if (has_transit_connection()) {
-      total_size += 2 + 1;
-    }
-
-    // optional bool other = 43;
-    if (has_other()) {
-      total_size += 2 + 1;
-    }
-
-    // optional .valhalla.odin.TripPath.TransitRouteInfo transit_route_info = 44;
+  if (_has_bits_[24 / 32] & (0xffu << (24 % 32))) {
+    // optional .valhalla.odin.TripPath.TransitRouteInfo transit_route_info = 25;
     if (has_transit_route_info()) {
       total_size += 2 +
         ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
           this->transit_route_info());
+    }
+
+    // optional uint64 id = 26;
+    if (has_id()) {
+      total_size += 2 +
+        ::google::protobuf::internal::WireFormatLite::UInt64Size(
+          this->id());
+    }
+
+    // optional uint64 way_id = 27;
+    if (has_way_id()) {
+      total_size += 2 +
+        ::google::protobuf::internal::WireFormatLite::UInt64Size(
+          this->way_id());
+    }
+
+    // optional float weighted_grade = 28;
+    if (has_weighted_grade()) {
+      total_size += 2 + 4;
+    }
+
+    // optional int32 max_upward_grade = 29;
+    if (has_max_upward_grade()) {
+      total_size += 2 +
+        ::google::protobuf::internal::WireFormatLite::Int32Size(
+          this->max_upward_grade());
+    }
+
+    // optional int32 max_downward_grade = 30;
+    if (has_max_downward_grade()) {
+      total_size += 2 +
+        ::google::protobuf::internal::WireFormatLite::Int32Size(
+          this->max_downward_grade());
     }
 
   }
@@ -4957,17 +4548,8 @@ void TripPath_Edge::MergeFrom(const TripPath_Edge& from) {
     if (from.has_traversability()) {
       set_traversability(from.traversability());
     }
-    if (from.has_ramp()) {
-      set_ramp(from.ramp());
-    }
-    if (from.has_turn_channel()) {
-      set_turn_channel(from.turn_channel());
-    }
-    if (from.has_ferry()) {
-      set_ferry(from.ferry());
-    }
-    if (from.has_rail_ferry()) {
-      set_rail_ferry(from.rail_ferry());
+    if (from.has_use()) {
+      set_use(from.use());
     }
     if (from.has_toll()) {
       set_toll(from.toll());
@@ -4978,8 +4560,6 @@ void TripPath_Edge::MergeFrom(const TripPath_Edge& from) {
     if (from.has_tunnel()) {
       set_tunnel(from.tunnel());
     }
-  }
-  if (from._has_bits_[16 / 32] & (0xffu << (16 % 32))) {
     if (from.has_bridge()) {
       set_bridge(from.bridge());
     }
@@ -4988,6 +4568,11 @@ void TripPath_Edge::MergeFrom(const TripPath_Edge& from) {
     }
     if (from.has_internal_intersection()) {
       set_internal_intersection(from.internal_intersection());
+    }
+  }
+  if (from._has_bits_[16 / 32] & (0xffu << (16 % 32))) {
+    if (from.has_drive_on_right()) {
+      set_drive_on_right(from.drive_on_right());
     }
     if (from.has_end_node_index()) {
       set_end_node_index(from.end_node_index());
@@ -5004,71 +4589,31 @@ void TripPath_Edge::MergeFrom(const TripPath_Edge& from) {
     if (from.has_pedestrian_type()) {
       set_pedestrian_type(from.pedestrian_type());
     }
-  }
-  if (from._has_bits_[24 / 32] & (0xffu << (24 % 32))) {
     if (from.has_bicycle_type()) {
       set_bicycle_type(from.bicycle_type());
     }
     if (from.has_transit_type()) {
       set_transit_type(from.transit_type());
     }
-    if (from.has_drive_on_right()) {
-      set_drive_on_right(from.drive_on_right());
-    }
-    if (from.has_road()) {
-      set_road(from.road());
-    }
-    if (from.has_track()) {
-      set_track(from.track());
-    }
-    if (from.has_driveway()) {
-      set_driveway(from.driveway());
-    }
-    if (from.has_alley()) {
-      set_alley(from.alley());
-    }
-    if (from.has_parking_aisle()) {
-      set_parking_aisle(from.parking_aisle());
-    }
   }
-  if (from._has_bits_[32 / 32] & (0xffu << (32 % 32))) {
-    if (from.has_emergency_access()) {
-      set_emergency_access(from.emergency_access());
-    }
-    if (from.has_drive_thru()) {
-      set_drive_thru(from.drive_thru());
-    }
-    if (from.has_culdesac()) {
-      set_culdesac(from.culdesac());
-    }
-    if (from.has_footway()) {
-      set_footway(from.footway());
-    }
-    if (from.has_stairs()) {
-      set_stairs(from.stairs());
-    }
-    if (from.has_cycleway()) {
-      set_cycleway(from.cycleway());
-    }
-    if (from.has_mountain_bike()) {
-      set_mountain_bike(from.mountain_bike());
-    }
-    if (from.has_rail()) {
-      set_rail(from.rail());
-    }
-  }
-  if (from._has_bits_[40 / 32] & (0xffu << (40 % 32))) {
-    if (from.has_bus()) {
-      set_bus(from.bus());
-    }
-    if (from.has_transit_connection()) {
-      set_transit_connection(from.transit_connection());
-    }
-    if (from.has_other()) {
-      set_other(from.other());
-    }
+  if (from._has_bits_[24 / 32] & (0xffu << (24 % 32))) {
     if (from.has_transit_route_info()) {
       mutable_transit_route_info()->::valhalla::odin::TripPath_TransitRouteInfo::MergeFrom(from.transit_route_info());
+    }
+    if (from.has_id()) {
+      set_id(from.id());
+    }
+    if (from.has_way_id()) {
+      set_way_id(from.way_id());
+    }
+    if (from.has_weighted_grade()) {
+      set_weighted_grade(from.weighted_grade());
+    }
+    if (from.has_max_upward_grade()) {
+      set_max_upward_grade(from.max_upward_grade());
+    }
+    if (from.has_max_downward_grade()) {
+      set_max_downward_grade(from.max_downward_grade());
     }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
@@ -5102,16 +4647,14 @@ void TripPath_Edge::Swap(TripPath_Edge* other) {
     std::swap(begin_shape_index_, other->begin_shape_index_);
     std::swap(end_shape_index_, other->end_shape_index_);
     std::swap(traversability_, other->traversability_);
-    std::swap(ramp_, other->ramp_);
-    std::swap(turn_channel_, other->turn_channel_);
-    std::swap(ferry_, other->ferry_);
-    std::swap(rail_ferry_, other->rail_ferry_);
+    std::swap(use_, other->use_);
     std::swap(toll_, other->toll_);
     std::swap(unpaved_, other->unpaved_);
     std::swap(tunnel_, other->tunnel_);
     std::swap(bridge_, other->bridge_);
     std::swap(roundabout_, other->roundabout_);
     std::swap(internal_intersection_, other->internal_intersection_);
+    std::swap(drive_on_right_, other->drive_on_right_);
     std::swap(end_node_index_, other->end_node_index_);
     std::swap(sign_, other->sign_);
     std::swap(travel_mode_, other->travel_mode_);
@@ -5119,26 +4662,13 @@ void TripPath_Edge::Swap(TripPath_Edge* other) {
     std::swap(pedestrian_type_, other->pedestrian_type_);
     std::swap(bicycle_type_, other->bicycle_type_);
     std::swap(transit_type_, other->transit_type_);
-    std::swap(drive_on_right_, other->drive_on_right_);
-    std::swap(road_, other->road_);
-    std::swap(track_, other->track_);
-    std::swap(driveway_, other->driveway_);
-    std::swap(alley_, other->alley_);
-    std::swap(parking_aisle_, other->parking_aisle_);
-    std::swap(emergency_access_, other->emergency_access_);
-    std::swap(drive_thru_, other->drive_thru_);
-    std::swap(culdesac_, other->culdesac_);
-    std::swap(footway_, other->footway_);
-    std::swap(stairs_, other->stairs_);
-    std::swap(cycleway_, other->cycleway_);
-    std::swap(mountain_bike_, other->mountain_bike_);
-    std::swap(rail_, other->rail_);
-    std::swap(bus_, other->bus_);
-    std::swap(transit_connection_, other->transit_connection_);
-    std::swap(other_, other->other_);
     std::swap(transit_route_info_, other->transit_route_info_);
+    std::swap(id_, other->id_);
+    std::swap(way_id_, other->way_id_);
+    std::swap(weighted_grade_, other->weighted_grade_);
+    std::swap(max_upward_grade_, other->max_upward_grade_);
+    std::swap(max_downward_grade_, other->max_downward_grade_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
-    std::swap(_has_bits_[1], other->_has_bits_[1]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);
   }
@@ -6161,18 +5691,47 @@ void TripPath_TransitStopInfo::Swap(TripPath_TransitStopInfo* other) {
 
 // -------------------------------------------------------------------
 
+const ::google::protobuf::EnumDescriptor* TripPath_Node_Type_descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return TripPath_Node_Type_descriptor_;
+}
+bool TripPath_Node_Type_IsValid(int value) {
+  switch(value) {
+    case 0:
+    case 1:
+    case 2:
+    case 3:
+    case 6:
+    case 7:
+    case 8:
+    case 9:
+    case 10:
+      return true;
+    default:
+      return false;
+  }
+}
+
+#ifndef _MSC_VER
+const TripPath_Node_Type TripPath_Node::kStreetIntersection;
+const TripPath_Node_Type TripPath_Node::kGate;
+const TripPath_Node_Type TripPath_Node::kBollard;
+const TripPath_Node_Type TripPath_Node::kTollBooth;
+const TripPath_Node_Type TripPath_Node::kMultiUseTransitStop;
+const TripPath_Node_Type TripPath_Node::kBikeShare;
+const TripPath_Node_Type TripPath_Node::kParking;
+const TripPath_Node_Type TripPath_Node::kMotorwayJunction;
+const TripPath_Node_Type TripPath_Node::kBorderControl;
+const TripPath_Node_Type TripPath_Node::Type_MIN;
+const TripPath_Node_Type TripPath_Node::Type_MAX;
+const int TripPath_Node::Type_ARRAYSIZE;
+#endif  // _MSC_VER
 #ifndef _MSC_VER
 const int TripPath_Node::kEdgeFieldNumber;
 const int TripPath_Node::kIntersectingEdgeFieldNumber;
 const int TripPath_Node::kElapsedTimeFieldNumber;
 const int TripPath_Node::kAdminIndexFieldNumber;
-const int TripPath_Node::kStreetIntersectionFieldNumber;
-const int TripPath_Node::kGateFieldNumber;
-const int TripPath_Node::kBollardFieldNumber;
-const int TripPath_Node::kTollBoothFieldNumber;
-const int TripPath_Node::kBikeShareFieldNumber;
-const int TripPath_Node::kParkingFieldNumber;
-const int TripPath_Node::kMotorwayJunctionFieldNumber;
+const int TripPath_Node::kTypeFieldNumber;
 const int TripPath_Node::kForkFieldNumber;
 const int TripPath_Node::kTransitStopInfoFieldNumber;
 #endif  // !_MSC_VER
@@ -6198,13 +5757,7 @@ void TripPath_Node::SharedCtor() {
   edge_ = NULL;
   elapsed_time_ = 0u;
   admin_index_ = 0u;
-  street_intersection_ = false;
-  gate_ = false;
-  bollard_ = false;
-  toll_booth_ = false;
-  bike_share_ = false;
-  parking_ = false;
-  motorway_junction_ = false;
+  type_ = 0;
   fork_ = false;
   transit_stop_info_ = NULL;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
@@ -6249,15 +5802,7 @@ void TripPath_Node::Clear() {
     }
     elapsed_time_ = 0u;
     admin_index_ = 0u;
-    street_intersection_ = false;
-    gate_ = false;
-    bollard_ = false;
-    toll_booth_ = false;
-  }
-  if (_has_bits_[8 / 32] & (0xffu << (8 % 32))) {
-    bike_share_ = false;
-    parking_ = false;
-    motorway_junction_ = false;
+    type_ = 0;
     fork_ = false;
     if (has_transit_stop_info()) {
       if (transit_stop_info_ != NULL) transit_stop_info_->::valhalla::odin::TripPath_TransitStopInfo::Clear();
@@ -6330,124 +5875,33 @@ bool TripPath_Node::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(40)) goto parse_street_intersection;
+        if (input->ExpectTag(40)) goto parse_type;
         break;
       }
 
-      // optional bool street_intersection = 5;
+      // optional .valhalla.odin.TripPath.Node.Type type = 5;
       case 5: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-         parse_street_intersection:
+         parse_type:
+          int value;
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
-                 input, &street_intersection_)));
-          set_has_street_intersection();
+                   int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
+                 input, &value)));
+          if (::valhalla::odin::TripPath_Node_Type_IsValid(value)) {
+            set_type(static_cast< ::valhalla::odin::TripPath_Node_Type >(value));
+          } else {
+            mutable_unknown_fields()->AddVarint(5, value);
+          }
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(48)) goto parse_gate;
+        if (input->ExpectTag(48)) goto parse_fork;
         break;
       }
 
-      // optional bool gate = 6;
+      // optional bool fork = 6;
       case 6: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-         parse_gate:
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
-                 input, &gate_)));
-          set_has_gate();
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(56)) goto parse_bollard;
-        break;
-      }
-
-      // optional bool bollard = 7;
-      case 7: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-         parse_bollard:
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
-                 input, &bollard_)));
-          set_has_bollard();
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(64)) goto parse_toll_booth;
-        break;
-      }
-
-      // optional bool toll_booth = 8;
-      case 8: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-         parse_toll_booth:
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
-                 input, &toll_booth_)));
-          set_has_toll_booth();
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(72)) goto parse_bike_share;
-        break;
-      }
-
-      // optional bool bike_share = 9;
-      case 9: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-         parse_bike_share:
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
-                 input, &bike_share_)));
-          set_has_bike_share();
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(80)) goto parse_parking;
-        break;
-      }
-
-      // optional bool parking = 10;
-      case 10: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-         parse_parking:
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
-                 input, &parking_)));
-          set_has_parking();
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(88)) goto parse_motorway_junction;
-        break;
-      }
-
-      // optional bool motorway_junction = 11;
-      case 11: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-         parse_motorway_junction:
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
-                 input, &motorway_junction_)));
-          set_has_motorway_junction();
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(96)) goto parse_fork;
-        break;
-      }
-
-      // optional bool fork = 12;
-      case 12: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
          parse_fork:
@@ -6458,12 +5912,12 @@ bool TripPath_Node::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(106)) goto parse_transit_stop_info;
+        if (input->ExpectTag(58)) goto parse_transit_stop_info;
         break;
       }
 
-      // optional .valhalla.odin.TripPath.TransitStopInfo transit_stop_info = 13;
-      case 13: {
+      // optional .valhalla.odin.TripPath.TransitStopInfo transit_stop_info = 7;
+      case 7: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
          parse_transit_stop_info:
@@ -6516,50 +5970,21 @@ void TripPath_Node::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteUInt32(4, this->admin_index(), output);
   }
 
-  // optional bool street_intersection = 5;
-  if (has_street_intersection()) {
-    ::google::protobuf::internal::WireFormatLite::WriteBool(5, this->street_intersection(), output);
+  // optional .valhalla.odin.TripPath.Node.Type type = 5;
+  if (has_type()) {
+    ::google::protobuf::internal::WireFormatLite::WriteEnum(
+      5, this->type(), output);
   }
 
-  // optional bool gate = 6;
-  if (has_gate()) {
-    ::google::protobuf::internal::WireFormatLite::WriteBool(6, this->gate(), output);
-  }
-
-  // optional bool bollard = 7;
-  if (has_bollard()) {
-    ::google::protobuf::internal::WireFormatLite::WriteBool(7, this->bollard(), output);
-  }
-
-  // optional bool toll_booth = 8;
-  if (has_toll_booth()) {
-    ::google::protobuf::internal::WireFormatLite::WriteBool(8, this->toll_booth(), output);
-  }
-
-  // optional bool bike_share = 9;
-  if (has_bike_share()) {
-    ::google::protobuf::internal::WireFormatLite::WriteBool(9, this->bike_share(), output);
-  }
-
-  // optional bool parking = 10;
-  if (has_parking()) {
-    ::google::protobuf::internal::WireFormatLite::WriteBool(10, this->parking(), output);
-  }
-
-  // optional bool motorway_junction = 11;
-  if (has_motorway_junction()) {
-    ::google::protobuf::internal::WireFormatLite::WriteBool(11, this->motorway_junction(), output);
-  }
-
-  // optional bool fork = 12;
+  // optional bool fork = 6;
   if (has_fork()) {
-    ::google::protobuf::internal::WireFormatLite::WriteBool(12, this->fork(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteBool(6, this->fork(), output);
   }
 
-  // optional .valhalla.odin.TripPath.TransitStopInfo transit_stop_info = 13;
+  // optional .valhalla.odin.TripPath.TransitStopInfo transit_stop_info = 7;
   if (has_transit_stop_info()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      13, this->transit_stop_info(), output);
+      7, this->transit_stop_info(), output);
   }
 
   if (!unknown_fields().empty()) {
@@ -6594,51 +6019,22 @@ void TripPath_Node::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(4, this->admin_index(), target);
   }
 
-  // optional bool street_intersection = 5;
-  if (has_street_intersection()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(5, this->street_intersection(), target);
+  // optional .valhalla.odin.TripPath.Node.Type type = 5;
+  if (has_type()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
+      5, this->type(), target);
   }
 
-  // optional bool gate = 6;
-  if (has_gate()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(6, this->gate(), target);
-  }
-
-  // optional bool bollard = 7;
-  if (has_bollard()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(7, this->bollard(), target);
-  }
-
-  // optional bool toll_booth = 8;
-  if (has_toll_booth()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(8, this->toll_booth(), target);
-  }
-
-  // optional bool bike_share = 9;
-  if (has_bike_share()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(9, this->bike_share(), target);
-  }
-
-  // optional bool parking = 10;
-  if (has_parking()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(10, this->parking(), target);
-  }
-
-  // optional bool motorway_junction = 11;
-  if (has_motorway_junction()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(11, this->motorway_junction(), target);
-  }
-
-  // optional bool fork = 12;
+  // optional bool fork = 6;
   if (has_fork()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(12, this->fork(), target);
+    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(6, this->fork(), target);
   }
 
-  // optional .valhalla.odin.TripPath.TransitStopInfo transit_stop_info = 13;
+  // optional .valhalla.odin.TripPath.TransitStopInfo transit_stop_info = 7;
   if (has_transit_stop_info()) {
     target = ::google::protobuf::internal::WireFormatLite::
       WriteMessageNoVirtualToArray(
-        13, this->transit_stop_info(), target);
+        7, this->transit_stop_info(), target);
   }
 
   if (!unknown_fields().empty()) {
@@ -6673,49 +6069,18 @@ int TripPath_Node::ByteSize() const {
           this->admin_index());
     }
 
-    // optional bool street_intersection = 5;
-    if (has_street_intersection()) {
-      total_size += 1 + 1;
+    // optional .valhalla.odin.TripPath.Node.Type type = 5;
+    if (has_type()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::EnumSize(this->type());
     }
 
-    // optional bool gate = 6;
-    if (has_gate()) {
-      total_size += 1 + 1;
-    }
-
-    // optional bool bollard = 7;
-    if (has_bollard()) {
-      total_size += 1 + 1;
-    }
-
-    // optional bool toll_booth = 8;
-    if (has_toll_booth()) {
-      total_size += 1 + 1;
-    }
-
-  }
-  if (_has_bits_[8 / 32] & (0xffu << (8 % 32))) {
-    // optional bool bike_share = 9;
-    if (has_bike_share()) {
-      total_size += 1 + 1;
-    }
-
-    // optional bool parking = 10;
-    if (has_parking()) {
-      total_size += 1 + 1;
-    }
-
-    // optional bool motorway_junction = 11;
-    if (has_motorway_junction()) {
-      total_size += 1 + 1;
-    }
-
-    // optional bool fork = 12;
+    // optional bool fork = 6;
     if (has_fork()) {
       total_size += 1 + 1;
     }
 
-    // optional .valhalla.odin.TripPath.TransitStopInfo transit_stop_info = 13;
+    // optional .valhalla.odin.TripPath.TransitStopInfo transit_stop_info = 7;
     if (has_transit_stop_info()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
@@ -6767,28 +6132,8 @@ void TripPath_Node::MergeFrom(const TripPath_Node& from) {
     if (from.has_admin_index()) {
       set_admin_index(from.admin_index());
     }
-    if (from.has_street_intersection()) {
-      set_street_intersection(from.street_intersection());
-    }
-    if (from.has_gate()) {
-      set_gate(from.gate());
-    }
-    if (from.has_bollard()) {
-      set_bollard(from.bollard());
-    }
-    if (from.has_toll_booth()) {
-      set_toll_booth(from.toll_booth());
-    }
-  }
-  if (from._has_bits_[8 / 32] & (0xffu << (8 % 32))) {
-    if (from.has_bike_share()) {
-      set_bike_share(from.bike_share());
-    }
-    if (from.has_parking()) {
-      set_parking(from.parking());
-    }
-    if (from.has_motorway_junction()) {
-      set_motorway_junction(from.motorway_junction());
+    if (from.has_type()) {
+      set_type(from.type());
     }
     if (from.has_fork()) {
       set_fork(from.fork());
@@ -6823,13 +6168,7 @@ void TripPath_Node::Swap(TripPath_Node* other) {
     intersecting_edge_.Swap(&other->intersecting_edge_);
     std::swap(elapsed_time_, other->elapsed_time_);
     std::swap(admin_index_, other->admin_index_);
-    std::swap(street_intersection_, other->street_intersection_);
-    std::swap(gate_, other->gate_);
-    std::swap(bollard_, other->bollard_);
-    std::swap(toll_booth_, other->toll_booth_);
-    std::swap(bike_share_, other->bike_share_);
-    std::swap(parking_, other->parking_);
-    std::swap(motorway_junction_, other->motorway_junction_);
+    std::swap(type_, other->type_);
     std::swap(fork_, other->fork_);
     std::swap(transit_stop_info_, other->transit_stop_info_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);

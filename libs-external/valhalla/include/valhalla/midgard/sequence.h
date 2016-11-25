@@ -7,15 +7,23 @@
 #include <vector>
 #include <type_traits>
 #include <iterator>
-#include <cmath>
 #include <memory>
-#include <cerrno>
-#include <stdexcept>
 #include <functional>
 #include <algorithm>
 #include <list>
 #include <map>
+#include <unordered_map>
+#include <string>
+#include <utility>
+#include <cmath>
+#include <cstring>
+#include <cstdint>
+#include <cstdlib>
+#include <cerrno>
+#include <stdexcept>
+#include <iostream>
 #include <sys/mman.h>
+#include <sys/stat.h>
 #include <fcntl.h>
 #include <unistd.h>
 
@@ -147,19 +155,6 @@ class sequence {
     //push it to the file
     if(write_buffer.size() == write_buffer.capacity())
       flush();
-  }
-
-  //search for an object using binary search O(logn)
-  //assumes the file was written in sorted order
-  //the predicate should be something like a less than or greater than check
-  bool find(T& target, const std::function<bool (const T&, const T&)>& predicate) {
-    flush();
-    //if no elements we are done
-    if(memmap.size() == 0)
-      return false;
-    T original = target;
-    target = *std::lower_bound(static_cast<const T*>(memmap), static_cast<const T*>(memmap) + memmap.size(), original, predicate);
-    return !(predicate(original, target) || predicate(target, original));
   }
 
   //finds the first matching object by scanning O(n)
@@ -311,6 +306,22 @@ class sequence {
     size_t index;
   };
 
+  //search for an object using binary search O(logn)
+  //assumes the file was written in sorted order
+  //the predicate should be something like a less than or greater than check
+  iterator find(const T& target, const std::function<bool (const T&, const T&)>& predicate) {
+    flush();
+    //if no elements we are done
+    if(memmap.size() == 0)
+      return end();
+    //if we did find it return the iterator to it
+    auto* found = std::lower_bound(static_cast<const T*>(memmap), static_cast<const T*>(memmap) + memmap.size(), target, predicate);
+    if(!(predicate(target, *found) || predicate(*found, target)))
+      return at(found - static_cast<const T*>(memmap));
+    //we didnt find it
+    return end();
+  }
+
   iterator at(size_t index) {
     //dump to file and make an element
     flush();
@@ -350,6 +361,81 @@ class sequence {
   std::string file_name;
   std::vector<T> write_buffer;
   mem_map<T> memmap;
+};
+
+struct tar {
+  struct header_t {
+    char name[100]; char mode[8]; char uid[8]; char gid[8]; char size[12]; char mtime[12]; char chksum[8];
+    char typeflag; char linkname[100]; char magic[6]; char version[2]; char uname[32]; char gname[32];
+    char devmajor[8]; char devminor[8]; char prefix[155]; char padding[12];
+
+    static uint64_t octal_to_int(const char* data, size_t size = 12) {
+      const unsigned char* ptr = (const unsigned char*) data + size;
+      uint64_t sum = 0;
+      uint64_t multiplier = 1;
+      //Skip everything after the last NUL/space character
+      //In some TAR archives the size field has non-trailing NULs/spaces, so this is necessary
+      const unsigned char* check = ptr; //This is used to check where the last NUL/space char is
+      for (; check >= (unsigned char*) data; check--)
+        if ((*check) == 0 || (*check) == ' ')
+          ptr = check - 1;
+      for (; ptr >= (unsigned char*) data; ptr--) {
+        sum += ((*ptr) - 48) * multiplier;
+        multiplier *= 8;
+      }
+      return sum;
+    }
+    bool is_ustar() const { return (memcmp("ustar", magic, 5) == 0); }
+    size_t get_file_size() const { return octal_to_int(size); }
+    bool blank() const { constexpr header_t BLANK{}; return !memcmp(this, &BLANK, sizeof(header_t)); }
+    bool verify() const {
+      //make a copy and blank the checksum
+      header_t temp = *this; memset(temp.chksum, ' ', 8); int64_t usum = 0, sum = 0;
+      //compute the checksum
+      for(int i = 0; i < sizeof(header_t); i++) {
+        usum += ((unsigned char*)&temp)[i];
+        sum += ((char*)&temp)[i];
+      }
+      //check if its right
+      uint64_t rsum = octal_to_int(chksum);
+      return rsum == usum || rsum == sum;
+    }
+
+  };
+
+  tar(const std::string& tar_file, bool regular_files_only = true):tar_file(tar_file),corrupt_blocks(0) {
+    //map the file
+    struct stat s;
+    if(stat(tar_file.c_str(), &s) || s.st_size == 0 || (s.st_size % sizeof(header_t)) != 0)
+      return;
+    try { mm.map(tar_file, s.st_size); } catch (...) { return; }
+    //rip through the tar to see whats in it noting that most tars end with 2 empty blocks
+    //but we can concatenate tars and get empty blocks in between so we'll just be pretty
+    //lax about it and we'll count the ones we cant make sense of
+    constexpr header_t BLANK{};
+    const char* position = mm.get();
+    while(position < mm.get() + mm.size()) {
+      //get the header for this file
+      const header_t* h = static_cast<const header_t*>(static_cast<const void*>(position));
+      position += sizeof(header_t);
+      //if it doesnt checkout ignore it and move on one block at a time
+      if(!h->verify()) { corrupt_blocks += !h->blank(); continue; }
+      auto size = h->get_file_size();
+      //do we record entry file or not
+      if(!regular_files_only || (h->typeflag == '0' || h->typeflag == '\0'))
+        contents.emplace(std::piecewise_construct, std::forward_as_tuple(std::string{h->name}), std::forward_as_tuple(position, size));
+      //every entry's data is rounded to the nearst header_t sized "block"
+      size_t blocks = std::ceil(static_cast<double>(size) / sizeof(header_t));
+      position += blocks * sizeof(header_t);
+    }
+  }
+
+  std::string tar_file;
+  mem_map<char> mm;
+  using entry_name_t = std::string;
+  using entry_location_t = std::pair<const char*, size_t>;
+  std::unordered_map<entry_name_t, entry_location_t> contents;
+  size_t corrupt_blocks;
 };
 
 }

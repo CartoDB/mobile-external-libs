@@ -207,12 +207,12 @@ inline bool TripDirections_TravelMode_Parse(
 enum TripDirections_VehicleType {
   TripDirections_VehicleType_kCar = 0,
   TripDirections_VehicleType_kMotorcycle = 1,
-  TripDirections_VehicleType_kFourWheelDrive = 2,
-  TripDirections_VehicleType_kTractorTrailers = 3
+  TripDirections_VehicleType_kAutoBus = 2,
+  TripDirections_VehicleType_kTractorTrailer = 3
 };
 bool TripDirections_VehicleType_IsValid(int value);
 const TripDirections_VehicleType TripDirections_VehicleType_VehicleType_MIN = TripDirections_VehicleType_kCar;
-const TripDirections_VehicleType TripDirections_VehicleType_VehicleType_MAX = TripDirections_VehicleType_kTractorTrailers;
+const TripDirections_VehicleType TripDirections_VehicleType_VehicleType_MAX = TripDirections_VehicleType_kTractorTrailer;
 const int TripDirections_VehicleType_VehicleType_ARRAYSIZE = TripDirections_VehicleType_VehicleType_MAX + 1;
 
 const ::google::protobuf::EnumDescriptor* TripDirections_VehicleType_descriptor();
@@ -227,7 +227,7 @@ inline bool TripDirections_VehicleType_Parse(
 }
 enum TripDirections_PedestrianType {
   TripDirections_PedestrianType_kFoot = 0,
-  TripDirections_PedestrianType_kWheelChair = 1,
+  TripDirections_PedestrianType_kWheelchair = 1,
   TripDirections_PedestrianType_kSegway = 2
 };
 bool TripDirections_PedestrianType_IsValid(int value);
@@ -247,10 +247,9 @@ inline bool TripDirections_PedestrianType_Parse(
 }
 enum TripDirections_BicycleType {
   TripDirections_BicycleType_kRoad = 0,
-  TripDirections_BicycleType_kHybrid = 1,
-  TripDirections_BicycleType_kCity = 2,
-  TripDirections_BicycleType_kCross = 3,
-  TripDirections_BicycleType_kMountain = 4
+  TripDirections_BicycleType_kCross = 1,
+  TripDirections_BicycleType_kHybrid = 2,
+  TripDirections_BicycleType_kMountain = 3
 };
 bool TripDirections_BicycleType_IsValid(int value);
 const TripDirections_BicycleType TripDirections_BicycleType_BicycleType_MIN = TripDirections_BicycleType_kRoad;
@@ -2090,8 +2089,8 @@ class TripDirections : public ::google::protobuf::Message {
   typedef TripDirections_VehicleType VehicleType;
   static const VehicleType kCar = TripDirections_VehicleType_kCar;
   static const VehicleType kMotorcycle = TripDirections_VehicleType_kMotorcycle;
-  static const VehicleType kFourWheelDrive = TripDirections_VehicleType_kFourWheelDrive;
-  static const VehicleType kTractorTrailers = TripDirections_VehicleType_kTractorTrailers;
+  static const VehicleType kAutoBus = TripDirections_VehicleType_kAutoBus;
+  static const VehicleType kTractorTrailer = TripDirections_VehicleType_kTractorTrailer;
   static inline bool VehicleType_IsValid(int value) {
     return TripDirections_VehicleType_IsValid(value);
   }
@@ -2115,7 +2114,7 @@ class TripDirections : public ::google::protobuf::Message {
 
   typedef TripDirections_PedestrianType PedestrianType;
   static const PedestrianType kFoot = TripDirections_PedestrianType_kFoot;
-  static const PedestrianType kWheelChair = TripDirections_PedestrianType_kWheelChair;
+  static const PedestrianType kWheelchair = TripDirections_PedestrianType_kWheelchair;
   static const PedestrianType kSegway = TripDirections_PedestrianType_kSegway;
   static inline bool PedestrianType_IsValid(int value) {
     return TripDirections_PedestrianType_IsValid(value);
@@ -2140,9 +2139,8 @@ class TripDirections : public ::google::protobuf::Message {
 
   typedef TripDirections_BicycleType BicycleType;
   static const BicycleType kRoad = TripDirections_BicycleType_kRoad;
-  static const BicycleType kHybrid = TripDirections_BicycleType_kHybrid;
-  static const BicycleType kCity = TripDirections_BicycleType_kCity;
   static const BicycleType kCross = TripDirections_BicycleType_kCross;
+  static const BicycleType kHybrid = TripDirections_BicycleType_kHybrid;
   static const BicycleType kMountain = TripDirections_BicycleType_kMountain;
   static inline bool BicycleType_IsValid(int value) {
     return TripDirections_BicycleType_IsValid(value);

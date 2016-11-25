@@ -7,28 +7,44 @@
 namespace valhalla {
 namespace baldr {
 
-// Access constants. Bit constants.
-constexpr uint8_t kAutoAccess       = 1;
-constexpr uint8_t kPedestrianAccess = 2;
-constexpr uint8_t kBicycleAccess    = 4;
-constexpr uint8_t kTruckAccess      = 8;
-constexpr uint8_t kEmergencyAccess  = 16;
-constexpr uint8_t kTaxiAccess       = 32;
-constexpr uint8_t kBusAccess        = 64;
-constexpr uint8_t kHOVAccess        = 128;
-constexpr uint8_t kAllAccess        = 255;
+// Maximum tile id/index supported. 22 bits
+constexpr uint32_t kMaxGraphTileId = 4194303;
+// Maximum id/index within a tile. 21 bits
+constexpr uint32_t kMaxGraphId = 2097151;
 
-// Maximum number of transit records per tile
+// Access bit field constants. Access in directed edge allows 12 bits.
+constexpr uint16_t kAutoAccess       = 1;
+constexpr uint16_t kPedestrianAccess = 2;
+constexpr uint16_t kBicycleAccess    = 4;
+constexpr uint16_t kTruckAccess      = 8;
+constexpr uint16_t kEmergencyAccess  = 16;
+constexpr uint16_t kTaxiAccess       = 32;
+constexpr uint16_t kBusAccess        = 64;
+constexpr uint16_t kHOVAccess        = 128;
+constexpr uint16_t kWheelchairAccess = 256;
+constexpr uint16_t kAllAccess        = 4095;
+
+// Maximum number of transit records per tile and other max. transit
+// field values.
 constexpr uint32_t kMaxTransitDepartures    = 16777215;
 constexpr uint32_t kMaxTransitStops         = 65535;
 constexpr uint32_t kMaxTransitRoutes        = 4095;
 constexpr uint32_t kMaxTransitSchedules     = 4095;
 constexpr uint32_t kMaxTransitBlockId       = 1048575;
-constexpr uint32_t kMaxTransitLineId        = 1048576;
+constexpr uint32_t kMaxTransitLineId        = 1048575;
 constexpr uint32_t kMaxTransitDepartureTime = 131071;
-constexpr uint32_t kMaxTransitElapsedTime   = 32767;
+constexpr uint32_t kMaxTransitElapsedTime   = 131071;
+constexpr uint32_t kMaxStartTime            = 131071;
+constexpr uint32_t kMaxEndTime              = 131071;
+constexpr uint32_t kMaxEndDay               = 63;
+constexpr uint32_t kScheduleEndDay          = 60;
+constexpr uint32_t kMaxFrequency            = 8191;
+constexpr uint32_t kMaxTransfers            = 65535;
+constexpr uint32_t kMaxTransferTime         = 65535;
 constexpr uint32_t kMaxTripId               = 536870912;  // 29 bits
-constexpr uint32_t kMaxHeadsignOffset       = 16777216;   // 24 bits
+
+// Maximum offset into the text/name list
+constexpr uint32_t kMaxNameOffset           = 16777215;   // 24 bits
 
 // Payment constants. Bit constants.
 constexpr uint8_t kCoins  = 1; // Coins
@@ -205,12 +221,18 @@ enum class Use : uint8_t {
   kCycleway = 20,          // Dedicated bicycle path
   kMountainBike = 21,      // Mountain bike trail
 
+  kSidewalk = 24,
+
   // Pedestrian specific uses
   kFootway = 25,
   kSteps = 26,             // Stairs
   kPath = 27,
   kPedestrian = 28,
   kBridleway = 29,
+
+  // Hierarchy transitions
+  kTransitionUp = 38,
+  kTransitionDown = 39,
 
   // Other...
   kOther = 40,
@@ -239,6 +261,7 @@ const std::unordered_map<uint8_t, std::string> UseStrings = {
   {static_cast<uint8_t>(Use::kCuldesac), "culdesac"},
   {static_cast<uint8_t>(Use::kCycleway), "cycleway"},
   {static_cast<uint8_t>(Use::kMountainBike), "mountain_bike"},
+  {static_cast<uint8_t>(Use::kSidewalk), "sidewalk"},
   {static_cast<uint8_t>(Use::kFootway), "footway"},
   {static_cast<uint8_t>(Use::kSteps), "steps"},
   {static_cast<uint8_t>(Use::kOther), "other"},
@@ -342,7 +365,7 @@ enum class DOW : uint8_t {
 };
 
 // Used for transit. Types of transit currently supported.
-enum class TransitType : uint32_t {
+enum class TransitType : uint8_t {
   kTram = 0,
   kMetro = 1,
   kRail = 2,

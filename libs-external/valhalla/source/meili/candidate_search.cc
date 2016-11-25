@@ -1,4 +1,3 @@
-#include "config.h"
 #include "meili/candidate_search.h"
 #include "meili/graph_helpers.h"
 #include "meili/geometry_helpers.h"
@@ -11,12 +10,12 @@ CandidateQuery::CandidateQuery(baldr::GraphReader& graphreader):
     reader_(graphreader) {}
 
 
-std::vector<std::vector<Candidate>>
+std::vector<std::vector<baldr::PathLocation>>
 CandidateQuery::QueryBulk(const std::vector<midgard::PointLL>& locations,
                           float radius,
                           sif::EdgeFilter filter)
 {
-  std::vector<std::vector<Candidate>> results;
+  std::vector<std::vector<baldr::PathLocation>> results;
   results.reserve(locations.size());
   for (const auto& location : locations) {
     results.push_back(Query(location, radius, filter));
@@ -26,14 +25,14 @@ CandidateQuery::QueryBulk(const std::vector<midgard::PointLL>& locations,
 
 
 template <typename edgeid_iterator_t>
-std::vector<Candidate>
+std::vector<baldr::PathLocation>
 CandidateQuery::WithinSquaredDistance(const midgard::PointLL& location,
                                       float sq_search_radius,
                                       edgeid_iterator_t edgeid_begin,
                                       edgeid_iterator_t edgeid_end,
                                       sif::EdgeFilter edgefilter) const
 {
-  std::vector<Candidate> candidates;
+  std::vector<baldr::PathLocation> candidates;
   std::unordered_set<baldr::GraphId> visited_nodes;
   DistanceApproximator approximator(location);
   const baldr::GraphTile* tile = nullptr;
@@ -57,7 +56,7 @@ CandidateQuery::WithinSquaredDistance(const midgard::PointLL& location,
     // NOTE a pointer to edgeinfo is needed here because it returns
     // an unique ptr
     const auto edgeinfo = tile->edgeinfo(edge->edgeinfo_offset());
-    const auto& shape = edgeinfo->shape();
+    const auto& shape = edgeinfo.shape();
     if (shape.empty()) {
       // Otherwise Project will fail
       continue;
@@ -70,7 +69,7 @@ CandidateQuery::WithinSquaredDistance(const midgard::PointLL& location,
     float offset;
 
     baldr::GraphId snapped_node;
-    Candidate correlated(baldr::Location(location, baldr::Location::StopType::BREAK));
+    baldr::PathLocation correlated(baldr::Location(location, baldr::Location::StopType::BREAK));
 
     // For avoiding recomputing projection later
     const bool edge_included = !edgefilter || edgefilter(edge) != 0.f;
@@ -85,7 +84,7 @@ CandidateQuery::WithinSquaredDistance(const midgard::PointLL& location,
         } else if (dist == 0.f) {
           snapped_node = opp_edge->endnode();
         }
-        correlated.edges.emplace_back(edgeid, dist, point);
+        correlated.edges.emplace_back(edgeid, dist, point, sq_distance);
       }
     }
 
@@ -104,7 +103,7 @@ CandidateQuery::WithinSquaredDistance(const midgard::PointLL& location,
         } else if (dist == 0.f) {
           snapped_node = edge->endnode();
         }
-        correlated.edges.emplace_back(opp_edgeid, dist, point);
+        correlated.edges.emplace_back(opp_edgeid, dist, point, sq_distance);
       }
     }
 
@@ -112,8 +111,7 @@ CandidateQuery::WithinSquaredDistance(const midgard::PointLL& location,
       // Add back if it is an edge correlated or it's a node correlated
       // but it's not added yet
       if (!snapped_node.Is_Valid() || visited_nodes.insert(snapped_node).second) {
-        correlated.set_sq_distance(sq_distance);
-        candidates.push_back(correlated);
+        candidates.emplace_back(std::move(correlated));
       }
     }
   }
@@ -124,27 +122,27 @@ CandidateQuery::WithinSquaredDistance(const midgard::PointLL& location,
 
 // Add each road linestring's line segments into grid. Only one side
 // of directed edges is added
-void IndexTile(const baldr::GraphTile& tile, CandidateGridQuery::grid_t& grid)
+void IndexTile(const baldr::GraphTile& tile, baldr::GraphReader& reader, CandidateGridQuery::grid_t& grid)
 {
-  auto edgecount = tile.header()->directededgecount();
-  if (edgecount <= 0) {
-    return;
-  }
-
-  std::unordered_set<uint32_t> visited(edgecount);
-  auto edgeid = tile.header()->graphid();
-  auto directededge = tile.directededge(0);
-  for (size_t idx = 0; idx < edgecount; edgeid++, directededge++, idx++) {
-    if (directededge->trans_up()
-        || directededge->trans_down()
-        || directededge->use() == baldr::Use::kTransitConnection) continue;
-    const auto offset = directededge->edgeinfo_offset();
-    if (visited.insert(offset).second) {
-      const auto edgeinfo = tile.edgeinfo(offset);
-      const auto& shape = edgeinfo->shape();
-      for (decltype(shape.size()) j = 1; j < shape.size(); ++j) {
-        grid.AddLineSegment(edgeid, {shape[j - 1], shape[j]});
-      }
+  //for each bin
+  std::unordered_set<uint64_t> visited;
+  for(size_t i = 0; i < baldr::kBinCount; ++i) {
+    //for each edge
+    auto edge_ids = tile.GetBin(i);
+    for(const auto& edge_id : edge_ids) {
+      //skip ones we did already
+      if(!visited.insert(edge_id).second)
+        continue;
+      //need the right tile
+      const auto* bin_tile = edge_id.tileid() == tile.header()->graphid().tileid() ? &tile : reader.GetGraphTile(edge_id);
+      if(bin_tile == nullptr) continue;
+      //skip these
+      const auto* edge = bin_tile->directededge(edge_id);
+      if(edge->trans_up() || edge->trans_down() || edge->use() == baldr::Use::kTransitConnection) continue;
+      //get some shape
+      const auto& shape = bin_tile->edgeinfo(edge->edgeinfo_offset()).shape();
+      for(decltype(shape.size()) j = 1; j < shape.size(); ++j)
+        grid.AddLineSegment(edge_id, {shape[j - 1], shape[j]});
     }
   }
 }
@@ -181,7 +179,7 @@ CandidateGridQuery::GetGrid(const baldr::GraphTile* tile) const
   }
 
   const auto inserted = grid_cache_.emplace(tile_id, grid_t(tile->BoundingBox(hierarchy_), cell_width_, cell_height_));
-  IndexTile(*tile, inserted.first->second);
+  IndexTile(*tile, reader_, inserted.first->second);
   return &(inserted.first->second);
 }
 
@@ -269,7 +267,7 @@ CandidateGridQuery::RangeQuery(const AABB2<midgard::PointLL>& range) const
 }
 
 
-std::vector<Candidate>
+std::vector<baldr::PathLocation>
 CandidateGridQuery::Query(const midgard::PointLL& location,
                           float sq_search_radius,
                           sif::EdgeFilter filter) const

@@ -4,7 +4,6 @@
 #include "proto/directions_options.pb.h"
 #include "odin/transitstop.h"
 #include "odin/util.h"
-#include "config.h"
 
 namespace valhalla {
 namespace odin {

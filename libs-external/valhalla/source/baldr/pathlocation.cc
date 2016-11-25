@@ -5,7 +5,8 @@ namespace valhalla{
 namespace baldr{
 
   PathLocation::PathEdge::PathEdge(const GraphId& id, const float dist,
-    const midgard::PointLL& projected, const SideOfStreet sos): id(id), dist(dist), projected(projected), sos(sos) {
+    const midgard::PointLL& projected, const float score, const SideOfStreet sos):
+    id(id), dist(dist), projected(projected), sos(sos), score(score) {
   }
   bool PathLocation::PathEdge::begin_node() const {
     return dist == 0.f;
@@ -23,7 +24,7 @@ namespace baldr{
       bool found = false;
       for(const auto& other_edge : other.edges) {
         if(edge.id == other_edge.id && edge.sos == other_edge.sos && midgard::equal<float>(edge.dist, other_edge.dist) &&
-            edge.projected.ApproximatelyEqual(other_edge.projected)){
+            midgard::equal<float>(edge.score, other_edge.score, .1f) && edge.projected.ApproximatelyEqual(other_edge.projected)){
           found = true;
           break;
         }
@@ -41,10 +42,14 @@ namespace baldr{
       boost::property_tree::ptree e;
       e.put("id", edge.id.value);
       e.put("dist", edge.dist);
-      auto& vtx = e.put_child("projected", boost::property_tree::ptree());
-      vtx.put("lon", edge.projected.first);
-      vtx.put("lat", edge.projected.second);
       e.put("sos", edge.sos);
+      e.put("score", edge.score);
+
+      // Serialize projected lat,lng as double (otherwise leads to shape
+      // artifacts at begin/end of routes as the float values are rounded
+      auto& vtx = e.put_child("projected", boost::property_tree::ptree());
+      vtx.put("lon", static_cast<double>(edge.projected.first));
+      vtx.put("lat", static_cast<double>(edge.projected.second));
       array.push_back(std::make_pair("", e));
     }
     correlated.put("location_index", index);
@@ -56,8 +61,8 @@ namespace baldr{
     PathLocation p(locations[index]);
     for(const auto& edge : path_location.get_child("edges")) {
       p.edges.emplace_back(GraphId(edge.second.get<uint64_t>("id")), edge.second.get<float>("dist"),
-        midgard::PointLL(edge.second.get<float>("projected.lon"), edge.second.get<float>("projected.lat")),
-        static_cast<SideOfStreet>(edge.second.get<int>("sos")));
+        midgard::PointLL(edge.second.get<double>("projected.lon"), edge.second.get<double>("projected.lat")),
+        edge.second.get<float>("score"), static_cast<SideOfStreet>(edge.second.get<int>("sos")));
     }
     return p;
   }

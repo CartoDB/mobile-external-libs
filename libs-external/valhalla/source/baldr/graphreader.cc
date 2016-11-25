@@ -4,6 +4,7 @@
 #include <iostream>
 
 #include <valhalla/midgard/logging.h>
+
 #include "baldr/connectivity_map.h"
 using namespace valhalla::baldr;
 
@@ -15,11 +16,14 @@ namespace {
 namespace valhalla {
 namespace baldr {
 
-//this constructor delegates to the other
-GraphReader::GraphReader(const std::shared_ptr<GraphTileStorage>& tile_storage, const boost::property_tree::ptree& pt):tile_hierarchy_(tile_storage), cache_size_(0) {
+// Constructor using separate tile files
+GraphReader::GraphReader(const std::shared_ptr<GraphTileStorage>& tile_storage, const boost::property_tree::ptree& pt)
+    : tile_hierarchy_(tile_storage),
+      cache_size_(0) {
   max_cache_size_ = pt.get<size_t>("max_cache_size", DEFAULT_MAX_CACHE_SIZE);
 
-  //assume avg of 10 megs per tile
+  // Assume avg of 2 megs per tile
+  // TODO: for mmapped tiles, should assume 4KB per tile
   cache_.reserve(max_cache_size_/AVERAGE_TILE_SIZE);
 }
 
@@ -32,23 +36,26 @@ bool GraphReader::DoesTileExist(const TileHierarchy& tile_hierarchy, const Graph
   return tile_hierarchy.tile_storage()->DoesTileExist(graphid, tile_hierarchy);
 }
 
-// Get a pointer to a graph tile object given a GraphId.
+// Get a pointer to a graph tile object given a GraphId. Return nullptr
+// if the tile is not found/empty
 const GraphTile* GraphReader::GetGraphTile(const GraphId& graphid) {
   //TODO: clear the cache automatically once we become overcommitted by a certain amount
 
   // Check if the level/tileid combination is in the cache
-  auto cached = cache_.find(graphid.Tile_Base());
-  if(cached != cache_.end())
+  auto base = graphid.Tile_Base();
+  auto cached = cache_.find(base);
+  if(cached != cache_.end()) {
     return &cached->second;
+  }
 
-  // It wasn't in cache so create a GraphTile object. This reads the tile from disk
-  GraphTile tile(tile_hierarchy_, graphid);
-  // Need to check that the tile could be loaded, if it has no size it wasn't loaded
-  if(tile.size() == 0)
+  // This reads the tile from disk
+  GraphTile tile(tile_hierarchy_, base);
+  if (!tile.header())
     return nullptr;
+
   // Keep a copy in the cache and return it
-  cache_size_ += tile.size();
-  auto inserted = cache_.emplace(graphid.Tile_Base(), std::move(tile));
+  cache_size_ += tile.header()->end_offset();
+  auto inserted = cache_.emplace(base, std::move(tile));
   return &inserted.first->second;
 }
 
@@ -64,17 +71,13 @@ const TileHierarchy& GraphReader::GetTileHierarchy() const {
   return tile_hierarchy_;
 }
 
-/**
- * Clears the cache
- */
+// Clears the cache
 void GraphReader::Clear() {
   cache_size_ = 0;
   cache_.clear();
 }
 
-/** Returns true if the cache is over committed with respect to the limit
- * @return  true
- */
+// Returns true if the cache is over committed with respect to the limit
 bool GraphReader::OverCommitted() const {
   return max_cache_size_ < cache_size_;
 }
@@ -84,6 +87,7 @@ GraphId GraphReader::GetOpposingEdgeId(const GraphId& edgeid) {
   const GraphTile* NO_TILE = nullptr;
   return GetOpposingEdgeId(edgeid, NO_TILE);
 }
+
 GraphId GraphReader::GetOpposingEdgeId(const GraphId& edgeid, const GraphTile*& tile) {
   tile = GetGraphTile(edgeid);
   if(!tile)
@@ -106,6 +110,11 @@ GraphId GraphReader::GetOpposingEdgeId(const GraphId& edgeid, const GraphTile*& 
   if (tile != nullptr) {
     id.fields.id = tile->node(id)->edge_index() + directededge->opp_index();
     return id;
+  } else {
+    LOG_ERROR("Invalid tile for opposing edge: tile ID= " + std::to_string(id.tileid()) + " level= " + std::to_string(id.level()));
+    if (directededge->trans_up() || directededge->trans_down()) {
+      LOG_ERROR("transition edge being checked?");
+    }
   }
   return {};
 }
@@ -115,6 +124,7 @@ const DirectedEdge* GraphReader::GetOpposingEdge(const GraphId& edgeid) {
   const GraphTile* NO_TILE = nullptr;
   return GetOpposingEdge(edgeid, NO_TILE);
 }
+
 const DirectedEdge* GraphReader::GetOpposingEdge(const GraphId& edgeid, const GraphTile*& tile) {
   GraphId oppedgeid = GetOpposingEdgeId(edgeid, tile);
   return oppedgeid.Is_Valid() ? tile->directededge(oppedgeid) : nullptr;
@@ -157,6 +167,9 @@ uint32_t GraphReader::GetEdgeDensity(const GraphId& edgeid) {
   return (tile != nullptr) ? tile->node(id)->density() : 0;
 }
 
+std::unordered_set<GraphId> GraphReader::GetTileSet() const {
+  return tile_hierarchy_.tile_storage()->FindTiles(tile_hierarchy_);
+}
 
 }
 }

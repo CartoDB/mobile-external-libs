@@ -5,6 +5,7 @@
 #include <valhalla/baldr/tilehierarchy.h>
 
 #include <vector>
+#include <unordered_set>
 #include <cstdint>
 
 namespace valhalla {
@@ -28,7 +29,7 @@ class GraphTileStorage {
    * @param  tile_hierarchy The tile hierachy to use.
    * @return Returns the list of all available tile ids.
    */
-  virtual std::vector<GraphId> FindTiles(const TileHierarchy& tile_hierarchy) const = 0;
+  virtual std::unordered_set<GraphId> FindTiles(const TileHierarchy& tile_hierarchy) const = 0;
 
   /**
    * Checks if the specified tile exists.

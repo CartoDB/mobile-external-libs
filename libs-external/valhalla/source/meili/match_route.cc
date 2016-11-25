@@ -5,7 +5,6 @@
 #include <valhalla/baldr/graphreader.h>
 #include <valhalla/baldr/graphid.h>
 
-#include "config.h"
 #include "meili/geometry_helpers.h"
 #include "meili/graph_helpers.h"
 #include "meili/match_result.h"
@@ -191,9 +190,9 @@ EdgeSegment::Shape(baldr::GraphReader& graphreader) const
 {
   const baldr::GraphTile* tile = nullptr;
   const auto edge = helpers::edge_directededge(graphreader, edgeid, tile);
-  if (edge) {
+  if (edge && !edge->trans_up() && !edge->trans_down()) {
     const auto edgeinfo = tile->edgeinfo(edge->edgeinfo_offset());
-    const auto& shape = edgeinfo->shape();
+    const auto& shape = edgeinfo.shape();
     if (edge->forward()) {
       return helpers::ClipLineString(shape.cbegin(), shape.cend(), source, target);
     } else {
@@ -277,7 +276,7 @@ ConstructRoute(const MapMatching& mapmatching,
     if (prev_match != end) {
       const auto& prev_state = mapmatching.state(prev_match->stateid()),
                      state = mapmatching.state(match->stateid());
-      const auto& segments = MergeRoute(prev_state, state);
+      auto segments = MergeRoute(prev_state, state);
 
       if (!ValidateRoute(mapmatching.graphreader(), segments.begin(), segments.end(), tile)) {
         throw std::runtime_error("Found invalid route");

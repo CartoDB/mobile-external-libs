@@ -89,15 +89,15 @@ GraphTileMBTStorage::GraphTileMBTStorage(const std::string& mbt_file)
   }
 }
 
-std::vector<GraphId> GraphTileMBTStorage::FindTiles(const TileHierarchy& tile_hierarchy) const {
-  std::vector<GraphId> graphids;
+std::unordered_set<GraphId> GraphTileMBTStorage::FindTiles(const TileHierarchy& tile_hierarchy) const {
+  std::unordered_set<GraphId> graphids;
   try {
     sqlite3pp::query query(*mbt_db_, "SELECT zoom_level, tile_column, tile_row FROM tiles");
     for (auto it = query.begin(); it != query.end(); it++) {
       int z = (*it).get<int>(0);
       int x = (*it).get<int>(1);
       int y = (*it).get<int>(2);
-      graphids.push_back(ToGraphId(std::make_tuple(z, x, y), tile_hierarchy));
+      graphids.insert(ToGraphId(std::make_tuple(z, x, y), tile_hierarchy));
     }
   } catch (const std::exception&) {
   }

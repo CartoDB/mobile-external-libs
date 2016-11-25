@@ -1,6 +1,6 @@
-#include "config.h"
 #include "loki/search.h"
 #include <valhalla/midgard/linesegment2.h>
+#include <valhalla/midgard/distanceapproximator.h>
 
 #include <unordered_set>
 #include <list>
@@ -84,14 +84,14 @@ float tangent_angle(size_t index, const PointLL& point, const std::vector<PointL
   return u.Heading(v);
 }
 
-bool heading_filter(const DirectedEdge* edge, const std::unique_ptr<const EdgeInfo>& info,
+bool heading_filter(const DirectedEdge* edge, const EdgeInfo& info,
   const std::tuple<PointLL, float, int>& point, boost::optional<int> heading) {
   //if its far enough away from the edge, the heading is pretty useless
   if(!heading || std::get<1>(point) > NO_HEADING)
     return false;
 
   //get the angle of the shape from this point
-  auto angle = tangent_angle(std::get<2>(point), std::get<0>(point), info->shape(), edge->forward());
+  auto angle = tangent_angle(std::get<2>(point), std::get<0>(point), info.shape(), edge->forward());
   //we want the closest distance between two angles which can be had
   //across 0 or between the two so we just need to know which is bigger
   if(*heading > angle)
@@ -105,7 +105,7 @@ PathLocation::SideOfStreet flip_side(const PathLocation::SideOfStreet side) {
   return side;
 }
 
-PathLocation::SideOfStreet get_side(const DirectedEdge* edge, const std::unique_ptr<const EdgeInfo>& info,
+PathLocation::SideOfStreet get_side(const DirectedEdge* edge, const EdgeInfo& info,
   const std::tuple<PointLL, float, int>& point, const PointLL& original){
 
   //its so close to the edge that its basically on the edge
@@ -114,8 +114,8 @@ PathLocation::SideOfStreet get_side(const DirectedEdge* edge, const std::unique_
 
   //if the projected point is way too close to the begin or end of the shape
   //TODO: if the original point is really far away side of street may also not make much sense..
-  if(std::get<0>(point).Distance(info->shape().front()) < SIDE_OF_STREET_SNAP ||
-     std::get<0>(point).Distance(info->shape().back()) < SIDE_OF_STREET_SNAP)
+  if(std::get<0>(point).Distance(info.shape().front()) < SIDE_OF_STREET_SNAP ||
+     std::get<0>(point).Distance(info.shape().back()) < SIDE_OF_STREET_SNAP)
     return PathLocation::SideOfStreet::NONE;
 
   //get the side TODO: this can technically fail for longer segments..
@@ -123,59 +123,72 @@ PathLocation::SideOfStreet get_side(const DirectedEdge* edge, const std::unique_
   //through the center of the earth and the two shape points and test
   //whether the original point is above or below the plane (depending on winding)
   auto index = std::get<2>(point);
-  LineSegment2<PointLL> segment(info->shape()[index], info->shape()[index + 1]);
+  LineSegment2<PointLL> segment(info.shape()[index], info.shape()[index + 1]);
   return (segment.IsLeft(original) > 0) == edge->forward()  ? PathLocation::SideOfStreet::LEFT : PathLocation::SideOfStreet::RIGHT;
 }
 
-const NodeInfo* get_end_node(GraphReader& reader, const DirectedEdge* edge) {
-  //the node could be in another tile so we grab that
-  const auto tile = reader.GetGraphTile(edge->endnode());
-  return tile->node(edge->endnode());
-}
-
-PathLocation correlate_node(GraphReader& reader, const Location& location, const EdgeFilter& edge_filter, const GraphTile* tile, const NodeInfo* node, const float sqdist){
+PathLocation correlate_node(GraphReader& reader, const Location& location, const EdgeFilter& edge_filter, const GraphId& found_node, std::tuple<PointLL, float, int> closest_point){
   PathLocation correlated(location);
   std::list<PathLocation::PathEdge> heading_filtered;
-  //now that we have a node we can pass back all the edges leaving and entering it
-  const auto* start_edge = tile->directededge(node->edge_index());
-  const auto* end_edge = start_edge + node->edge_count();
-  auto closest_point = std::make_tuple(node->latlng(), sqdist, 0);
-  for(const auto* edge = start_edge; edge < end_edge; ++edge) {
-    //get some info about this edge and the opposing
-    GraphId id = tile->id();
-    id.fields.id = node->edge_index() + (edge - start_edge);
-    const GraphTile* other_tile;
-    const auto other_id = reader.GetOpposingEdgeId(id, other_tile);
-    const auto* other_edge = other_tile->directededge(other_id);
-    auto info = tile->edgeinfo(edge->edgeinfo_offset());
 
-    //do we want this edge
-    if(edge_filter(edge) != 0.0f) {
-      PathLocation::PathEdge path_edge{std::move(id), 0.f, node->latlng(), PathLocation::NONE};
-      std::get<2>(closest_point) = edge->forward() ? 0 : info->shape().size() - 2;
-      if(!heading_filter(edge, info, closest_point, location.heading_))
-        correlated.edges.push_back(std::move(path_edge));
-      else
-        heading_filtered.emplace_back(std::move(path_edge));
+  //we need this because we might need to go to different levels
+  std::function<void (const GraphId& node_id, bool transition)> crawl;
+  crawl = [&](const GraphId& node_id, bool follow_transitions) {
+    //now that we have a node we can pass back all the edges leaving and entering it
+    const auto* tile = reader.GetGraphTile(node_id);
+    if(!tile)
+      return;
+    const auto* node = tile->node(node_id);
+    const auto* start_edge = tile->directededge(node->edge_index());
+    const auto* end_edge = start_edge + node->edge_count();
+    for(const auto* edge = start_edge; edge < end_edge; ++edge) {
+      //if this is an edge leaving this level then we should go do that level awhile
+      if(follow_transitions && (edge->trans_down() || edge->trans_up()))
+        crawl(edge->endnode(), false);
+
+      //get some info about this edge and the opposing
+      GraphId id = tile->id();
+      id.fields.id = node->edge_index() + (edge - start_edge);
+      auto info = tile->edgeinfo(edge->edgeinfo_offset());
+
+      //do we want this edge
+      if(edge_filter(edge) != 0.0f) {
+        PathLocation::PathEdge path_edge{std::move(id), 0.f, node->latlng(), std::get<1>(closest_point), PathLocation::NONE};
+        std::get<2>(closest_point) = edge->forward() ? 0 : info.shape().size() - 2;
+        if(!heading_filter(edge, info, closest_point, location.heading_))
+          correlated.edges.push_back(std::move(path_edge));
+        else
+          heading_filtered.emplace_back(std::move(path_edge));
+      }
+
+      //do we want the evil twin
+      const GraphTile* other_tile;
+      const auto other_id = reader.GetOpposingEdgeId(id, other_tile);
+      if(!other_tile)
+        continue;
+      const auto* other_edge = other_tile->directededge(other_id);
+      if(edge_filter(other_edge) != 0.0f) {
+        PathLocation::PathEdge path_edge{std::move(other_id), 1.f, node->latlng(), std::get<1>(closest_point), PathLocation::NONE};
+        std::get<2>(closest_point) = other_edge->forward() ? 0 : info.shape().size() - 2;
+        if(!heading_filter(other_edge, tile->edgeinfo(edge->edgeinfo_offset()), closest_point, location.heading_))
+          correlated.edges.push_back(std::move(path_edge));
+        else
+          heading_filtered.emplace_back(std::move(path_edge));
+      }
     }
 
-    //do we want the evil twin
-    if(edge_filter(other_edge) != 0.0f) {
-      PathLocation::PathEdge path_edge{std::move(other_id), 1.f, node->latlng(),PathLocation::NONE};
-      std::get<2>(closest_point) = other_edge->forward() ? 0 : info->shape().size() - 2;
-      if(!heading_filter(other_edge, tile->edgeinfo(edge->edgeinfo_offset()), closest_point, location.heading_))
+    //if we have nothing because of heading we'll just ignore it
+    if(correlated.edges.size() == 0 && heading_filtered.size())
+      for(auto& path_edge : heading_filtered)
         correlated.edges.push_back(std::move(path_edge));
-      else
-        heading_filtered.emplace_back(std::move(path_edge));
-    }
-  }
 
-  //if we have nothing because of heading we'll just ignore it
-  if(correlated.edges.size() == 0 && heading_filtered.size())
-    for(auto& path_edge : heading_filtered)
-      correlated.edges.push_back(std::move(path_edge));
+    //if we still found nothing that is no good..
+    if(correlated.edges.size() == 0)
+      throw std::runtime_error("No suitable edges near location");
+  };
 
-  //if we still found nothing that is no good..
+  //start where we are and crawl from there
+  crawl(found_node, true);
   if(correlated.edges.size() == 0)
     throw std::runtime_error("No suitable edges near location");
 
@@ -184,15 +197,15 @@ PathLocation correlate_node(GraphReader& reader, const Location& location, const
 }
 
 PathLocation correlate_edge(GraphReader& reader, const Location& location, const EdgeFilter& edge_filter, const std::tuple<PointLL, float, size_t>& closest_point,
-    const DirectedEdge* closest_edge, const GraphId& closest_edge_id, const std::unique_ptr<const EdgeInfo>&closest_edge_info) {
+    const DirectedEdge* closest_edge, const GraphId& closest_edge_id, const EdgeInfo& closest_edge_info) {
   //now that we have an edge we can pass back all the info about it
   PathLocation correlated(location);
   if(closest_edge != nullptr){
     //we need the ratio in the direction of the edge we are correlated to
     double partial_length = 0;
     for(size_t i = 0; i < std::get<2>(closest_point); ++i)
-      partial_length += closest_edge_info->shape()[i].Distance(closest_edge_info->shape()[i + 1]);
-    partial_length += closest_edge_info->shape()[std::get<2>(closest_point)].Distance(std::get<0>(closest_point));
+      partial_length += closest_edge_info.shape()[i].Distance(closest_edge_info.shape()[i + 1]);
+    partial_length += closest_edge_info.shape()[std::get<2>(closest_point)].Distance(std::get<0>(closest_point));
     partial_length = std::min(partial_length, static_cast<double>(closest_edge->length()));
     float length_ratio = static_cast<float>(partial_length / static_cast<double>(closest_edge->length()));
     if(!closest_edge->forward())
@@ -204,16 +217,16 @@ PathLocation correlate_edge(GraphReader& reader, const Location& location, const
     if(heading_filter(closest_edge, closest_edge_info, closest_point, location.heading_))
       heading_filtered.emplace_back(closest_edge_id, length_ratio, std::get<0>(closest_point), side);
     else
-      correlated.edges.push_back(PathLocation::PathEdge{closest_edge_id, length_ratio, std::get<0>(closest_point), side});
+      correlated.edges.push_back(PathLocation::PathEdge{closest_edge_id, length_ratio, std::get<0>(closest_point), std::get<1>(closest_point), side});
     //correlate its evil twin
     const GraphTile* other_tile;
     auto opposing_edge_id = reader.GetOpposingEdgeId(closest_edge_id, other_tile);
     const DirectedEdge* other_edge;
     if(opposing_edge_id.Is_Valid() && (other_edge = other_tile->directededge(opposing_edge_id)) && edge_filter(other_edge) != 0.0f) {
       if(heading_filter(other_edge, closest_edge_info, closest_point, location.heading_))
-        heading_filtered.emplace_back(opposing_edge_id, 1 - length_ratio, std::get<0>(closest_point), flip_side(side));
+        heading_filtered.emplace_back(opposing_edge_id, 1 - length_ratio, std::get<0>(closest_point), std::get<1>(closest_point), flip_side(side));
       else
-        correlated.edges.push_back(PathLocation::PathEdge{opposing_edge_id, 1 - length_ratio, std::get<0>(closest_point), flip_side(side)});
+        correlated.edges.push_back(PathLocation::PathEdge{opposing_edge_id, 1 - length_ratio, std::get<0>(closest_point), std::get<1>(closest_point), flip_side(side)});
     }
 
     //if we have nothing because of heading we'll just ignore it
@@ -230,46 +243,55 @@ PathLocation correlate_edge(GraphReader& reader, const Location& location, const
   return correlated;
 }
 
-std::tuple<PointLL, float, size_t> project(const PointLL& p, const std::vector<PointLL>& shape) {
+std::tuple<PointLL, float, size_t> project(const PointLL& p, Shape7Decoder<PointLL> shape) {
   size_t closest_segment = 0;
-  float closest_distance = std::numeric_limits<float>::max();
+  float sq_closest_distance = std::numeric_limits<float>::max();
   PointLL closest_point{};
+  DistanceApproximator approx(p);
+
+  // Longitude (x) is scaled by the cos of the latitude so that distances are
+  // correct in lat,lon space
+  float lon_scale = cosf(p.lat() * kRadPerDeg);
 
   //for each segment
-  for(size_t i = 0; i < shape.size() - 1; ++i) {
+  PointLL point, v;
+  if (! shape.empty()) {
+    v = shape.pop();
+  }
+  for(size_t i = 0; ! shape.empty(); ++i) {
     //project a onto b where b is the origin vector representing this segment
     //and a is the origin vector to the point we are projecting, (a.b/b.b)*b
-    const auto& u = shape[i];
-    const auto& v = shape[i + 1];
+    const auto u = v;
+    v = shape.pop();
+
     auto bx = v.first - u.first;
     auto by = v.second - u.second;
-    auto sq = bx*bx + by*by;
-    //avoid divided-by-zero which gives a NaN scale, otherwise comparisons below will fail
-    const auto scale = sq > 0? (((p.first - u.first)*bx + (p.second - u.second)*by) / sq) : 0.f;
+
+    // Scale longitude when finding the projection. Avoid divided-by-zero
+    // which gives a NaN scale, otherwise comparisons below will fail
+    auto bx2 = bx * lon_scale;
+    auto sq = bx2*bx2 + by*by;
+    auto scale = sq > 0 ?  (((p.first - u.first)*lon_scale*bx2 + (p.second - u.second)*by) / sq) : 0.f;
+
     //projects along the ray before u
     if(scale <= 0.f) {
-      bx = u.first;
-      by = u.second;
+      point = { u.first, u.second };
     }//projects along the ray after v
     else if(scale >= 1.f) {
-      bx = v.first;
-      by = v.second;
+      point = { v.first, v.second };
     }//projects along the ray between u and v
     else {
-      bx = bx*scale + u.first;
-      by = by*scale + u.second;
+      point = { u.first+bx*scale, u.second+by*scale };
     }
     //check if this point is better
-    PointLL point(bx, by);
-    const auto distance = p.Distance(point);
-    if(distance < closest_distance) {
+    const auto sq_distance = approx.DistanceSquared(point);
+    if(sq_distance < sq_closest_distance) {
       closest_segment = i;
-      closest_distance = distance;
+      sq_closest_distance = sq_distance;
       closest_point = std::move(point);
     }
   }
-
-  return std::make_tuple(std::move(closest_point), closest_distance, closest_segment);
+  return std::make_tuple(std::move(closest_point), sqrt(sq_closest_distance), closest_segment);
 }
 
 //TODO: this is frought with peril. to properly to this we need to know
@@ -360,7 +382,7 @@ PathLocation search(const Location& location, GraphReader& reader, const EdgeFil
   const GraphTile* closest_tile = nullptr;
   const DirectedEdge* closest_edge = nullptr;
   GraphId closest_edge_id;
-  std::unique_ptr<const EdgeInfo> closest_edge_info;
+  std::unique_ptr<EdgeInfo> closest_edge_info;
   std::tuple<PointLL, float, int> closest_point{{}, std::numeric_limits<float>::max(), 0};
 
   //give up if we find nothing after a while
@@ -399,13 +421,16 @@ PathLocation search(const Location& location, GraphReader& reader, const EdgeFil
         }
         //get some info about the edge
         auto edge_info = tile->edgeinfo(edge->edgeinfo_offset());
-        auto candidate = project(location.latlng_, edge_info->shape());
+        auto candidate = project(location.latlng_, edge_info.lazy_shape());
 
         //does this look better than the current edge
         if(std::get<1>(candidate) < std::get<1>(closest_point)) {
           closest_edge = edge;
           closest_edge_id = e;
-          closest_edge_info.swap(edge_info);
+          if (closest_edge_info)
+              std::swap(*closest_edge_info, edge_info);
+          else 
+              closest_edge_info.reset(new EdgeInfo(std::move(edge_info)));
           closest_point = std::move(candidate);
           closest_tile = tile;
         }
@@ -415,6 +440,9 @@ PathLocation search(const Location& location, GraphReader& reader, const EdgeFil
       throw std::runtime_error("No data found for location");
     }
   }
+
+  // recalculate accurate distance
+  std::get<1>(closest_point) = location.latlng_.Distance(std::get<0>(closest_point));
 
   //keep track of bins we looked in but only the ones that had something
   //would rather log this in the service only, so lets figure a way to pass it back
@@ -431,17 +459,14 @@ PathLocation search(const Location& location, GraphReader& reader, const EdgeFil
     auto opposing_edge = reader.GetOpposingEdge(closest_edge_id, other_tile);
     if(!other_tile)
       throw std::runtime_error("No suitable edges near location");
-    return correlate_node(reader, location, edge_filter, closest_tile, closest_tile->node(opposing_edge->endnode()), std::get<1>(closest_point));
+    return correlate_node(reader, location, edge_filter, opposing_edge->endnode(), closest_point);
   }
   //it was the end node
-  if((back && closest_edge->forward()) || (front && !closest_edge->forward())) {
-    const GraphTile* other_tile = reader.GetGraphTile(closest_edge->endnode());
-    if(!other_tile)
-      throw std::runtime_error("No suitable edges near location");
-    return correlate_node(reader, location, edge_filter, other_tile, other_tile->node(closest_edge->endnode()), std::get<1>(closest_point));
-  }
+  if((back && closest_edge->forward()) || (front && !closest_edge->forward()))
+    return correlate_node(reader, location, edge_filter, closest_edge->endnode(), closest_point);
+
   //it was along the edge
-  return correlate_edge(reader, location, edge_filter, closest_point, closest_edge, closest_edge_id, closest_edge_info);
+  return correlate_edge(reader, location, edge_filter, closest_point, closest_edge, closest_edge_id, *closest_edge_info);
 }
 
 }

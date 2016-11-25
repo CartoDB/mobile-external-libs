@@ -61,12 +61,6 @@ class DynamicCost {
   virtual ~DynamicCost();
 
   /**
-   * Does the costing allow hierarchy transitions?
-   * @return  Returns true if the costing model allows hierarchy transitions).
-   */
-  virtual bool AllowTransitions() const;
-
-  /**
    * Does the costing method allow multiple passes (with relaxed
    * hierarchy limits).
    * @return  Returns true if the costing model allows multiple passes.
@@ -96,6 +90,12 @@ class DynamicCost {
    * transit stop to the destination).
    */
   virtual void UseMaxMultiModalDistance();
+
+  /**
+   * Get the access mode used by this costing method.
+   * @return  Returns access mode.
+   */
+  virtual uint32_t access_mode() const = 0;
 
   /**
    * Checks if access is allowed for the provided directed edge.
@@ -141,12 +141,10 @@ class DynamicCost {
   /**
    * Get the cost to traverse the specified directed edge. Cost includes
    * the time (seconds) to traverse the edge.
-   * @param   edge     Pointer to a directed edge.
-   * @param   density  Relative road density.
+   * @param   edge  Pointer to a directed edge.
    * @return  Returns the cost and time (seconds)
    */
-  virtual Cost EdgeCost(const baldr::DirectedEdge* edge,
-                        const uint32_t density) const = 0;
+  virtual Cost EdgeCost(const baldr::DirectedEdge* edge) const = 0;
 
   /**
    * Get the cost to traverse the specified directed edge using a transit
@@ -193,6 +191,25 @@ class DynamicCost {
                               const baldr::DirectedEdge* opp_pred_edge) const;
 
   /**
+   * Test if an edge should be restricted due to a complex restriction.
+   * @param  edge  Directed edge.
+   * @param  pred        Predecessor information.
+   * @param  edgelabels  List of edge labels.
+   * @param  tile        Graph tile (to read restriction if needed).
+   * @param  edgeid      Edge Id for the directed edge.
+   * @param  forward     Forward search or reverse search.
+   * @return Returns true it there is a complex restriction onto this edge
+   *         that matches the mode and the predecessor list for the current
+   *         path matches a complex restriction.
+   */
+  virtual bool Restricted(const baldr::DirectedEdge* edge,
+                          const EdgeLabel& pred,
+                          const std::vector<EdgeLabel>& edgelabels,
+                          const baldr::GraphTile*& tile,
+                          const baldr::GraphId& edgeid,
+                          const bool forward) const;
+
+  /**
    * Returns the transfer cost between 2 transit stops.
    * @return  Returns the transfer cost and time (seconds).
    */
@@ -237,13 +254,31 @@ class DynamicCost {
    * Set the current travel mode.
    * @param  mode  Travel mode
    */
-  void set_travelmode(const TravelMode mode);
+  void set_travel_mode(const TravelMode mode);
 
   /**
    * Get the current travel mode.
    * @return  Returns the current travel mode.
    */
-  TravelMode travelmode() const;
+  TravelMode travel_mode() const;
+
+  /**
+   * Get the current travel type.
+   * @return  Returns the current travel type.
+   */
+  virtual uint8_t travel_type() const;
+
+  /**
+   * Get the wheelchair required flag.
+   * @return  Returns true if wheelchair is required.
+   */
+  virtual bool wheelchair() const;
+
+  /**
+   * Get the bicycle required flag.
+   * @return  Returns true if bicycle is required.
+   */
+  virtual bool bicycle() const;
 
   /**
    * Returns a function/functor to be used in location searching which will
@@ -271,17 +306,6 @@ class DynamicCost {
   void RelaxHierarchyLimits(const float factor, const float expansion_within_factor);
 
   /**
-   * Do not transition up to highway level - remain on arterial. Used as last
-   * resort.
-   */
-  void DisableHighwayTransitions();
-
-  /**
-   * Reset hierarchy limits.
-   */
-  void ResetHierarchyLimits();
-
-  /**
    * Checks if we should exclude or not.
    * @return  Returns true if we should exclude, false if not.
    */
@@ -306,7 +330,7 @@ class DynamicCost {
   bool allow_transit_connections_;
 
   // Travel mode
-  TravelMode travelmode_;
+  TravelMode travel_mode_;
 
   // Hierarchy limits.
   std::vector<HierarchyLimits> hierarchy_limits_;

@@ -105,6 +105,32 @@ inline bool TripPath_TransitStopInfo_Type_Parse(
   return ::google::protobuf::internal::ParseNamedEnum<TripPath_TransitStopInfo_Type>(
     TripPath_TransitStopInfo_Type_descriptor(), name, value);
 }
+enum TripPath_Node_Type {
+  TripPath_Node_Type_kStreetIntersection = 0,
+  TripPath_Node_Type_kGate = 1,
+  TripPath_Node_Type_kBollard = 2,
+  TripPath_Node_Type_kTollBooth = 3,
+  TripPath_Node_Type_kMultiUseTransitStop = 6,
+  TripPath_Node_Type_kBikeShare = 7,
+  TripPath_Node_Type_kParking = 8,
+  TripPath_Node_Type_kMotorwayJunction = 9,
+  TripPath_Node_Type_kBorderControl = 10
+};
+bool TripPath_Node_Type_IsValid(int value);
+const TripPath_Node_Type TripPath_Node_Type_Type_MIN = TripPath_Node_Type_kStreetIntersection;
+const TripPath_Node_Type TripPath_Node_Type_Type_MAX = TripPath_Node_Type_kBorderControl;
+const int TripPath_Node_Type_Type_ARRAYSIZE = TripPath_Node_Type_Type_MAX + 1;
+
+const ::google::protobuf::EnumDescriptor* TripPath_Node_Type_descriptor();
+inline const ::std::string& TripPath_Node_Type_Name(TripPath_Node_Type value) {
+  return ::google::protobuf::internal::NameOfEnum(
+    TripPath_Node_Type_descriptor(), value);
+}
+inline bool TripPath_Node_Type_Parse(
+    const ::std::string& name, TripPath_Node_Type* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<TripPath_Node_Type>(
+    TripPath_Node_Type_descriptor(), name, value);
+}
 enum TripPath_Traversability {
   TripPath_Traversability_kNone = 0,
   TripPath_Traversability_kForward = 1,
@@ -151,6 +177,49 @@ inline bool TripPath_RoadClass_Parse(
   return ::google::protobuf::internal::ParseNamedEnum<TripPath_RoadClass>(
     TripPath_RoadClass_descriptor(), name, value);
 }
+enum TripPath_Use {
+  TripPath_Use_kRoadUse = 0,
+  TripPath_Use_kRampUse = 1,
+  TripPath_Use_kTurnChannelUse = 2,
+  TripPath_Use_kTrackUse = 3,
+  TripPath_Use_kDrivewayUse = 4,
+  TripPath_Use_kAlleyUse = 5,
+  TripPath_Use_kParkingAisleUse = 6,
+  TripPath_Use_kEmergencyAccessUse = 7,
+  TripPath_Use_kDriveThruUse = 8,
+  TripPath_Use_kCuldesacUse = 9,
+  TripPath_Use_kCyclewayUse = 20,
+  TripPath_Use_kMountainBikeUse = 21,
+  TripPath_Use_kSidewalkUse = 24,
+  TripPath_Use_kFootwayUse = 25,
+  TripPath_Use_kStepsUse = 26,
+  TripPath_Use_kPathUse = 27,
+  TripPath_Use_kPedestrianUse = 28,
+  TripPath_Use_kBridlewayUse = 29,
+  TripPath_Use_kOtherUse = 40,
+  TripPath_Use_kFerryUse = 41,
+  TripPath_Use_kRailFerryUse = 42,
+  TripPath_Use_kRailUse = 50,
+  TripPath_Use_kBusUse = 51,
+  TripPath_Use_kRailConnectionUse = 52,
+  TripPath_Use_kBusConnectionUse = 53,
+  TripPath_Use_kTransitConnectionUse = 54
+};
+bool TripPath_Use_IsValid(int value);
+const TripPath_Use TripPath_Use_Use_MIN = TripPath_Use_kRoadUse;
+const TripPath_Use TripPath_Use_Use_MAX = TripPath_Use_kTransitConnectionUse;
+const int TripPath_Use_Use_ARRAYSIZE = TripPath_Use_Use_MAX + 1;
+
+const ::google::protobuf::EnumDescriptor* TripPath_Use_descriptor();
+inline const ::std::string& TripPath_Use_Name(TripPath_Use value) {
+  return ::google::protobuf::internal::NameOfEnum(
+    TripPath_Use_descriptor(), value);
+}
+inline bool TripPath_Use_Parse(
+    const ::std::string& name, TripPath_Use* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<TripPath_Use>(
+    TripPath_Use_descriptor(), name, value);
+}
 enum TripPath_TravelMode {
   TripPath_TravelMode_kDrive = 0,
   TripPath_TravelMode_kPedestrian = 1,
@@ -175,12 +244,12 @@ inline bool TripPath_TravelMode_Parse(
 enum TripPath_VehicleType {
   TripPath_VehicleType_kCar = 0,
   TripPath_VehicleType_kMotorcycle = 1,
-  TripPath_VehicleType_kFourWheelDrive = 2,
-  TripPath_VehicleType_kTractorTrailers = 3
+  TripPath_VehicleType_kAutoBus = 2,
+  TripPath_VehicleType_kTractorTrailer = 3
 };
 bool TripPath_VehicleType_IsValid(int value);
 const TripPath_VehicleType TripPath_VehicleType_VehicleType_MIN = TripPath_VehicleType_kCar;
-const TripPath_VehicleType TripPath_VehicleType_VehicleType_MAX = TripPath_VehicleType_kTractorTrailers;
+const TripPath_VehicleType TripPath_VehicleType_VehicleType_MAX = TripPath_VehicleType_kTractorTrailer;
 const int TripPath_VehicleType_VehicleType_ARRAYSIZE = TripPath_VehicleType_VehicleType_MAX + 1;
 
 const ::google::protobuf::EnumDescriptor* TripPath_VehicleType_descriptor();
@@ -195,7 +264,7 @@ inline bool TripPath_VehicleType_Parse(
 }
 enum TripPath_PedestrianType {
   TripPath_PedestrianType_kFoot = 0,
-  TripPath_PedestrianType_kWheelChair = 1,
+  TripPath_PedestrianType_kWheelchair = 1,
   TripPath_PedestrianType_kSegway = 2
 };
 bool TripPath_PedestrianType_IsValid(int value);
@@ -215,10 +284,9 @@ inline bool TripPath_PedestrianType_Parse(
 }
 enum TripPath_BicycleType {
   TripPath_BicycleType_kRoad = 0,
-  TripPath_BicycleType_kHybrid = 1,
-  TripPath_BicycleType_kCity = 2,
-  TripPath_BicycleType_kCross = 3,
-  TripPath_BicycleType_kMountain = 4
+  TripPath_BicycleType_kCross = 1,
+  TripPath_BicycleType_kHybrid = 2,
+  TripPath_BicycleType_kMountain = 3
 };
 bool TripPath_BicycleType_IsValid(int value);
 const TripPath_BicycleType TripPath_BicycleType_BicycleType_MIN = TripPath_BicycleType_kRoad;
@@ -1216,254 +1284,156 @@ class TripPath_Edge : public ::google::protobuf::Message {
   inline ::valhalla::odin::TripPath_Traversability traversability() const;
   inline void set_traversability(::valhalla::odin::TripPath_Traversability value);
 
-  // optional bool ramp = 10;
-  inline bool has_ramp() const;
-  inline void clear_ramp();
-  static const int kRampFieldNumber = 10;
-  inline bool ramp() const;
-  inline void set_ramp(bool value);
+  // optional .valhalla.odin.TripPath.Use use = 10;
+  inline bool has_use() const;
+  inline void clear_use();
+  static const int kUseFieldNumber = 10;
+  inline ::valhalla::odin::TripPath_Use use() const;
+  inline void set_use(::valhalla::odin::TripPath_Use value);
 
-  // optional bool turn_channel = 11;
-  inline bool has_turn_channel() const;
-  inline void clear_turn_channel();
-  static const int kTurnChannelFieldNumber = 11;
-  inline bool turn_channel() const;
-  inline void set_turn_channel(bool value);
-
-  // optional bool ferry = 12;
-  inline bool has_ferry() const;
-  inline void clear_ferry();
-  static const int kFerryFieldNumber = 12;
-  inline bool ferry() const;
-  inline void set_ferry(bool value);
-
-  // optional bool rail_ferry = 13;
-  inline bool has_rail_ferry() const;
-  inline void clear_rail_ferry();
-  static const int kRailFerryFieldNumber = 13;
-  inline bool rail_ferry() const;
-  inline void set_rail_ferry(bool value);
-
-  // optional bool toll = 14;
+  // optional bool toll = 11;
   inline bool has_toll() const;
   inline void clear_toll();
-  static const int kTollFieldNumber = 14;
+  static const int kTollFieldNumber = 11;
   inline bool toll() const;
   inline void set_toll(bool value);
 
-  // optional bool unpaved = 15;
+  // optional bool unpaved = 12;
   inline bool has_unpaved() const;
   inline void clear_unpaved();
-  static const int kUnpavedFieldNumber = 15;
+  static const int kUnpavedFieldNumber = 12;
   inline bool unpaved() const;
   inline void set_unpaved(bool value);
 
-  // optional bool tunnel = 16;
+  // optional bool tunnel = 13;
   inline bool has_tunnel() const;
   inline void clear_tunnel();
-  static const int kTunnelFieldNumber = 16;
+  static const int kTunnelFieldNumber = 13;
   inline bool tunnel() const;
   inline void set_tunnel(bool value);
 
-  // optional bool bridge = 17;
+  // optional bool bridge = 14;
   inline bool has_bridge() const;
   inline void clear_bridge();
-  static const int kBridgeFieldNumber = 17;
+  static const int kBridgeFieldNumber = 14;
   inline bool bridge() const;
   inline void set_bridge(bool value);
 
-  // optional bool roundabout = 18;
+  // optional bool roundabout = 15;
   inline bool has_roundabout() const;
   inline void clear_roundabout();
-  static const int kRoundaboutFieldNumber = 18;
+  static const int kRoundaboutFieldNumber = 15;
   inline bool roundabout() const;
   inline void set_roundabout(bool value);
 
-  // optional bool internal_intersection = 19;
+  // optional bool internal_intersection = 16;
   inline bool has_internal_intersection() const;
   inline void clear_internal_intersection();
-  static const int kInternalIntersectionFieldNumber = 19;
+  static const int kInternalIntersectionFieldNumber = 16;
   inline bool internal_intersection() const;
   inline void set_internal_intersection(bool value);
 
-  // optional uint32 end_node_index = 20;
+  // optional bool drive_on_right = 17 [default = true];
+  inline bool has_drive_on_right() const;
+  inline void clear_drive_on_right();
+  static const int kDriveOnRightFieldNumber = 17;
+  inline bool drive_on_right() const;
+  inline void set_drive_on_right(bool value);
+
+  // optional uint32 end_node_index = 18;
   inline bool has_end_node_index() const;
   inline void clear_end_node_index();
-  static const int kEndNodeIndexFieldNumber = 20;
+  static const int kEndNodeIndexFieldNumber = 18;
   inline ::google::protobuf::uint32 end_node_index() const;
   inline void set_end_node_index(::google::protobuf::uint32 value);
 
-  // optional .valhalla.odin.TripPath.Sign sign = 21;
+  // optional .valhalla.odin.TripPath.Sign sign = 19;
   inline bool has_sign() const;
   inline void clear_sign();
-  static const int kSignFieldNumber = 21;
+  static const int kSignFieldNumber = 19;
   inline const ::valhalla::odin::TripPath_Sign& sign() const;
   inline ::valhalla::odin::TripPath_Sign* mutable_sign();
   inline ::valhalla::odin::TripPath_Sign* release_sign();
   inline void set_allocated_sign(::valhalla::odin::TripPath_Sign* sign);
 
-  // optional .valhalla.odin.TripPath.TravelMode travel_mode = 22;
+  // optional .valhalla.odin.TripPath.TravelMode travel_mode = 20;
   inline bool has_travel_mode() const;
   inline void clear_travel_mode();
-  static const int kTravelModeFieldNumber = 22;
+  static const int kTravelModeFieldNumber = 20;
   inline ::valhalla::odin::TripPath_TravelMode travel_mode() const;
   inline void set_travel_mode(::valhalla::odin::TripPath_TravelMode value);
 
-  // optional .valhalla.odin.TripPath.VehicleType vehicle_type = 23;
+  // optional .valhalla.odin.TripPath.VehicleType vehicle_type = 21;
   inline bool has_vehicle_type() const;
   inline void clear_vehicle_type();
-  static const int kVehicleTypeFieldNumber = 23;
+  static const int kVehicleTypeFieldNumber = 21;
   inline ::valhalla::odin::TripPath_VehicleType vehicle_type() const;
   inline void set_vehicle_type(::valhalla::odin::TripPath_VehicleType value);
 
-  // optional .valhalla.odin.TripPath.PedestrianType pedestrian_type = 24;
+  // optional .valhalla.odin.TripPath.PedestrianType pedestrian_type = 22;
   inline bool has_pedestrian_type() const;
   inline void clear_pedestrian_type();
-  static const int kPedestrianTypeFieldNumber = 24;
+  static const int kPedestrianTypeFieldNumber = 22;
   inline ::valhalla::odin::TripPath_PedestrianType pedestrian_type() const;
   inline void set_pedestrian_type(::valhalla::odin::TripPath_PedestrianType value);
 
-  // optional .valhalla.odin.TripPath.BicycleType bicycle_type = 25;
+  // optional .valhalla.odin.TripPath.BicycleType bicycle_type = 23;
   inline bool has_bicycle_type() const;
   inline void clear_bicycle_type();
-  static const int kBicycleTypeFieldNumber = 25;
+  static const int kBicycleTypeFieldNumber = 23;
   inline ::valhalla::odin::TripPath_BicycleType bicycle_type() const;
   inline void set_bicycle_type(::valhalla::odin::TripPath_BicycleType value);
 
-  // optional .valhalla.odin.TripPath.TransitType transit_type = 26;
+  // optional .valhalla.odin.TripPath.TransitType transit_type = 24;
   inline bool has_transit_type() const;
   inline void clear_transit_type();
-  static const int kTransitTypeFieldNumber = 26;
+  static const int kTransitTypeFieldNumber = 24;
   inline ::valhalla::odin::TripPath_TransitType transit_type() const;
   inline void set_transit_type(::valhalla::odin::TripPath_TransitType value);
 
-  // optional bool drive_on_right = 27 [default = true];
-  inline bool has_drive_on_right() const;
-  inline void clear_drive_on_right();
-  static const int kDriveOnRightFieldNumber = 27;
-  inline bool drive_on_right() const;
-  inline void set_drive_on_right(bool value);
-
-  // optional bool road = 28;
-  inline bool has_road() const;
-  inline void clear_road();
-  static const int kRoadFieldNumber = 28;
-  inline bool road() const;
-  inline void set_road(bool value);
-
-  // optional bool track = 29;
-  inline bool has_track() const;
-  inline void clear_track();
-  static const int kTrackFieldNumber = 29;
-  inline bool track() const;
-  inline void set_track(bool value);
-
-  // optional bool driveway = 30;
-  inline bool has_driveway() const;
-  inline void clear_driveway();
-  static const int kDrivewayFieldNumber = 30;
-  inline bool driveway() const;
-  inline void set_driveway(bool value);
-
-  // optional bool alley = 31;
-  inline bool has_alley() const;
-  inline void clear_alley();
-  static const int kAlleyFieldNumber = 31;
-  inline bool alley() const;
-  inline void set_alley(bool value);
-
-  // optional bool parking_aisle = 32;
-  inline bool has_parking_aisle() const;
-  inline void clear_parking_aisle();
-  static const int kParkingAisleFieldNumber = 32;
-  inline bool parking_aisle() const;
-  inline void set_parking_aisle(bool value);
-
-  // optional bool emergency_access = 33;
-  inline bool has_emergency_access() const;
-  inline void clear_emergency_access();
-  static const int kEmergencyAccessFieldNumber = 33;
-  inline bool emergency_access() const;
-  inline void set_emergency_access(bool value);
-
-  // optional bool drive_thru = 34;
-  inline bool has_drive_thru() const;
-  inline void clear_drive_thru();
-  static const int kDriveThruFieldNumber = 34;
-  inline bool drive_thru() const;
-  inline void set_drive_thru(bool value);
-
-  // optional bool culdesac = 35;
-  inline bool has_culdesac() const;
-  inline void clear_culdesac();
-  static const int kCuldesacFieldNumber = 35;
-  inline bool culdesac() const;
-  inline void set_culdesac(bool value);
-
-  // optional bool footway = 36;
-  inline bool has_footway() const;
-  inline void clear_footway();
-  static const int kFootwayFieldNumber = 36;
-  inline bool footway() const;
-  inline void set_footway(bool value);
-
-  // optional bool stairs = 37;
-  inline bool has_stairs() const;
-  inline void clear_stairs();
-  static const int kStairsFieldNumber = 37;
-  inline bool stairs() const;
-  inline void set_stairs(bool value);
-
-  // optional bool cycleway = 38;
-  inline bool has_cycleway() const;
-  inline void clear_cycleway();
-  static const int kCyclewayFieldNumber = 38;
-  inline bool cycleway() const;
-  inline void set_cycleway(bool value);
-
-  // optional bool mountain_bike = 39;
-  inline bool has_mountain_bike() const;
-  inline void clear_mountain_bike();
-  static const int kMountainBikeFieldNumber = 39;
-  inline bool mountain_bike() const;
-  inline void set_mountain_bike(bool value);
-
-  // optional bool rail = 40;
-  inline bool has_rail() const;
-  inline void clear_rail();
-  static const int kRailFieldNumber = 40;
-  inline bool rail() const;
-  inline void set_rail(bool value);
-
-  // optional bool bus = 41;
-  inline bool has_bus() const;
-  inline void clear_bus();
-  static const int kBusFieldNumber = 41;
-  inline bool bus() const;
-  inline void set_bus(bool value);
-
-  // optional bool transit_connection = 42;
-  inline bool has_transit_connection() const;
-  inline void clear_transit_connection();
-  static const int kTransitConnectionFieldNumber = 42;
-  inline bool transit_connection() const;
-  inline void set_transit_connection(bool value);
-
-  // optional bool other = 43;
-  inline bool has_other() const;
-  inline void clear_other();
-  static const int kOtherFieldNumber = 43;
-  inline bool other() const;
-  inline void set_other(bool value);
-
-  // optional .valhalla.odin.TripPath.TransitRouteInfo transit_route_info = 44;
+  // optional .valhalla.odin.TripPath.TransitRouteInfo transit_route_info = 25;
   inline bool has_transit_route_info() const;
   inline void clear_transit_route_info();
-  static const int kTransitRouteInfoFieldNumber = 44;
+  static const int kTransitRouteInfoFieldNumber = 25;
   inline const ::valhalla::odin::TripPath_TransitRouteInfo& transit_route_info() const;
   inline ::valhalla::odin::TripPath_TransitRouteInfo* mutable_transit_route_info();
   inline ::valhalla::odin::TripPath_TransitRouteInfo* release_transit_route_info();
   inline void set_allocated_transit_route_info(::valhalla::odin::TripPath_TransitRouteInfo* transit_route_info);
+
+  // optional uint64 id = 26;
+  inline bool has_id() const;
+  inline void clear_id();
+  static const int kIdFieldNumber = 26;
+  inline ::google::protobuf::uint64 id() const;
+  inline void set_id(::google::protobuf::uint64 value);
+
+  // optional uint64 way_id = 27;
+  inline bool has_way_id() const;
+  inline void clear_way_id();
+  static const int kWayIdFieldNumber = 27;
+  inline ::google::protobuf::uint64 way_id() const;
+  inline void set_way_id(::google::protobuf::uint64 value);
+
+  // optional float weighted_grade = 28;
+  inline bool has_weighted_grade() const;
+  inline void clear_weighted_grade();
+  static const int kWeightedGradeFieldNumber = 28;
+  inline float weighted_grade() const;
+  inline void set_weighted_grade(float value);
+
+  // optional int32 max_upward_grade = 29;
+  inline bool has_max_upward_grade() const;
+  inline void clear_max_upward_grade();
+  static const int kMaxUpwardGradeFieldNumber = 29;
+  inline ::google::protobuf::int32 max_upward_grade() const;
+  inline void set_max_upward_grade(::google::protobuf::int32 value);
+
+  // optional int32 max_downward_grade = 30;
+  inline bool has_max_downward_grade() const;
+  inline void clear_max_downward_grade();
+  static const int kMaxDownwardGradeFieldNumber = 30;
+  inline ::google::protobuf::int32 max_downward_grade() const;
+  inline void set_max_downward_grade(::google::protobuf::int32 value);
 
   // @@protoc_insertion_point(class_scope:valhalla.odin.TripPath.Edge)
  private:
@@ -1483,14 +1453,8 @@ class TripPath_Edge : public ::google::protobuf::Message {
   inline void clear_has_end_shape_index();
   inline void set_has_traversability();
   inline void clear_has_traversability();
-  inline void set_has_ramp();
-  inline void clear_has_ramp();
-  inline void set_has_turn_channel();
-  inline void clear_has_turn_channel();
-  inline void set_has_ferry();
-  inline void clear_has_ferry();
-  inline void set_has_rail_ferry();
-  inline void clear_has_rail_ferry();
+  inline void set_has_use();
+  inline void clear_has_use();
   inline void set_has_toll();
   inline void clear_has_toll();
   inline void set_has_unpaved();
@@ -1503,6 +1467,8 @@ class TripPath_Edge : public ::google::protobuf::Message {
   inline void clear_has_roundabout();
   inline void set_has_internal_intersection();
   inline void clear_has_internal_intersection();
+  inline void set_has_drive_on_right();
+  inline void clear_has_drive_on_right();
   inline void set_has_end_node_index();
   inline void clear_has_end_node_index();
   inline void set_has_sign();
@@ -1517,42 +1483,18 @@ class TripPath_Edge : public ::google::protobuf::Message {
   inline void clear_has_bicycle_type();
   inline void set_has_transit_type();
   inline void clear_has_transit_type();
-  inline void set_has_drive_on_right();
-  inline void clear_has_drive_on_right();
-  inline void set_has_road();
-  inline void clear_has_road();
-  inline void set_has_track();
-  inline void clear_has_track();
-  inline void set_has_driveway();
-  inline void clear_has_driveway();
-  inline void set_has_alley();
-  inline void clear_has_alley();
-  inline void set_has_parking_aisle();
-  inline void clear_has_parking_aisle();
-  inline void set_has_emergency_access();
-  inline void clear_has_emergency_access();
-  inline void set_has_drive_thru();
-  inline void clear_has_drive_thru();
-  inline void set_has_culdesac();
-  inline void clear_has_culdesac();
-  inline void set_has_footway();
-  inline void clear_has_footway();
-  inline void set_has_stairs();
-  inline void clear_has_stairs();
-  inline void set_has_cycleway();
-  inline void clear_has_cycleway();
-  inline void set_has_mountain_bike();
-  inline void clear_has_mountain_bike();
-  inline void set_has_rail();
-  inline void clear_has_rail();
-  inline void set_has_bus();
-  inline void clear_has_bus();
-  inline void set_has_transit_connection();
-  inline void clear_has_transit_connection();
-  inline void set_has_other();
-  inline void clear_has_other();
   inline void set_has_transit_route_info();
   inline void clear_has_transit_route_info();
+  inline void set_has_id();
+  inline void clear_has_id();
+  inline void set_has_way_id();
+  inline void clear_has_way_id();
+  inline void set_has_weighted_grade();
+  inline void clear_has_weighted_grade();
+  inline void set_has_max_upward_grade();
+  inline void clear_has_max_upward_grade();
+  inline void set_has_max_downward_grade();
+  inline void clear_has_max_downward_grade();
 
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
 
@@ -1565,44 +1507,30 @@ class TripPath_Edge : public ::google::protobuf::Message {
   ::google::protobuf::uint32 begin_shape_index_;
   ::google::protobuf::uint32 end_shape_index_;
   int traversability_;
-  bool ramp_;
-  bool turn_channel_;
-  bool ferry_;
-  bool rail_ferry_;
+  int use_;
   bool toll_;
   bool unpaved_;
   bool tunnel_;
   bool bridge_;
-  ::valhalla::odin::TripPath_Sign* sign_;
-  ::google::protobuf::uint32 end_node_index_;
-  int travel_mode_;
-  int vehicle_type_;
   bool roundabout_;
   bool internal_intersection_;
   bool drive_on_right_;
-  bool road_;
+  ::google::protobuf::uint32 end_node_index_;
+  ::valhalla::odin::TripPath_Sign* sign_;
+  int travel_mode_;
+  int vehicle_type_;
   int pedestrian_type_;
   int bicycle_type_;
-  int transit_type_;
-  bool track_;
-  bool driveway_;
-  bool alley_;
-  bool parking_aisle_;
-  bool emergency_access_;
-  bool drive_thru_;
-  bool culdesac_;
-  bool footway_;
-  bool stairs_;
-  bool cycleway_;
-  bool mountain_bike_;
-  bool rail_;
   ::valhalla::odin::TripPath_TransitRouteInfo* transit_route_info_;
-  bool bus_;
-  bool transit_connection_;
-  bool other_;
+  ::google::protobuf::uint64 id_;
+  int transit_type_;
+  float weighted_grade_;
+  ::google::protobuf::uint64 way_id_;
+  ::google::protobuf::int32 max_upward_grade_;
+  ::google::protobuf::int32 max_downward_grade_;
 
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(44 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(30 + 31) / 32];
 
   friend void  protobuf_AddDesc_trippath_2eproto();
   friend void protobuf_AssignDesc_trippath_2eproto();
@@ -1995,6 +1923,37 @@ class TripPath_Node : public ::google::protobuf::Message {
 
   // nested types ----------------------------------------------------
 
+  typedef TripPath_Node_Type Type;
+  static const Type kStreetIntersection = TripPath_Node_Type_kStreetIntersection;
+  static const Type kGate = TripPath_Node_Type_kGate;
+  static const Type kBollard = TripPath_Node_Type_kBollard;
+  static const Type kTollBooth = TripPath_Node_Type_kTollBooth;
+  static const Type kMultiUseTransitStop = TripPath_Node_Type_kMultiUseTransitStop;
+  static const Type kBikeShare = TripPath_Node_Type_kBikeShare;
+  static const Type kParking = TripPath_Node_Type_kParking;
+  static const Type kMotorwayJunction = TripPath_Node_Type_kMotorwayJunction;
+  static const Type kBorderControl = TripPath_Node_Type_kBorderControl;
+  static inline bool Type_IsValid(int value) {
+    return TripPath_Node_Type_IsValid(value);
+  }
+  static const Type Type_MIN =
+    TripPath_Node_Type_Type_MIN;
+  static const Type Type_MAX =
+    TripPath_Node_Type_Type_MAX;
+  static const int Type_ARRAYSIZE =
+    TripPath_Node_Type_Type_ARRAYSIZE;
+  static inline const ::google::protobuf::EnumDescriptor*
+  Type_descriptor() {
+    return TripPath_Node_Type_descriptor();
+  }
+  static inline const ::std::string& Type_Name(Type value) {
+    return TripPath_Node_Type_Name(value);
+  }
+  static inline bool Type_Parse(const ::std::string& name,
+      Type* value) {
+    return TripPath_Node_Type_Parse(name, value);
+  }
+
   // accessors -------------------------------------------------------
 
   // optional .valhalla.odin.TripPath.Edge edge = 1;
@@ -2032,66 +1991,24 @@ class TripPath_Node : public ::google::protobuf::Message {
   inline ::google::protobuf::uint32 admin_index() const;
   inline void set_admin_index(::google::protobuf::uint32 value);
 
-  // optional bool street_intersection = 5;
-  inline bool has_street_intersection() const;
-  inline void clear_street_intersection();
-  static const int kStreetIntersectionFieldNumber = 5;
-  inline bool street_intersection() const;
-  inline void set_street_intersection(bool value);
+  // optional .valhalla.odin.TripPath.Node.Type type = 5;
+  inline bool has_type() const;
+  inline void clear_type();
+  static const int kTypeFieldNumber = 5;
+  inline ::valhalla::odin::TripPath_Node_Type type() const;
+  inline void set_type(::valhalla::odin::TripPath_Node_Type value);
 
-  // optional bool gate = 6;
-  inline bool has_gate() const;
-  inline void clear_gate();
-  static const int kGateFieldNumber = 6;
-  inline bool gate() const;
-  inline void set_gate(bool value);
-
-  // optional bool bollard = 7;
-  inline bool has_bollard() const;
-  inline void clear_bollard();
-  static const int kBollardFieldNumber = 7;
-  inline bool bollard() const;
-  inline void set_bollard(bool value);
-
-  // optional bool toll_booth = 8;
-  inline bool has_toll_booth() const;
-  inline void clear_toll_booth();
-  static const int kTollBoothFieldNumber = 8;
-  inline bool toll_booth() const;
-  inline void set_toll_booth(bool value);
-
-  // optional bool bike_share = 9;
-  inline bool has_bike_share() const;
-  inline void clear_bike_share();
-  static const int kBikeShareFieldNumber = 9;
-  inline bool bike_share() const;
-  inline void set_bike_share(bool value);
-
-  // optional bool parking = 10;
-  inline bool has_parking() const;
-  inline void clear_parking();
-  static const int kParkingFieldNumber = 10;
-  inline bool parking() const;
-  inline void set_parking(bool value);
-
-  // optional bool motorway_junction = 11;
-  inline bool has_motorway_junction() const;
-  inline void clear_motorway_junction();
-  static const int kMotorwayJunctionFieldNumber = 11;
-  inline bool motorway_junction() const;
-  inline void set_motorway_junction(bool value);
-
-  // optional bool fork = 12;
+  // optional bool fork = 6;
   inline bool has_fork() const;
   inline void clear_fork();
-  static const int kForkFieldNumber = 12;
+  static const int kForkFieldNumber = 6;
   inline bool fork() const;
   inline void set_fork(bool value);
 
-  // optional .valhalla.odin.TripPath.TransitStopInfo transit_stop_info = 13;
+  // optional .valhalla.odin.TripPath.TransitStopInfo transit_stop_info = 7;
   inline bool has_transit_stop_info() const;
   inline void clear_transit_stop_info();
-  static const int kTransitStopInfoFieldNumber = 13;
+  static const int kTransitStopInfoFieldNumber = 7;
   inline const ::valhalla::odin::TripPath_TransitStopInfo& transit_stop_info() const;
   inline ::valhalla::odin::TripPath_TransitStopInfo* mutable_transit_stop_info();
   inline ::valhalla::odin::TripPath_TransitStopInfo* release_transit_stop_info();
@@ -2105,20 +2022,8 @@ class TripPath_Node : public ::google::protobuf::Message {
   inline void clear_has_elapsed_time();
   inline void set_has_admin_index();
   inline void clear_has_admin_index();
-  inline void set_has_street_intersection();
-  inline void clear_has_street_intersection();
-  inline void set_has_gate();
-  inline void clear_has_gate();
-  inline void set_has_bollard();
-  inline void clear_has_bollard();
-  inline void set_has_toll_booth();
-  inline void clear_has_toll_booth();
-  inline void set_has_bike_share();
-  inline void clear_has_bike_share();
-  inline void set_has_parking();
-  inline void clear_has_parking();
-  inline void set_has_motorway_junction();
-  inline void clear_has_motorway_junction();
+  inline void set_has_type();
+  inline void clear_has_type();
   inline void set_has_fork();
   inline void clear_has_fork();
   inline void set_has_transit_stop_info();
@@ -2130,18 +2035,12 @@ class TripPath_Node : public ::google::protobuf::Message {
   ::google::protobuf::RepeatedPtrField< ::valhalla::odin::TripPath_IntersectingEdge > intersecting_edge_;
   ::google::protobuf::uint32 elapsed_time_;
   ::google::protobuf::uint32 admin_index_;
-  bool street_intersection_;
-  bool gate_;
-  bool bollard_;
-  bool toll_booth_;
-  bool bike_share_;
-  bool parking_;
-  bool motorway_junction_;
+  int type_;
   bool fork_;
   ::valhalla::odin::TripPath_TransitStopInfo* transit_stop_info_;
 
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(13 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(7 + 31) / 32];
 
   friend void  protobuf_AddDesc_trippath_2eproto();
   friend void protobuf_AssignDesc_trippath_2eproto();
@@ -2403,6 +2302,54 @@ class TripPath : public ::google::protobuf::Message {
     return TripPath_RoadClass_Parse(name, value);
   }
 
+  typedef TripPath_Use Use;
+  static const Use kRoadUse = TripPath_Use_kRoadUse;
+  static const Use kRampUse = TripPath_Use_kRampUse;
+  static const Use kTurnChannelUse = TripPath_Use_kTurnChannelUse;
+  static const Use kTrackUse = TripPath_Use_kTrackUse;
+  static const Use kDrivewayUse = TripPath_Use_kDrivewayUse;
+  static const Use kAlleyUse = TripPath_Use_kAlleyUse;
+  static const Use kParkingAisleUse = TripPath_Use_kParkingAisleUse;
+  static const Use kEmergencyAccessUse = TripPath_Use_kEmergencyAccessUse;
+  static const Use kDriveThruUse = TripPath_Use_kDriveThruUse;
+  static const Use kCuldesacUse = TripPath_Use_kCuldesacUse;
+  static const Use kCyclewayUse = TripPath_Use_kCyclewayUse;
+  static const Use kMountainBikeUse = TripPath_Use_kMountainBikeUse;
+  static const Use kSidewalkUse = TripPath_Use_kSidewalkUse;
+  static const Use kFootwayUse = TripPath_Use_kFootwayUse;
+  static const Use kStepsUse = TripPath_Use_kStepsUse;
+  static const Use kPathUse = TripPath_Use_kPathUse;
+  static const Use kPedestrianUse = TripPath_Use_kPedestrianUse;
+  static const Use kBridlewayUse = TripPath_Use_kBridlewayUse;
+  static const Use kOtherUse = TripPath_Use_kOtherUse;
+  static const Use kFerryUse = TripPath_Use_kFerryUse;
+  static const Use kRailFerryUse = TripPath_Use_kRailFerryUse;
+  static const Use kRailUse = TripPath_Use_kRailUse;
+  static const Use kBusUse = TripPath_Use_kBusUse;
+  static const Use kRailConnectionUse = TripPath_Use_kRailConnectionUse;
+  static const Use kBusConnectionUse = TripPath_Use_kBusConnectionUse;
+  static const Use kTransitConnectionUse = TripPath_Use_kTransitConnectionUse;
+  static inline bool Use_IsValid(int value) {
+    return TripPath_Use_IsValid(value);
+  }
+  static const Use Use_MIN =
+    TripPath_Use_Use_MIN;
+  static const Use Use_MAX =
+    TripPath_Use_Use_MAX;
+  static const int Use_ARRAYSIZE =
+    TripPath_Use_Use_ARRAYSIZE;
+  static inline const ::google::protobuf::EnumDescriptor*
+  Use_descriptor() {
+    return TripPath_Use_descriptor();
+  }
+  static inline const ::std::string& Use_Name(Use value) {
+    return TripPath_Use_Name(value);
+  }
+  static inline bool Use_Parse(const ::std::string& name,
+      Use* value) {
+    return TripPath_Use_Parse(name, value);
+  }
+
   typedef TripPath_TravelMode TravelMode;
   static const TravelMode kDrive = TripPath_TravelMode_kDrive;
   static const TravelMode kPedestrian = TripPath_TravelMode_kPedestrian;
@@ -2432,8 +2379,8 @@ class TripPath : public ::google::protobuf::Message {
   typedef TripPath_VehicleType VehicleType;
   static const VehicleType kCar = TripPath_VehicleType_kCar;
   static const VehicleType kMotorcycle = TripPath_VehicleType_kMotorcycle;
-  static const VehicleType kFourWheelDrive = TripPath_VehicleType_kFourWheelDrive;
-  static const VehicleType kTractorTrailers = TripPath_VehicleType_kTractorTrailers;
+  static const VehicleType kAutoBus = TripPath_VehicleType_kAutoBus;
+  static const VehicleType kTractorTrailer = TripPath_VehicleType_kTractorTrailer;
   static inline bool VehicleType_IsValid(int value) {
     return TripPath_VehicleType_IsValid(value);
   }
@@ -2457,7 +2404,7 @@ class TripPath : public ::google::protobuf::Message {
 
   typedef TripPath_PedestrianType PedestrianType;
   static const PedestrianType kFoot = TripPath_PedestrianType_kFoot;
-  static const PedestrianType kWheelChair = TripPath_PedestrianType_kWheelChair;
+  static const PedestrianType kWheelchair = TripPath_PedestrianType_kWheelchair;
   static const PedestrianType kSegway = TripPath_PedestrianType_kSegway;
   static inline bool PedestrianType_IsValid(int value) {
     return TripPath_PedestrianType_IsValid(value);
@@ -2482,9 +2429,8 @@ class TripPath : public ::google::protobuf::Message {
 
   typedef TripPath_BicycleType BicycleType;
   static const BicycleType kRoad = TripPath_BicycleType_kRoad;
-  static const BicycleType kHybrid = TripPath_BicycleType_kHybrid;
-  static const BicycleType kCity = TripPath_BicycleType_kCity;
   static const BicycleType kCross = TripPath_BicycleType_kCross;
+  static const BicycleType kHybrid = TripPath_BicycleType_kHybrid;
   static const BicycleType kMountain = TripPath_BicycleType_kMountain;
   static inline bool BicycleType_IsValid(int value) {
     return TripPath_BicycleType_IsValid(value);
@@ -4440,103 +4386,38 @@ inline void TripPath_Edge::set_traversability(::valhalla::odin::TripPath_Travers
   traversability_ = value;
 }
 
-// optional bool ramp = 10;
-inline bool TripPath_Edge::has_ramp() const {
+// optional .valhalla.odin.TripPath.Use use = 10;
+inline bool TripPath_Edge::has_use() const {
   return (_has_bits_[0] & 0x00000200u) != 0;
 }
-inline void TripPath_Edge::set_has_ramp() {
+inline void TripPath_Edge::set_has_use() {
   _has_bits_[0] |= 0x00000200u;
 }
-inline void TripPath_Edge::clear_has_ramp() {
+inline void TripPath_Edge::clear_has_use() {
   _has_bits_[0] &= ~0x00000200u;
 }
-inline void TripPath_Edge::clear_ramp() {
-  ramp_ = false;
-  clear_has_ramp();
+inline void TripPath_Edge::clear_use() {
+  use_ = 0;
+  clear_has_use();
 }
-inline bool TripPath_Edge::ramp() const {
-  return ramp_;
+inline ::valhalla::odin::TripPath_Use TripPath_Edge::use() const {
+  return static_cast< ::valhalla::odin::TripPath_Use >(use_);
 }
-inline void TripPath_Edge::set_ramp(bool value) {
-  set_has_ramp();
-  ramp_ = value;
+inline void TripPath_Edge::set_use(::valhalla::odin::TripPath_Use value) {
+  assert(::valhalla::odin::TripPath_Use_IsValid(value));
+  set_has_use();
+  use_ = value;
 }
 
-// optional bool turn_channel = 11;
-inline bool TripPath_Edge::has_turn_channel() const {
+// optional bool toll = 11;
+inline bool TripPath_Edge::has_toll() const {
   return (_has_bits_[0] & 0x00000400u) != 0;
 }
-inline void TripPath_Edge::set_has_turn_channel() {
+inline void TripPath_Edge::set_has_toll() {
   _has_bits_[0] |= 0x00000400u;
 }
-inline void TripPath_Edge::clear_has_turn_channel() {
-  _has_bits_[0] &= ~0x00000400u;
-}
-inline void TripPath_Edge::clear_turn_channel() {
-  turn_channel_ = false;
-  clear_has_turn_channel();
-}
-inline bool TripPath_Edge::turn_channel() const {
-  return turn_channel_;
-}
-inline void TripPath_Edge::set_turn_channel(bool value) {
-  set_has_turn_channel();
-  turn_channel_ = value;
-}
-
-// optional bool ferry = 12;
-inline bool TripPath_Edge::has_ferry() const {
-  return (_has_bits_[0] & 0x00000800u) != 0;
-}
-inline void TripPath_Edge::set_has_ferry() {
-  _has_bits_[0] |= 0x00000800u;
-}
-inline void TripPath_Edge::clear_has_ferry() {
-  _has_bits_[0] &= ~0x00000800u;
-}
-inline void TripPath_Edge::clear_ferry() {
-  ferry_ = false;
-  clear_has_ferry();
-}
-inline bool TripPath_Edge::ferry() const {
-  return ferry_;
-}
-inline void TripPath_Edge::set_ferry(bool value) {
-  set_has_ferry();
-  ferry_ = value;
-}
-
-// optional bool rail_ferry = 13;
-inline bool TripPath_Edge::has_rail_ferry() const {
-  return (_has_bits_[0] & 0x00001000u) != 0;
-}
-inline void TripPath_Edge::set_has_rail_ferry() {
-  _has_bits_[0] |= 0x00001000u;
-}
-inline void TripPath_Edge::clear_has_rail_ferry() {
-  _has_bits_[0] &= ~0x00001000u;
-}
-inline void TripPath_Edge::clear_rail_ferry() {
-  rail_ferry_ = false;
-  clear_has_rail_ferry();
-}
-inline bool TripPath_Edge::rail_ferry() const {
-  return rail_ferry_;
-}
-inline void TripPath_Edge::set_rail_ferry(bool value) {
-  set_has_rail_ferry();
-  rail_ferry_ = value;
-}
-
-// optional bool toll = 14;
-inline bool TripPath_Edge::has_toll() const {
-  return (_has_bits_[0] & 0x00002000u) != 0;
-}
-inline void TripPath_Edge::set_has_toll() {
-  _has_bits_[0] |= 0x00002000u;
-}
 inline void TripPath_Edge::clear_has_toll() {
-  _has_bits_[0] &= ~0x00002000u;
+  _has_bits_[0] &= ~0x00000400u;
 }
 inline void TripPath_Edge::clear_toll() {
   toll_ = false;
@@ -4550,15 +4431,15 @@ inline void TripPath_Edge::set_toll(bool value) {
   toll_ = value;
 }
 
-// optional bool unpaved = 15;
+// optional bool unpaved = 12;
 inline bool TripPath_Edge::has_unpaved() const {
-  return (_has_bits_[0] & 0x00004000u) != 0;
+  return (_has_bits_[0] & 0x00000800u) != 0;
 }
 inline void TripPath_Edge::set_has_unpaved() {
-  _has_bits_[0] |= 0x00004000u;
+  _has_bits_[0] |= 0x00000800u;
 }
 inline void TripPath_Edge::clear_has_unpaved() {
-  _has_bits_[0] &= ~0x00004000u;
+  _has_bits_[0] &= ~0x00000800u;
 }
 inline void TripPath_Edge::clear_unpaved() {
   unpaved_ = false;
@@ -4572,15 +4453,15 @@ inline void TripPath_Edge::set_unpaved(bool value) {
   unpaved_ = value;
 }
 
-// optional bool tunnel = 16;
+// optional bool tunnel = 13;
 inline bool TripPath_Edge::has_tunnel() const {
-  return (_has_bits_[0] & 0x00008000u) != 0;
+  return (_has_bits_[0] & 0x00001000u) != 0;
 }
 inline void TripPath_Edge::set_has_tunnel() {
-  _has_bits_[0] |= 0x00008000u;
+  _has_bits_[0] |= 0x00001000u;
 }
 inline void TripPath_Edge::clear_has_tunnel() {
-  _has_bits_[0] &= ~0x00008000u;
+  _has_bits_[0] &= ~0x00001000u;
 }
 inline void TripPath_Edge::clear_tunnel() {
   tunnel_ = false;
@@ -4594,15 +4475,15 @@ inline void TripPath_Edge::set_tunnel(bool value) {
   tunnel_ = value;
 }
 
-// optional bool bridge = 17;
+// optional bool bridge = 14;
 inline bool TripPath_Edge::has_bridge() const {
-  return (_has_bits_[0] & 0x00010000u) != 0;
+  return (_has_bits_[0] & 0x00002000u) != 0;
 }
 inline void TripPath_Edge::set_has_bridge() {
-  _has_bits_[0] |= 0x00010000u;
+  _has_bits_[0] |= 0x00002000u;
 }
 inline void TripPath_Edge::clear_has_bridge() {
-  _has_bits_[0] &= ~0x00010000u;
+  _has_bits_[0] &= ~0x00002000u;
 }
 inline void TripPath_Edge::clear_bridge() {
   bridge_ = false;
@@ -4616,15 +4497,15 @@ inline void TripPath_Edge::set_bridge(bool value) {
   bridge_ = value;
 }
 
-// optional bool roundabout = 18;
+// optional bool roundabout = 15;
 inline bool TripPath_Edge::has_roundabout() const {
-  return (_has_bits_[0] & 0x00020000u) != 0;
+  return (_has_bits_[0] & 0x00004000u) != 0;
 }
 inline void TripPath_Edge::set_has_roundabout() {
-  _has_bits_[0] |= 0x00020000u;
+  _has_bits_[0] |= 0x00004000u;
 }
 inline void TripPath_Edge::clear_has_roundabout() {
-  _has_bits_[0] &= ~0x00020000u;
+  _has_bits_[0] &= ~0x00004000u;
 }
 inline void TripPath_Edge::clear_roundabout() {
   roundabout_ = false;
@@ -4638,15 +4519,15 @@ inline void TripPath_Edge::set_roundabout(bool value) {
   roundabout_ = value;
 }
 
-// optional bool internal_intersection = 19;
+// optional bool internal_intersection = 16;
 inline bool TripPath_Edge::has_internal_intersection() const {
-  return (_has_bits_[0] & 0x00040000u) != 0;
+  return (_has_bits_[0] & 0x00008000u) != 0;
 }
 inline void TripPath_Edge::set_has_internal_intersection() {
-  _has_bits_[0] |= 0x00040000u;
+  _has_bits_[0] |= 0x00008000u;
 }
 inline void TripPath_Edge::clear_has_internal_intersection() {
-  _has_bits_[0] &= ~0x00040000u;
+  _has_bits_[0] &= ~0x00008000u;
 }
 inline void TripPath_Edge::clear_internal_intersection() {
   internal_intersection_ = false;
@@ -4660,15 +4541,37 @@ inline void TripPath_Edge::set_internal_intersection(bool value) {
   internal_intersection_ = value;
 }
 
-// optional uint32 end_node_index = 20;
+// optional bool drive_on_right = 17 [default = true];
+inline bool TripPath_Edge::has_drive_on_right() const {
+  return (_has_bits_[0] & 0x00010000u) != 0;
+}
+inline void TripPath_Edge::set_has_drive_on_right() {
+  _has_bits_[0] |= 0x00010000u;
+}
+inline void TripPath_Edge::clear_has_drive_on_right() {
+  _has_bits_[0] &= ~0x00010000u;
+}
+inline void TripPath_Edge::clear_drive_on_right() {
+  drive_on_right_ = true;
+  clear_has_drive_on_right();
+}
+inline bool TripPath_Edge::drive_on_right() const {
+  return drive_on_right_;
+}
+inline void TripPath_Edge::set_drive_on_right(bool value) {
+  set_has_drive_on_right();
+  drive_on_right_ = value;
+}
+
+// optional uint32 end_node_index = 18;
 inline bool TripPath_Edge::has_end_node_index() const {
-  return (_has_bits_[0] & 0x00080000u) != 0;
+  return (_has_bits_[0] & 0x00020000u) != 0;
 }
 inline void TripPath_Edge::set_has_end_node_index() {
-  _has_bits_[0] |= 0x00080000u;
+  _has_bits_[0] |= 0x00020000u;
 }
 inline void TripPath_Edge::clear_has_end_node_index() {
-  _has_bits_[0] &= ~0x00080000u;
+  _has_bits_[0] &= ~0x00020000u;
 }
 inline void TripPath_Edge::clear_end_node_index() {
   end_node_index_ = 0u;
@@ -4682,15 +4585,15 @@ inline void TripPath_Edge::set_end_node_index(::google::protobuf::uint32 value) 
   end_node_index_ = value;
 }
 
-// optional .valhalla.odin.TripPath.Sign sign = 21;
+// optional .valhalla.odin.TripPath.Sign sign = 19;
 inline bool TripPath_Edge::has_sign() const {
-  return (_has_bits_[0] & 0x00100000u) != 0;
+  return (_has_bits_[0] & 0x00040000u) != 0;
 }
 inline void TripPath_Edge::set_has_sign() {
-  _has_bits_[0] |= 0x00100000u;
+  _has_bits_[0] |= 0x00040000u;
 }
 inline void TripPath_Edge::clear_has_sign() {
-  _has_bits_[0] &= ~0x00100000u;
+  _has_bits_[0] &= ~0x00040000u;
 }
 inline void TripPath_Edge::clear_sign() {
   if (sign_ != NULL) sign_->::valhalla::odin::TripPath_Sign::Clear();
@@ -4720,15 +4623,15 @@ inline void TripPath_Edge::set_allocated_sign(::valhalla::odin::TripPath_Sign* s
   }
 }
 
-// optional .valhalla.odin.TripPath.TravelMode travel_mode = 22;
+// optional .valhalla.odin.TripPath.TravelMode travel_mode = 20;
 inline bool TripPath_Edge::has_travel_mode() const {
-  return (_has_bits_[0] & 0x00200000u) != 0;
+  return (_has_bits_[0] & 0x00080000u) != 0;
 }
 inline void TripPath_Edge::set_has_travel_mode() {
-  _has_bits_[0] |= 0x00200000u;
+  _has_bits_[0] |= 0x00080000u;
 }
 inline void TripPath_Edge::clear_has_travel_mode() {
-  _has_bits_[0] &= ~0x00200000u;
+  _has_bits_[0] &= ~0x00080000u;
 }
 inline void TripPath_Edge::clear_travel_mode() {
   travel_mode_ = 0;
@@ -4743,15 +4646,15 @@ inline void TripPath_Edge::set_travel_mode(::valhalla::odin::TripPath_TravelMode
   travel_mode_ = value;
 }
 
-// optional .valhalla.odin.TripPath.VehicleType vehicle_type = 23;
+// optional .valhalla.odin.TripPath.VehicleType vehicle_type = 21;
 inline bool TripPath_Edge::has_vehicle_type() const {
-  return (_has_bits_[0] & 0x00400000u) != 0;
+  return (_has_bits_[0] & 0x00100000u) != 0;
 }
 inline void TripPath_Edge::set_has_vehicle_type() {
-  _has_bits_[0] |= 0x00400000u;
+  _has_bits_[0] |= 0x00100000u;
 }
 inline void TripPath_Edge::clear_has_vehicle_type() {
-  _has_bits_[0] &= ~0x00400000u;
+  _has_bits_[0] &= ~0x00100000u;
 }
 inline void TripPath_Edge::clear_vehicle_type() {
   vehicle_type_ = 0;
@@ -4766,15 +4669,15 @@ inline void TripPath_Edge::set_vehicle_type(::valhalla::odin::TripPath_VehicleTy
   vehicle_type_ = value;
 }
 
-// optional .valhalla.odin.TripPath.PedestrianType pedestrian_type = 24;
+// optional .valhalla.odin.TripPath.PedestrianType pedestrian_type = 22;
 inline bool TripPath_Edge::has_pedestrian_type() const {
-  return (_has_bits_[0] & 0x00800000u) != 0;
+  return (_has_bits_[0] & 0x00200000u) != 0;
 }
 inline void TripPath_Edge::set_has_pedestrian_type() {
-  _has_bits_[0] |= 0x00800000u;
+  _has_bits_[0] |= 0x00200000u;
 }
 inline void TripPath_Edge::clear_has_pedestrian_type() {
-  _has_bits_[0] &= ~0x00800000u;
+  _has_bits_[0] &= ~0x00200000u;
 }
 inline void TripPath_Edge::clear_pedestrian_type() {
   pedestrian_type_ = 0;
@@ -4789,15 +4692,15 @@ inline void TripPath_Edge::set_pedestrian_type(::valhalla::odin::TripPath_Pedest
   pedestrian_type_ = value;
 }
 
-// optional .valhalla.odin.TripPath.BicycleType bicycle_type = 25;
+// optional .valhalla.odin.TripPath.BicycleType bicycle_type = 23;
 inline bool TripPath_Edge::has_bicycle_type() const {
-  return (_has_bits_[0] & 0x01000000u) != 0;
+  return (_has_bits_[0] & 0x00400000u) != 0;
 }
 inline void TripPath_Edge::set_has_bicycle_type() {
-  _has_bits_[0] |= 0x01000000u;
+  _has_bits_[0] |= 0x00400000u;
 }
 inline void TripPath_Edge::clear_has_bicycle_type() {
-  _has_bits_[0] &= ~0x01000000u;
+  _has_bits_[0] &= ~0x00400000u;
 }
 inline void TripPath_Edge::clear_bicycle_type() {
   bicycle_type_ = 0;
@@ -4812,15 +4715,15 @@ inline void TripPath_Edge::set_bicycle_type(::valhalla::odin::TripPath_BicycleTy
   bicycle_type_ = value;
 }
 
-// optional .valhalla.odin.TripPath.TransitType transit_type = 26;
+// optional .valhalla.odin.TripPath.TransitType transit_type = 24;
 inline bool TripPath_Edge::has_transit_type() const {
-  return (_has_bits_[0] & 0x02000000u) != 0;
+  return (_has_bits_[0] & 0x00800000u) != 0;
 }
 inline void TripPath_Edge::set_has_transit_type() {
-  _has_bits_[0] |= 0x02000000u;
+  _has_bits_[0] |= 0x00800000u;
 }
 inline void TripPath_Edge::clear_has_transit_type() {
-  _has_bits_[0] &= ~0x02000000u;
+  _has_bits_[0] &= ~0x00800000u;
 }
 inline void TripPath_Edge::clear_transit_type() {
   transit_type_ = 0;
@@ -4835,389 +4738,15 @@ inline void TripPath_Edge::set_transit_type(::valhalla::odin::TripPath_TransitTy
   transit_type_ = value;
 }
 
-// optional bool drive_on_right = 27 [default = true];
-inline bool TripPath_Edge::has_drive_on_right() const {
-  return (_has_bits_[0] & 0x04000000u) != 0;
-}
-inline void TripPath_Edge::set_has_drive_on_right() {
-  _has_bits_[0] |= 0x04000000u;
-}
-inline void TripPath_Edge::clear_has_drive_on_right() {
-  _has_bits_[0] &= ~0x04000000u;
-}
-inline void TripPath_Edge::clear_drive_on_right() {
-  drive_on_right_ = true;
-  clear_has_drive_on_right();
-}
-inline bool TripPath_Edge::drive_on_right() const {
-  return drive_on_right_;
-}
-inline void TripPath_Edge::set_drive_on_right(bool value) {
-  set_has_drive_on_right();
-  drive_on_right_ = value;
-}
-
-// optional bool road = 28;
-inline bool TripPath_Edge::has_road() const {
-  return (_has_bits_[0] & 0x08000000u) != 0;
-}
-inline void TripPath_Edge::set_has_road() {
-  _has_bits_[0] |= 0x08000000u;
-}
-inline void TripPath_Edge::clear_has_road() {
-  _has_bits_[0] &= ~0x08000000u;
-}
-inline void TripPath_Edge::clear_road() {
-  road_ = false;
-  clear_has_road();
-}
-inline bool TripPath_Edge::road() const {
-  return road_;
-}
-inline void TripPath_Edge::set_road(bool value) {
-  set_has_road();
-  road_ = value;
-}
-
-// optional bool track = 29;
-inline bool TripPath_Edge::has_track() const {
-  return (_has_bits_[0] & 0x10000000u) != 0;
-}
-inline void TripPath_Edge::set_has_track() {
-  _has_bits_[0] |= 0x10000000u;
-}
-inline void TripPath_Edge::clear_has_track() {
-  _has_bits_[0] &= ~0x10000000u;
-}
-inline void TripPath_Edge::clear_track() {
-  track_ = false;
-  clear_has_track();
-}
-inline bool TripPath_Edge::track() const {
-  return track_;
-}
-inline void TripPath_Edge::set_track(bool value) {
-  set_has_track();
-  track_ = value;
-}
-
-// optional bool driveway = 30;
-inline bool TripPath_Edge::has_driveway() const {
-  return (_has_bits_[0] & 0x20000000u) != 0;
-}
-inline void TripPath_Edge::set_has_driveway() {
-  _has_bits_[0] |= 0x20000000u;
-}
-inline void TripPath_Edge::clear_has_driveway() {
-  _has_bits_[0] &= ~0x20000000u;
-}
-inline void TripPath_Edge::clear_driveway() {
-  driveway_ = false;
-  clear_has_driveway();
-}
-inline bool TripPath_Edge::driveway() const {
-  return driveway_;
-}
-inline void TripPath_Edge::set_driveway(bool value) {
-  set_has_driveway();
-  driveway_ = value;
-}
-
-// optional bool alley = 31;
-inline bool TripPath_Edge::has_alley() const {
-  return (_has_bits_[0] & 0x40000000u) != 0;
-}
-inline void TripPath_Edge::set_has_alley() {
-  _has_bits_[0] |= 0x40000000u;
-}
-inline void TripPath_Edge::clear_has_alley() {
-  _has_bits_[0] &= ~0x40000000u;
-}
-inline void TripPath_Edge::clear_alley() {
-  alley_ = false;
-  clear_has_alley();
-}
-inline bool TripPath_Edge::alley() const {
-  return alley_;
-}
-inline void TripPath_Edge::set_alley(bool value) {
-  set_has_alley();
-  alley_ = value;
-}
-
-// optional bool parking_aisle = 32;
-inline bool TripPath_Edge::has_parking_aisle() const {
-  return (_has_bits_[0] & 0x80000000u) != 0;
-}
-inline void TripPath_Edge::set_has_parking_aisle() {
-  _has_bits_[0] |= 0x80000000u;
-}
-inline void TripPath_Edge::clear_has_parking_aisle() {
-  _has_bits_[0] &= ~0x80000000u;
-}
-inline void TripPath_Edge::clear_parking_aisle() {
-  parking_aisle_ = false;
-  clear_has_parking_aisle();
-}
-inline bool TripPath_Edge::parking_aisle() const {
-  return parking_aisle_;
-}
-inline void TripPath_Edge::set_parking_aisle(bool value) {
-  set_has_parking_aisle();
-  parking_aisle_ = value;
-}
-
-// optional bool emergency_access = 33;
-inline bool TripPath_Edge::has_emergency_access() const {
-  return (_has_bits_[1] & 0x00000001u) != 0;
-}
-inline void TripPath_Edge::set_has_emergency_access() {
-  _has_bits_[1] |= 0x00000001u;
-}
-inline void TripPath_Edge::clear_has_emergency_access() {
-  _has_bits_[1] &= ~0x00000001u;
-}
-inline void TripPath_Edge::clear_emergency_access() {
-  emergency_access_ = false;
-  clear_has_emergency_access();
-}
-inline bool TripPath_Edge::emergency_access() const {
-  return emergency_access_;
-}
-inline void TripPath_Edge::set_emergency_access(bool value) {
-  set_has_emergency_access();
-  emergency_access_ = value;
-}
-
-// optional bool drive_thru = 34;
-inline bool TripPath_Edge::has_drive_thru() const {
-  return (_has_bits_[1] & 0x00000002u) != 0;
-}
-inline void TripPath_Edge::set_has_drive_thru() {
-  _has_bits_[1] |= 0x00000002u;
-}
-inline void TripPath_Edge::clear_has_drive_thru() {
-  _has_bits_[1] &= ~0x00000002u;
-}
-inline void TripPath_Edge::clear_drive_thru() {
-  drive_thru_ = false;
-  clear_has_drive_thru();
-}
-inline bool TripPath_Edge::drive_thru() const {
-  return drive_thru_;
-}
-inline void TripPath_Edge::set_drive_thru(bool value) {
-  set_has_drive_thru();
-  drive_thru_ = value;
-}
-
-// optional bool culdesac = 35;
-inline bool TripPath_Edge::has_culdesac() const {
-  return (_has_bits_[1] & 0x00000004u) != 0;
-}
-inline void TripPath_Edge::set_has_culdesac() {
-  _has_bits_[1] |= 0x00000004u;
-}
-inline void TripPath_Edge::clear_has_culdesac() {
-  _has_bits_[1] &= ~0x00000004u;
-}
-inline void TripPath_Edge::clear_culdesac() {
-  culdesac_ = false;
-  clear_has_culdesac();
-}
-inline bool TripPath_Edge::culdesac() const {
-  return culdesac_;
-}
-inline void TripPath_Edge::set_culdesac(bool value) {
-  set_has_culdesac();
-  culdesac_ = value;
-}
-
-// optional bool footway = 36;
-inline bool TripPath_Edge::has_footway() const {
-  return (_has_bits_[1] & 0x00000008u) != 0;
-}
-inline void TripPath_Edge::set_has_footway() {
-  _has_bits_[1] |= 0x00000008u;
-}
-inline void TripPath_Edge::clear_has_footway() {
-  _has_bits_[1] &= ~0x00000008u;
-}
-inline void TripPath_Edge::clear_footway() {
-  footway_ = false;
-  clear_has_footway();
-}
-inline bool TripPath_Edge::footway() const {
-  return footway_;
-}
-inline void TripPath_Edge::set_footway(bool value) {
-  set_has_footway();
-  footway_ = value;
-}
-
-// optional bool stairs = 37;
-inline bool TripPath_Edge::has_stairs() const {
-  return (_has_bits_[1] & 0x00000010u) != 0;
-}
-inline void TripPath_Edge::set_has_stairs() {
-  _has_bits_[1] |= 0x00000010u;
-}
-inline void TripPath_Edge::clear_has_stairs() {
-  _has_bits_[1] &= ~0x00000010u;
-}
-inline void TripPath_Edge::clear_stairs() {
-  stairs_ = false;
-  clear_has_stairs();
-}
-inline bool TripPath_Edge::stairs() const {
-  return stairs_;
-}
-inline void TripPath_Edge::set_stairs(bool value) {
-  set_has_stairs();
-  stairs_ = value;
-}
-
-// optional bool cycleway = 38;
-inline bool TripPath_Edge::has_cycleway() const {
-  return (_has_bits_[1] & 0x00000020u) != 0;
-}
-inline void TripPath_Edge::set_has_cycleway() {
-  _has_bits_[1] |= 0x00000020u;
-}
-inline void TripPath_Edge::clear_has_cycleway() {
-  _has_bits_[1] &= ~0x00000020u;
-}
-inline void TripPath_Edge::clear_cycleway() {
-  cycleway_ = false;
-  clear_has_cycleway();
-}
-inline bool TripPath_Edge::cycleway() const {
-  return cycleway_;
-}
-inline void TripPath_Edge::set_cycleway(bool value) {
-  set_has_cycleway();
-  cycleway_ = value;
-}
-
-// optional bool mountain_bike = 39;
-inline bool TripPath_Edge::has_mountain_bike() const {
-  return (_has_bits_[1] & 0x00000040u) != 0;
-}
-inline void TripPath_Edge::set_has_mountain_bike() {
-  _has_bits_[1] |= 0x00000040u;
-}
-inline void TripPath_Edge::clear_has_mountain_bike() {
-  _has_bits_[1] &= ~0x00000040u;
-}
-inline void TripPath_Edge::clear_mountain_bike() {
-  mountain_bike_ = false;
-  clear_has_mountain_bike();
-}
-inline bool TripPath_Edge::mountain_bike() const {
-  return mountain_bike_;
-}
-inline void TripPath_Edge::set_mountain_bike(bool value) {
-  set_has_mountain_bike();
-  mountain_bike_ = value;
-}
-
-// optional bool rail = 40;
-inline bool TripPath_Edge::has_rail() const {
-  return (_has_bits_[1] & 0x00000080u) != 0;
-}
-inline void TripPath_Edge::set_has_rail() {
-  _has_bits_[1] |= 0x00000080u;
-}
-inline void TripPath_Edge::clear_has_rail() {
-  _has_bits_[1] &= ~0x00000080u;
-}
-inline void TripPath_Edge::clear_rail() {
-  rail_ = false;
-  clear_has_rail();
-}
-inline bool TripPath_Edge::rail() const {
-  return rail_;
-}
-inline void TripPath_Edge::set_rail(bool value) {
-  set_has_rail();
-  rail_ = value;
-}
-
-// optional bool bus = 41;
-inline bool TripPath_Edge::has_bus() const {
-  return (_has_bits_[1] & 0x00000100u) != 0;
-}
-inline void TripPath_Edge::set_has_bus() {
-  _has_bits_[1] |= 0x00000100u;
-}
-inline void TripPath_Edge::clear_has_bus() {
-  _has_bits_[1] &= ~0x00000100u;
-}
-inline void TripPath_Edge::clear_bus() {
-  bus_ = false;
-  clear_has_bus();
-}
-inline bool TripPath_Edge::bus() const {
-  return bus_;
-}
-inline void TripPath_Edge::set_bus(bool value) {
-  set_has_bus();
-  bus_ = value;
-}
-
-// optional bool transit_connection = 42;
-inline bool TripPath_Edge::has_transit_connection() const {
-  return (_has_bits_[1] & 0x00000200u) != 0;
-}
-inline void TripPath_Edge::set_has_transit_connection() {
-  _has_bits_[1] |= 0x00000200u;
-}
-inline void TripPath_Edge::clear_has_transit_connection() {
-  _has_bits_[1] &= ~0x00000200u;
-}
-inline void TripPath_Edge::clear_transit_connection() {
-  transit_connection_ = false;
-  clear_has_transit_connection();
-}
-inline bool TripPath_Edge::transit_connection() const {
-  return transit_connection_;
-}
-inline void TripPath_Edge::set_transit_connection(bool value) {
-  set_has_transit_connection();
-  transit_connection_ = value;
-}
-
-// optional bool other = 43;
-inline bool TripPath_Edge::has_other() const {
-  return (_has_bits_[1] & 0x00000400u) != 0;
-}
-inline void TripPath_Edge::set_has_other() {
-  _has_bits_[1] |= 0x00000400u;
-}
-inline void TripPath_Edge::clear_has_other() {
-  _has_bits_[1] &= ~0x00000400u;
-}
-inline void TripPath_Edge::clear_other() {
-  other_ = false;
-  clear_has_other();
-}
-inline bool TripPath_Edge::other() const {
-  return other_;
-}
-inline void TripPath_Edge::set_other(bool value) {
-  set_has_other();
-  other_ = value;
-}
-
-// optional .valhalla.odin.TripPath.TransitRouteInfo transit_route_info = 44;
+// optional .valhalla.odin.TripPath.TransitRouteInfo transit_route_info = 25;
 inline bool TripPath_Edge::has_transit_route_info() const {
-  return (_has_bits_[1] & 0x00000800u) != 0;
+  return (_has_bits_[0] & 0x01000000u) != 0;
 }
 inline void TripPath_Edge::set_has_transit_route_info() {
-  _has_bits_[1] |= 0x00000800u;
+  _has_bits_[0] |= 0x01000000u;
 }
 inline void TripPath_Edge::clear_has_transit_route_info() {
-  _has_bits_[1] &= ~0x00000800u;
+  _has_bits_[0] &= ~0x01000000u;
 }
 inline void TripPath_Edge::clear_transit_route_info() {
   if (transit_route_info_ != NULL) transit_route_info_->::valhalla::odin::TripPath_TransitRouteInfo::Clear();
@@ -5245,6 +4774,116 @@ inline void TripPath_Edge::set_allocated_transit_route_info(::valhalla::odin::Tr
   } else {
     clear_has_transit_route_info();
   }
+}
+
+// optional uint64 id = 26;
+inline bool TripPath_Edge::has_id() const {
+  return (_has_bits_[0] & 0x02000000u) != 0;
+}
+inline void TripPath_Edge::set_has_id() {
+  _has_bits_[0] |= 0x02000000u;
+}
+inline void TripPath_Edge::clear_has_id() {
+  _has_bits_[0] &= ~0x02000000u;
+}
+inline void TripPath_Edge::clear_id() {
+  id_ = GOOGLE_ULONGLONG(0);
+  clear_has_id();
+}
+inline ::google::protobuf::uint64 TripPath_Edge::id() const {
+  return id_;
+}
+inline void TripPath_Edge::set_id(::google::protobuf::uint64 value) {
+  set_has_id();
+  id_ = value;
+}
+
+// optional uint64 way_id = 27;
+inline bool TripPath_Edge::has_way_id() const {
+  return (_has_bits_[0] & 0x04000000u) != 0;
+}
+inline void TripPath_Edge::set_has_way_id() {
+  _has_bits_[0] |= 0x04000000u;
+}
+inline void TripPath_Edge::clear_has_way_id() {
+  _has_bits_[0] &= ~0x04000000u;
+}
+inline void TripPath_Edge::clear_way_id() {
+  way_id_ = GOOGLE_ULONGLONG(0);
+  clear_has_way_id();
+}
+inline ::google::protobuf::uint64 TripPath_Edge::way_id() const {
+  return way_id_;
+}
+inline void TripPath_Edge::set_way_id(::google::protobuf::uint64 value) {
+  set_has_way_id();
+  way_id_ = value;
+}
+
+// optional float weighted_grade = 28;
+inline bool TripPath_Edge::has_weighted_grade() const {
+  return (_has_bits_[0] & 0x08000000u) != 0;
+}
+inline void TripPath_Edge::set_has_weighted_grade() {
+  _has_bits_[0] |= 0x08000000u;
+}
+inline void TripPath_Edge::clear_has_weighted_grade() {
+  _has_bits_[0] &= ~0x08000000u;
+}
+inline void TripPath_Edge::clear_weighted_grade() {
+  weighted_grade_ = 0;
+  clear_has_weighted_grade();
+}
+inline float TripPath_Edge::weighted_grade() const {
+  return weighted_grade_;
+}
+inline void TripPath_Edge::set_weighted_grade(float value) {
+  set_has_weighted_grade();
+  weighted_grade_ = value;
+}
+
+// optional int32 max_upward_grade = 29;
+inline bool TripPath_Edge::has_max_upward_grade() const {
+  return (_has_bits_[0] & 0x10000000u) != 0;
+}
+inline void TripPath_Edge::set_has_max_upward_grade() {
+  _has_bits_[0] |= 0x10000000u;
+}
+inline void TripPath_Edge::clear_has_max_upward_grade() {
+  _has_bits_[0] &= ~0x10000000u;
+}
+inline void TripPath_Edge::clear_max_upward_grade() {
+  max_upward_grade_ = 0;
+  clear_has_max_upward_grade();
+}
+inline ::google::protobuf::int32 TripPath_Edge::max_upward_grade() const {
+  return max_upward_grade_;
+}
+inline void TripPath_Edge::set_max_upward_grade(::google::protobuf::int32 value) {
+  set_has_max_upward_grade();
+  max_upward_grade_ = value;
+}
+
+// optional int32 max_downward_grade = 30;
+inline bool TripPath_Edge::has_max_downward_grade() const {
+  return (_has_bits_[0] & 0x20000000u) != 0;
+}
+inline void TripPath_Edge::set_has_max_downward_grade() {
+  _has_bits_[0] |= 0x20000000u;
+}
+inline void TripPath_Edge::clear_has_max_downward_grade() {
+  _has_bits_[0] &= ~0x20000000u;
+}
+inline void TripPath_Edge::clear_max_downward_grade() {
+  max_downward_grade_ = 0;
+  clear_has_max_downward_grade();
+}
+inline ::google::protobuf::int32 TripPath_Edge::max_downward_grade() const {
+  return max_downward_grade_;
+}
+inline void TripPath_Edge::set_max_downward_grade(::google::protobuf::int32 value) {
+  set_has_max_downward_grade();
+  max_downward_grade_ = value;
 }
 
 // -------------------------------------------------------------------
@@ -5886,169 +5525,38 @@ inline void TripPath_Node::set_admin_index(::google::protobuf::uint32 value) {
   admin_index_ = value;
 }
 
-// optional bool street_intersection = 5;
-inline bool TripPath_Node::has_street_intersection() const {
+// optional .valhalla.odin.TripPath.Node.Type type = 5;
+inline bool TripPath_Node::has_type() const {
   return (_has_bits_[0] & 0x00000010u) != 0;
 }
-inline void TripPath_Node::set_has_street_intersection() {
+inline void TripPath_Node::set_has_type() {
   _has_bits_[0] |= 0x00000010u;
 }
-inline void TripPath_Node::clear_has_street_intersection() {
+inline void TripPath_Node::clear_has_type() {
   _has_bits_[0] &= ~0x00000010u;
 }
-inline void TripPath_Node::clear_street_intersection() {
-  street_intersection_ = false;
-  clear_has_street_intersection();
+inline void TripPath_Node::clear_type() {
+  type_ = 0;
+  clear_has_type();
 }
-inline bool TripPath_Node::street_intersection() const {
-  return street_intersection_;
+inline ::valhalla::odin::TripPath_Node_Type TripPath_Node::type() const {
+  return static_cast< ::valhalla::odin::TripPath_Node_Type >(type_);
 }
-inline void TripPath_Node::set_street_intersection(bool value) {
-  set_has_street_intersection();
-  street_intersection_ = value;
+inline void TripPath_Node::set_type(::valhalla::odin::TripPath_Node_Type value) {
+  assert(::valhalla::odin::TripPath_Node_Type_IsValid(value));
+  set_has_type();
+  type_ = value;
 }
 
-// optional bool gate = 6;
-inline bool TripPath_Node::has_gate() const {
+// optional bool fork = 6;
+inline bool TripPath_Node::has_fork() const {
   return (_has_bits_[0] & 0x00000020u) != 0;
 }
-inline void TripPath_Node::set_has_gate() {
+inline void TripPath_Node::set_has_fork() {
   _has_bits_[0] |= 0x00000020u;
 }
-inline void TripPath_Node::clear_has_gate() {
-  _has_bits_[0] &= ~0x00000020u;
-}
-inline void TripPath_Node::clear_gate() {
-  gate_ = false;
-  clear_has_gate();
-}
-inline bool TripPath_Node::gate() const {
-  return gate_;
-}
-inline void TripPath_Node::set_gate(bool value) {
-  set_has_gate();
-  gate_ = value;
-}
-
-// optional bool bollard = 7;
-inline bool TripPath_Node::has_bollard() const {
-  return (_has_bits_[0] & 0x00000040u) != 0;
-}
-inline void TripPath_Node::set_has_bollard() {
-  _has_bits_[0] |= 0x00000040u;
-}
-inline void TripPath_Node::clear_has_bollard() {
-  _has_bits_[0] &= ~0x00000040u;
-}
-inline void TripPath_Node::clear_bollard() {
-  bollard_ = false;
-  clear_has_bollard();
-}
-inline bool TripPath_Node::bollard() const {
-  return bollard_;
-}
-inline void TripPath_Node::set_bollard(bool value) {
-  set_has_bollard();
-  bollard_ = value;
-}
-
-// optional bool toll_booth = 8;
-inline bool TripPath_Node::has_toll_booth() const {
-  return (_has_bits_[0] & 0x00000080u) != 0;
-}
-inline void TripPath_Node::set_has_toll_booth() {
-  _has_bits_[0] |= 0x00000080u;
-}
-inline void TripPath_Node::clear_has_toll_booth() {
-  _has_bits_[0] &= ~0x00000080u;
-}
-inline void TripPath_Node::clear_toll_booth() {
-  toll_booth_ = false;
-  clear_has_toll_booth();
-}
-inline bool TripPath_Node::toll_booth() const {
-  return toll_booth_;
-}
-inline void TripPath_Node::set_toll_booth(bool value) {
-  set_has_toll_booth();
-  toll_booth_ = value;
-}
-
-// optional bool bike_share = 9;
-inline bool TripPath_Node::has_bike_share() const {
-  return (_has_bits_[0] & 0x00000100u) != 0;
-}
-inline void TripPath_Node::set_has_bike_share() {
-  _has_bits_[0] |= 0x00000100u;
-}
-inline void TripPath_Node::clear_has_bike_share() {
-  _has_bits_[0] &= ~0x00000100u;
-}
-inline void TripPath_Node::clear_bike_share() {
-  bike_share_ = false;
-  clear_has_bike_share();
-}
-inline bool TripPath_Node::bike_share() const {
-  return bike_share_;
-}
-inline void TripPath_Node::set_bike_share(bool value) {
-  set_has_bike_share();
-  bike_share_ = value;
-}
-
-// optional bool parking = 10;
-inline bool TripPath_Node::has_parking() const {
-  return (_has_bits_[0] & 0x00000200u) != 0;
-}
-inline void TripPath_Node::set_has_parking() {
-  _has_bits_[0] |= 0x00000200u;
-}
-inline void TripPath_Node::clear_has_parking() {
-  _has_bits_[0] &= ~0x00000200u;
-}
-inline void TripPath_Node::clear_parking() {
-  parking_ = false;
-  clear_has_parking();
-}
-inline bool TripPath_Node::parking() const {
-  return parking_;
-}
-inline void TripPath_Node::set_parking(bool value) {
-  set_has_parking();
-  parking_ = value;
-}
-
-// optional bool motorway_junction = 11;
-inline bool TripPath_Node::has_motorway_junction() const {
-  return (_has_bits_[0] & 0x00000400u) != 0;
-}
-inline void TripPath_Node::set_has_motorway_junction() {
-  _has_bits_[0] |= 0x00000400u;
-}
-inline void TripPath_Node::clear_has_motorway_junction() {
-  _has_bits_[0] &= ~0x00000400u;
-}
-inline void TripPath_Node::clear_motorway_junction() {
-  motorway_junction_ = false;
-  clear_has_motorway_junction();
-}
-inline bool TripPath_Node::motorway_junction() const {
-  return motorway_junction_;
-}
-inline void TripPath_Node::set_motorway_junction(bool value) {
-  set_has_motorway_junction();
-  motorway_junction_ = value;
-}
-
-// optional bool fork = 12;
-inline bool TripPath_Node::has_fork() const {
-  return (_has_bits_[0] & 0x00000800u) != 0;
-}
-inline void TripPath_Node::set_has_fork() {
-  _has_bits_[0] |= 0x00000800u;
-}
 inline void TripPath_Node::clear_has_fork() {
-  _has_bits_[0] &= ~0x00000800u;
+  _has_bits_[0] &= ~0x00000020u;
 }
 inline void TripPath_Node::clear_fork() {
   fork_ = false;
@@ -6062,15 +5570,15 @@ inline void TripPath_Node::set_fork(bool value) {
   fork_ = value;
 }
 
-// optional .valhalla.odin.TripPath.TransitStopInfo transit_stop_info = 13;
+// optional .valhalla.odin.TripPath.TransitStopInfo transit_stop_info = 7;
 inline bool TripPath_Node::has_transit_stop_info() const {
-  return (_has_bits_[0] & 0x00001000u) != 0;
+  return (_has_bits_[0] & 0x00000040u) != 0;
 }
 inline void TripPath_Node::set_has_transit_stop_info() {
-  _has_bits_[0] |= 0x00001000u;
+  _has_bits_[0] |= 0x00000040u;
 }
 inline void TripPath_Node::clear_has_transit_stop_info() {
-  _has_bits_[0] &= ~0x00001000u;
+  _has_bits_[0] &= ~0x00000040u;
 }
 inline void TripPath_Node::clear_transit_stop_info() {
   if (transit_stop_info_ != NULL) transit_stop_info_->::valhalla::odin::TripPath_TransitStopInfo::Clear();
@@ -6660,12 +6168,20 @@ inline const EnumDescriptor* GetEnumDescriptor< ::valhalla::odin::TripPath_Trans
   return ::valhalla::odin::TripPath_TransitStopInfo_Type_descriptor();
 }
 template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::valhalla::odin::TripPath_Node_Type>() {
+  return ::valhalla::odin::TripPath_Node_Type_descriptor();
+}
+template <>
 inline const EnumDescriptor* GetEnumDescriptor< ::valhalla::odin::TripPath_Traversability>() {
   return ::valhalla::odin::TripPath_Traversability_descriptor();
 }
 template <>
 inline const EnumDescriptor* GetEnumDescriptor< ::valhalla::odin::TripPath_RoadClass>() {
   return ::valhalla::odin::TripPath_RoadClass_descriptor();
+}
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::valhalla::odin::TripPath_Use>() {
+  return ::valhalla::odin::TripPath_Use_descriptor();
 }
 template <>
 inline const EnumDescriptor* GetEnumDescriptor< ::valhalla::odin::TripPath_TravelMode>() {

@@ -2,7 +2,7 @@
 // source: tripdirections.proto
 
 #define INTERNAL_SUPPRESS_PROTOBUF_FIELD_DEPRECATION
-#include "proto/tripdirections.pb.h"
+#include "valhalla/proto/tripdirections.pb.h"
 
 #include <algorithm>
 
@@ -365,7 +365,7 @@ void protobuf_AddDesc_tripdirections_2eproto() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-    "\n\024tripdirections.proto\022\rvalhalla.odin\"\316!"
+    "\n\024tripdirections.proto\022\rvalhalla.odin\"\273!"
     "\n\016TripDirections\022\017\n\007trip_id\030\001 \001(\004\022\016\n\006leg"
     "_id\030\002 \001(\r\022\021\n\tleg_count\030\003 \001(\r\0228\n\010location"
     "\030\004 \003(\0132&.valhalla.odin.TripDirections.Lo"
@@ -465,15 +465,15 @@ void protobuf_AddDesc_tripdirections_2eproto() {
     "onDestination\020#\022%\n!kPostTransitConnectio"
     "nDestination\020$\"E\n\nTravelMode\022\n\n\006kDrive\020\000"
     "\022\017\n\013kPedestrian\020\001\022\014\n\010kBicycle\020\002\022\014\n\010kTran"
-    "sit\020\003\"S\n\013VehicleType\022\010\n\004kCar\020\000\022\017\n\013kMotor"
-    "cycle\020\001\022\023\n\017kFourWheelDrive\020\002\022\024\n\020kTractor"
-    "Trailers\020\003\"9\n\016PedestrianType\022\t\n\005kFoot\020\000\022"
-    "\017\n\013kWheelChair\020\001\022\013\n\007kSegway\020\002\"K\n\013Bicycle"
-    "Type\022\t\n\005kRoad\020\000\022\013\n\007kHybrid\020\001\022\t\n\005kCity\020\002\022"
-    "\n\n\006kCross\020\003\022\r\n\tkMountain\020\004\"r\n\013TransitTyp"
-    "e\022\t\n\005kTram\020\000\022\n\n\006kMetro\020\001\022\t\n\005kRail\020\002\022\010\n\004k"
-    "Bus\020\003\022\n\n\006kFerry\020\004\022\r\n\tkCableCar\020\005\022\014\n\010kGon"
-    "dola\020\006\022\016\n\nkFunicular\020\007", 4342);
+    "sit\020\003\"K\n\013VehicleType\022\010\n\004kCar\020\000\022\017\n\013kMotor"
+    "cycle\020\001\022\014\n\010kAutoBus\020\002\022\023\n\017kTractorTrailer"
+    "\020\003\"9\n\016PedestrianType\022\t\n\005kFoot\020\000\022\017\n\013kWhee"
+    "lchair\020\001\022\013\n\007kSegway\020\002\"@\n\013BicycleType\022\t\n\005"
+    "kRoad\020\000\022\n\n\006kCross\020\001\022\013\n\007kHybrid\020\002\022\r\n\tkMou"
+    "ntain\020\003\"r\n\013TransitType\022\t\n\005kTram\020\000\022\n\n\006kMe"
+    "tro\020\001\022\t\n\005kRail\020\002\022\010\n\004kBus\020\003\022\n\n\006kFerry\020\004\022\r"
+    "\n\tkCableCar\020\005\022\014\n\010kGondola\020\006\022\016\n\nkFunicula"
+    "r\020\007", 4323);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "tripdirections.proto", &protobuf_RegisterTypes);
   TripDirections::default_instance_ = new TripDirections();
@@ -552,8 +552,8 @@ bool TripDirections_VehicleType_IsValid(int value) {
 #ifndef _MSC_VER
 const TripDirections_VehicleType TripDirections::kCar;
 const TripDirections_VehicleType TripDirections::kMotorcycle;
-const TripDirections_VehicleType TripDirections::kFourWheelDrive;
-const TripDirections_VehicleType TripDirections::kTractorTrailers;
+const TripDirections_VehicleType TripDirections::kAutoBus;
+const TripDirections_VehicleType TripDirections::kTractorTrailer;
 const TripDirections_VehicleType TripDirections::VehicleType_MIN;
 const TripDirections_VehicleType TripDirections::VehicleType_MAX;
 const int TripDirections::VehicleType_ARRAYSIZE;
@@ -575,7 +575,7 @@ bool TripDirections_PedestrianType_IsValid(int value) {
 
 #ifndef _MSC_VER
 const TripDirections_PedestrianType TripDirections::kFoot;
-const TripDirections_PedestrianType TripDirections::kWheelChair;
+const TripDirections_PedestrianType TripDirections::kWheelchair;
 const TripDirections_PedestrianType TripDirections::kSegway;
 const TripDirections_PedestrianType TripDirections::PedestrianType_MIN;
 const TripDirections_PedestrianType TripDirections::PedestrianType_MAX;
@@ -591,7 +591,6 @@ bool TripDirections_BicycleType_IsValid(int value) {
     case 1:
     case 2:
     case 3:
-    case 4:
       return true;
     default:
       return false;
@@ -600,9 +599,8 @@ bool TripDirections_BicycleType_IsValid(int value) {
 
 #ifndef _MSC_VER
 const TripDirections_BicycleType TripDirections::kRoad;
-const TripDirections_BicycleType TripDirections::kHybrid;
-const TripDirections_BicycleType TripDirections::kCity;
 const TripDirections_BicycleType TripDirections::kCross;
+const TripDirections_BicycleType TripDirections::kHybrid;
 const TripDirections_BicycleType TripDirections::kMountain;
 const TripDirections_BicycleType TripDirections::BicycleType_MIN;
 const TripDirections_BicycleType TripDirections::BicycleType_MAX;

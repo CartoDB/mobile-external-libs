@@ -4,7 +4,6 @@
 #include <string>
 #include <mutex>
 #include <unordered_map>
-#include "config.h"
 
 namespace valhalla {
 namespace midgard {

@@ -1,7 +1,56 @@
-#include "config.h"
 #include "sif/dynamiccost.h"
+#include <valhalla/baldr/double_bucket_queue.h> // For kInvalidLabel
 
 using namespace valhalla::baldr;
+
+namespace {
+
+using namespace valhalla::sif;
+
+// Check for complex restriction
+bool IsRestricted(const EdgeLabel& pred, const std::vector<EdgeLabel>& edge_labels,
+                  const std::vector<ComplexRestriction>& restrictions,
+                  const bool forward) {
+  // Lambda to get the next predecessor EdgeLabel (that is not a transition)
+  auto next_predecessor = [&edge_labels](const EdgeLabel* label) {
+    // Get the next predecessor - make sure it is valid. Continue to get
+    // the next predecessor if the edge is a transition edge.
+    const EdgeLabel* next_pred = (label->predecessor() == kInvalidLabel) ?
+                    label : &edge_labels[label->predecessor()];
+    while (next_pred->use() == Use::kTransitionUp &&
+           next_pred->predecessor() != kInvalidLabel) {
+      next_pred = &edge_labels[next_pred->predecessor()];
+    }
+    return next_pred;
+  };
+
+  // Get the first predecessor edge (that is not a transition)
+  const EdgeLabel* first_pred = &pred;
+  if (first_pred->use() == Use::kTransitionUp) {
+    first_pred = next_predecessor(first_pred);
+  }
+
+  // Iterate through the restrictions
+  for (const auto& cr : restrictions) {
+    // Walk the via list, break if the via edge Ids do not match the path
+    const EdgeLabel* next_pred = first_pred;
+    for (const auto& via_id : cr.GetVias()) {
+      if (via_id != next_pred->edgeid()) {
+        return false;
+      }
+      next_pred = next_predecessor(next_pred);
+    }
+
+    // Check against the start/end of the complex restriction
+    if (( forward && next_pred->edgeid() == cr.from_id()) ||
+        (!forward && next_pred->edgeid() == cr.to_id())) {
+      return true;
+    }
+  }
+  return false;
+}
+
+}
 
 namespace valhalla{
 namespace sif {
@@ -9,7 +58,7 @@ namespace sif {
 DynamicCost::DynamicCost(const boost::property_tree::ptree& pt,
                          const TravelMode mode)
     : allow_transit_connections_(false),
-      travelmode_(mode) {
+      travel_mode_(mode) {
   // Parse property tree to get hierarchy limits
   // TODO - get the number of levels
   uint32_t n_levels = sizeof(kDefaultMaxUpTransitions) /
@@ -20,12 +69,6 @@ DynamicCost::DynamicCost(const boost::property_tree::ptree& pt,
 }
 
 DynamicCost::~DynamicCost() {
-}
-
-// Does the costing allow hierarchy transitions? Defaults to false. Costing
-// methods that wish to use hierarchy transitions must override this method.
-bool DynamicCost::AllowTransitions() const {
-  return false;
 }
 
 // Does the costing method allow multiple passes (with relaxed hierarchy
@@ -63,6 +106,32 @@ Cost DynamicCost::TransitionCostReverse(const uint32_t idx,
                             const baldr::DirectedEdge* opp_edge,
                             const baldr::DirectedEdge* opp_pred_edge) const {
   return { 0.0f, 0.0f };
+}
+
+/**
+ * Test if an edge should be restricted due to a complex restriction.
+ */
+bool DynamicCost::Restricted(const DirectedEdge* edge,
+                             const EdgeLabel& pred,
+                             const std::vector<EdgeLabel>& edgelabels,
+                             const baldr::GraphTile*& tile,
+                             const baldr::GraphId& edgeid,
+                             const bool forward) const {
+  // If forward, check if the edge marks the end of a restriction, else check
+  // if the edge marks the start of a complex restriction.
+  bool has_restriction = (forward) ?
+      edge->end_restriction()   & access_mode() :
+      edge->start_restriction() & access_mode();
+  if (has_restriction) {
+    // Get complex restrictions. Return false if no restrictions are found
+    auto restrictions = tile->GetRestrictions(forward, edgeid, access_mode());
+    if (restrictions.size() == 0) {
+      return false;
+    }
+    return IsRestricted(pred, edgelabels, restrictions, forward);
+  } else {
+    return false;
+  }
 }
 
 // Returns the transfer cost between 2 transit stops.
@@ -121,20 +190,29 @@ void DynamicCost::RelaxHierarchyLimits(const float factor,
   }
 }
 
-// Do not transition up to highway level - remain on arterial. Used as last
-// resort.
-void DynamicCost::DisableHighwayTransitions() {
-  hierarchy_limits_[1].DisableHighwayTransitions();
-}
-
 // Set the current travel mode.
-void DynamicCost::set_travelmode(const TravelMode mode) {
-  travelmode_ = mode;
+void DynamicCost::set_travel_mode(const TravelMode mode) {
+  travel_mode_ = mode;
 }
 
 // Get the current travel mode.
-TravelMode DynamicCost::travelmode() const {
-  return travelmode_;
+TravelMode DynamicCost::travel_mode() const {
+  return travel_mode_;
+}
+
+// Get the current travel type.
+uint8_t DynamicCost::travel_type() const {
+  return 0;
+}
+
+// Get the wheelchair required flag.
+bool DynamicCost::wheelchair() const {
+  return false;
+}
+
+// Get the bicycle required flag.
+bool DynamicCost::bicycle() const {
+  return false;
 }
 
 // Add to the exclude list.

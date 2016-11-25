@@ -1,5 +1,6 @@
-#include "config.h"
 #include "sif/bicyclecost.h"
+#include "sif/costconstants.h"
+
 #include <valhalla/baldr/directededge.h>
 #include <valhalla/baldr/nodeinfo.h>
 #include <valhalla/midgard/constants.h>
@@ -14,16 +15,9 @@ namespace sif {
 // Default options/values
 namespace {
 
-enum class BicycleType {
-  kRoad     = 0,
-  kCross    = 1,    // Cyclocross bike - road bike setup with wider tires
-  kHybrid   = 2,    // Hybrid or city bike
-  kMountain = 3
-};
-
-constexpr float kDefaultManeuverPenalty         = 20.0f;  // Seconds
-constexpr float kDefaultDestinationOnlyPenalty  = 300.0f; // Seconds
-constexpr float kDefaultAlleyPenalty            = 30.0f;  // Seconds
+constexpr float kDefaultManeuverPenalty         = 5.0f;   // Seconds
+constexpr float kDefaultDrivewayPenalty         = 300.0f; // Seconds
+constexpr float kDefaultAlleyPenalty            = 60.0f;  // Seconds
 constexpr float kDefaultGateCost                = 30.0f;  // Seconds
 constexpr float kDefaultGatePenalty             = 300.0f; // Seconds
 constexpr float kDefaultFerryCost               = 300.0f; // Seconds
@@ -95,6 +89,9 @@ constexpr float kDefaultUseRoadsFactor = 0.5f;
 
 // Avoid driveways
 constexpr float kDrivewayFactor = 20.0f;
+
+// Additional penalty to avoid destination only
+constexpr float kDestinationOnlyFactor = 0.1f;
 
 // Weighting factor based on road class. These apply penalties to higher class
 // roads. These penalties are modulated by the useroads factor - further
@@ -184,6 +181,12 @@ class BicycleCost : public DynamicCost {
   virtual ~BicycleCost();
 
   /**
+   * Get the access mode used by this costing method.
+   * @return  Returns access mode.
+   */
+  uint32_t access_mode() const;
+
+  /**
    * Checks if access is allowed for the provided directed edge.
    * This is generally based on mode of travel and the access modes
    * allowed on the edge. However, it can be extended to exclude access
@@ -228,11 +231,9 @@ class BicycleCost : public DynamicCost {
    * Get the cost to traverse the specified directed edge. Cost includes
    * the time (seconds) to traverse the edge.
    * @param   edge  Pointer to a directed edge.
-   * @param   density  Relative road density.
    * @return  Returns the cost and time (seconds)
    */
-  virtual Cost EdgeCost(const baldr::DirectedEdge* edge,
-                        const uint32_t density) const;
+  virtual Cost EdgeCost(const baldr::DirectedEdge* edge) const;
 
   /**
    * Returns the cost to make the transition from the predecessor edge.
@@ -273,12 +274,18 @@ class BicycleCost : public DynamicCost {
    */
   virtual float AStarCostFactor() const;
 
+  /**
+   * Get the current travel type.
+   * @return  Returns the current travel type.
+   */
+  virtual uint8_t travel_type() const;
+
  protected:
 
   float speedfactor_[100];          // Cost factors based on speed in kph
   float density_factor_[16];        // Density factor
   float maneuver_penalty_;          // Penalty (seconds) when inconsistent names
-  float destination_only_penalty_;  // Penalty (seconds) using a driveway or parking aisle
+  float driveway_penalty_;          // Penalty (seconds) using a driveway
   float gate_cost_;                 // Cost (seconds) to go through gate
   float gate_penalty_;              // Penalty (seconds) to go through gate
   float alley_penalty_;             // Penalty (seconds) to use a alley
@@ -295,7 +302,7 @@ class BicycleCost : public DynamicCost {
   float speed_;
 
   // Bicycle type
-  BicycleType bicycletype_;
+  BicycleType type_;
 
   // Minimal surface type usable by the bicycle type
   Surface minimal_allowed_surface_;
@@ -334,9 +341,9 @@ class BicycleCost : public DynamicCost {
    */
   virtual const EdgeFilter GetEdgeFilter() const {
     // Throw back a lambda that checks the access for this type of costing
-    uint32_t b = static_cast<uint32_t>(bicycletype_);
+    uint32_t b = static_cast<uint32_t>(type_);
     return [b](const baldr::DirectedEdge* edge) {
-      if ( edge->trans_up() || edge->trans_down() ||
+      if ( edge->trans_up() || edge->trans_down() || edge->is_shortcut() ||
           !(edge->forwardaccess() & kBicycleAccess) ||
            edge->use() == Use::kSteps ||
            edge->surface() > kWorstAllowedSurface[b]) {
@@ -371,11 +378,15 @@ BicycleCost::BicycleCost(const boost::property_tree::ptree& pt)
                              1.0f,  1.0f, 1.0f,  1.0f,
                              1.05f, 1.1f, 1.15f, 1.2f,
                              1.25f, 1.3f, 1.4f,  1.5f } {
+  // Set hierarchy to allow unlimited transitions
+  for (auto& h : hierarchy_limits_) {
+    h.max_up_transitions = kUnlimitedTransitions;
+  }
+
   // Transition penalties (similar to auto)
   maneuver_penalty_ = pt.get<float>("maneuver_penalty",
                                     kDefaultManeuverPenalty);
-  destination_only_penalty_ = pt.get<float>("destination_only_penalty",
-                                            kDefaultDestinationOnlyPenalty);
+  driveway_penalty_ = pt.get<float>("driveway", kDefaultDrivewayPenalty);
   gate_cost_ = pt.get<float>("gate_cost", kDefaultGateCost);
   gate_penalty_ = pt.get<float>("gate_penalty", kDefaultGatePenalty);
   alley_penalty_ = pt.get<float>("alley_penalty",  kDefaultAlleyPenalty);
@@ -387,30 +398,30 @@ BicycleCost::BicycleCost(const boost::property_tree::ptree& pt)
   // Get the bicycle type - enter as string and convert to enum
   std::string bicycle_type = pt.get("bicycle_type", "Road");
   if (bicycle_type == "Cross") {
-    bicycletype_ = BicycleType::kCross;
+    type_ = BicycleType::kCross;
   } else if (bicycle_type == "Hybrid" || bicycle_type == "City") {
-    bicycletype_ = BicycleType::kHybrid;
+    type_ = BicycleType::kHybrid;
   } else if (bicycle_type == "Mountain") {
-    bicycletype_ = BicycleType::kMountain;
+    type_ = BicycleType::kMountain;
   } else {
-    bicycletype_ = BicycleType::kRoad;
+    type_ = BicycleType::kRoad;
   }
 
   // Get default speed from the config. This is the average speed on smooth,
   // flat roads. If not present or outside the valid range use a default speed
   // based on the bicycle type.
-  uint32_t t = static_cast<uint32_t>(bicycletype_);
+  uint32_t t = static_cast<uint32_t>(type_);
   speed_ = pt.get<float>("cycling_speed", kDefaultCyclingSpeed[t]);
 
   // Set the minimal surface type usable by the bicycle type and the
   // surface speed factors.
-  if (bicycletype_ == BicycleType::kRoad) {
+  if (type_ == BicycleType::kRoad) {
     minimal_allowed_surface_ = Surface::kCompacted;
     surface_speed_factor_ = kRoadSurfaceSpeedFactors;
-  } else if (bicycletype_ == BicycleType::kHybrid) {
+  } else if (type_ == BicycleType::kHybrid) {
     minimal_allowed_surface_ =  Surface::kDirt;
     surface_speed_factor_ = kHybridSurfaceSpeedFactors;
-  } else if (bicycletype_ == BicycleType::kCross) {
+  } else if (type_ == BicycleType::kCross) {
     minimal_allowed_surface_ =  Surface::kGravel;
     surface_speed_factor_ = kCrossSurfaceSpeedFactors;
   } else {
@@ -487,6 +498,11 @@ BicycleCost::BicycleCost(const boost::property_tree::ptree& pt)
 BicycleCost::~BicycleCost() {
 }
 
+// Get the access mode used by this costing method.
+uint32_t BicycleCost::access_mode() const {
+  return kBicycleAccess;
+}
+
 // Check if access is allowed on the specified edge.
 bool BicycleCost::Allowed(const baldr::DirectedEdge* edge,
                           const EdgeLabel& pred,
@@ -496,10 +512,17 @@ bool BicycleCost::Allowed(const baldr::DirectedEdge* edge,
 
   // Check bicycle access and turn restrictions. Bicycles should obey
   // vehicular turn restrictions. Allow Uturns at dead ends only.
-  // Skip impassable edges.
+  // Skip impassable edges and shortcut edges.
   if (!(edge->forwardaccess() & kBicycleAccess) ||
+        edge->is_shortcut() ||
       (pred.opp_local_idx() == edge->localedgeidx() && !pred.deadend()) ||
       (pred.restrictions() & (1 << edge->localedgeidx()))) {
+    return false;
+  }
+
+  // Disallow transit connections
+  // (except when set for multi-modal routes (FUTURE)
+  if (edge->use() == Use::kTransitConnection /* && !allow_transit_connections_*/) {
     return false;
   }
 
@@ -517,7 +540,9 @@ bool BicycleCost::AllowedReverse(const baldr::DirectedEdge* edge,
   // TODO - obtain and check the access restrictions.
 
   // Check access, U-turn (allow at dead-ends), and simple turn restriction.
+  // Do not allow transit connection edges.
   if (!(opp_edge->forwardaccess() & kBicycleAccess) ||
+        opp_edge->is_shortcut() || opp_edge->use() == Use::kTransitConnection ||
        (pred.opp_local_idx() == edge->localedgeidx() && !pred.deadend()) ||
        (opp_edge->restrictions() & (1 << pred.opp_local_idx()))) {
     return false;
@@ -534,8 +559,7 @@ bool BicycleCost::Allowed(const baldr::NodeInfo* node) const {
 
 // Returns the cost to traverse the edge and an estimate of the actual time
 // (in seconds) to traverse the edge.
-Cost BicycleCost::EdgeCost(const baldr::DirectedEdge* edge,
-                           const uint32_t density) const {
+Cost BicycleCost::EdgeCost(const baldr::DirectedEdge* edge) const {
   // Stairs/steps - use a high fixed cost so they are generally avoided.
   if (edge->use() == Use::kSteps) {
     return kBicycleStepsCost;
@@ -572,7 +596,7 @@ Cost BicycleCost::EdgeCost(const baldr::DirectedEdge* edge,
     // traffic. Most cyclists would use them though.
     factor = 0.75f + (useroads_ * 0.5f);
   } else if (edge->use() == Use::kMountainBike &&
-             bicycletype_ == BicycleType::kMountain) {
+             type_ == BicycleType::kMountain) {
     factor = 0.5f;
   } else if (edge->use() == Use::kDriveway) {
     // Heavily penalize driveways
@@ -591,6 +615,11 @@ Cost BicycleCost::EdgeCost(const baldr::DirectedEdge* edge,
       // penalty and road class factor
       factor = speedpenalty_[road_speed] +
               (road_factor_ * kRoadClassFactor[static_cast<uint32_t>(edge->classification())]);
+
+      // Slight penalty going though destination only areas if no bike lanes
+      if (edge->destonly()) {
+        factor += kDestinationOnlyFactor;
+      }
     }
 
     // Favor bicycle networks.
@@ -628,11 +657,11 @@ Cost BicycleCost::TransitionCost(const baldr::DirectedEdge* edge,
 
   // Additional penalties without any time cost
   uint32_t idx = pred.opp_local_idx();
-  if (!pred.destonly() && edge->destonly()) {
-    penalty += destination_only_penalty_;
-  }
   if (pred.use() != Use::kAlley && edge->use() == Use::kAlley) {
     penalty += alley_penalty_;
+  }
+  if (pred.use() != Use::kDriveway && edge->use() == Use::kDriveway) {
+    penalty += driveway_penalty_;
   }
   if ((pred.use() != Use::kFerry && edge->use() == Use::kFerry)) {
     seconds += ferry_cost_;
@@ -690,11 +719,11 @@ Cost BicycleCost::TransitionCostReverse(const uint32_t idx,
   }
 
   // Additional penalties without any time cost
-  if (!pred->destonly() && edge->destonly()) {
-    penalty += destination_only_penalty_;
-  }
   if (pred->use() != Use::kAlley && edge->use() == Use::kAlley) {
     penalty += alley_penalty_;
+  }
+  if (pred->use() != Use::kDriveway && edge->use() == Use::kDriveway) {
+    penalty += driveway_penalty_;
   }
   if (pred->use() != Use::kFerry && edge->use() == Use::kFerry) {
     seconds += ferry_cost_;
@@ -740,6 +769,11 @@ Cost BicycleCost::TransitionCostReverse(const uint32_t idx,
 float BicycleCost::AStarCostFactor() const {
   // Assume max speed of 80 kph (50 MPH)
   return speedfactor_[80];
+}
+
+// Returns the current travel type.
+uint8_t BicycleCost::travel_type() const {
+  return static_cast<uint8_t>(type_);
 }
 
 cost_ptr_t CreateBicycleCost(const boost::property_tree::ptree& config) {

@@ -6,6 +6,7 @@
 
 #include <valhalla/baldr/graphid.h>
 #include <valhalla/baldr/graphreader.h>
+#include <valhalla/sif/costfactory.h>
 #include <valhalla/proto/trippath.pb.h>
 #include <valhalla/baldr/pathlocation.h>
 #include <valhalla/thor/pathinfo.h>
@@ -33,6 +34,7 @@ class TripPathBuilder {
    * For now just return length. TODO - modify to return trip path.
    */
   static odin::TripPath Build(baldr::GraphReader& graphreader,
+             const std::shared_ptr<sif::DynamicCost>* mode_costing,
              const std::vector<PathInfo>& path,
              baldr::PathLocation& origin,
              baldr::PathLocation& dest,
@@ -40,7 +42,7 @@ class TripPathBuilder {
 
   /**
    * Add trip edge. (TODO more comments)
-   * @param  idx  Index of the directed edge within the tile.
+   * @param  edge          Identifier of an edge within the tiled, hierarchical graph.
    * @param  trip_id       Trip Id (0 if not a transit edge).
    * @param  block_id      Transit block Id (0 if not a transit edge)
    * @param  mode          Travel mode for the edge: Biking, walking, etc.
@@ -50,10 +52,11 @@ class TripPathBuilder {
    * @param  length_pct    Scale for the edge length for the partial distance
    *                       at begin and end edges
    */
-  static odin::TripPath_Edge* AddTripEdge(const uint32_t idx,
+  static odin::TripPath_Edge* AddTripEdge(const baldr::GraphId& edge,
                                           const uint32_t trip_id,
                                           const uint32_t block_id,
                                           const sif::TravelMode mode,
+                                          const uint8_t travel_type,
                                           const baldr::DirectedEdge* directededge,
                                           odin::TripPath_Node* trip_node,
                                           const baldr::GraphTile* graphtile,
