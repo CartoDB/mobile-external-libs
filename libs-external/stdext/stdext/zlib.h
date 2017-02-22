@@ -15,7 +15,6 @@ namespace zlib {
         }
 
         const unsigned char* in = reinterpret_cast<const unsigned char*>(in_data);
-        std::size_t offset = 0;
         if (in[0] != 0x1f || in[1] != 0x8b) {
             return false;
         }
@@ -44,7 +43,7 @@ namespace zlib {
         infstream.next_out = buf; // output char array
         ::inflateInit2(&infstream, MAX_WBITS + 16);
         if (dict) {
-            ::inflateSetDictionary(&infstream, reinterpret_cast<const Bytef*>(dict), dict_size);
+            ::inflateSetDictionary(&infstream, reinterpret_cast<const Bytef*>(dict), static_cast<unsigned int>(dict_size));
         }
         do {
             infstream.avail_out = sizeof(buf); // size of output
