@@ -47,6 +47,14 @@ namespace miniz {
             offset += 2;
         }
 
+        std::size_t out_size = in[in_size - 4];
+        out_size += static_cast<std::size_t>(in[in_size - 3]) << 8;
+        out_size += static_cast<std::size_t>(in[in_size - 2]) << 16;
+        out_size += static_cast<std::size_t>(in[in_size - 1]) << 24;
+        if (out_size < (1 << 24)) { // ignore size if too over 16MB, could be broken data
+            out.reserve(out_size);
+        }
+
         unsigned char buf[4096];
         ::mz_stream infstream;
         std::memset(&infstream, 0, sizeof(infstream));
