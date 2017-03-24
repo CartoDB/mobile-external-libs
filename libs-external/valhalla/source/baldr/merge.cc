@@ -1,6 +1,5 @@
-#include "valhalla/baldr/merge.h"
-#include "valhalla/baldr/graphreader.h"
-#include "valhalla/midgard/logging.h"
+#include "baldr/merge.h"
+#include "baldr/graphreader.h"
 
 #include <boost/range/adaptor/map.hpp>
 
@@ -89,65 +88,36 @@ private:
 
 namespace detail {
 
-bitset_t::bitset_t(size_t size) : bits(div_round_up(size, bits_per_value)) {}
-
-void bitset_t::set(const uint64_t id) {
-  if (id >= end_id()) {
-    throw std::runtime_error("id out of bounds");
-  }
-  bits[id / u64_size] |= u64_one << (id % u64_size);
-}
-
-bool bitset_t::get(const uint64_t id) const {
-  if (id >= end_id()) {
-    throw std::runtime_error("id out of bounds");
-  }
-  return bits[id / u64_size] & (u64_one << (id % u64_size));
-}
-
-bool edge_tracker::get(const GraphId &edge_id) const {
-  auto itr = m_edges_in_tiles.find(edge_id.Tile_Base());
-  assert(itr != m_edges_in_tiles.end());
-  return m_edge_set.get(edge_id.id() + itr->second);
-}
-
-void edge_tracker::set(const GraphId &edge_id) {
-  auto itr = m_edges_in_tiles.find(edge_id.Tile_Base());
-  assert(itr != m_edges_in_tiles.end());
-  m_edge_set.set(edge_id.id() + itr->second);
-}
-
-edge_collapser::edge_collapser(GraphReader &reader, edge_tracker &tracker, std::function<bool(const DirectedEdge *)> edge_pred, std::function<void(const path &)> func)
+edge_collapser::edge_collapser(GraphReader &reader, edge_tracker &tracker,
+                               std::function<bool(const DirectedEdge *)> edge_merge_pred,
+                               std::function<bool(const DirectedEdge *)> edge_allowed_pred,
+                               std::function<void(const path &)> func)
   : m_reader(reader)
   , m_tracker(tracker)
-  , m_edge_predictate(edge_pred)
+  , m_edge_merge_predicate(edge_merge_pred)
+  , m_edge_allowed_predicate(edge_allowed_pred)
   , m_func(func)
 {}
 
 // returns the pair of nodes reachable from the given @node_id where they
-// are the only two nodes reachable by non-shortcut edges, and none of the
-// edges of @node_id cross into a different level.
+// are the only two nodes reachable based on the predicate methods.
 std::pair<GraphId, GraphId> edge_collapser::nodes_reachable_from(GraphId node_id) {
   static const std::pair<GraphId, GraphId> none;
   GraphId first, second;
 
   for (const auto &edge : iter::edges(m_reader, node_id)) {
-    // nodes which connect to ferries, transit or to a different level
-    // shouldn't be collapsed.
-    if (!m_edge_predictate(edge.first)) {
+    // Check if this edge excludes merging at this node
+    if (!m_edge_merge_predicate(edge.first)) {
       return none;
     }
 
-    // shortcut edges should be ignored
-    if (edge.first->shortcut()) {
+    // Skip this edge if it is not allowed on the path
+    if (!m_edge_allowed_predicate(edge.first)) {
       continue;
     }
 
-    // if we encounter any edges which have already been marked, then this
-    // node cannot be collapsible. either that edge would be one of the two
-    // needed at this node to make it collapsible, or the node has more than
-    // two edges.
-    if (m_tracker.get(edge.second)) {
+    // Exclude merging at a node where loops occur (non-unique end node)
+    if (edge.first->endnode() == first || edge.first->endnode() == second) {
       return none;
     }
 
@@ -155,7 +125,6 @@ std::pair<GraphId, GraphId> edge_collapser::nodes_reachable_from(GraphId node_id
       if (second) {
         // can't add a third, that means this node is a true junction.
         return none;
-
       } else {
         second = edge.first->endnode();
       }
@@ -195,6 +164,10 @@ GraphId edge_collapser::next_node_id(GraphId last_node_id, GraphId node_id) {
 GraphId edge_collapser::edge_between(GraphId cur, GraphId next) {
   GraphId edge_id;
   for (const auto &edge : iter::edges(m_reader, cur)) {
+    // Skip edges that are not allowed
+    if (!m_edge_allowed_predicate(edge.first)) {
+      continue;
+    }
     if (edge.first->endnode() == next) {
       edge_id = edge.second;
       break;
@@ -212,6 +185,12 @@ GraphId edge_collapser::edge_between(GraphId cur, GraphId next) {
 void edge_collapser::explore(GraphId node_id) {
   auto nodes = nodes_reachable_from(node_id);
   if (!nodes.first || !nodes.second) {
+    return;
+  }
+
+  // if either edge has been marked, then don't explore down either of them.
+  if (m_tracker.get(edge_between(node_id, nodes.first)) ||
+      m_tracker.get(edge_between(node_id, nodes.second))) {
     return;
   }
 

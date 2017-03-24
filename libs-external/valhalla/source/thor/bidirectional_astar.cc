@@ -1,8 +1,8 @@
 #include <map>
 #include <algorithm>
 #include "thor/bidirectional_astar.h"
-#include <valhalla/baldr/datetime.h>
-#include <valhalla/midgard/logging.h>
+#include "baldr/datetime.h"
+#include "midgard/logging.h"
 
 using namespace valhalla::baldr;
 using namespace valhalla::sif;
@@ -25,7 +25,7 @@ namespace thor {
 constexpr uint64_t kInitialEdgeLabelCountBD = 1000000;
 
 // Default constructor
-BidirectionalAStar::BidirectionalAStar() {
+BidirectionalAStar::BidirectionalAStar(): PathAlgorithm() {
   threshold_ = 0;
   mode_ = TravelMode::kDrive;
   access_mode_ = kAutoAccess;
@@ -254,7 +254,7 @@ void BidirectionalAStar::ExpandReverse(GraphReader& graphreader,
     // Get opposing directed edge and check if allowed.
     const DirectedEdge* opp_edge = t2->directededge(oppedge);
     if (!costing_->AllowedReverse(directededge, pred, opp_edge,
-                              tile, edgeid)) {
+                              t2, oppedge)) {
       continue;
     }
 
@@ -298,7 +298,7 @@ void BidirectionalAStar::ExpandReverse(GraphReader& graphreader,
     adjacencylist_reverse_->add(idx, sortcost);
     edgestatus_reverse_->Set(edgeid, EdgeSet::kTemporary, idx);
     edgelabels_reverse_.emplace_back(pred_idx, edgeid, oppedge,
-                 directededge, newcost, sortcost, dist,mode_, tc,
+                 directededge, newcost, sortcost, dist, mode_, tc,
                  (pred.not_thru_pruning() || !directededge->not_thru()));
   }
 }
@@ -314,6 +314,10 @@ std::vector<PathInfo> BidirectionalAStar::GetBestPath(PathLocation& origin,
   costing_ = mode_costing[static_cast<uint32_t>(mode_)];
   travel_type_ = costing_->travel_type();
   access_mode_ = costing_->access_mode();
+
+  // Disable destination only transitions (based on costing) since this
+  // algorithm is bidirectional.
+  costing_->DisableDestinationOnly();
 
   // Initialize - create adjacency list, edgestatus support, A*, etc.
   Init(origin.edges.front().projected, destination.edges.front().projected);
@@ -331,6 +335,7 @@ std::vector<PathInfo> BidirectionalAStar::GetBestPath(PathLocation& origin,
   // prevents one tree from expanding much more quickly (if in a sparser
   // portion of the graph) rather than strictly alternating.
   // TODO - CostMatrix alternates, maybe should try alternating here?
+  int n = 1;
   uint32_t forward_pred_idx, reverse_pred_idx;
   EdgeLabel pred, pred2;
   const GraphTile* tile;
@@ -338,6 +343,12 @@ std::vector<PathInfo> BidirectionalAStar::GetBestPath(PathLocation& origin,
   bool expand_forward  = true;
   bool expand_reverse  = true;
   while (true) {
+    // Allow this process to be aborted
+    if (interrupt && (n % kInterruptIterationsInterval) == 0) {
+      (*interrupt)();
+    }
+    n++;
+
     // Get the next predecessor (based on which direction was
     // expanded in prior step)
     if (expand_forward) {
@@ -521,7 +532,7 @@ void BidirectionalAStar::SetForwardConnection(const sif::EdgeLabel& pred) {
   GraphId oppedge = pred.opp_edgeid();
   EdgeStatusInfo oppedgestatus = edgestatus_reverse_->Get(oppedge);
 
-  // Disallow connections that are part of a cmplex restriction.
+  // Disallow connections that are part of a complex restriction.
   // TODO - validate that we do not need to "walk" the paths forward
   // and backward to see if they match a restriction.
   if (pred.on_complex_rest()) {
@@ -575,11 +586,17 @@ void BidirectionalAStar::SetReverseConnection(const sif::EdgeLabel& pred) {
 // Add edges at the origin to the forward adjacency list.
 void BidirectionalAStar::SetOrigin(GraphReader& graphreader,
                  PathLocation& origin) {
+  // Only skip inbound edges if we have other options
+  bool has_other_edges = false;
+  std::for_each(origin.edges.cbegin(), origin.edges.cend(), [&has_other_edges](const PathLocation::PathEdge& e){
+    has_other_edges = has_other_edges || !e.end_node();
+  });
+
   // Iterate through edges and add to adjacency list
   const NodeInfo* nodeinfo = nullptr;
   for (const auto& edge : origin.edges) {
     // If origin is at a node - skip any inbound edge (dist = 1)
-    if (edge.end_node()) {
+    if (has_other_edges && edge.end_node()) {
       continue;
     }
 
@@ -626,12 +643,19 @@ void BidirectionalAStar::SetOrigin(GraphReader& graphreader,
 // Add destination edges to the reverse path adjacency list.
 void BidirectionalAStar::SetDestination(GraphReader& graphreader,
                      const PathLocation& dest) {
+
+  // Only skip outbound edges if we have other options
+  bool has_other_edges = false;
+  std::for_each(dest.edges.cbegin(), dest.edges.cend(), [&has_other_edges](const PathLocation::PathEdge& e){
+    has_other_edges = has_other_edges || !e.begin_node();
+  });
+
   // Iterate through edges and add to adjacency list
   Cost c;
   for (const auto& edge : dest.edges) {
     // If the destination is at a node, skip any outbound edges (so any
     // opposing inbound edges are not considered)
-    if (edge.begin_node()) {
+    if (has_other_edges && edge.begin_node()) {
       continue;
     }
 
@@ -648,10 +672,11 @@ void BidirectionalAStar::SetDestination(GraphReader& graphreader,
     const DirectedEdge* opp_dir_edge = graphreader.GetOpposingEdge(edgeid);
 
     // Get cost and sort cost (based on distance from endnode of this edge
-    // to the origin. Make sure we use the reverse A* heuristic. Note that
-    // the end node of the opposing edge is in the same tile as the directed
-    // edge.
-    Cost cost = costing_->EdgeCost(opp_dir_edge) * edge.dist;
+    // to the origin. Make sure we use the reverse A* heuristic. Use the
+    // directed edge for costing, as this is the forward direction along the
+    // destination edge. Note that the end node of the opposing edge is in the
+    // same tile as the directed edge.
+    Cost cost = costing_->EdgeCost(directededge) * edge.dist;
     float dist = astarheuristic_reverse_.GetDistance(tile->node(
                     opp_dir_edge->endnode())->latlng());
     float sortcost = cost.cost + astarheuristic_reverse_.Get(dist);
@@ -680,8 +705,8 @@ std::vector<PathInfo> BidirectionalAStar::FormPath(GraphReader& graphreader) {
   // Metrics (TODO - more accurate cost)
   uint32_t pathcost = edgelabels_forward_[idx1].cost().cost +
                       edgelabels_reverse_[idx2].cost().cost;
-  LOG_INFO("path_cost::" + std::to_string(pathcost));
-  LOG_INFO("FormPath path_iterations::" + std::to_string(edgelabels_forward_.size()) +
+  LOG_DEBUG("path_cost::" + std::to_string(pathcost));
+  LOG_DEBUG("FormPath path_iterations::" + std::to_string(edgelabels_forward_.size()) +
            "," + std::to_string(edgelabels_reverse_.size()));
 
   // Work backwards on the forward path
@@ -734,8 +759,7 @@ std::vector<PathInfo> BidirectionalAStar::FormPath(GraphReader& graphreader) {
       secs += edgelabel.cost().secs - edgelabels_reverse_[predidx].cost().secs;
     }
     secs += tc;
-    path.emplace_back(edgelabel.mode(),static_cast<uint32_t>(secs),
-                            oppedge, edgelabel.tripid());
+    path.emplace_back(edgelabel.mode(), secs, oppedge, edgelabel.tripid());
 
     // Update edgelabel_index and transition cost to apply at next iteration
     edgelabel_index = predidx;

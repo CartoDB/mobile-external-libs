@@ -1,5 +1,5 @@
 #include "thor/optimizer.h"
-#include <valhalla/midgard/logging.h>
+#include "midgard/logging.h"
 
 namespace valhalla {
 namespace thor {
@@ -48,7 +48,7 @@ std::vector<uint32_t> Optimizer::Solve(const uint32_t count,
   }
 
   // Return the best tour
-  LOG_INFO("Best tour cost = " + std::to_string(best_cost_) +
+  LOG_DEBUG("Best tour cost = " + std::to_string(best_cost_) +
            " ntries = " + std::to_string(ntry_));
   return best_tour_;
 }

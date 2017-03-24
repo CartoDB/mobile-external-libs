@@ -282,12 +282,49 @@ std::pair<uint32_t, uint32_t> GraphTileHeader::bin_offset(size_t index) const {
   throw std::runtime_error("Bin out of bounds");
 }
 
+// Gets the number of traffic segment Ids in this tile.
+uint32_t GraphTileHeader::traffic_id_count() const {
+  return traffic_id_count_;
+}
+
+// Sets the number of traffic segment Ids in this tile.
+void GraphTileHeader::set_traffic_id_count(const uint32_t count) {
+  traffic_id_count_ = count;
+}
+
+// Gets the offset to the traffic segment Ids.
+uint32_t GraphTileHeader::traffic_segmentid_offset() const {
+  return traffic_segmentid_offset_;
+}
+
+// Sets the offset to the traffic segment Ids.
+void GraphTileHeader::set_traffic_segmentid_offset(const uint32_t offset) {
+  traffic_segmentid_offset_ = offset;
+}
+
+// Gets the offset to the traffic chunks. Chunks occur when an edge
+// is associated to more than one traffic segment. CHunks store lists of
+// segment Ids and "weights".
+uint32_t GraphTileHeader::traffic_chunk_offset() const {
+  return traffic_chunk_offset_;
+}
+
+// Sets the offset to the traffic chunks.
+void GraphTileHeader::set_traffic_chunk_offset(const uint32_t offset) {
+  traffic_chunk_offset_ = offset;
+}
+
+// Gets the offset to the end of the tile.
 uint32_t GraphTileHeader::end_offset() const {
   return empty_slots_[0];
 }
 
+// Sets the offset to the end of the tile. Fills all empty slots with the
+// offset value. This allows compatibility with different tile versions.
 void GraphTileHeader::set_end_offset(uint32_t offset) {
-  empty_slots_[0] = offset;
+  for (size_t i = 0; i < kEmptySlots; i++) {
+    empty_slots_[i] = offset;
+  }
 }
 
 }

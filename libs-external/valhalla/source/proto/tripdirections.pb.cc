@@ -2,7 +2,7 @@
 // source: tripdirections.proto
 
 #define INTERNAL_SUPPRESS_PROTOBUF_FIELD_DEPRECATION
-#include "valhalla/proto/tripdirections.pb.h"
+#include "tripdirections.pb.h"
 
 #include <algorithm>
 
@@ -24,17 +24,6 @@ namespace {
 const ::google::protobuf::Descriptor* TripDirections_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   TripDirections_reflection_ = NULL;
-const ::google::protobuf::Descriptor* TripDirections_LatLng_descriptor_ = NULL;
-const ::google::protobuf::internal::GeneratedMessageReflection*
-  TripDirections_LatLng_reflection_ = NULL;
-const ::google::protobuf::Descriptor* TripDirections_BoundingBox_descriptor_ = NULL;
-const ::google::protobuf::internal::GeneratedMessageReflection*
-  TripDirections_BoundingBox_reflection_ = NULL;
-const ::google::protobuf::Descriptor* TripDirections_Location_descriptor_ = NULL;
-const ::google::protobuf::internal::GeneratedMessageReflection*
-  TripDirections_Location_reflection_ = NULL;
-const ::google::protobuf::EnumDescriptor* TripDirections_Location_Type_descriptor_ = NULL;
-const ::google::protobuf::EnumDescriptor* TripDirections_Location_SideOfStreet_descriptor_ = NULL;
 const ::google::protobuf::Descriptor* TripDirections_Summary_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   TripDirections_Summary_reflection_ = NULL;
@@ -92,66 +81,7 @@ void protobuf_AssignDesc_tripdirections_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(TripDirections));
-  TripDirections_LatLng_descriptor_ = TripDirections_descriptor_->nested_type(0);
-  static const int TripDirections_LatLng_offsets_[2] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripDirections_LatLng, lat_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripDirections_LatLng, lng_),
-  };
-  TripDirections_LatLng_reflection_ =
-    new ::google::protobuf::internal::GeneratedMessageReflection(
-      TripDirections_LatLng_descriptor_,
-      TripDirections_LatLng::default_instance_,
-      TripDirections_LatLng_offsets_,
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripDirections_LatLng, _has_bits_[0]),
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripDirections_LatLng, _unknown_fields_),
-      -1,
-      ::google::protobuf::DescriptorPool::generated_pool(),
-      ::google::protobuf::MessageFactory::generated_factory(),
-      sizeof(TripDirections_LatLng));
-  TripDirections_BoundingBox_descriptor_ = TripDirections_descriptor_->nested_type(1);
-  static const int TripDirections_BoundingBox_offsets_[2] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripDirections_BoundingBox, min_ll_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripDirections_BoundingBox, max_ll_),
-  };
-  TripDirections_BoundingBox_reflection_ =
-    new ::google::protobuf::internal::GeneratedMessageReflection(
-      TripDirections_BoundingBox_descriptor_,
-      TripDirections_BoundingBox::default_instance_,
-      TripDirections_BoundingBox_offsets_,
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripDirections_BoundingBox, _has_bits_[0]),
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripDirections_BoundingBox, _unknown_fields_),
-      -1,
-      ::google::protobuf::DescriptorPool::generated_pool(),
-      ::google::protobuf::MessageFactory::generated_factory(),
-      sizeof(TripDirections_BoundingBox));
-  TripDirections_Location_descriptor_ = TripDirections_descriptor_->nested_type(2);
-  static const int TripDirections_Location_offsets_[11] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripDirections_Location, ll_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripDirections_Location, type_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripDirections_Location, heading_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripDirections_Location, name_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripDirections_Location, street_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripDirections_Location, city_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripDirections_Location, state_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripDirections_Location, postal_code_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripDirections_Location, country_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripDirections_Location, date_time_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripDirections_Location, side_of_street_),
-  };
-  TripDirections_Location_reflection_ =
-    new ::google::protobuf::internal::GeneratedMessageReflection(
-      TripDirections_Location_descriptor_,
-      TripDirections_Location::default_instance_,
-      TripDirections_Location_offsets_,
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripDirections_Location, _has_bits_[0]),
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripDirections_Location, _unknown_fields_),
-      -1,
-      ::google::protobuf::DescriptorPool::generated_pool(),
-      ::google::protobuf::MessageFactory::generated_factory(),
-      sizeof(TripDirections_Location));
-  TripDirections_Location_Type_descriptor_ = TripDirections_Location_descriptor_->enum_type(0);
-  TripDirections_Location_SideOfStreet_descriptor_ = TripDirections_Location_descriptor_->enum_type(1);
-  TripDirections_Summary_descriptor_ = TripDirections_descriptor_->nested_type(3);
+  TripDirections_Summary_descriptor_ = TripDirections_descriptor_->nested_type(0);
   static const int TripDirections_Summary_offsets_[3] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripDirections_Summary, length_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripDirections_Summary, time_),
@@ -168,7 +98,7 @@ void protobuf_AssignDesc_tripdirections_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(TripDirections_Summary));
-  TripDirections_TransitStop_descriptor_ = TripDirections_descriptor_->nested_type(4);
+  TripDirections_TransitStop_descriptor_ = TripDirections_descriptor_->nested_type(1);
   static const int TripDirections_TransitStop_offsets_[8] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripDirections_TransitStop, type_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripDirections_TransitStop, onestop_id_),
@@ -191,7 +121,7 @@ void protobuf_AssignDesc_tripdirections_2eproto() {
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(TripDirections_TransitStop));
   TripDirections_TransitStop_Type_descriptor_ = TripDirections_TransitStop_descriptor_->enum_type(0);
-  TripDirections_TransitInfo_descriptor_ = TripDirections_descriptor_->nested_type(5);
+  TripDirections_TransitInfo_descriptor_ = TripDirections_descriptor_->nested_type(2);
   static const int TripDirections_TransitInfo_offsets_[11] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripDirections_TransitInfo, onestop_id_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripDirections_TransitInfo, short_name_),
@@ -216,7 +146,7 @@ void protobuf_AssignDesc_tripdirections_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(TripDirections_TransitInfo));
-  TripDirections_Maneuver_descriptor_ = TripDirections_descriptor_->nested_type(6);
+  TripDirections_Maneuver_descriptor_ = TripDirections_descriptor_->nested_type(3);
   static const int TripDirections_Maneuver_offsets_[28] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripDirections_Maneuver, type_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripDirections_Maneuver, text_instruction_),
@@ -314,12 +244,6 @@ void protobuf_RegisterTypes(const ::std::string&) {
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     TripDirections_descriptor_, &TripDirections::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
-    TripDirections_LatLng_descriptor_, &TripDirections_LatLng::default_instance());
-  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
-    TripDirections_BoundingBox_descriptor_, &TripDirections_BoundingBox::default_instance());
-  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
-    TripDirections_Location_descriptor_, &TripDirections_Location::default_instance());
-  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     TripDirections_Summary_descriptor_, &TripDirections_Summary::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     TripDirections_TransitStop_descriptor_, &TripDirections_TransitStop::default_instance());
@@ -338,12 +262,6 @@ void protobuf_RegisterTypes(const ::std::string&) {
 void protobuf_ShutdownFile_tripdirections_2eproto() {
   delete TripDirections::default_instance_;
   delete TripDirections_reflection_;
-  delete TripDirections_LatLng::default_instance_;
-  delete TripDirections_LatLng_reflection_;
-  delete TripDirections_BoundingBox::default_instance_;
-  delete TripDirections_BoundingBox_reflection_;
-  delete TripDirections_Location::default_instance_;
-  delete TripDirections_Location_reflection_;
   delete TripDirections_Summary::default_instance_;
   delete TripDirections_Summary_reflection_;
   delete TripDirections_TransitStop::default_instance_;
@@ -364,122 +282,105 @@ void protobuf_AddDesc_tripdirections_2eproto() {
   already_here = true;
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
+  ::valhalla::odin::protobuf_AddDesc_tripcommon_2eproto();
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-    "\n\024tripdirections.proto\022\rvalhalla.odin\"\273!"
-    "\n\016TripDirections\022\017\n\007trip_id\030\001 \001(\004\022\016\n\006leg"
-    "_id\030\002 \001(\r\022\021\n\tleg_count\030\003 \001(\r\0228\n\010location"
-    "\030\004 \003(\0132&.valhalla.odin.TripDirections.Lo"
-    "cation\0226\n\007summary\030\005 \001(\0132%.valhalla.odin."
-    "TripDirections.Summary\0228\n\010maneuver\030\006 \003(\013"
-    "2&.valhalla.odin.TripDirections.Maneuver"
-    "\022\r\n\005shape\030\007 \001(\t\032\"\n\006LatLng\022\013\n\003lat\030\001 \001(\002\022\013"
-    "\n\003lng\030\002 \001(\002\032y\n\013BoundingBox\0224\n\006min_ll\030\001 \001"
-    "(\0132$.valhalla.odin.TripDirections.LatLng"
-    "\0224\n\006max_ll\030\002 \001(\0132$.valhalla.odin.TripDir"
-    "ections.LatLng\032\235\003\n\010Location\0220\n\002ll\030\001 \001(\0132"
-    "$.valhalla.odin.TripDirections.LatLng\0229\n"
-    "\004type\030\002 \001(\0162+.valhalla.odin.TripDirectio"
-    "ns.Location.Type\022\017\n\007heading\030\003 \001(\r\022\014\n\004nam"
-    "e\030\004 \001(\t\022\016\n\006street\030\005 \001(\t\022\014\n\004city\030\006 \001(\t\022\r\n"
-    "\005state\030\007 \001(\t\022\023\n\013postal_code\030\010 \001(\t\022\017\n\007cou"
-    "ntry\030\t \001(\t\022\021\n\tdate_time\030\n \001(\t\022K\n\016side_of"
-    "_street\030\013 \001(\01623.valhalla.odin.TripDirect"
-    "ions.Location.SideOfStreet\" \n\004Type\022\n\n\006kB"
-    "reak\020\000\022\014\n\010kThrough\020\001\"0\n\014SideOfStreet\022\t\n\005"
-    "kNone\020\000\022\t\n\005kLeft\020\001\022\n\n\006kRight\020\002\032`\n\007Summar"
-    "y\022\016\n\006length\030\001 \001(\002\022\014\n\004time\030\002 \001(\r\0227\n\004bbox\030"
-    "\003 \001(\0132).valhalla.odin.TripDirections.Bou"
-    "ndingBox\032\252\002\n\013TransitStop\022<\n\004type\030\001 \001(\0162."
-    ".valhalla.odin.TripDirections.TransitSto"
-    "p.Type\022\022\n\nonestop_id\030\002 \001(\t\022\014\n\004name\030\003 \001(\t"
-    "\022\031\n\021arrival_date_time\030\004 \001(\t\022\033\n\023departure"
-    "_date_time\030\005 \001(\t\022\026\n\016is_parent_stop\030\006 \001(\010"
-    "\022\030\n\020assumed_schedule\030\007 \001(\010\0220\n\002ll\030\010 \001(\0132$"
-    ".valhalla.odin.TripDirections.LatLng\"\037\n\004"
-    "Type\022\t\n\005kStop\020\000\022\014\n\010kStation\020\001\032\236\002\n\013Transi"
-    "tInfo\022\022\n\nonestop_id\030\001 \001(\t\022\022\n\nshort_name\030"
-    "\002 \001(\t\022\021\n\tlong_name\030\003 \001(\t\022\020\n\010headsign\030\004 \001"
-    "(\t\022\r\n\005color\030\005 \001(\r\022\022\n\ntext_color\030\006 \001(\r\022\023\n"
-    "\013description\030\007 \001(\t\022\033\n\023operator_onestop_i"
-    "d\030\010 \001(\t\022\025\n\roperator_name\030\t \001(\t\022\024\n\014operat"
-    "or_url\030\n \001(\t\022@\n\rtransit_stops\030\013 \003(\0132).va"
-    "lhalla.odin.TripDirections.TransitStop\032\305"
-    "\022\n\010Maneuver\0229\n\004type\030\001 \001(\0162+.valhalla.odi"
-    "n.TripDirections.Maneuver.Type\022\030\n\020text_i"
-    "nstruction\030\002 \001(\t\022\023\n\013street_name\030\003 \003(\t\022\016\n"
-    "\006length\030\004 \001(\002\022\014\n\004time\030\005 \001(\r\022Z\n\030begin_car"
-    "dinal_direction\030\006 \001(\01628.valhalla.odin.Tr"
-    "ipDirections.Maneuver.CardinalDirection\022"
-    "\025\n\rbegin_heading\030\007 \001(\r\022\031\n\021begin_shape_in"
-    "dex\030\010 \001(\r\022\027\n\017end_shape_index\030\t \001(\r\022\025\n\rpo"
-    "rtions_toll\030\n \001(\010\022\030\n\020portions_unpaved\030\013 "
-    "\001(\010\022+\n#verbal_transition_alert_instructi"
-    "on\030\014 \001(\t\022)\n!verbal_pre_transition_instru"
-    "ction\030\r \001(\t\022*\n\"verbal_post_transition_in"
-    "struction\030\016 \001(\t\022\031\n\021begin_street_name\030\017 \003"
-    "(\t\0229\n\004sign\030\020 \001(\0132+.valhalla.odin.TripDir"
-    "ections.Maneuver.Sign\022\035\n\025roundabout_exit"
-    "_count\030\021 \001(\r\022\032\n\022depart_instruction\030\022 \001(\t"
-    "\022!\n\031verbal_depart_instruction\030\023 \001(\t\022\032\n\022a"
-    "rrive_instruction\030\024 \001(\t\022!\n\031verbal_arrive"
-    "_instruction\030\025 \001(\t\022\?\n\014transit_info\030\026 \001(\013"
-    "2).valhalla.odin.TripDirections.TransitI"
-    "nfo\022\030\n\020verbal_multi_cue\030\027 \001(\010\022=\n\013travel_"
-    "mode\030\030 \001(\0162(.valhalla.odin.TripDirection"
-    "s.TravelMode\022\?\n\014vehicle_type\030\031 \001(\0162).val"
-    "halla.odin.TripDirections.VehicleType\022E\n"
-    "\017pedestrian_type\030\032 \001(\0162,.valhalla.odin.T"
-    "ripDirections.PedestrianType\022\?\n\014bicycle_"
-    "type\030\033 \001(\0162).valhalla.odin.TripDirection"
-    "s.BicycleType\022\?\n\014transit_type\030\034 \001(\0162).va"
-    "lhalla.odin.TripDirections.TransitType\032\204"
-    "\003\n\004Sign\022Q\n\024exit_number_elements\030\001 \003(\01323."
-    "valhalla.odin.TripDirections.Maneuver.Si"
-    "gn.Element\022Q\n\024exit_branch_elements\030\002 \003(\013"
-    "23.valhalla.odin.TripDirections.Maneuver"
-    ".Sign.Element\022Q\n\024exit_toward_elements\030\003 "
-    "\003(\01323.valhalla.odin.TripDirections.Maneu"
-    "ver.Sign.Element\022O\n\022exit_name_elements\030\004"
-    " \003(\01323.valhalla.odin.TripDirections.Mane"
-    "uver.Sign.Element\0322\n\007Element\022\014\n\004text\030\001 \001"
-    "(\t\022\031\n\021consecutive_count\030\002 \001(\r\"\201\001\n\021Cardin"
-    "alDirection\022\n\n\006kNorth\020\000\022\016\n\nkNorthEast\020\001\022"
-    "\t\n\005kEast\020\002\022\016\n\nkSouthEast\020\003\022\n\n\006kSouth\020\004\022\016"
-    "\n\nkSouthWest\020\005\022\t\n\005kWest\020\006\022\016\n\nkNorthWest\020"
-    "\007\"\262\005\n\004Type\022\t\n\005kNone\020\000\022\n\n\006kStart\020\001\022\017\n\013kSt"
-    "artRight\020\002\022\016\n\nkStartLeft\020\003\022\020\n\014kDestinati"
-    "on\020\004\022\025\n\021kDestinationRight\020\005\022\024\n\020kDestinat"
-    "ionLeft\020\006\022\014\n\010kBecomes\020\007\022\r\n\tkContinue\020\010\022\020"
-    "\n\014kSlightRight\020\t\022\n\n\006kRight\020\n\022\017\n\013kSharpRi"
-    "ght\020\013\022\017\n\013kUturnRight\020\014\022\016\n\nkUturnLeft\020\r\022\016"
-    "\n\nkSharpLeft\020\016\022\t\n\005kLeft\020\017\022\017\n\013kSlightLeft"
-    "\020\020\022\021\n\rkRampStraight\020\021\022\016\n\nkRampRight\020\022\022\r\n"
-    "\tkRampLeft\020\023\022\016\n\nkExitRight\020\024\022\r\n\tkExitLef"
-    "t\020\025\022\021\n\rkStayStraight\020\026\022\016\n\nkStayRight\020\027\022\r"
-    "\n\tkStayLeft\020\030\022\n\n\006kMerge\020\031\022\024\n\020kRoundabout"
-    "Enter\020\032\022\023\n\017kRoundaboutExit\020\033\022\017\n\013kFerryEn"
-    "ter\020\034\022\016\n\nkFerryExit\020\035\022\014\n\010kTransit\020\036\022\024\n\020k"
-    "TransitTransfer\020\037\022\024\n\020kTransitRemainOn\020 \022"
-    "\033\n\027kTransitConnectionStart\020!\022\036\n\032kTransit"
-    "ConnectionTransfer\020\"\022!\n\035kTransitConnecti"
-    "onDestination\020#\022%\n!kPostTransitConnectio"
-    "nDestination\020$\"E\n\nTravelMode\022\n\n\006kDrive\020\000"
-    "\022\017\n\013kPedestrian\020\001\022\014\n\010kBicycle\020\002\022\014\n\010kTran"
-    "sit\020\003\"K\n\013VehicleType\022\010\n\004kCar\020\000\022\017\n\013kMotor"
-    "cycle\020\001\022\014\n\010kAutoBus\020\002\022\023\n\017kTractorTrailer"
-    "\020\003\"9\n\016PedestrianType\022\t\n\005kFoot\020\000\022\017\n\013kWhee"
-    "lchair\020\001\022\013\n\007kSegway\020\002\"@\n\013BicycleType\022\t\n\005"
-    "kRoad\020\000\022\n\n\006kCross\020\001\022\013\n\007kHybrid\020\002\022\r\n\tkMou"
-    "ntain\020\003\"r\n\013TransitType\022\t\n\005kTram\020\000\022\n\n\006kMe"
-    "tro\020\001\022\t\n\005kRail\020\002\022\010\n\004kBus\020\003\022\n\n\006kFerry\020\004\022\r"
-    "\n\tkCableCar\020\005\022\014\n\010kGondola\020\006\022\016\n\nkFunicula"
-    "r\020\007", 4323);
+    "\n\024tripdirections.proto\022\rvalhalla.odin\032\020t"
+    "ripcommon.proto\"\317\034\n\016TripDirections\022\017\n\007tr"
+    "ip_id\030\001 \001(\004\022\016\n\006leg_id\030\002 \001(\r\022\021\n\tleg_count"
+    "\030\003 \001(\r\022)\n\010location\030\004 \003(\0132\027.valhalla.odin"
+    ".Location\0226\n\007summary\030\005 \001(\0132%.valhalla.od"
+    "in.TripDirections.Summary\0228\n\010maneuver\030\006 "
+    "\003(\0132&.valhalla.odin.TripDirections.Maneu"
+    "ver\022\r\n\005shape\030\007 \001(\t\032Q\n\007Summary\022\016\n\006length\030"
+    "\001 \001(\002\022\014\n\004time\030\002 \001(\r\022(\n\004bbox\030\003 \001(\0132\032.valh"
+    "alla.odin.BoundingBox\032\233\002\n\013TransitStop\022<\n"
+    "\004type\030\001 \001(\0162..valhalla.odin.TripDirectio"
+    "ns.TransitStop.Type\022\022\n\nonestop_id\030\002 \001(\t\022"
+    "\014\n\004name\030\003 \001(\t\022\031\n\021arrival_date_time\030\004 \001(\t"
+    "\022\033\n\023departure_date_time\030\005 \001(\t\022\026\n\016is_pare"
+    "nt_stop\030\006 \001(\010\022\030\n\020assumed_schedule\030\007 \001(\010\022"
+    "!\n\002ll\030\010 \001(\0132\025.valhalla.odin.LatLng\"\037\n\004Ty"
+    "pe\022\t\n\005kStop\020\000\022\014\n\010kStation\020\001\032\236\002\n\013TransitI"
+    "nfo\022\022\n\nonestop_id\030\001 \001(\t\022\022\n\nshort_name\030\002 "
+    "\001(\t\022\021\n\tlong_name\030\003 \001(\t\022\020\n\010headsign\030\004 \001(\t"
+    "\022\r\n\005color\030\005 \001(\r\022\022\n\ntext_color\030\006 \001(\r\022\023\n\013d"
+    "escription\030\007 \001(\t\022\033\n\023operator_onestop_id\030"
+    "\010 \001(\t\022\025\n\roperator_name\030\t \001(\t\022\024\n\014operator"
+    "_url\030\n \001(\t\022@\n\rtransit_stops\030\013 \003(\0132).valh"
+    "alla.odin.TripDirections.TransitStop\032\305\022\n"
+    "\010Maneuver\0229\n\004type\030\001 \001(\0162+.valhalla.odin."
+    "TripDirections.Maneuver.Type\022\030\n\020text_ins"
+    "truction\030\002 \001(\t\022\023\n\013street_name\030\003 \003(\t\022\016\n\006l"
+    "ength\030\004 \001(\002\022\014\n\004time\030\005 \001(\r\022Z\n\030begin_cardi"
+    "nal_direction\030\006 \001(\01628.valhalla.odin.Trip"
+    "Directions.Maneuver.CardinalDirection\022\025\n"
+    "\rbegin_heading\030\007 \001(\r\022\031\n\021begin_shape_inde"
+    "x\030\010 \001(\r\022\027\n\017end_shape_index\030\t \001(\r\022\025\n\rport"
+    "ions_toll\030\n \001(\010\022\030\n\020portions_unpaved\030\013 \001("
+    "\010\022+\n#verbal_transition_alert_instruction"
+    "\030\014 \001(\t\022)\n!verbal_pre_transition_instruct"
+    "ion\030\r \001(\t\022*\n\"verbal_post_transition_inst"
+    "ruction\030\016 \001(\t\022\031\n\021begin_street_name\030\017 \003(\t"
+    "\0229\n\004sign\030\020 \001(\0132+.valhalla.odin.TripDirec"
+    "tions.Maneuver.Sign\022\035\n\025roundabout_exit_c"
+    "ount\030\021 \001(\r\022\032\n\022depart_instruction\030\022 \001(\t\022!"
+    "\n\031verbal_depart_instruction\030\023 \001(\t\022\032\n\022arr"
+    "ive_instruction\030\024 \001(\t\022!\n\031verbal_arrive_i"
+    "nstruction\030\025 \001(\t\022\?\n\014transit_info\030\026 \001(\0132)"
+    ".valhalla.odin.TripDirections.TransitInf"
+    "o\022\030\n\020verbal_multi_cue\030\027 \001(\010\022=\n\013travel_mo"
+    "de\030\030 \001(\0162(.valhalla.odin.TripDirections."
+    "TravelMode\022\?\n\014vehicle_type\030\031 \001(\0162).valha"
+    "lla.odin.TripDirections.VehicleType\022E\n\017p"
+    "edestrian_type\030\032 \001(\0162,.valhalla.odin.Tri"
+    "pDirections.PedestrianType\022\?\n\014bicycle_ty"
+    "pe\030\033 \001(\0162).valhalla.odin.TripDirections."
+    "BicycleType\022\?\n\014transit_type\030\034 \001(\0162).valh"
+    "alla.odin.TripDirections.TransitType\032\204\003\n"
+    "\004Sign\022Q\n\024exit_number_elements\030\001 \003(\01323.va"
+    "lhalla.odin.TripDirections.Maneuver.Sign"
+    ".Element\022Q\n\024exit_branch_elements\030\002 \003(\01323"
+    ".valhalla.odin.TripDirections.Maneuver.S"
+    "ign.Element\022Q\n\024exit_toward_elements\030\003 \003("
+    "\01323.valhalla.odin.TripDirections.Maneuve"
+    "r.Sign.Element\022O\n\022exit_name_elements\030\004 \003"
+    "(\01323.valhalla.odin.TripDirections.Maneuv"
+    "er.Sign.Element\0322\n\007Element\022\014\n\004text\030\001 \001(\t"
+    "\022\031\n\021consecutive_count\030\002 \001(\r\"\201\001\n\021Cardinal"
+    "Direction\022\n\n\006kNorth\020\000\022\016\n\nkNorthEast\020\001\022\t\n"
+    "\005kEast\020\002\022\016\n\nkSouthEast\020\003\022\n\n\006kSouth\020\004\022\016\n\n"
+    "kSouthWest\020\005\022\t\n\005kWest\020\006\022\016\n\nkNorthWest\020\007\""
+    "\262\005\n\004Type\022\t\n\005kNone\020\000\022\n\n\006kStart\020\001\022\017\n\013kStar"
+    "tRight\020\002\022\016\n\nkStartLeft\020\003\022\020\n\014kDestination"
+    "\020\004\022\025\n\021kDestinationRight\020\005\022\024\n\020kDestinatio"
+    "nLeft\020\006\022\014\n\010kBecomes\020\007\022\r\n\tkContinue\020\010\022\020\n\014"
+    "kSlightRight\020\t\022\n\n\006kRight\020\n\022\017\n\013kSharpRigh"
+    "t\020\013\022\017\n\013kUturnRight\020\014\022\016\n\nkUturnLeft\020\r\022\016\n\n"
+    "kSharpLeft\020\016\022\t\n\005kLeft\020\017\022\017\n\013kSlightLeft\020\020"
+    "\022\021\n\rkRampStraight\020\021\022\016\n\nkRampRight\020\022\022\r\n\tk"
+    "RampLeft\020\023\022\016\n\nkExitRight\020\024\022\r\n\tkExitLeft\020"
+    "\025\022\021\n\rkStayStraight\020\026\022\016\n\nkStayRight\020\027\022\r\n\t"
+    "kStayLeft\020\030\022\n\n\006kMerge\020\031\022\024\n\020kRoundaboutEn"
+    "ter\020\032\022\023\n\017kRoundaboutExit\020\033\022\017\n\013kFerryEnte"
+    "r\020\034\022\016\n\nkFerryExit\020\035\022\014\n\010kTransit\020\036\022\024\n\020kTr"
+    "ansitTransfer\020\037\022\024\n\020kTransitRemainOn\020 \022\033\n"
+    "\027kTransitConnectionStart\020!\022\036\n\032kTransitCo"
+    "nnectionTransfer\020\"\022!\n\035kTransitConnection"
+    "Destination\020#\022%\n!kPostTransitConnectionD"
+    "estination\020$\"E\n\nTravelMode\022\n\n\006kDrive\020\000\022\017"
+    "\n\013kPedestrian\020\001\022\014\n\010kBicycle\020\002\022\014\n\010kTransi"
+    "t\020\003\"K\n\013VehicleType\022\010\n\004kCar\020\000\022\017\n\013kMotorcy"
+    "cle\020\001\022\014\n\010kAutoBus\020\002\022\023\n\017kTractorTrailer\020\003"
+    "\"9\n\016PedestrianType\022\t\n\005kFoot\020\000\022\017\n\013kWheelc"
+    "hair\020\001\022\013\n\007kSegway\020\002\"@\n\013BicycleType\022\t\n\005kR"
+    "oad\020\000\022\n\n\006kCross\020\001\022\013\n\007kHybrid\020\002\022\r\n\tkMount"
+    "ain\020\003\"r\n\013TransitType\022\t\n\005kTram\020\000\022\n\n\006kMetr"
+    "o\020\001\022\t\n\005kRail\020\002\022\010\n\004kBus\020\003\022\n\n\006kFerry\020\004\022\r\n\t"
+    "kCableCar\020\005\022\014\n\010kGondola\020\006\022\016\n\nkFunicular\020"
+    "\007P\000", 3723);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "tripdirections.proto", &protobuf_RegisterTypes);
   TripDirections::default_instance_ = new TripDirections();
-  TripDirections_LatLng::default_instance_ = new TripDirections_LatLng();
-  TripDirections_BoundingBox::default_instance_ = new TripDirections_BoundingBox();
-  TripDirections_Location::default_instance_ = new TripDirections_Location();
   TripDirections_Summary::default_instance_ = new TripDirections_Summary();
   TripDirections_TransitStop::default_instance_ = new TripDirections_TransitStop();
   TripDirections_TransitInfo::default_instance_ = new TripDirections_TransitInfo();
@@ -487,9 +388,6 @@ void protobuf_AddDesc_tripdirections_2eproto() {
   TripDirections_Maneuver_Sign::default_instance_ = new TripDirections_Maneuver_Sign();
   TripDirections_Maneuver_Sign_Element::default_instance_ = new TripDirections_Maneuver_Sign_Element();
   TripDirections::default_instance_->InitAsDefaultInstance();
-  TripDirections_LatLng::default_instance_->InitAsDefaultInstance();
-  TripDirections_BoundingBox::default_instance_->InitAsDefaultInstance();
-  TripDirections_Location::default_instance_->InitAsDefaultInstance();
   TripDirections_Summary::default_instance_->InitAsDefaultInstance();
   TripDirections_TransitStop::default_instance_->InitAsDefaultInstance();
   TripDirections_TransitInfo::default_instance_->InitAsDefaultInstance();
@@ -640,1302 +538,6 @@ const TripDirections_TransitType TripDirections::TransitType_MAX;
 const int TripDirections::TransitType_ARRAYSIZE;
 #endif  // _MSC_VER
 #ifndef _MSC_VER
-const int TripDirections_LatLng::kLatFieldNumber;
-const int TripDirections_LatLng::kLngFieldNumber;
-#endif  // !_MSC_VER
-
-TripDirections_LatLng::TripDirections_LatLng()
-  : ::google::protobuf::Message() {
-  SharedCtor();
-}
-
-void TripDirections_LatLng::InitAsDefaultInstance() {
-}
-
-TripDirections_LatLng::TripDirections_LatLng(const TripDirections_LatLng& from)
-  : ::google::protobuf::Message() {
-  SharedCtor();
-  MergeFrom(from);
-}
-
-void TripDirections_LatLng::SharedCtor() {
-  _cached_size_ = 0;
-  lat_ = 0;
-  lng_ = 0;
-  ::memset(_has_bits_, 0, sizeof(_has_bits_));
-}
-
-TripDirections_LatLng::~TripDirections_LatLng() {
-  SharedDtor();
-}
-
-void TripDirections_LatLng::SharedDtor() {
-  if (this != default_instance_) {
-  }
-}
-
-void TripDirections_LatLng::SetCachedSize(int size) const {
-  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
-  _cached_size_ = size;
-  GOOGLE_SAFE_CONCURRENT_WRITES_END();
-}
-const ::google::protobuf::Descriptor* TripDirections_LatLng::descriptor() {
-  protobuf_AssignDescriptorsOnce();
-  return TripDirections_LatLng_descriptor_;
-}
-
-const TripDirections_LatLng& TripDirections_LatLng::default_instance() {
-  if (default_instance_ == NULL) protobuf_AddDesc_tripdirections_2eproto();
-  return *default_instance_;
-}
-
-TripDirections_LatLng* TripDirections_LatLng::default_instance_ = NULL;
-
-TripDirections_LatLng* TripDirections_LatLng::New() const {
-  return new TripDirections_LatLng;
-}
-
-void TripDirections_LatLng::Clear() {
-  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    lat_ = 0;
-    lng_ = 0;
-  }
-  ::memset(_has_bits_, 0, sizeof(_has_bits_));
-  mutable_unknown_fields()->Clear();
-}
-
-bool TripDirections_LatLng::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
-#define DO_(EXPRESSION) if (!(EXPRESSION)) return false
-  ::google::protobuf::uint32 tag;
-  while ((tag = input->ReadTag()) != 0) {
-    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // optional float lat = 1;
-      case 1: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_FIXED32) {
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
-                 input, &lat_)));
-          set_has_lat();
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(21)) goto parse_lng;
-        break;
-      }
-
-      // optional float lng = 2;
-      case 2: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_FIXED32) {
-         parse_lng:
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
-                 input, &lng_)));
-          set_has_lng();
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectAtEnd()) return true;
-        break;
-      }
-
-      default: {
-      handle_uninterpreted:
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
-          return true;
-        }
-        DO_(::google::protobuf::internal::WireFormat::SkipField(
-              input, tag, mutable_unknown_fields()));
-        break;
-      }
-    }
-  }
-  return true;
-#undef DO_
-}
-
-void TripDirections_LatLng::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // optional float lat = 1;
-  if (has_lat()) {
-    ::google::protobuf::internal::WireFormatLite::WriteFloat(1, this->lat(), output);
-  }
-
-  // optional float lng = 2;
-  if (has_lng()) {
-    ::google::protobuf::internal::WireFormatLite::WriteFloat(2, this->lng(), output);
-  }
-
-  if (!unknown_fields().empty()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        unknown_fields(), output);
-  }
-}
-
-::google::protobuf::uint8* TripDirections_LatLng::SerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
-  // optional float lat = 1;
-  if (has_lat()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteFloatToArray(1, this->lat(), target);
-  }
-
-  // optional float lng = 2;
-  if (has_lng()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteFloatToArray(2, this->lng(), target);
-  }
-
-  if (!unknown_fields().empty()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        unknown_fields(), target);
-  }
-  return target;
-}
-
-int TripDirections_LatLng::ByteSize() const {
-  int total_size = 0;
-
-  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // optional float lat = 1;
-    if (has_lat()) {
-      total_size += 1 + 4;
-    }
-
-    // optional float lng = 2;
-    if (has_lng()) {
-      total_size += 1 + 4;
-    }
-
-  }
-  if (!unknown_fields().empty()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        unknown_fields());
-  }
-  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
-  _cached_size_ = total_size;
-  GOOGLE_SAFE_CONCURRENT_WRITES_END();
-  return total_size;
-}
-
-void TripDirections_LatLng::MergeFrom(const ::google::protobuf::Message& from) {
-  GOOGLE_CHECK_NE(&from, this);
-  const TripDirections_LatLng* source =
-    ::google::protobuf::internal::dynamic_cast_if_available<const TripDirections_LatLng*>(
-      &from);
-  if (source == NULL) {
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
-  } else {
-    MergeFrom(*source);
-  }
-}
-
-void TripDirections_LatLng::MergeFrom(const TripDirections_LatLng& from) {
-  GOOGLE_CHECK_NE(&from, this);
-  if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (from.has_lat()) {
-      set_lat(from.lat());
-    }
-    if (from.has_lng()) {
-      set_lng(from.lng());
-    }
-  }
-  mutable_unknown_fields()->MergeFrom(from.unknown_fields());
-}
-
-void TripDirections_LatLng::CopyFrom(const ::google::protobuf::Message& from) {
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
-
-void TripDirections_LatLng::CopyFrom(const TripDirections_LatLng& from) {
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
-
-bool TripDirections_LatLng::IsInitialized() const {
-
-  return true;
-}
-
-void TripDirections_LatLng::Swap(TripDirections_LatLng* other) {
-  if (other != this) {
-    std::swap(lat_, other->lat_);
-    std::swap(lng_, other->lng_);
-    std::swap(_has_bits_[0], other->_has_bits_[0]);
-    _unknown_fields_.Swap(&other->_unknown_fields_);
-    std::swap(_cached_size_, other->_cached_size_);
-  }
-}
-
-::google::protobuf::Metadata TripDirections_LatLng::GetMetadata() const {
-  protobuf_AssignDescriptorsOnce();
-  ::google::protobuf::Metadata metadata;
-  metadata.descriptor = TripDirections_LatLng_descriptor_;
-  metadata.reflection = TripDirections_LatLng_reflection_;
-  return metadata;
-}
-
-
-// -------------------------------------------------------------------
-
-#ifndef _MSC_VER
-const int TripDirections_BoundingBox::kMinLlFieldNumber;
-const int TripDirections_BoundingBox::kMaxLlFieldNumber;
-#endif  // !_MSC_VER
-
-TripDirections_BoundingBox::TripDirections_BoundingBox()
-  : ::google::protobuf::Message() {
-  SharedCtor();
-}
-
-void TripDirections_BoundingBox::InitAsDefaultInstance() {
-  min_ll_ = const_cast< ::valhalla::odin::TripDirections_LatLng*>(&::valhalla::odin::TripDirections_LatLng::default_instance());
-  max_ll_ = const_cast< ::valhalla::odin::TripDirections_LatLng*>(&::valhalla::odin::TripDirections_LatLng::default_instance());
-}
-
-TripDirections_BoundingBox::TripDirections_BoundingBox(const TripDirections_BoundingBox& from)
-  : ::google::protobuf::Message() {
-  SharedCtor();
-  MergeFrom(from);
-}
-
-void TripDirections_BoundingBox::SharedCtor() {
-  _cached_size_ = 0;
-  min_ll_ = NULL;
-  max_ll_ = NULL;
-  ::memset(_has_bits_, 0, sizeof(_has_bits_));
-}
-
-TripDirections_BoundingBox::~TripDirections_BoundingBox() {
-  SharedDtor();
-}
-
-void TripDirections_BoundingBox::SharedDtor() {
-  if (this != default_instance_) {
-    delete min_ll_;
-    delete max_ll_;
-  }
-}
-
-void TripDirections_BoundingBox::SetCachedSize(int size) const {
-  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
-  _cached_size_ = size;
-  GOOGLE_SAFE_CONCURRENT_WRITES_END();
-}
-const ::google::protobuf::Descriptor* TripDirections_BoundingBox::descriptor() {
-  protobuf_AssignDescriptorsOnce();
-  return TripDirections_BoundingBox_descriptor_;
-}
-
-const TripDirections_BoundingBox& TripDirections_BoundingBox::default_instance() {
-  if (default_instance_ == NULL) protobuf_AddDesc_tripdirections_2eproto();
-  return *default_instance_;
-}
-
-TripDirections_BoundingBox* TripDirections_BoundingBox::default_instance_ = NULL;
-
-TripDirections_BoundingBox* TripDirections_BoundingBox::New() const {
-  return new TripDirections_BoundingBox;
-}
-
-void TripDirections_BoundingBox::Clear() {
-  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (has_min_ll()) {
-      if (min_ll_ != NULL) min_ll_->::valhalla::odin::TripDirections_LatLng::Clear();
-    }
-    if (has_max_ll()) {
-      if (max_ll_ != NULL) max_ll_->::valhalla::odin::TripDirections_LatLng::Clear();
-    }
-  }
-  ::memset(_has_bits_, 0, sizeof(_has_bits_));
-  mutable_unknown_fields()->Clear();
-}
-
-bool TripDirections_BoundingBox::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
-#define DO_(EXPRESSION) if (!(EXPRESSION)) return false
-  ::google::protobuf::uint32 tag;
-  while ((tag = input->ReadTag()) != 0) {
-    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // optional .valhalla.odin.TripDirections.LatLng min_ll = 1;
-      case 1: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
-               input, mutable_min_ll()));
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(18)) goto parse_max_ll;
-        break;
-      }
-
-      // optional .valhalla.odin.TripDirections.LatLng max_ll = 2;
-      case 2: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
-         parse_max_ll:
-          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
-               input, mutable_max_ll()));
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectAtEnd()) return true;
-        break;
-      }
-
-      default: {
-      handle_uninterpreted:
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
-          return true;
-        }
-        DO_(::google::protobuf::internal::WireFormat::SkipField(
-              input, tag, mutable_unknown_fields()));
-        break;
-      }
-    }
-  }
-  return true;
-#undef DO_
-}
-
-void TripDirections_BoundingBox::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // optional .valhalla.odin.TripDirections.LatLng min_ll = 1;
-  if (has_min_ll()) {
-    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      1, this->min_ll(), output);
-  }
-
-  // optional .valhalla.odin.TripDirections.LatLng max_ll = 2;
-  if (has_max_ll()) {
-    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      2, this->max_ll(), output);
-  }
-
-  if (!unknown_fields().empty()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        unknown_fields(), output);
-  }
-}
-
-::google::protobuf::uint8* TripDirections_BoundingBox::SerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
-  // optional .valhalla.odin.TripDirections.LatLng min_ll = 1;
-  if (has_min_ll()) {
-    target = ::google::protobuf::internal::WireFormatLite::
-      WriteMessageNoVirtualToArray(
-        1, this->min_ll(), target);
-  }
-
-  // optional .valhalla.odin.TripDirections.LatLng max_ll = 2;
-  if (has_max_ll()) {
-    target = ::google::protobuf::internal::WireFormatLite::
-      WriteMessageNoVirtualToArray(
-        2, this->max_ll(), target);
-  }
-
-  if (!unknown_fields().empty()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        unknown_fields(), target);
-  }
-  return target;
-}
-
-int TripDirections_BoundingBox::ByteSize() const {
-  int total_size = 0;
-
-  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // optional .valhalla.odin.TripDirections.LatLng min_ll = 1;
-    if (has_min_ll()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
-          this->min_ll());
-    }
-
-    // optional .valhalla.odin.TripDirections.LatLng max_ll = 2;
-    if (has_max_ll()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
-          this->max_ll());
-    }
-
-  }
-  if (!unknown_fields().empty()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        unknown_fields());
-  }
-  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
-  _cached_size_ = total_size;
-  GOOGLE_SAFE_CONCURRENT_WRITES_END();
-  return total_size;
-}
-
-void TripDirections_BoundingBox::MergeFrom(const ::google::protobuf::Message& from) {
-  GOOGLE_CHECK_NE(&from, this);
-  const TripDirections_BoundingBox* source =
-    ::google::protobuf::internal::dynamic_cast_if_available<const TripDirections_BoundingBox*>(
-      &from);
-  if (source == NULL) {
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
-  } else {
-    MergeFrom(*source);
-  }
-}
-
-void TripDirections_BoundingBox::MergeFrom(const TripDirections_BoundingBox& from) {
-  GOOGLE_CHECK_NE(&from, this);
-  if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (from.has_min_ll()) {
-      mutable_min_ll()->::valhalla::odin::TripDirections_LatLng::MergeFrom(from.min_ll());
-    }
-    if (from.has_max_ll()) {
-      mutable_max_ll()->::valhalla::odin::TripDirections_LatLng::MergeFrom(from.max_ll());
-    }
-  }
-  mutable_unknown_fields()->MergeFrom(from.unknown_fields());
-}
-
-void TripDirections_BoundingBox::CopyFrom(const ::google::protobuf::Message& from) {
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
-
-void TripDirections_BoundingBox::CopyFrom(const TripDirections_BoundingBox& from) {
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
-
-bool TripDirections_BoundingBox::IsInitialized() const {
-
-  return true;
-}
-
-void TripDirections_BoundingBox::Swap(TripDirections_BoundingBox* other) {
-  if (other != this) {
-    std::swap(min_ll_, other->min_ll_);
-    std::swap(max_ll_, other->max_ll_);
-    std::swap(_has_bits_[0], other->_has_bits_[0]);
-    _unknown_fields_.Swap(&other->_unknown_fields_);
-    std::swap(_cached_size_, other->_cached_size_);
-  }
-}
-
-::google::protobuf::Metadata TripDirections_BoundingBox::GetMetadata() const {
-  protobuf_AssignDescriptorsOnce();
-  ::google::protobuf::Metadata metadata;
-  metadata.descriptor = TripDirections_BoundingBox_descriptor_;
-  metadata.reflection = TripDirections_BoundingBox_reflection_;
-  return metadata;
-}
-
-
-// -------------------------------------------------------------------
-
-const ::google::protobuf::EnumDescriptor* TripDirections_Location_Type_descriptor() {
-  protobuf_AssignDescriptorsOnce();
-  return TripDirections_Location_Type_descriptor_;
-}
-bool TripDirections_Location_Type_IsValid(int value) {
-  switch(value) {
-    case 0:
-    case 1:
-      return true;
-    default:
-      return false;
-  }
-}
-
-#ifndef _MSC_VER
-const TripDirections_Location_Type TripDirections_Location::kBreak;
-const TripDirections_Location_Type TripDirections_Location::kThrough;
-const TripDirections_Location_Type TripDirections_Location::Type_MIN;
-const TripDirections_Location_Type TripDirections_Location::Type_MAX;
-const int TripDirections_Location::Type_ARRAYSIZE;
-#endif  // _MSC_VER
-const ::google::protobuf::EnumDescriptor* TripDirections_Location_SideOfStreet_descriptor() {
-  protobuf_AssignDescriptorsOnce();
-  return TripDirections_Location_SideOfStreet_descriptor_;
-}
-bool TripDirections_Location_SideOfStreet_IsValid(int value) {
-  switch(value) {
-    case 0:
-    case 1:
-    case 2:
-      return true;
-    default:
-      return false;
-  }
-}
-
-#ifndef _MSC_VER
-const TripDirections_Location_SideOfStreet TripDirections_Location::kNone;
-const TripDirections_Location_SideOfStreet TripDirections_Location::kLeft;
-const TripDirections_Location_SideOfStreet TripDirections_Location::kRight;
-const TripDirections_Location_SideOfStreet TripDirections_Location::SideOfStreet_MIN;
-const TripDirections_Location_SideOfStreet TripDirections_Location::SideOfStreet_MAX;
-const int TripDirections_Location::SideOfStreet_ARRAYSIZE;
-#endif  // _MSC_VER
-#ifndef _MSC_VER
-const int TripDirections_Location::kLlFieldNumber;
-const int TripDirections_Location::kTypeFieldNumber;
-const int TripDirections_Location::kHeadingFieldNumber;
-const int TripDirections_Location::kNameFieldNumber;
-const int TripDirections_Location::kStreetFieldNumber;
-const int TripDirections_Location::kCityFieldNumber;
-const int TripDirections_Location::kStateFieldNumber;
-const int TripDirections_Location::kPostalCodeFieldNumber;
-const int TripDirections_Location::kCountryFieldNumber;
-const int TripDirections_Location::kDateTimeFieldNumber;
-const int TripDirections_Location::kSideOfStreetFieldNumber;
-#endif  // !_MSC_VER
-
-TripDirections_Location::TripDirections_Location()
-  : ::google::protobuf::Message() {
-  SharedCtor();
-}
-
-void TripDirections_Location::InitAsDefaultInstance() {
-  ll_ = const_cast< ::valhalla::odin::TripDirections_LatLng*>(&::valhalla::odin::TripDirections_LatLng::default_instance());
-}
-
-TripDirections_Location::TripDirections_Location(const TripDirections_Location& from)
-  : ::google::protobuf::Message() {
-  SharedCtor();
-  MergeFrom(from);
-}
-
-void TripDirections_Location::SharedCtor() {
-  _cached_size_ = 0;
-  ll_ = NULL;
-  type_ = 0;
-  heading_ = 0u;
-  name_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
-  street_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
-  city_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
-  state_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
-  postal_code_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
-  country_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
-  date_time_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
-  side_of_street_ = 0;
-  ::memset(_has_bits_, 0, sizeof(_has_bits_));
-}
-
-TripDirections_Location::~TripDirections_Location() {
-  SharedDtor();
-}
-
-void TripDirections_Location::SharedDtor() {
-  if (name_ != &::google::protobuf::internal::kEmptyString) {
-    delete name_;
-  }
-  if (street_ != &::google::protobuf::internal::kEmptyString) {
-    delete street_;
-  }
-  if (city_ != &::google::protobuf::internal::kEmptyString) {
-    delete city_;
-  }
-  if (state_ != &::google::protobuf::internal::kEmptyString) {
-    delete state_;
-  }
-  if (postal_code_ != &::google::protobuf::internal::kEmptyString) {
-    delete postal_code_;
-  }
-  if (country_ != &::google::protobuf::internal::kEmptyString) {
-    delete country_;
-  }
-  if (date_time_ != &::google::protobuf::internal::kEmptyString) {
-    delete date_time_;
-  }
-  if (this != default_instance_) {
-    delete ll_;
-  }
-}
-
-void TripDirections_Location::SetCachedSize(int size) const {
-  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
-  _cached_size_ = size;
-  GOOGLE_SAFE_CONCURRENT_WRITES_END();
-}
-const ::google::protobuf::Descriptor* TripDirections_Location::descriptor() {
-  protobuf_AssignDescriptorsOnce();
-  return TripDirections_Location_descriptor_;
-}
-
-const TripDirections_Location& TripDirections_Location::default_instance() {
-  if (default_instance_ == NULL) protobuf_AddDesc_tripdirections_2eproto();
-  return *default_instance_;
-}
-
-TripDirections_Location* TripDirections_Location::default_instance_ = NULL;
-
-TripDirections_Location* TripDirections_Location::New() const {
-  return new TripDirections_Location;
-}
-
-void TripDirections_Location::Clear() {
-  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (has_ll()) {
-      if (ll_ != NULL) ll_->::valhalla::odin::TripDirections_LatLng::Clear();
-    }
-    type_ = 0;
-    heading_ = 0u;
-    if (has_name()) {
-      if (name_ != &::google::protobuf::internal::kEmptyString) {
-        name_->clear();
-      }
-    }
-    if (has_street()) {
-      if (street_ != &::google::protobuf::internal::kEmptyString) {
-        street_->clear();
-      }
-    }
-    if (has_city()) {
-      if (city_ != &::google::protobuf::internal::kEmptyString) {
-        city_->clear();
-      }
-    }
-    if (has_state()) {
-      if (state_ != &::google::protobuf::internal::kEmptyString) {
-        state_->clear();
-      }
-    }
-    if (has_postal_code()) {
-      if (postal_code_ != &::google::protobuf::internal::kEmptyString) {
-        postal_code_->clear();
-      }
-    }
-  }
-  if (_has_bits_[8 / 32] & (0xffu << (8 % 32))) {
-    if (has_country()) {
-      if (country_ != &::google::protobuf::internal::kEmptyString) {
-        country_->clear();
-      }
-    }
-    if (has_date_time()) {
-      if (date_time_ != &::google::protobuf::internal::kEmptyString) {
-        date_time_->clear();
-      }
-    }
-    side_of_street_ = 0;
-  }
-  ::memset(_has_bits_, 0, sizeof(_has_bits_));
-  mutable_unknown_fields()->Clear();
-}
-
-bool TripDirections_Location::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
-#define DO_(EXPRESSION) if (!(EXPRESSION)) return false
-  ::google::protobuf::uint32 tag;
-  while ((tag = input->ReadTag()) != 0) {
-    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // optional .valhalla.odin.TripDirections.LatLng ll = 1;
-      case 1: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
-               input, mutable_ll()));
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(16)) goto parse_type;
-        break;
-      }
-
-      // optional .valhalla.odin.TripDirections.Location.Type type = 2;
-      case 2: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-         parse_type:
-          int value;
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
-                 input, &value)));
-          if (::valhalla::odin::TripDirections_Location_Type_IsValid(value)) {
-            set_type(static_cast< ::valhalla::odin::TripDirections_Location_Type >(value));
-          } else {
-            mutable_unknown_fields()->AddVarint(2, value);
-          }
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(24)) goto parse_heading;
-        break;
-      }
-
-      // optional uint32 heading = 3;
-      case 3: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-         parse_heading:
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
-                 input, &heading_)));
-          set_has_heading();
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(34)) goto parse_name;
-        break;
-      }
-
-      // optional string name = 4;
-      case 4: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
-         parse_name:
-          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
-                input, this->mutable_name()));
-          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-            this->name().data(), this->name().length(),
-            ::google::protobuf::internal::WireFormat::PARSE);
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(42)) goto parse_street;
-        break;
-      }
-
-      // optional string street = 5;
-      case 5: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
-         parse_street:
-          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
-                input, this->mutable_street()));
-          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-            this->street().data(), this->street().length(),
-            ::google::protobuf::internal::WireFormat::PARSE);
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(50)) goto parse_city;
-        break;
-      }
-
-      // optional string city = 6;
-      case 6: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
-         parse_city:
-          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
-                input, this->mutable_city()));
-          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-            this->city().data(), this->city().length(),
-            ::google::protobuf::internal::WireFormat::PARSE);
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(58)) goto parse_state;
-        break;
-      }
-
-      // optional string state = 7;
-      case 7: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
-         parse_state:
-          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
-                input, this->mutable_state()));
-          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-            this->state().data(), this->state().length(),
-            ::google::protobuf::internal::WireFormat::PARSE);
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(66)) goto parse_postal_code;
-        break;
-      }
-
-      // optional string postal_code = 8;
-      case 8: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
-         parse_postal_code:
-          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
-                input, this->mutable_postal_code()));
-          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-            this->postal_code().data(), this->postal_code().length(),
-            ::google::protobuf::internal::WireFormat::PARSE);
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(74)) goto parse_country;
-        break;
-      }
-
-      // optional string country = 9;
-      case 9: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
-         parse_country:
-          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
-                input, this->mutable_country()));
-          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-            this->country().data(), this->country().length(),
-            ::google::protobuf::internal::WireFormat::PARSE);
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(82)) goto parse_date_time;
-        break;
-      }
-
-      // optional string date_time = 10;
-      case 10: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
-         parse_date_time:
-          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
-                input, this->mutable_date_time()));
-          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-            this->date_time().data(), this->date_time().length(),
-            ::google::protobuf::internal::WireFormat::PARSE);
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(88)) goto parse_side_of_street;
-        break;
-      }
-
-      // optional .valhalla.odin.TripDirections.Location.SideOfStreet side_of_street = 11;
-      case 11: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-         parse_side_of_street:
-          int value;
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
-                 input, &value)));
-          if (::valhalla::odin::TripDirections_Location_SideOfStreet_IsValid(value)) {
-            set_side_of_street(static_cast< ::valhalla::odin::TripDirections_Location_SideOfStreet >(value));
-          } else {
-            mutable_unknown_fields()->AddVarint(11, value);
-          }
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectAtEnd()) return true;
-        break;
-      }
-
-      default: {
-      handle_uninterpreted:
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
-          return true;
-        }
-        DO_(::google::protobuf::internal::WireFormat::SkipField(
-              input, tag, mutable_unknown_fields()));
-        break;
-      }
-    }
-  }
-  return true;
-#undef DO_
-}
-
-void TripDirections_Location::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // optional .valhalla.odin.TripDirections.LatLng ll = 1;
-  if (has_ll()) {
-    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      1, this->ll(), output);
-  }
-
-  // optional .valhalla.odin.TripDirections.Location.Type type = 2;
-  if (has_type()) {
-    ::google::protobuf::internal::WireFormatLite::WriteEnum(
-      2, this->type(), output);
-  }
-
-  // optional uint32 heading = 3;
-  if (has_heading()) {
-    ::google::protobuf::internal::WireFormatLite::WriteUInt32(3, this->heading(), output);
-  }
-
-  // optional string name = 4;
-  if (has_name()) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->name().data(), this->name().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE);
-    ::google::protobuf::internal::WireFormatLite::WriteString(
-      4, this->name(), output);
-  }
-
-  // optional string street = 5;
-  if (has_street()) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->street().data(), this->street().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE);
-    ::google::protobuf::internal::WireFormatLite::WriteString(
-      5, this->street(), output);
-  }
-
-  // optional string city = 6;
-  if (has_city()) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->city().data(), this->city().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE);
-    ::google::protobuf::internal::WireFormatLite::WriteString(
-      6, this->city(), output);
-  }
-
-  // optional string state = 7;
-  if (has_state()) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->state().data(), this->state().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE);
-    ::google::protobuf::internal::WireFormatLite::WriteString(
-      7, this->state(), output);
-  }
-
-  // optional string postal_code = 8;
-  if (has_postal_code()) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->postal_code().data(), this->postal_code().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE);
-    ::google::protobuf::internal::WireFormatLite::WriteString(
-      8, this->postal_code(), output);
-  }
-
-  // optional string country = 9;
-  if (has_country()) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->country().data(), this->country().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE);
-    ::google::protobuf::internal::WireFormatLite::WriteString(
-      9, this->country(), output);
-  }
-
-  // optional string date_time = 10;
-  if (has_date_time()) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->date_time().data(), this->date_time().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE);
-    ::google::protobuf::internal::WireFormatLite::WriteString(
-      10, this->date_time(), output);
-  }
-
-  // optional .valhalla.odin.TripDirections.Location.SideOfStreet side_of_street = 11;
-  if (has_side_of_street()) {
-    ::google::protobuf::internal::WireFormatLite::WriteEnum(
-      11, this->side_of_street(), output);
-  }
-
-  if (!unknown_fields().empty()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        unknown_fields(), output);
-  }
-}
-
-::google::protobuf::uint8* TripDirections_Location::SerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
-  // optional .valhalla.odin.TripDirections.LatLng ll = 1;
-  if (has_ll()) {
-    target = ::google::protobuf::internal::WireFormatLite::
-      WriteMessageNoVirtualToArray(
-        1, this->ll(), target);
-  }
-
-  // optional .valhalla.odin.TripDirections.Location.Type type = 2;
-  if (has_type()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
-      2, this->type(), target);
-  }
-
-  // optional uint32 heading = 3;
-  if (has_heading()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(3, this->heading(), target);
-  }
-
-  // optional string name = 4;
-  if (has_name()) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->name().data(), this->name().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE);
-    target =
-      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        4, this->name(), target);
-  }
-
-  // optional string street = 5;
-  if (has_street()) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->street().data(), this->street().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE);
-    target =
-      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        5, this->street(), target);
-  }
-
-  // optional string city = 6;
-  if (has_city()) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->city().data(), this->city().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE);
-    target =
-      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        6, this->city(), target);
-  }
-
-  // optional string state = 7;
-  if (has_state()) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->state().data(), this->state().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE);
-    target =
-      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        7, this->state(), target);
-  }
-
-  // optional string postal_code = 8;
-  if (has_postal_code()) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->postal_code().data(), this->postal_code().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE);
-    target =
-      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        8, this->postal_code(), target);
-  }
-
-  // optional string country = 9;
-  if (has_country()) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->country().data(), this->country().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE);
-    target =
-      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        9, this->country(), target);
-  }
-
-  // optional string date_time = 10;
-  if (has_date_time()) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->date_time().data(), this->date_time().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE);
-    target =
-      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        10, this->date_time(), target);
-  }
-
-  // optional .valhalla.odin.TripDirections.Location.SideOfStreet side_of_street = 11;
-  if (has_side_of_street()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
-      11, this->side_of_street(), target);
-  }
-
-  if (!unknown_fields().empty()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        unknown_fields(), target);
-  }
-  return target;
-}
-
-int TripDirections_Location::ByteSize() const {
-  int total_size = 0;
-
-  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // optional .valhalla.odin.TripDirections.LatLng ll = 1;
-    if (has_ll()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
-          this->ll());
-    }
-
-    // optional .valhalla.odin.TripDirections.Location.Type type = 2;
-    if (has_type()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::EnumSize(this->type());
-    }
-
-    // optional uint32 heading = 3;
-    if (has_heading()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::UInt32Size(
-          this->heading());
-    }
-
-    // optional string name = 4;
-    if (has_name()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::StringSize(
-          this->name());
-    }
-
-    // optional string street = 5;
-    if (has_street()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::StringSize(
-          this->street());
-    }
-
-    // optional string city = 6;
-    if (has_city()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::StringSize(
-          this->city());
-    }
-
-    // optional string state = 7;
-    if (has_state()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::StringSize(
-          this->state());
-    }
-
-    // optional string postal_code = 8;
-    if (has_postal_code()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::StringSize(
-          this->postal_code());
-    }
-
-  }
-  if (_has_bits_[8 / 32] & (0xffu << (8 % 32))) {
-    // optional string country = 9;
-    if (has_country()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::StringSize(
-          this->country());
-    }
-
-    // optional string date_time = 10;
-    if (has_date_time()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::StringSize(
-          this->date_time());
-    }
-
-    // optional .valhalla.odin.TripDirections.Location.SideOfStreet side_of_street = 11;
-    if (has_side_of_street()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::EnumSize(this->side_of_street());
-    }
-
-  }
-  if (!unknown_fields().empty()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        unknown_fields());
-  }
-  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
-  _cached_size_ = total_size;
-  GOOGLE_SAFE_CONCURRENT_WRITES_END();
-  return total_size;
-}
-
-void TripDirections_Location::MergeFrom(const ::google::protobuf::Message& from) {
-  GOOGLE_CHECK_NE(&from, this);
-  const TripDirections_Location* source =
-    ::google::protobuf::internal::dynamic_cast_if_available<const TripDirections_Location*>(
-      &from);
-  if (source == NULL) {
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
-  } else {
-    MergeFrom(*source);
-  }
-}
-
-void TripDirections_Location::MergeFrom(const TripDirections_Location& from) {
-  GOOGLE_CHECK_NE(&from, this);
-  if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (from.has_ll()) {
-      mutable_ll()->::valhalla::odin::TripDirections_LatLng::MergeFrom(from.ll());
-    }
-    if (from.has_type()) {
-      set_type(from.type());
-    }
-    if (from.has_heading()) {
-      set_heading(from.heading());
-    }
-    if (from.has_name()) {
-      set_name(from.name());
-    }
-    if (from.has_street()) {
-      set_street(from.street());
-    }
-    if (from.has_city()) {
-      set_city(from.city());
-    }
-    if (from.has_state()) {
-      set_state(from.state());
-    }
-    if (from.has_postal_code()) {
-      set_postal_code(from.postal_code());
-    }
-  }
-  if (from._has_bits_[8 / 32] & (0xffu << (8 % 32))) {
-    if (from.has_country()) {
-      set_country(from.country());
-    }
-    if (from.has_date_time()) {
-      set_date_time(from.date_time());
-    }
-    if (from.has_side_of_street()) {
-      set_side_of_street(from.side_of_street());
-    }
-  }
-  mutable_unknown_fields()->MergeFrom(from.unknown_fields());
-}
-
-void TripDirections_Location::CopyFrom(const ::google::protobuf::Message& from) {
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
-
-void TripDirections_Location::CopyFrom(const TripDirections_Location& from) {
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
-
-bool TripDirections_Location::IsInitialized() const {
-
-  return true;
-}
-
-void TripDirections_Location::Swap(TripDirections_Location* other) {
-  if (other != this) {
-    std::swap(ll_, other->ll_);
-    std::swap(type_, other->type_);
-    std::swap(heading_, other->heading_);
-    std::swap(name_, other->name_);
-    std::swap(street_, other->street_);
-    std::swap(city_, other->city_);
-    std::swap(state_, other->state_);
-    std::swap(postal_code_, other->postal_code_);
-    std::swap(country_, other->country_);
-    std::swap(date_time_, other->date_time_);
-    std::swap(side_of_street_, other->side_of_street_);
-    std::swap(_has_bits_[0], other->_has_bits_[0]);
-    _unknown_fields_.Swap(&other->_unknown_fields_);
-    std::swap(_cached_size_, other->_cached_size_);
-  }
-}
-
-::google::protobuf::Metadata TripDirections_Location::GetMetadata() const {
-  protobuf_AssignDescriptorsOnce();
-  ::google::protobuf::Metadata metadata;
-  metadata.descriptor = TripDirections_Location_descriptor_;
-  metadata.reflection = TripDirections_Location_reflection_;
-  return metadata;
-}
-
-
-// -------------------------------------------------------------------
-
-#ifndef _MSC_VER
 const int TripDirections_Summary::kLengthFieldNumber;
 const int TripDirections_Summary::kTimeFieldNumber;
 const int TripDirections_Summary::kBboxFieldNumber;
@@ -1947,7 +549,7 @@ TripDirections_Summary::TripDirections_Summary()
 }
 
 void TripDirections_Summary::InitAsDefaultInstance() {
-  bbox_ = const_cast< ::valhalla::odin::TripDirections_BoundingBox*>(&::valhalla::odin::TripDirections_BoundingBox::default_instance());
+  bbox_ = const_cast< ::valhalla::odin::BoundingBox*>(&::valhalla::odin::BoundingBox::default_instance());
 }
 
 TripDirections_Summary::TripDirections_Summary(const TripDirections_Summary& from)
@@ -2000,7 +602,7 @@ void TripDirections_Summary::Clear() {
     length_ = 0;
     time_ = 0u;
     if (has_bbox()) {
-      if (bbox_ != NULL) bbox_->::valhalla::odin::TripDirections_BoundingBox::Clear();
+      if (bbox_ != NULL) bbox_->::valhalla::odin::BoundingBox::Clear();
     }
   }
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
@@ -2044,7 +646,7 @@ bool TripDirections_Summary::MergePartialFromCodedStream(
         break;
       }
 
-      // optional .valhalla.odin.TripDirections.BoundingBox bbox = 3;
+      // optional .valhalla.odin.BoundingBox bbox = 3;
       case 3: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
@@ -2086,7 +688,7 @@ void TripDirections_Summary::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteUInt32(2, this->time(), output);
   }
 
-  // optional .valhalla.odin.TripDirections.BoundingBox bbox = 3;
+  // optional .valhalla.odin.BoundingBox bbox = 3;
   if (has_bbox()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
       3, this->bbox(), output);
@@ -2110,7 +712,7 @@ void TripDirections_Summary::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(2, this->time(), target);
   }
 
-  // optional .valhalla.odin.TripDirections.BoundingBox bbox = 3;
+  // optional .valhalla.odin.BoundingBox bbox = 3;
   if (has_bbox()) {
     target = ::google::protobuf::internal::WireFormatLite::
       WriteMessageNoVirtualToArray(
@@ -2140,7 +742,7 @@ int TripDirections_Summary::ByteSize() const {
           this->time());
     }
 
-    // optional .valhalla.odin.TripDirections.BoundingBox bbox = 3;
+    // optional .valhalla.odin.BoundingBox bbox = 3;
     if (has_bbox()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
@@ -2181,7 +783,7 @@ void TripDirections_Summary::MergeFrom(const TripDirections_Summary& from) {
       set_time(from.time());
     }
     if (from.has_bbox()) {
-      mutable_bbox()->::valhalla::odin::TripDirections_BoundingBox::MergeFrom(from.bbox());
+      mutable_bbox()->::valhalla::odin::BoundingBox::MergeFrom(from.bbox());
     }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
@@ -2264,7 +866,7 @@ TripDirections_TransitStop::TripDirections_TransitStop()
 }
 
 void TripDirections_TransitStop::InitAsDefaultInstance() {
-  ll_ = const_cast< ::valhalla::odin::TripDirections_LatLng*>(&::valhalla::odin::TripDirections_LatLng::default_instance());
+  ll_ = const_cast< ::valhalla::odin::LatLng*>(&::valhalla::odin::LatLng::default_instance());
 }
 
 TripDirections_TransitStop::TripDirections_TransitStop(const TripDirections_TransitStop& from)
@@ -2355,7 +957,7 @@ void TripDirections_TransitStop::Clear() {
     is_parent_stop_ = false;
     assumed_schedule_ = false;
     if (has_ll()) {
-      if (ll_ != NULL) ll_->::valhalla::odin::TripDirections_LatLng::Clear();
+      if (ll_ != NULL) ll_->::valhalla::odin::LatLng::Clear();
     }
   }
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
@@ -2488,7 +1090,7 @@ bool TripDirections_TransitStop::MergePartialFromCodedStream(
         break;
       }
 
-      // optional .valhalla.odin.TripDirections.LatLng ll = 8;
+      // optional .valhalla.odin.LatLng ll = 8;
       case 8: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
@@ -2572,7 +1174,7 @@ void TripDirections_TransitStop::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteBool(7, this->assumed_schedule(), output);
   }
 
-  // optional .valhalla.odin.TripDirections.LatLng ll = 8;
+  // optional .valhalla.odin.LatLng ll = 8;
   if (has_ll()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
       8, this->ll(), output);
@@ -2642,7 +1244,7 @@ void TripDirections_TransitStop::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(7, this->assumed_schedule(), target);
   }
 
-  // optional .valhalla.odin.TripDirections.LatLng ll = 8;
+  // optional .valhalla.odin.LatLng ll = 8;
   if (has_ll()) {
     target = ::google::protobuf::internal::WireFormatLite::
       WriteMessageNoVirtualToArray(
@@ -2704,7 +1306,7 @@ int TripDirections_TransitStop::ByteSize() const {
       total_size += 1 + 1;
     }
 
-    // optional .valhalla.odin.TripDirections.LatLng ll = 8;
+    // optional .valhalla.odin.LatLng ll = 8;
     if (has_ll()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
@@ -2760,7 +1362,7 @@ void TripDirections_TransitStop::MergeFrom(const TripDirections_TransitStop& fro
       set_assumed_schedule(from.assumed_schedule());
     }
     if (from.has_ll()) {
-      mutable_ll()->::valhalla::odin::TripDirections_LatLng::MergeFrom(from.ll());
+      mutable_ll()->::valhalla::odin::LatLng::MergeFrom(from.ll());
     }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
@@ -5916,7 +4518,7 @@ bool TripDirections::MergePartialFromCodedStream(
         break;
       }
 
-      // repeated .valhalla.odin.TripDirections.Location location = 4;
+      // repeated .valhalla.odin.Location location = 4;
       case 4: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
@@ -6010,7 +4612,7 @@ void TripDirections::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteUInt32(3, this->leg_count(), output);
   }
 
-  // repeated .valhalla.odin.TripDirections.Location location = 4;
+  // repeated .valhalla.odin.Location location = 4;
   for (int i = 0; i < this->location_size(); i++) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
       4, this->location(i), output);
@@ -6060,7 +4662,7 @@ void TripDirections::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(3, this->leg_count(), target);
   }
 
-  // repeated .valhalla.odin.TripDirections.Location location = 4;
+  // repeated .valhalla.odin.Location location = 4;
   for (int i = 0; i < this->location_size(); i++) {
     target = ::google::protobuf::internal::WireFormatLite::
       WriteMessageNoVirtualToArray(
@@ -6138,7 +4740,7 @@ int TripDirections::ByteSize() const {
     }
 
   }
-  // repeated .valhalla.odin.TripDirections.Location location = 4;
+  // repeated .valhalla.odin.Location location = 4;
   total_size += 1 * this->location_size();
   for (int i = 0; i < this->location_size(); i++) {
     total_size +=

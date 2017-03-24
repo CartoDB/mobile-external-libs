@@ -1,5 +1,5 @@
-#include <valhalla/midgard/logging.h>
-#include <valhalla/baldr/pathlocation.h>
+#include "midgard/logging.h"
+#include "baldr/pathlocation.h"
 
 #include "meili/candidate_search.h"
 #include "meili/routing.h"
@@ -204,7 +204,7 @@ MapMatching::TransitionCost(const State& left, const State& right) const
 
 inline float
 MapMatching::EmissionCost(const State& state) const
-{ return CalculateEmissionCost(std::sqrt(state.candidate().edges.front().score)); }
+{ return CalculateEmissionCost(state.candidate().edges.front().score); }
 
 
 inline double

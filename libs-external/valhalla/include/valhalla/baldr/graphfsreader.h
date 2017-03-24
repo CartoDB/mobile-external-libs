@@ -2,6 +2,7 @@
 #define VALHALLA_BALDR_GRAPHFSREADER_H_
 
 #include <valhalla/baldr/graphreader.h>
+#include <valhalla/baldr/graphtilefsstorage.h>
 
 namespace valhalla {
 namespace baldr {
@@ -15,7 +16,7 @@ class GraphFsReader : public GraphReader {
    * Constructor
    * @param pt the configuration for the tilehierarchy
    */
-  GraphFsReader(const boost::property_tree::ptree& pt);
+  GraphFsReader(const boost::property_tree::ptree& pt) : GraphReader(std::make_shared<GraphTileFsStorage>(pt), pt) { }
 };
 
 }

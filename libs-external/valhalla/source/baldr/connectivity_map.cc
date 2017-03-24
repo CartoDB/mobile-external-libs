@@ -2,15 +2,15 @@
 #include "baldr/json.h"
 #include "baldr/graphtile.h"
 #include "baldr/graphreader.h"
-#include <valhalla/midgard/pointll.h>
-#include <valhalla/midgard/logging.h>
 
+#include "midgard/pointll.h"
 #include <list>
 #include <iomanip>
 #include <random>
 #include <sstream>
 #include <unordered_set>
 
+#include "midgard/logging.h"
 
 using namespace valhalla::baldr;
 using namespace valhalla::midgard;

@@ -1,16 +1,20 @@
 #include "baldr/graphtile.h"
-#include "baldr/graphtilestorage.h"
 #include "baldr/datetime.h"
-#include <valhalla/midgard/logging.h>
+#include "baldr/graphtilestorage.h"
+#include "midgard/tiles.h"
+#include "midgard/aabb2.h"
+#include "midgard/pointll.h"
+#include "midgard/logging.h"
 
 #include <ctime>
 #include <string>
 #include <vector>
 #include <iostream>
-#include <algorithm>
-
-#include <boost/algorithm/string/trim.hpp>
-#include <boost/algorithm/string/split.hpp>
+#include <fstream>
+#include <locale>
+#include <iomanip>
+#include <cmath>
+#include <boost/algorithm/string.hpp>
 
 namespace {
   struct dir_facet : public std::numpunct<char> {
@@ -60,7 +64,10 @@ GraphTile::GraphTile()
       complex_restriction_forward_size_(0),
       complex_restriction_reverse_size_(0),
       edgeinfo_size_(0),
-      textlist_size_(0){
+      textlist_size_(0),
+      traffic_segments_(nullptr),
+      traffic_chunks_(nullptr),
+      traffic_chunk_size_(0) {
 }
 
 // Constructor given a filename. Reads the graph data into memory.
@@ -72,11 +79,11 @@ GraphTile::GraphTile(const TileHierarchy& hierarchy, const GraphId& graphid): he
 
   std::vector<char> tile_data;
   if (hierarchy.tile_storage()->ReadTile(graphid, hierarchy, tile_data)) {
-    graphtile_.reset(new char[tile_data.size()]);
-    std::copy(tile_data.begin(), tile_data.end(), graphtile_.get());
+    graphtile_.reset(new std::vector<char>(tile_data.size()));
+    std::copy(tile_data.begin(), tile_data.end(), graphtile_->data());
 
     // Set pointers to internal data structures
-    Initialize(graphid, graphtile_.get(), tile_data.size());
+    Initialize(graphid, graphtile_->data(), graphtile_->size());
   }
   else {
     LOG_DEBUG("Tile " + file_location + " was not found");
@@ -160,7 +167,18 @@ void GraphTile::Initialize(const GraphId& graphid, char* tile_ptr,
 
   // Start of text list and its size
   textlist_ = tile_ptr + header_->textlist_offset();
-  textlist_size_ = header_->end_offset() - header_->textlist_offset();
+  textlist_size_ = header_->traffic_segmentid_offset() - header_->textlist_offset();
+
+  // Start of the traffic segment association records
+  traffic_segments_ = reinterpret_cast<TrafficAssociation*>(tile_ptr +
+                          header_->traffic_segmentid_offset());
+
+  // Start of traffic chunks and their size
+  // TODO - update chunk definition...
+  traffic_chunks_ = reinterpret_cast<TrafficChunk*>(tile_ptr + header_->traffic_chunk_offset());
+  traffic_chunk_size_ = header_->end_offset() - header_->traffic_chunk_offset();
+
+  // ANY NEW EXPANSION DATA GOES HERE
 
   // Associate one stop Ids for transit tiles
   if (graphid.level() == 3) {
@@ -497,7 +515,9 @@ const TransitDeparture* GraphTile::GetNextDeparture(const uint32_t lineid,
     mid = (low + high) / 2;
     const auto& dep = departures_[mid];
     //matching lineid and a workable time
-    if (lineid == dep.lineid() && current_time <= dep.departure_time()) {
+    if (lineid == dep.lineid() &&
+        ((current_time <= dep.departure_time() && dep.type() == kFixedSchedule) ||
+         (current_time <= dep.end_time() && dep.type() == kFrequencySchedule))) {
       found = mid;
       high = mid - 1;
     }//need a smaller lineid
@@ -513,11 +533,33 @@ const TransitDeparture* GraphTile::GetNextDeparture(const uint32_t lineid,
   // calendar date, and does not have a calendar exception.
   for(; found < count && departures_[found].lineid() == lineid; ++found) {
     // Make sure valid departure time
-    if (departures_[found].departure_time() >= current_time &&
-      GetTransitSchedule(departures_[found].schedule_index())->IsValid(day, dow, date_before_tile) &&
-      (!wheelchair || departures_[found].wheelchair_accessible()) &&
-      (!bicycle || departures_[found].bicycle_accessible())) {
-      return &departures_[found];
+    if (departures_[found].type() == kFixedSchedule) {
+      if (departures_[found].departure_time() >= current_time &&
+          GetTransitSchedule(departures_[found].schedule_index())->IsValid(day, dow, date_before_tile) &&
+          (!wheelchair || departures_[found].wheelchair_accessible()) &&
+          (!bicycle || departures_[found].bicycle_accessible())) {
+        return &departures_[found];
+      }
+    } else {
+      uint32_t departure_time = departures_[found].departure_time();
+      uint32_t end_time = departures_[found].end_time();
+      uint32_t frequency = departures_[found].frequency();
+      while (departure_time < current_time && departure_time < end_time)
+        departure_time += frequency;
+
+      if (departure_time >= current_time && departure_time < end_time &&
+          GetTransitSchedule(departures_[found].schedule_index())->IsValid(day, dow, date_before_tile) &&
+          (!wheelchair || departures_[found].wheelchair_accessible()) &&
+          (!bicycle || departures_[found].bicycle_accessible())) {
+
+        const auto& d = departures_[found];
+        const TransitDeparture *dep = new TransitDeparture(d.lineid(),d.tripid(), d.routeid(),
+                                                           d.blockid(), d.headsign_offset(), departure_time,
+                                                           d.end_time(),d.frequency(),
+                                                           d.elapsed_time(), d.schedule_index(),
+                                                           d.wheelchair_accessible(), d.bicycle_accessible());
+        return dep;
+      }
     }
   }
 
@@ -529,7 +571,7 @@ const TransitDeparture* GraphTile::GetNextDeparture(const uint32_t lineid,
 
 // Get the departure given the line Id and tripid
 const TransitDeparture* GraphTile::GetTransitDeparture(const uint32_t lineid,
-                     const uint32_t tripid) const {
+                     const uint32_t tripid, const uint32_t current_time) const {
   uint32_t count = header_->departurecount();
   if (count == 0) {
     return nullptr;
@@ -558,9 +600,31 @@ const TransitDeparture* GraphTile::GetTransitDeparture(const uint32_t lineid,
   }
 
   // Iterate through departures until one is found with matching trip id
-  for(; found < count && departures_[found].lineid() == lineid; ++found)
-    if (departures_[found].tripid() == tripid)
-      return &departures_[found];
+  for(; found < count && departures_[found].lineid() == lineid; ++found) {
+    if (departures_[found].tripid() == tripid) {
+
+      if (departures_[found].type() == kFixedSchedule)
+        return &departures_[found];
+
+      uint32_t departure_time = departures_[found].departure_time();
+      uint32_t end_time = departures_[found].end_time();
+      uint32_t frequency = departures_[found].frequency();
+      while (departure_time < current_time && departure_time < end_time)
+        departure_time += frequency;
+
+      if (departure_time >= current_time && departure_time < end_time) {
+
+        const auto& d = departures_[found];
+
+        const TransitDeparture *dep = new TransitDeparture(d.lineid(),d.tripid(), d.routeid(),
+                                                           d.blockid(), d.headsign_offset(), departure_time,
+                                                           d.end_time(),d.frequency(),
+                                                           d.elapsed_time(), d.schedule_index(),
+                                                           d.wheelchair_accessible(), d.bicycle_accessible());
+        return dep;
+      }
+    }
+  }
 
   LOG_INFO("No departures found for lineid = " + std::to_string(lineid) +
            " and tripid = " + std::to_string(tripid));
@@ -684,6 +748,46 @@ midgard::iterable_t<GraphId> GraphTile::GetBin(size_t index) const {
   auto offsets = header_->bin_offset(index);
   return iterable_t<GraphId>{edge_bins_ + offsets.first, edge_bins_ + offsets.second};
 }
+
+// Get traffic segment(s) associated to this edge.
+std::vector<TrafficSegment> GraphTile::GetTrafficSegments(const size_t idx) const {
+  if (idx < header_->traffic_id_count()) {
+    const TrafficAssociation& t = traffic_segments_[idx];
+    if (!t.chunk()) {
+      // Make sure there is an associated segment. If count == 0 make sure
+      // we return an invalid segment Id
+      GraphId segment_id;
+      if (t.count() == 1) {
+        // Segment associated to this edge
+        segment_id = { header_->graphid().tileid(), header_->graphid().level(), t.id() };
+      }
+      TrafficSegment seg(segment_id, 0.0f, 1.0f, true, true);
+      return { seg };
+    } else {
+      // This edge associates to more than 1 segment (or the segment is in
+      // a different tile. Get traffic chunks.
+      auto c = t.GetChunkCountAndIndex();
+      TrafficChunk* chunk = &traffic_chunks_[c.second];
+      std::vector<TrafficSegment> segments;
+      for (uint32_t i = 0; i < c.first; i++, chunk++) {
+        segments.emplace_back(chunk->segment_id(), chunk->begin_percent(),
+                              chunk->end_percent(), chunk->starts_segment(),
+                              chunk->ends_segment());
+     }
+     return segments;
+    }
+  } else if (header_->traffic_id_count() == 0) {
+    // Tile does not contain traffic
+    return { };
+  } else {
+    throw std::runtime_error("GraphTile GetTrafficSegments index out of bounds: " +
+                           std::to_string(header_->graphid().tileid()) + "," +
+                           std::to_string(header_->graphid().level()) + "," +
+                           std::to_string(idx)  + " traffic Id count= " +
+                           std::to_string(header_->traffic_id_count()));
+  }
+}
+
 
 }
 }

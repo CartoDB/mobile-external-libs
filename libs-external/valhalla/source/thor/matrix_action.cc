@@ -2,15 +2,16 @@
 
 using namespace prime_server;
 
-#include <valhalla/midgard/logging.h>
-#include <valhalla/midgard/constants.h>
-#include <valhalla/baldr/json.h>
-#include <valhalla/sif/autocost.h>
-#include <valhalla/sif/bicyclecost.h>
-#include <valhalla/sif/pedestriancost.h>
+#include "midgard/logging.h"
+#include "midgard/constants.h"
+#include "baldr/json.h"
+#include "sif/autocost.h"
+#include "sif/bicyclecost.h"
+#include "sif/pedestriancost.h"
 
 #include "thor/service.h"
 #include "thor/costmatrix.h"
+#include "thor/timedistancematrix.h"
 
 using namespace valhalla;
 using namespace valhalla::midgard;
@@ -108,15 +109,17 @@ namespace {
 namespace valhalla {
   namespace thor {
 
-    worker_t::result_t  thor_worker_t::matrix(ACTION_TYPE action, const boost::property_tree::ptree &request, http_request_t::info_t& request_info) {
+    worker_t::result_t  thor_worker_t::matrix(ACTION_TYPE action, const boost::property_tree::ptree &request, http_request_info_t& request_info) {
+      //get time for start of request
+      auto s = std::chrono::system_clock::now();
+
       parse_locations(request);
       parse_costing(request);
 
       const auto& matrix_type = ACTION_TO_STRING.find(action)->second;
-      valhalla::midgard::logging::Log("matrix_type::" + matrix_type, " [ANALYTICS] ");
+      if (!healthcheck)
+        valhalla::midgard::logging::Log("matrix_type::" + matrix_type, " [ANALYTICS] ");
 
-      //get time for start of request
-      auto s = std::chrono::system_clock::now();
       // Parse out units; if none specified, use kilometers
       double distance_scale = kKmPerMeter;
       auto units = request.get<std::string>("units", "km");
@@ -125,9 +128,45 @@ namespace valhalla {
 
       json::MapPtr json;
       //do the real work
-      thor::CostMatrix costmatrix;
+      std::vector<TimeDistance> time_distances;
+      auto costmatrix = [&]() {
+        thor::CostMatrix matrix;
+        return matrix.SourceToTarget(correlated_s, correlated_t, reader, mode_costing, mode);
+      };
+      auto timedistancematrix = [&]() {
+        thor::TimeDistanceMatrix matrix;
+        return matrix.SourceToTarget(correlated_s, correlated_t, reader, mode_costing, mode);
+      };
+      switch (source_to_target_algorithm) {
+      case SELECT_OPTIMAL:
+        if (correlated_s.size() + correlated_t.size() > 100) {
+          time_distances = timedistancematrix();
+        } else {
+          time_distances = costmatrix();
+        }
+        /** TODO - test performance of TimeDistanceMatrix vs. CostMatrix for various
+            modes and conditions (e.g. number of locations, distances between
+            locations)
+          switch (mode) {
+          case TravelMode::kPedestrian:
+          case TravelMode::kBicycle:
+            time_distances = timedistancematrix();
+            break;
+          default:
+            time_distances = costmatrix();
+          }
+        } */
+        break;
+      case COST_MATRIX:
+        time_distances = costmatrix();
+        break;
+      case TIME_DISTANCE_MATRIX: {
+        time_distances = timedistancematrix();
+        break;
+      }
+      }
       json = serialize(matrix_type, request.get_optional<std::string>("id"), correlated_s, correlated_t,
-        costmatrix.SourceToTarget(correlated_s, correlated_t, reader, mode_costing, mode), units, distance_scale);
+        time_distances, units, distance_scale);
 
       //jsonp callback if need be
       std::ostringstream stream;
@@ -142,14 +181,13 @@ namespace valhalla {
       auto e = std::chrono::system_clock::now();
       std::chrono::duration<float, std::milli> elapsed_time = e - s;
       //log request if greater than X (ms)
-      if (!request_info.do_not_track && elapsed_time.count() / (correlated_s.size() * correlated_t.size()) > long_request) {
+      if (!healthcheck && !request_info.spare && elapsed_time.count() / (correlated_s.size() * correlated_t.size()) > long_request) {
         std::stringstream ss;
         boost::property_tree::json_parser::write_json(ss, request, false);
         LOG_WARN("thor::" + matrix_type + " matrix request elapsed time (ms)::"+ std::to_string(elapsed_time.count()));
         LOG_WARN("thor::" + matrix_type + " matrix request exceeded threshold::"+ ss.str());
         midgard::logging::Log("valhalla_thor_long_request_matrix", " [ANALYTICS] ");
       }
-
       http_response_t response(200, "OK", stream.str(), headers_t{CORS, jsonp ? JS_MIME : JSON_MIME});
       response.from_info(request_info);
       worker_t::result_t result{false};

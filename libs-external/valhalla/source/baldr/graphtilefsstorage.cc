@@ -1,6 +1,8 @@
 #include "baldr/graphtilefsstorage.h"
+#include "baldr/graphtile.h"
 #include <valhalla/midgard/pointll.h>
 #include <valhalla/midgard/aabb2.h>
+#include <valhalla/midgard/sequence.h>
 #include <valhalla/midgard/tiles.h>
 #include <valhalla/midgard/logging.h>
 
@@ -11,6 +13,10 @@
 #include <sys/stat.h>
 #include <boost/filesystem.hpp>
 #include <boost/algorithm/string.hpp>
+#include <boost/iostreams/filtering_stream.hpp>
+#include <boost/iostreams/device/back_inserter.hpp>
+#include <boost/iostreams/filter/gzip.hpp>
+#include <boost/iostreams/copy.hpp>
 
 namespace {
   struct dir_facet : public std::numpunct<char> {
@@ -81,13 +87,13 @@ std::shared_ptr<const GraphTileFsStorage::tile_extract_t> GraphTileFsStorage::ge
   return tile_extract;
 }
 
-GraphTileFsStorage::GraphTileFsStorage(const std::string& tile_dir)
-    : tile_dir_(tile_dir),
+GraphTileFsStorage::GraphTileFsStorage(const boost::property_tree::ptree& pt)
+    : tile_dir_(pt.get<std::string>("tile_dir")),
       tile_extract_(get_extract_instance(pt)) {
 }
 
 std::unordered_set<GraphId> GraphTileFsStorage::FindTiles(const TileHierarchy& tile_hierarchy) const {
-  std::unordered_setr<GraphId> graphids;
+  std::unordered_set<GraphId> graphids;
   if (tile_extract_->tiles.size()) {
     for (const auto& t : tile_extract_->tiles) {
       graphids.emplace(t.first);
@@ -143,6 +149,22 @@ bool GraphTileFsStorage::ReadTile(const GraphId& graphid, const TileHierarchy& t
       file.read(tile_data.data(), filesize);
       file.close();
       return !file.fail();
+    }
+    else {
+      std::ifstream file(file_location + ".gz", std::ios::in | std::ios::binary | std::ios::ate);
+      if (file.is_open()) {
+        // Pre-allocate assuming 3.25:1 compression ratio (based on scanning some large NA tiles)
+        size_t filesize = file.tellg();
+        file.seekg(0, std::ios::beg);
+        tile_data.reserve(filesize * 3 + filesize/4);  // TODO: read the gzip footer and get the real size?
+
+        // Decompress tile into memory
+        boost::iostreams::filtering_ostream os;
+        os.push(boost::iostreams::gzip_decompressor());
+        os.push(boost::iostreams::back_inserter(tile_data));
+        boost::iostreams::copy(file, os);
+        return !file.fail();
+      }
     }
   }
   return false;

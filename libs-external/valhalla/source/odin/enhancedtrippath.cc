@@ -1,10 +1,10 @@
 #include <iostream>
 #include <cstdlib>
 
-#include <valhalla/midgard/util.h>
-#include <valhalla/midgard/logging.h>
-#include <valhalla/midgard/constants.h>
-#include <valhalla/baldr/errorcode_util.h>
+#include "midgard/util.h"
+#include "midgard/logging.h"
+#include "midgard/constants.h"
+#include "baldr/errorcode_util.h"
 
 #include "proto/trippath.pb.h"
 #include "odin/util.h"
@@ -79,7 +79,7 @@ std::string EnhancedTripPath::GetStateCode(int node_index) {
   return GetAdmin(node(node_index).admin_index())->state_code();
 }
 
-const ::valhalla::odin::TripPath_Location& EnhancedTripPath::GetOrigin() const {
+const ::valhalla::odin::Location& EnhancedTripPath::GetOrigin() const {
   // Validate location count
   if (location_size() < 2) {
     throw valhalla_exception_t{400, 212};
@@ -88,7 +88,7 @@ const ::valhalla::odin::TripPath_Location& EnhancedTripPath::GetOrigin() const {
   return location(0);
 }
 
-const ::valhalla::odin::TripPath_Location& EnhancedTripPath::GetDestination() const {
+const ::valhalla::odin::Location& EnhancedTripPath::GetDestination() const {
   // Validate location count
   if (location_size() < 2) {
     throw valhalla_exception_t{400, 212};
@@ -346,9 +346,6 @@ std::string EnhancedTripPath_Edge::ToString() const {
   str += " | internal_intersection=";
   str += std::to_string(internal_intersection());
 
-  str += " | end_node_index=";
-  str += std::to_string(end_node_index());
-
   // Process exits, if needed
   if (this->has_sign()) {
     str += " | exit.number=";
@@ -383,6 +380,9 @@ std::string EnhancedTripPath_Edge::ToString() const {
 
   str += " | drive_on_right=";
   str += std::to_string(drive_on_right());
+
+  str += " | surface=";
+  str += std::to_string(surface());
 
   // Process transit route info, if needed
   if (has_transit_route_info()) {
@@ -438,6 +438,29 @@ std::string EnhancedTripPath_Edge::ToString() const {
   str += " | max_downward_grade=";
   str += std::to_string(max_downward_grade());
 
+  str += " | lane_count=";
+  str += std::to_string(lane_count());
+
+  str += " | cycle_lane=";
+  str += std::to_string(cycle_lane());
+
+  str += " | bicycle_network=";
+  str += std::to_string(bicycle_network());
+
+  str += " | sidewalk=";
+  str += std::to_string(sidewalk());
+
+  str += " | density=";
+  str += std::to_string(density());
+
+  str += " | speed_limit=";
+  str += std::to_string(speed_limit());
+
+  str += " | truck_speed=";
+  str += std::to_string(truck_speed());
+
+  str += " | truck_route=";
+  str += std::to_string(truck_route());
 
   return str;
 }
@@ -500,9 +523,6 @@ std::string EnhancedTripPath_Edge::ToParameterString() const {
   str += std::to_string(internal_intersection());
 
   str += delim;
-  str += std::to_string(end_node_index());
-
-  str += delim;
   str += ListToParameterString(this->sign().exit_number());
 
   str += delim;
@@ -553,6 +573,9 @@ std::string EnhancedTripPath_Edge::ToParameterString() const {
 
   str += delim;
   str += std::to_string(drive_on_right());
+
+  str += delim;
+  str += std::to_string(surface());
 
   str += delim;
   if (transit_route_info().has_onestop_id()) {
@@ -615,6 +638,32 @@ std::string EnhancedTripPath_Edge::ToParameterString() const {
 
   str += delim;
   str += std::to_string(max_downward_grade());
+
+  str += delim;
+  str += std::to_string(lane_count());
+
+  str += delim;
+  str += "TripPath_CycleLane_";
+  str += TripPath_CycleLane_descriptor()->FindValueByNumber(cycle_lane())->name();
+
+  str += delim;
+  str += std::to_string(bicycle_network());
+
+  str += delim;
+  str += "TripPath_Sidewalk_";
+  str += TripPath_Sidewalk_descriptor()->FindValueByNumber(sidewalk())->name();
+
+  str += delim;
+  str += std::to_string(density());
+
+  str += delim;
+  str += std::to_string(speed_limit());
+
+  str += delim;
+  str += std::to_string(truck_speed());
+
+  str += delim;
+  str += std::to_string(truck_route());
 
   return str;
 }
@@ -981,6 +1030,9 @@ std::string EnhancedTripPath_Node::ToString() const {
     str += " | transit_stop_info.assumed_schedule()=";
     str += std::to_string(transit_stop_info().assumed_schedule());
   }
+
+  str += " | time_zone=";
+  str += time_zone();
 
   return str;
 }

@@ -2,7 +2,7 @@
 // source: trippath.proto
 
 #define INTERNAL_SUPPRESS_PROTOBUF_FIELD_DEPRECATION
-#include "valhalla/proto/trippath.pb.h"
+#include "trippath.pb.h"
 
 #include <algorithm>
 
@@ -24,17 +24,6 @@ namespace {
 const ::google::protobuf::Descriptor* TripPath_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   TripPath_reflection_ = NULL;
-const ::google::protobuf::Descriptor* TripPath_LatLng_descriptor_ = NULL;
-const ::google::protobuf::internal::GeneratedMessageReflection*
-  TripPath_LatLng_reflection_ = NULL;
-const ::google::protobuf::Descriptor* TripPath_BoundingBox_descriptor_ = NULL;
-const ::google::protobuf::internal::GeneratedMessageReflection*
-  TripPath_BoundingBox_reflection_ = NULL;
-const ::google::protobuf::Descriptor* TripPath_Location_descriptor_ = NULL;
-const ::google::protobuf::internal::GeneratedMessageReflection*
-  TripPath_Location_reflection_ = NULL;
-const ::google::protobuf::EnumDescriptor* TripPath_Location_Type_descriptor_ = NULL;
-const ::google::protobuf::EnumDescriptor* TripPath_Location_SideOfStreet_descriptor_ = NULL;
 const ::google::protobuf::Descriptor* TripPath_Sign_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   TripPath_Sign_reflection_ = NULL;
@@ -61,11 +50,14 @@ const ::google::protobuf::internal::GeneratedMessageReflection*
 const ::google::protobuf::EnumDescriptor* TripPath_Traversability_descriptor_ = NULL;
 const ::google::protobuf::EnumDescriptor* TripPath_RoadClass_descriptor_ = NULL;
 const ::google::protobuf::EnumDescriptor* TripPath_Use_descriptor_ = NULL;
+const ::google::protobuf::EnumDescriptor* TripPath_Surface_descriptor_ = NULL;
 const ::google::protobuf::EnumDescriptor* TripPath_TravelMode_descriptor_ = NULL;
 const ::google::protobuf::EnumDescriptor* TripPath_VehicleType_descriptor_ = NULL;
 const ::google::protobuf::EnumDescriptor* TripPath_PedestrianType_descriptor_ = NULL;
 const ::google::protobuf::EnumDescriptor* TripPath_BicycleType_descriptor_ = NULL;
 const ::google::protobuf::EnumDescriptor* TripPath_TransitType_descriptor_ = NULL;
+const ::google::protobuf::EnumDescriptor* TripPath_CycleLane_descriptor_ = NULL;
+const ::google::protobuf::EnumDescriptor* TripPath_Sidewalk_descriptor_ = NULL;
 
 }  // namespace
 
@@ -77,7 +69,8 @@ void protobuf_AssignDesc_trippath_2eproto() {
       "trippath.proto");
   GOOGLE_CHECK(file != NULL);
   TripPath_descriptor_ = file->message_type(0);
-  static const int TripPath_offsets_[8] = {
+  static const int TripPath_offsets_[9] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath, osm_changeset_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath, trip_id_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath, leg_id_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath, leg_count_),
@@ -98,66 +91,7 @@ void protobuf_AssignDesc_trippath_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(TripPath));
-  TripPath_LatLng_descriptor_ = TripPath_descriptor_->nested_type(0);
-  static const int TripPath_LatLng_offsets_[2] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_LatLng, lat_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_LatLng, lng_),
-  };
-  TripPath_LatLng_reflection_ =
-    new ::google::protobuf::internal::GeneratedMessageReflection(
-      TripPath_LatLng_descriptor_,
-      TripPath_LatLng::default_instance_,
-      TripPath_LatLng_offsets_,
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_LatLng, _has_bits_[0]),
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_LatLng, _unknown_fields_),
-      -1,
-      ::google::protobuf::DescriptorPool::generated_pool(),
-      ::google::protobuf::MessageFactory::generated_factory(),
-      sizeof(TripPath_LatLng));
-  TripPath_BoundingBox_descriptor_ = TripPath_descriptor_->nested_type(1);
-  static const int TripPath_BoundingBox_offsets_[2] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_BoundingBox, min_ll_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_BoundingBox, max_ll_),
-  };
-  TripPath_BoundingBox_reflection_ =
-    new ::google::protobuf::internal::GeneratedMessageReflection(
-      TripPath_BoundingBox_descriptor_,
-      TripPath_BoundingBox::default_instance_,
-      TripPath_BoundingBox_offsets_,
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_BoundingBox, _has_bits_[0]),
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_BoundingBox, _unknown_fields_),
-      -1,
-      ::google::protobuf::DescriptorPool::generated_pool(),
-      ::google::protobuf::MessageFactory::generated_factory(),
-      sizeof(TripPath_BoundingBox));
-  TripPath_Location_descriptor_ = TripPath_descriptor_->nested_type(2);
-  static const int TripPath_Location_offsets_[11] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_Location, ll_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_Location, type_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_Location, heading_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_Location, name_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_Location, street_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_Location, city_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_Location, state_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_Location, postal_code_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_Location, country_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_Location, date_time_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_Location, side_of_street_),
-  };
-  TripPath_Location_reflection_ =
-    new ::google::protobuf::internal::GeneratedMessageReflection(
-      TripPath_Location_descriptor_,
-      TripPath_Location::default_instance_,
-      TripPath_Location_offsets_,
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_Location, _has_bits_[0]),
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_Location, _unknown_fields_),
-      -1,
-      ::google::protobuf::DescriptorPool::generated_pool(),
-      ::google::protobuf::MessageFactory::generated_factory(),
-      sizeof(TripPath_Location));
-  TripPath_Location_Type_descriptor_ = TripPath_Location_descriptor_->enum_type(0);
-  TripPath_Location_SideOfStreet_descriptor_ = TripPath_Location_descriptor_->enum_type(1);
-  TripPath_Sign_descriptor_ = TripPath_descriptor_->nested_type(3);
+  TripPath_Sign_descriptor_ = TripPath_descriptor_->nested_type(0);
   static const int TripPath_Sign_offsets_[4] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_Sign, exit_number_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_Sign, exit_branch_),
@@ -175,7 +109,7 @@ void protobuf_AssignDesc_trippath_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(TripPath_Sign));
-  TripPath_TransitRouteInfo_descriptor_ = TripPath_descriptor_->nested_type(4);
+  TripPath_TransitRouteInfo_descriptor_ = TripPath_descriptor_->nested_type(1);
   static const int TripPath_TransitRouteInfo_offsets_[12] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_TransitRouteInfo, onestop_id_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_TransitRouteInfo, block_id_),
@@ -201,8 +135,8 @@ void protobuf_AssignDesc_trippath_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(TripPath_TransitRouteInfo));
-  TripPath_Edge_descriptor_ = TripPath_descriptor_->nested_type(5);
-  static const int TripPath_Edge_offsets_[30] = {
+  TripPath_Edge_descriptor_ = TripPath_descriptor_->nested_type(2);
+  static const int TripPath_Edge_offsets_[38] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_Edge, name_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_Edge, length_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_Edge, speed_),
@@ -220,7 +154,7 @@ void protobuf_AssignDesc_trippath_2eproto() {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_Edge, roundabout_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_Edge, internal_intersection_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_Edge, drive_on_right_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_Edge, end_node_index_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_Edge, surface_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_Edge, sign_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_Edge, travel_mode_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_Edge, vehicle_type_),
@@ -233,6 +167,14 @@ void protobuf_AssignDesc_trippath_2eproto() {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_Edge, weighted_grade_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_Edge, max_upward_grade_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_Edge, max_downward_grade_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_Edge, lane_count_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_Edge, cycle_lane_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_Edge, bicycle_network_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_Edge, sidewalk_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_Edge, density_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_Edge, speed_limit_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_Edge, truck_speed_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_Edge, truck_route_),
   };
   TripPath_Edge_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -245,7 +187,7 @@ void protobuf_AssignDesc_trippath_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(TripPath_Edge));
-  TripPath_IntersectingEdge_descriptor_ = TripPath_descriptor_->nested_type(6);
+  TripPath_IntersectingEdge_descriptor_ = TripPath_descriptor_->nested_type(3);
   static const int TripPath_IntersectingEdge_offsets_[6] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_IntersectingEdge, begin_heading_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_IntersectingEdge, prev_name_consistency_),
@@ -265,7 +207,7 @@ void protobuf_AssignDesc_trippath_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(TripPath_IntersectingEdge));
-  TripPath_TransitStopInfo_descriptor_ = TripPath_descriptor_->nested_type(7);
+  TripPath_TransitStopInfo_descriptor_ = TripPath_descriptor_->nested_type(4);
   static const int TripPath_TransitStopInfo_offsets_[8] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_TransitStopInfo, type_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_TransitStopInfo, onestop_id_),
@@ -288,8 +230,8 @@ void protobuf_AssignDesc_trippath_2eproto() {
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(TripPath_TransitStopInfo));
   TripPath_TransitStopInfo_Type_descriptor_ = TripPath_TransitStopInfo_descriptor_->enum_type(0);
-  TripPath_Node_descriptor_ = TripPath_descriptor_->nested_type(8);
-  static const int TripPath_Node_offsets_[7] = {
+  TripPath_Node_descriptor_ = TripPath_descriptor_->nested_type(5);
+  static const int TripPath_Node_offsets_[8] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_Node, edge_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_Node, intersecting_edge_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_Node, elapsed_time_),
@@ -297,6 +239,7 @@ void protobuf_AssignDesc_trippath_2eproto() {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_Node, type_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_Node, fork_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_Node, transit_stop_info_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_Node, time_zone_),
   };
   TripPath_Node_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -310,7 +253,7 @@ void protobuf_AssignDesc_trippath_2eproto() {
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(TripPath_Node));
   TripPath_Node_Type_descriptor_ = TripPath_Node_descriptor_->enum_type(0);
-  TripPath_Admin_descriptor_ = TripPath_descriptor_->nested_type(9);
+  TripPath_Admin_descriptor_ = TripPath_descriptor_->nested_type(6);
   static const int TripPath_Admin_offsets_[4] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_Admin, country_code_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TripPath_Admin, country_text_),
@@ -331,11 +274,14 @@ void protobuf_AssignDesc_trippath_2eproto() {
   TripPath_Traversability_descriptor_ = TripPath_descriptor_->enum_type(0);
   TripPath_RoadClass_descriptor_ = TripPath_descriptor_->enum_type(1);
   TripPath_Use_descriptor_ = TripPath_descriptor_->enum_type(2);
-  TripPath_TravelMode_descriptor_ = TripPath_descriptor_->enum_type(3);
-  TripPath_VehicleType_descriptor_ = TripPath_descriptor_->enum_type(4);
-  TripPath_PedestrianType_descriptor_ = TripPath_descriptor_->enum_type(5);
-  TripPath_BicycleType_descriptor_ = TripPath_descriptor_->enum_type(6);
-  TripPath_TransitType_descriptor_ = TripPath_descriptor_->enum_type(7);
+  TripPath_Surface_descriptor_ = TripPath_descriptor_->enum_type(3);
+  TripPath_TravelMode_descriptor_ = TripPath_descriptor_->enum_type(4);
+  TripPath_VehicleType_descriptor_ = TripPath_descriptor_->enum_type(5);
+  TripPath_PedestrianType_descriptor_ = TripPath_descriptor_->enum_type(6);
+  TripPath_BicycleType_descriptor_ = TripPath_descriptor_->enum_type(7);
+  TripPath_TransitType_descriptor_ = TripPath_descriptor_->enum_type(8);
+  TripPath_CycleLane_descriptor_ = TripPath_descriptor_->enum_type(9);
+  TripPath_Sidewalk_descriptor_ = TripPath_descriptor_->enum_type(10);
 }
 
 namespace {
@@ -350,12 +296,6 @@ void protobuf_RegisterTypes(const ::std::string&) {
   protobuf_AssignDescriptorsOnce();
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     TripPath_descriptor_, &TripPath::default_instance());
-  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
-    TripPath_LatLng_descriptor_, &TripPath_LatLng::default_instance());
-  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
-    TripPath_BoundingBox_descriptor_, &TripPath_BoundingBox::default_instance());
-  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
-    TripPath_Location_descriptor_, &TripPath_Location::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     TripPath_Sign_descriptor_, &TripPath_Sign::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
@@ -377,12 +317,6 @@ void protobuf_RegisterTypes(const ::std::string&) {
 void protobuf_ShutdownFile_trippath_2eproto() {
   delete TripPath::default_instance_;
   delete TripPath_reflection_;
-  delete TripPath_LatLng::default_instance_;
-  delete TripPath_LatLng_reflection_;
-  delete TripPath_BoundingBox::default_instance_;
-  delete TripPath_BoundingBox_reflection_;
-  delete TripPath_Location::default_instance_;
-  delete TripPath_Location_reflection_;
   delete TripPath_Sign::default_instance_;
   delete TripPath_Sign_reflection_;
   delete TripPath_TransitRouteInfo::default_instance_;
@@ -405,124 +339,123 @@ void protobuf_AddDesc_trippath_2eproto() {
   already_here = true;
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
+  ::valhalla::odin::protobuf_AddDesc_tripcommon_2eproto();
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-    "\n\016trippath.proto\022\rvalhalla.odin\"\256\"\n\010Trip"
-    "Path\022\017\n\007trip_id\030\001 \001(\004\022\016\n\006leg_id\030\002 \001(\r\022\021\n"
-    "\tleg_count\030\003 \001(\r\0222\n\010location\030\004 \003(\0132 .val"
-    "halla.odin.TripPath.Location\022*\n\004node\030\005 \003"
-    "(\0132\034.valhalla.odin.TripPath.Node\022,\n\005admi"
-    "n\030\006 \003(\0132\035.valhalla.odin.TripPath.Admin\022\r"
-    "\n\005shape\030\007 \001(\t\0221\n\004bbox\030\010 \001(\0132#.valhalla.o"
-    "din.TripPath.BoundingBox\032\"\n\006LatLng\022\013\n\003la"
-    "t\030\001 \001(\002\022\013\n\003lng\030\002 \001(\002\032m\n\013BoundingBox\022.\n\006m"
-    "in_ll\030\001 \001(\0132\036.valhalla.odin.TripPath.Lat"
-    "Lng\022.\n\006max_ll\030\002 \001(\0132\036.valhalla.odin.Trip"
-    "Path.LatLng\032\213\003\n\010Location\022*\n\002ll\030\001 \001(\0132\036.v"
-    "alhalla.odin.TripPath.LatLng\0223\n\004type\030\002 \001"
-    "(\0162%.valhalla.odin.TripPath.Location.Typ"
-    "e\022\017\n\007heading\030\003 \001(\r\022\014\n\004name\030\004 \001(\t\022\016\n\006stre"
-    "et\030\005 \001(\t\022\014\n\004city\030\006 \001(\t\022\r\n\005state\030\007 \001(\t\022\023\n"
-    "\013postal_code\030\010 \001(\t\022\017\n\007country\030\t \001(\t\022\021\n\td"
-    "ate_time\030\n \001(\t\022E\n\016side_of_street\030\013 \001(\0162-"
-    ".valhalla.odin.TripPath.Location.SideOfS"
-    "treet\" \n\004Type\022\n\n\006kBreak\020\000\022\014\n\010kThrough\020\001\""
-    "0\n\014SideOfStreet\022\t\n\005kNone\020\000\022\t\n\005kLeft\020\001\022\n\n"
-    "\006kRight\020\002\032X\n\004Sign\022\023\n\013exit_number\030\001 \003(\t\022\023"
-    "\n\013exit_branch\030\002 \003(\t\022\023\n\013exit_toward\030\003 \003(\t"
-    "\022\021\n\texit_name\030\004 \003(\t\032\204\002\n\020TransitRouteInfo"
-    "\022\022\n\nonestop_id\030\001 \001(\t\022\020\n\010block_id\030\002 \001(\r\022\017"
-    "\n\007trip_id\030\003 \001(\r\022\022\n\nshort_name\030\004 \001(\t\022\021\n\tl"
-    "ong_name\030\005 \001(\t\022\020\n\010headsign\030\006 \001(\t\022\r\n\005colo"
-    "r\030\007 \001(\r\022\022\n\ntext_color\030\010 \001(\r\022\023\n\013descripti"
-    "on\030\t \001(\t\022\033\n\023operator_onestop_id\030\n \001(\t\022\025\n"
-    "\roperator_name\030\013 \001(\t\022\024\n\014operator_url\030\014 \001"
-    "(\t\032\343\007\n\004Edge\022\014\n\004name\030\001 \003(\t\022\016\n\006length\030\002 \001("
-    "\002\022\r\n\005speed\030\003 \001(\002\0225\n\nroad_class\030\004 \001(\0162!.v"
-    "alhalla.odin.TripPath.RoadClass\022\025\n\rbegin"
-    "_heading\030\005 \001(\r\022\023\n\013end_heading\030\006 \001(\r\022\031\n\021b"
-    "egin_shape_index\030\007 \001(\r\022\027\n\017end_shape_inde"
-    "x\030\010 \001(\r\022>\n\016traversability\030\t \001(\0162&.valhal"
-    "la.odin.TripPath.Traversability\022(\n\003use\030\n"
-    " \001(\0162\033.valhalla.odin.TripPath.Use\022\014\n\004tol"
-    "l\030\013 \001(\010\022\017\n\007unpaved\030\014 \001(\010\022\016\n\006tunnel\030\r \001(\010"
-    "\022\016\n\006bridge\030\016 \001(\010\022\022\n\nroundabout\030\017 \001(\010\022\035\n\025"
-    "internal_intersection\030\020 \001(\010\022\034\n\016drive_on_"
-    "right\030\021 \001(\010:\004true\022\026\n\016end_node_index\030\022 \001("
-    "\r\022*\n\004sign\030\023 \001(\0132\034.valhalla.odin.TripPath"
-    ".Sign\0227\n\013travel_mode\030\024 \001(\0162\".valhalla.od"
-    "in.TripPath.TravelMode\0229\n\014vehicle_type\030\025"
-    " \001(\0162#.valhalla.odin.TripPath.VehicleTyp"
-    "e\022\?\n\017pedestrian_type\030\026 \001(\0162&.valhalla.od"
-    "in.TripPath.PedestrianType\0229\n\014bicycle_ty"
-    "pe\030\027 \001(\0162#.valhalla.odin.TripPath.Bicycl"
-    "eType\0229\n\014transit_type\030\030 \001(\0162#.valhalla.o"
-    "din.TripPath.TransitType\022D\n\022transit_rout"
-    "e_info\030\031 \001(\0132(.valhalla.odin.TripPath.Tr"
-    "ansitRouteInfo\022\n\n\002id\030\032 \001(\004\022\016\n\006way_id\030\033 \001"
-    "(\004\022\026\n\016weighted_grade\030\034 \001(\002\022\030\n\020max_upward"
-    "_grade\030\035 \001(\005\022\032\n\022max_downward_grade\030\036 \001(\005"
-    "\032\237\002\n\020IntersectingEdge\022\025\n\rbegin_heading\030\001"
-    " \001(\r\022\035\n\025prev_name_consistency\030\002 \001(\010\022\035\n\025c"
-    "urr_name_consistency\030\003 \001(\010\022<\n\014driveabili"
-    "ty\030\004 \001(\0162&.valhalla.odin.TripPath.Traver"
-    "sability\022;\n\013cyclability\030\005 \001(\0162&.valhalla"
-    ".odin.TripPath.Traversability\022;\n\013walkabi"
-    "lity\030\006 \001(\0162&.valhalla.odin.TripPath.Trav"
-    "ersability\032\246\002\n\017TransitStopInfo\022:\n\004type\030\001"
-    " \001(\0162,.valhalla.odin.TripPath.TransitSto"
-    "pInfo.Type\022\022\n\nonestop_id\030\002 \001(\t\022\014\n\004name\030\003"
-    " \001(\t\022\031\n\021arrival_date_time\030\004 \001(\t\022\033\n\023depar"
-    "ture_date_time\030\005 \001(\t\022\026\n\016is_parent_stop\030\006"
-    " \001(\010\022\030\n\020assumed_schedule\030\007 \001(\010\022*\n\002ll\030\010 \001"
-    "(\0132\036.valhalla.odin.TripPath.LatLng\"\037\n\004Ty"
-    "pe\022\t\n\005kStop\020\000\022\014\n\010kStation\020\001\032\323\003\n\004Node\022*\n\004"
-    "edge\030\001 \001(\0132\034.valhalla.odin.TripPath.Edge"
-    "\022C\n\021intersecting_edge\030\002 \003(\0132(.valhalla.o"
-    "din.TripPath.IntersectingEdge\022\024\n\014elapsed"
-    "_time\030\003 \001(\r\022\023\n\013admin_index\030\004 \001(\r\022/\n\004type"
-    "\030\005 \001(\0162!.valhalla.odin.TripPath.Node.Typ"
-    "e\022\014\n\004fork\030\006 \001(\010\022B\n\021transit_stop_info\030\007 \001"
-    "(\0132\'.valhalla.odin.TripPath.TransitStopI"
-    "nfo\"\253\001\n\004Type\022\027\n\023kStreetIntersection\020\000\022\t\n"
-    "\005kGate\020\001\022\014\n\010kBollard\020\002\022\016\n\nkTollBooth\020\003\022\030"
-    "\n\024kMultiUseTransitStop\020\006\022\016\n\nkBikeShare\020\007"
-    "\022\014\n\010kParking\020\010\022\025\n\021kMotorwayJunction\020\t\022\022\n"
-    "\016kBorderControl\020\n\032[\n\005Admin\022\024\n\014country_co"
-    "de\030\001 \001(\t\022\024\n\014country_text\030\002 \001(\t\022\022\n\nstate_"
-    "code\030\003 \001(\t\022\022\n\nstate_text\030\004 \001(\t\"C\n\016Traver"
-    "sability\022\t\n\005kNone\020\000\022\014\n\010kForward\020\001\022\r\n\tkBa"
-    "ckward\020\002\022\t\n\005kBoth\020\003\"\213\001\n\tRoadClass\022\r\n\tkMo"
-    "torway\020\000\022\n\n\006kTrunk\020\001\022\014\n\010kPrimary\020\002\022\016\n\nkS"
-    "econdary\020\003\022\r\n\tkTertiary\020\004\022\021\n\rkUnclassifi"
-    "ed\020\005\022\020\n\014kResidential\020\006\022\021\n\rkServiceOther\020"
-    "\007\"\337\003\n\003Use\022\014\n\010kRoadUse\020\000\022\014\n\010kRampUse\020\001\022\023\n"
-    "\017kTurnChannelUse\020\002\022\r\n\tkTrackUse\020\003\022\020\n\014kDr"
-    "ivewayUse\020\004\022\r\n\tkAlleyUse\020\005\022\024\n\020kParkingAi"
-    "sleUse\020\006\022\027\n\023kEmergencyAccessUse\020\007\022\021\n\rkDr"
-    "iveThruUse\020\010\022\020\n\014kCuldesacUse\020\t\022\020\n\014kCycle"
-    "wayUse\020\024\022\024\n\020kMountainBikeUse\020\025\022\020\n\014kSidew"
-    "alkUse\020\030\022\017\n\013kFootwayUse\020\031\022\r\n\tkStepsUse\020\032"
-    "\022\014\n\010kPathUse\020\033\022\022\n\016kPedestrianUse\020\034\022\021\n\rkB"
-    "ridlewayUse\020\035\022\r\n\tkOtherUse\020(\022\r\n\tkFerryUs"
-    "e\020)\022\021\n\rkRailFerryUse\020*\022\014\n\010kRailUse\0202\022\013\n\007"
-    "kBusUse\0203\022\026\n\022kRailConnectionUse\0204\022\025\n\021kBu"
-    "sConnectionUse\0205\022\031\n\025kTransitConnectionUs"
-    "e\0206\"E\n\nTravelMode\022\n\n\006kDrive\020\000\022\017\n\013kPedest"
-    "rian\020\001\022\014\n\010kBicycle\020\002\022\014\n\010kTransit\020\003\"K\n\013Ve"
-    "hicleType\022\010\n\004kCar\020\000\022\017\n\013kMotorcycle\020\001\022\014\n\010"
-    "kAutoBus\020\002\022\023\n\017kTractorTrailer\020\003\"9\n\016Pedes"
-    "trianType\022\t\n\005kFoot\020\000\022\017\n\013kWheelchair\020\001\022\013\n"
-    "\007kSegway\020\002\"@\n\013BicycleType\022\t\n\005kRoad\020\000\022\n\n\006"
-    "kCross\020\001\022\013\n\007kHybrid\020\002\022\r\n\tkMountain\020\003\"r\n\013"
-    "TransitType\022\t\n\005kTram\020\000\022\n\n\006kMetro\020\001\022\t\n\005kR"
-    "ail\020\002\022\010\n\004kBus\020\003\022\n\n\006kFerry\020\004\022\r\n\tkCableCar"
-    "\020\005\022\014\n\010kGondola\020\006\022\016\n\nkFunicular\020\007", 4432);
+    "\n\016trippath.proto\022\rvalhalla.odin\032\020tripcom"
+    "mon.proto\"\254\"\n\010TripPath\022\025\n\rosm_changeset\030"
+    "\001 \001(\004\022\017\n\007trip_id\030\002 \001(\004\022\016\n\006leg_id\030\003 \001(\r\022\021"
+    "\n\tleg_count\030\004 \001(\r\022)\n\010location\030\005 \003(\0132\027.va"
+    "lhalla.odin.Location\022*\n\004node\030\006 \003(\0132\034.val"
+    "halla.odin.TripPath.Node\022,\n\005admin\030\007 \003(\0132"
+    "\035.valhalla.odin.TripPath.Admin\022\r\n\005shape\030"
+    "\010 \001(\t\022(\n\004bbox\030\t \001(\0132\032.valhalla.odin.Boun"
+    "dingBox\032X\n\004Sign\022\023\n\013exit_number\030\001 \003(\t\022\023\n\013"
+    "exit_branch\030\002 \003(\t\022\023\n\013exit_toward\030\003 \003(\t\022\021"
+    "\n\texit_name\030\004 \003(\t\032\204\002\n\020TransitRouteInfo\022\022"
+    "\n\nonestop_id\030\001 \001(\t\022\020\n\010block_id\030\002 \001(\r\022\017\n\007"
+    "trip_id\030\003 \001(\r\022\022\n\nshort_name\030\004 \001(\t\022\021\n\tlon"
+    "g_name\030\005 \001(\t\022\020\n\010headsign\030\006 \001(\t\022\r\n\005color\030"
+    "\007 \001(\r\022\022\n\ntext_color\030\010 \001(\r\022\023\n\013description"
+    "\030\t \001(\t\022\033\n\023operator_onestop_id\030\n \001(\t\022\025\n\ro"
+    "perator_name\030\013 \001(\t\022\024\n\014operator_url\030\014 \001(\t"
+    "\032\345\t\n\004Edge\022\014\n\004name\030\001 \003(\t\022\016\n\006length\030\002 \001(\002\022"
+    "\r\n\005speed\030\003 \001(\002\0225\n\nroad_class\030\004 \001(\0162!.val"
+    "halla.odin.TripPath.RoadClass\022\025\n\rbegin_h"
+    "eading\030\005 \001(\r\022\023\n\013end_heading\030\006 \001(\r\022\031\n\021beg"
+    "in_shape_index\030\007 \001(\r\022\027\n\017end_shape_index\030"
+    "\010 \001(\r\022>\n\016traversability\030\t \001(\0162&.valhalla"
+    ".odin.TripPath.Traversability\022(\n\003use\030\n \001"
+    "(\0162\033.valhalla.odin.TripPath.Use\022\014\n\004toll\030"
+    "\013 \001(\010\022\017\n\007unpaved\030\014 \001(\010\022\016\n\006tunnel\030\r \001(\010\022\016"
+    "\n\006bridge\030\016 \001(\010\022\022\n\nroundabout\030\017 \001(\010\022\035\n\025in"
+    "ternal_intersection\030\020 \001(\010\022\034\n\016drive_on_ri"
+    "ght\030\021 \001(\010:\004true\0220\n\007surface\030\022 \001(\0162\037.valha"
+    "lla.odin.TripPath.Surface\022*\n\004sign\030\023 \001(\0132"
+    "\034.valhalla.odin.TripPath.Sign\0227\n\013travel_"
+    "mode\030\024 \001(\0162\".valhalla.odin.TripPath.Trav"
+    "elMode\0229\n\014vehicle_type\030\025 \001(\0162#.valhalla."
+    "odin.TripPath.VehicleType\022\?\n\017pedestrian_"
+    "type\030\026 \001(\0162&.valhalla.odin.TripPath.Pede"
+    "strianType\0229\n\014bicycle_type\030\027 \001(\0162#.valha"
+    "lla.odin.TripPath.BicycleType\0229\n\014transit"
+    "_type\030\030 \001(\0162#.valhalla.odin.TripPath.Tra"
+    "nsitType\022D\n\022transit_route_info\030\031 \001(\0132(.v"
+    "alhalla.odin.TripPath.TransitRouteInfo\022\n"
+    "\n\002id\030\032 \001(\004\022\016\n\006way_id\030\033 \001(\004\022\026\n\016weighted_g"
+    "rade\030\034 \001(\002\022\030\n\020max_upward_grade\030\035 \001(\005\022\032\n\022"
+    "max_downward_grade\030\036 \001(\005\022\022\n\nlane_count\030\037"
+    " \001(\r\0225\n\ncycle_lane\030  \001(\0162!.valhalla.odin"
+    ".TripPath.CycleLane\022\027\n\017bicycle_network\030!"
+    " \001(\r\0222\n\010sidewalk\030\" \001(\0162 .valhalla.odin.T"
+    "ripPath.Sidewalk\022\017\n\007density\030# \001(\r\022\023\n\013spe"
+    "ed_limit\030$ \001(\r\022\023\n\013truck_speed\030% \001(\002\022\023\n\013t"
+    "ruck_route\030& \001(\010\032\237\002\n\020IntersectingEdge\022\025\n"
+    "\rbegin_heading\030\001 \001(\r\022\035\n\025prev_name_consis"
+    "tency\030\002 \001(\010\022\035\n\025curr_name_consistency\030\003 \001"
+    "(\010\022<\n\014driveability\030\004 \001(\0162&.valhalla.odin"
+    ".TripPath.Traversability\022;\n\013cyclability\030"
+    "\005 \001(\0162&.valhalla.odin.TripPath.Traversab"
+    "ility\022;\n\013walkability\030\006 \001(\0162&.valhalla.od"
+    "in.TripPath.Traversability\032\235\002\n\017TransitSt"
+    "opInfo\022:\n\004type\030\001 \001(\0162,.valhalla.odin.Tri"
+    "pPath.TransitStopInfo.Type\022\022\n\nonestop_id"
+    "\030\002 \001(\t\022\014\n\004name\030\003 \001(\t\022\031\n\021arrival_date_tim"
+    "e\030\004 \001(\t\022\033\n\023departure_date_time\030\005 \001(\t\022\026\n\016"
+    "is_parent_stop\030\006 \001(\010\022\030\n\020assumed_schedule"
+    "\030\007 \001(\010\022!\n\002ll\030\010 \001(\0132\025.valhalla.odin.LatLn"
+    "g\"\037\n\004Type\022\t\n\005kStop\020\000\022\014\n\010kStation\020\001\032\346\003\n\004N"
+    "ode\022*\n\004edge\030\001 \001(\0132\034.valhalla.odin.TripPa"
+    "th.Edge\022C\n\021intersecting_edge\030\002 \003(\0132(.val"
+    "halla.odin.TripPath.IntersectingEdge\022\024\n\014"
+    "elapsed_time\030\003 \001(\r\022\023\n\013admin_index\030\004 \001(\r\022"
+    "/\n\004type\030\005 \001(\0162!.valhalla.odin.TripPath.N"
+    "ode.Type\022\014\n\004fork\030\006 \001(\010\022B\n\021transit_stop_i"
+    "nfo\030\007 \001(\0132\'.valhalla.odin.TripPath.Trans"
+    "itStopInfo\022\021\n\ttime_zone\030\010 \001(\t\"\253\001\n\004Type\022\027"
+    "\n\023kStreetIntersection\020\000\022\t\n\005kGate\020\001\022\014\n\010kB"
+    "ollard\020\002\022\016\n\nkTollBooth\020\003\022\030\n\024kMultiUseTra"
+    "nsitStop\020\006\022\016\n\nkBikeShare\020\007\022\014\n\010kParking\020\010"
+    "\022\025\n\021kMotorwayJunction\020\t\022\022\n\016kBorderContro"
+    "l\020\n\032[\n\005Admin\022\024\n\014country_code\030\001 \001(\t\022\024\n\014co"
+    "untry_text\030\002 \001(\t\022\022\n\nstate_code\030\003 \001(\t\022\022\n\n"
+    "state_text\030\004 \001(\t\"C\n\016Traversability\022\t\n\005kN"
+    "one\020\000\022\014\n\010kForward\020\001\022\r\n\tkBackward\020\002\022\t\n\005kB"
+    "oth\020\003\"\213\001\n\tRoadClass\022\r\n\tkMotorway\020\000\022\n\n\006kT"
+    "runk\020\001\022\014\n\010kPrimary\020\002\022\016\n\nkSecondary\020\003\022\r\n\t"
+    "kTertiary\020\004\022\021\n\rkUnclassified\020\005\022\020\n\014kResid"
+    "ential\020\006\022\021\n\rkServiceOther\020\007\"\337\003\n\003Use\022\014\n\010k"
+    "RoadUse\020\000\022\014\n\010kRampUse\020\001\022\023\n\017kTurnChannelU"
+    "se\020\002\022\r\n\tkTrackUse\020\003\022\020\n\014kDrivewayUse\020\004\022\r\n"
+    "\tkAlleyUse\020\005\022\024\n\020kParkingAisleUse\020\006\022\027\n\023kE"
+    "mergencyAccessUse\020\007\022\021\n\rkDriveThruUse\020\010\022\020"
+    "\n\014kCuldesacUse\020\t\022\020\n\014kCyclewayUse\020\024\022\024\n\020kM"
+    "ountainBikeUse\020\025\022\020\n\014kSidewalkUse\020\030\022\017\n\013kF"
+    "ootwayUse\020\031\022\r\n\tkStepsUse\020\032\022\014\n\010kPathUse\020\033"
+    "\022\022\n\016kPedestrianUse\020\034\022\021\n\rkBridlewayUse\020\035\022"
+    "\r\n\tkOtherUse\020(\022\r\n\tkFerryUse\020)\022\021\n\rkRailFe"
+    "rryUse\020*\022\014\n\010kRailUse\0202\022\013\n\007kBusUse\0203\022\026\n\022k"
+    "RailConnectionUse\0204\022\025\n\021kBusConnectionUse"
+    "\0205\022\031\n\025kTransitConnectionUse\0206\"|\n\007Surface"
+    "\022\020\n\014kPavedSmooth\020\000\022\n\n\006kPaved\020\001\022\017\n\013kPaved"
+    "Rough\020\002\022\016\n\nkCompacted\020\003\022\t\n\005kDirt\020\004\022\013\n\007kG"
+    "ravel\020\005\022\t\n\005kPath\020\006\022\017\n\013kImpassable\020\007\"E\n\nT"
+    "ravelMode\022\n\n\006kDrive\020\000\022\017\n\013kPedestrian\020\001\022\014"
+    "\n\010kBicycle\020\002\022\014\n\010kTransit\020\003\"K\n\013VehicleTyp"
+    "e\022\010\n\004kCar\020\000\022\017\n\013kMotorcycle\020\001\022\014\n\010kAutoBus"
+    "\020\002\022\023\n\017kTractorTrailer\020\003\"9\n\016PedestrianTyp"
+    "e\022\t\n\005kFoot\020\000\022\017\n\013kWheelchair\020\001\022\013\n\007kSegway"
+    "\020\002\"@\n\013BicycleType\022\t\n\005kRoad\020\000\022\n\n\006kCross\020\001"
+    "\022\013\n\007kHybrid\020\002\022\r\n\tkMountain\020\003\"r\n\013TransitT"
+    "ype\022\t\n\005kTram\020\000\022\n\n\006kMetro\020\001\022\t\n\005kRail\020\002\022\010\n"
+    "\004kBus\020\003\022\n\n\006kFerry\020\004\022\r\n\tkCableCar\020\005\022\014\n\010kG"
+    "ondola\020\006\022\016\n\nkFunicular\020\007\"J\n\tCycleLane\022\020\n"
+    "\014kNoCycleLane\020\000\022\013\n\007kShared\020\001\022\016\n\nkDedicat"
+    "ed\020\002\022\016\n\nkSeparated\020\003\"B\n\010Sidewalk\022\017\n\013kNoS"
+    "idewalk\020\000\022\t\n\005kLeft\020\001\022\n\n\006kRight\020\002\022\016\n\nkBot"
+    "hSides\020\003P\000", 4450);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "trippath.proto", &protobuf_RegisterTypes);
   TripPath::default_instance_ = new TripPath();
-  TripPath_LatLng::default_instance_ = new TripPath_LatLng();
-  TripPath_BoundingBox::default_instance_ = new TripPath_BoundingBox();
-  TripPath_Location::default_instance_ = new TripPath_Location();
   TripPath_Sign::default_instance_ = new TripPath_Sign();
   TripPath_TransitRouteInfo::default_instance_ = new TripPath_TransitRouteInfo();
   TripPath_Edge::default_instance_ = new TripPath_Edge();
@@ -531,9 +464,6 @@ void protobuf_AddDesc_trippath_2eproto() {
   TripPath_Node::default_instance_ = new TripPath_Node();
   TripPath_Admin::default_instance_ = new TripPath_Admin();
   TripPath::default_instance_->InitAsDefaultInstance();
-  TripPath_LatLng::default_instance_->InitAsDefaultInstance();
-  TripPath_BoundingBox::default_instance_->InitAsDefaultInstance();
-  TripPath_Location::default_instance_->InitAsDefaultInstance();
   TripPath_Sign::default_instance_->InitAsDefaultInstance();
   TripPath_TransitRouteInfo::default_instance_->InitAsDefaultInstance();
   TripPath_Edge::default_instance_->InitAsDefaultInstance();
@@ -680,6 +610,39 @@ const TripPath_Use TripPath::Use_MIN;
 const TripPath_Use TripPath::Use_MAX;
 const int TripPath::Use_ARRAYSIZE;
 #endif  // _MSC_VER
+const ::google::protobuf::EnumDescriptor* TripPath_Surface_descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return TripPath_Surface_descriptor_;
+}
+bool TripPath_Surface_IsValid(int value) {
+  switch(value) {
+    case 0:
+    case 1:
+    case 2:
+    case 3:
+    case 4:
+    case 5:
+    case 6:
+    case 7:
+      return true;
+    default:
+      return false;
+  }
+}
+
+#ifndef _MSC_VER
+const TripPath_Surface TripPath::kPavedSmooth;
+const TripPath_Surface TripPath::kPaved;
+const TripPath_Surface TripPath::kPavedRough;
+const TripPath_Surface TripPath::kCompacted;
+const TripPath_Surface TripPath::kDirt;
+const TripPath_Surface TripPath::kGravel;
+const TripPath_Surface TripPath::kPath;
+const TripPath_Surface TripPath::kImpassable;
+const TripPath_Surface TripPath::Surface_MIN;
+const TripPath_Surface TripPath::Surface_MAX;
+const int TripPath::Surface_ARRAYSIZE;
+#endif  // _MSC_VER
 const ::google::protobuf::EnumDescriptor* TripPath_TravelMode_descriptor() {
   protobuf_AssignDescriptorsOnce();
   return TripPath_TravelMode_descriptor_;
@@ -811,538 +774,16 @@ const TripPath_TransitType TripPath::TransitType_MIN;
 const TripPath_TransitType TripPath::TransitType_MAX;
 const int TripPath::TransitType_ARRAYSIZE;
 #endif  // _MSC_VER
-#ifndef _MSC_VER
-const int TripPath_LatLng::kLatFieldNumber;
-const int TripPath_LatLng::kLngFieldNumber;
-#endif  // !_MSC_VER
-
-TripPath_LatLng::TripPath_LatLng()
-  : ::google::protobuf::Message() {
-  SharedCtor();
-}
-
-void TripPath_LatLng::InitAsDefaultInstance() {
-}
-
-TripPath_LatLng::TripPath_LatLng(const TripPath_LatLng& from)
-  : ::google::protobuf::Message() {
-  SharedCtor();
-  MergeFrom(from);
-}
-
-void TripPath_LatLng::SharedCtor() {
-  _cached_size_ = 0;
-  lat_ = 0;
-  lng_ = 0;
-  ::memset(_has_bits_, 0, sizeof(_has_bits_));
-}
-
-TripPath_LatLng::~TripPath_LatLng() {
-  SharedDtor();
-}
-
-void TripPath_LatLng::SharedDtor() {
-  if (this != default_instance_) {
-  }
-}
-
-void TripPath_LatLng::SetCachedSize(int size) const {
-  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
-  _cached_size_ = size;
-  GOOGLE_SAFE_CONCURRENT_WRITES_END();
-}
-const ::google::protobuf::Descriptor* TripPath_LatLng::descriptor() {
+const ::google::protobuf::EnumDescriptor* TripPath_CycleLane_descriptor() {
   protobuf_AssignDescriptorsOnce();
-  return TripPath_LatLng_descriptor_;
+  return TripPath_CycleLane_descriptor_;
 }
-
-const TripPath_LatLng& TripPath_LatLng::default_instance() {
-  if (default_instance_ == NULL) protobuf_AddDesc_trippath_2eproto();
-  return *default_instance_;
-}
-
-TripPath_LatLng* TripPath_LatLng::default_instance_ = NULL;
-
-TripPath_LatLng* TripPath_LatLng::New() const {
-  return new TripPath_LatLng;
-}
-
-void TripPath_LatLng::Clear() {
-  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    lat_ = 0;
-    lng_ = 0;
-  }
-  ::memset(_has_bits_, 0, sizeof(_has_bits_));
-  mutable_unknown_fields()->Clear();
-}
-
-bool TripPath_LatLng::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
-#define DO_(EXPRESSION) if (!(EXPRESSION)) return false
-  ::google::protobuf::uint32 tag;
-  while ((tag = input->ReadTag()) != 0) {
-    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // optional float lat = 1;
-      case 1: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_FIXED32) {
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
-                 input, &lat_)));
-          set_has_lat();
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(21)) goto parse_lng;
-        break;
-      }
-
-      // optional float lng = 2;
-      case 2: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_FIXED32) {
-         parse_lng:
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
-                 input, &lng_)));
-          set_has_lng();
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectAtEnd()) return true;
-        break;
-      }
-
-      default: {
-      handle_uninterpreted:
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
-          return true;
-        }
-        DO_(::google::protobuf::internal::WireFormat::SkipField(
-              input, tag, mutable_unknown_fields()));
-        break;
-      }
-    }
-  }
-  return true;
-#undef DO_
-}
-
-void TripPath_LatLng::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // optional float lat = 1;
-  if (has_lat()) {
-    ::google::protobuf::internal::WireFormatLite::WriteFloat(1, this->lat(), output);
-  }
-
-  // optional float lng = 2;
-  if (has_lng()) {
-    ::google::protobuf::internal::WireFormatLite::WriteFloat(2, this->lng(), output);
-  }
-
-  if (!unknown_fields().empty()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        unknown_fields(), output);
-  }
-}
-
-::google::protobuf::uint8* TripPath_LatLng::SerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
-  // optional float lat = 1;
-  if (has_lat()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteFloatToArray(1, this->lat(), target);
-  }
-
-  // optional float lng = 2;
-  if (has_lng()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteFloatToArray(2, this->lng(), target);
-  }
-
-  if (!unknown_fields().empty()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        unknown_fields(), target);
-  }
-  return target;
-}
-
-int TripPath_LatLng::ByteSize() const {
-  int total_size = 0;
-
-  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // optional float lat = 1;
-    if (has_lat()) {
-      total_size += 1 + 4;
-    }
-
-    // optional float lng = 2;
-    if (has_lng()) {
-      total_size += 1 + 4;
-    }
-
-  }
-  if (!unknown_fields().empty()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        unknown_fields());
-  }
-  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
-  _cached_size_ = total_size;
-  GOOGLE_SAFE_CONCURRENT_WRITES_END();
-  return total_size;
-}
-
-void TripPath_LatLng::MergeFrom(const ::google::protobuf::Message& from) {
-  GOOGLE_CHECK_NE(&from, this);
-  const TripPath_LatLng* source =
-    ::google::protobuf::internal::dynamic_cast_if_available<const TripPath_LatLng*>(
-      &from);
-  if (source == NULL) {
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
-  } else {
-    MergeFrom(*source);
-  }
-}
-
-void TripPath_LatLng::MergeFrom(const TripPath_LatLng& from) {
-  GOOGLE_CHECK_NE(&from, this);
-  if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (from.has_lat()) {
-      set_lat(from.lat());
-    }
-    if (from.has_lng()) {
-      set_lng(from.lng());
-    }
-  }
-  mutable_unknown_fields()->MergeFrom(from.unknown_fields());
-}
-
-void TripPath_LatLng::CopyFrom(const ::google::protobuf::Message& from) {
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
-
-void TripPath_LatLng::CopyFrom(const TripPath_LatLng& from) {
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
-
-bool TripPath_LatLng::IsInitialized() const {
-
-  return true;
-}
-
-void TripPath_LatLng::Swap(TripPath_LatLng* other) {
-  if (other != this) {
-    std::swap(lat_, other->lat_);
-    std::swap(lng_, other->lng_);
-    std::swap(_has_bits_[0], other->_has_bits_[0]);
-    _unknown_fields_.Swap(&other->_unknown_fields_);
-    std::swap(_cached_size_, other->_cached_size_);
-  }
-}
-
-::google::protobuf::Metadata TripPath_LatLng::GetMetadata() const {
-  protobuf_AssignDescriptorsOnce();
-  ::google::protobuf::Metadata metadata;
-  metadata.descriptor = TripPath_LatLng_descriptor_;
-  metadata.reflection = TripPath_LatLng_reflection_;
-  return metadata;
-}
-
-
-// -------------------------------------------------------------------
-
-#ifndef _MSC_VER
-const int TripPath_BoundingBox::kMinLlFieldNumber;
-const int TripPath_BoundingBox::kMaxLlFieldNumber;
-#endif  // !_MSC_VER
-
-TripPath_BoundingBox::TripPath_BoundingBox()
-  : ::google::protobuf::Message() {
-  SharedCtor();
-}
-
-void TripPath_BoundingBox::InitAsDefaultInstance() {
-  min_ll_ = const_cast< ::valhalla::odin::TripPath_LatLng*>(&::valhalla::odin::TripPath_LatLng::default_instance());
-  max_ll_ = const_cast< ::valhalla::odin::TripPath_LatLng*>(&::valhalla::odin::TripPath_LatLng::default_instance());
-}
-
-TripPath_BoundingBox::TripPath_BoundingBox(const TripPath_BoundingBox& from)
-  : ::google::protobuf::Message() {
-  SharedCtor();
-  MergeFrom(from);
-}
-
-void TripPath_BoundingBox::SharedCtor() {
-  _cached_size_ = 0;
-  min_ll_ = NULL;
-  max_ll_ = NULL;
-  ::memset(_has_bits_, 0, sizeof(_has_bits_));
-}
-
-TripPath_BoundingBox::~TripPath_BoundingBox() {
-  SharedDtor();
-}
-
-void TripPath_BoundingBox::SharedDtor() {
-  if (this != default_instance_) {
-    delete min_ll_;
-    delete max_ll_;
-  }
-}
-
-void TripPath_BoundingBox::SetCachedSize(int size) const {
-  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
-  _cached_size_ = size;
-  GOOGLE_SAFE_CONCURRENT_WRITES_END();
-}
-const ::google::protobuf::Descriptor* TripPath_BoundingBox::descriptor() {
-  protobuf_AssignDescriptorsOnce();
-  return TripPath_BoundingBox_descriptor_;
-}
-
-const TripPath_BoundingBox& TripPath_BoundingBox::default_instance() {
-  if (default_instance_ == NULL) protobuf_AddDesc_trippath_2eproto();
-  return *default_instance_;
-}
-
-TripPath_BoundingBox* TripPath_BoundingBox::default_instance_ = NULL;
-
-TripPath_BoundingBox* TripPath_BoundingBox::New() const {
-  return new TripPath_BoundingBox;
-}
-
-void TripPath_BoundingBox::Clear() {
-  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (has_min_ll()) {
-      if (min_ll_ != NULL) min_ll_->::valhalla::odin::TripPath_LatLng::Clear();
-    }
-    if (has_max_ll()) {
-      if (max_ll_ != NULL) max_ll_->::valhalla::odin::TripPath_LatLng::Clear();
-    }
-  }
-  ::memset(_has_bits_, 0, sizeof(_has_bits_));
-  mutable_unknown_fields()->Clear();
-}
-
-bool TripPath_BoundingBox::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
-#define DO_(EXPRESSION) if (!(EXPRESSION)) return false
-  ::google::protobuf::uint32 tag;
-  while ((tag = input->ReadTag()) != 0) {
-    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // optional .valhalla.odin.TripPath.LatLng min_ll = 1;
-      case 1: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
-               input, mutable_min_ll()));
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(18)) goto parse_max_ll;
-        break;
-      }
-
-      // optional .valhalla.odin.TripPath.LatLng max_ll = 2;
-      case 2: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
-         parse_max_ll:
-          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
-               input, mutable_max_ll()));
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectAtEnd()) return true;
-        break;
-      }
-
-      default: {
-      handle_uninterpreted:
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
-          return true;
-        }
-        DO_(::google::protobuf::internal::WireFormat::SkipField(
-              input, tag, mutable_unknown_fields()));
-        break;
-      }
-    }
-  }
-  return true;
-#undef DO_
-}
-
-void TripPath_BoundingBox::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // optional .valhalla.odin.TripPath.LatLng min_ll = 1;
-  if (has_min_ll()) {
-    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      1, this->min_ll(), output);
-  }
-
-  // optional .valhalla.odin.TripPath.LatLng max_ll = 2;
-  if (has_max_ll()) {
-    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      2, this->max_ll(), output);
-  }
-
-  if (!unknown_fields().empty()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        unknown_fields(), output);
-  }
-}
-
-::google::protobuf::uint8* TripPath_BoundingBox::SerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
-  // optional .valhalla.odin.TripPath.LatLng min_ll = 1;
-  if (has_min_ll()) {
-    target = ::google::protobuf::internal::WireFormatLite::
-      WriteMessageNoVirtualToArray(
-        1, this->min_ll(), target);
-  }
-
-  // optional .valhalla.odin.TripPath.LatLng max_ll = 2;
-  if (has_max_ll()) {
-    target = ::google::protobuf::internal::WireFormatLite::
-      WriteMessageNoVirtualToArray(
-        2, this->max_ll(), target);
-  }
-
-  if (!unknown_fields().empty()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        unknown_fields(), target);
-  }
-  return target;
-}
-
-int TripPath_BoundingBox::ByteSize() const {
-  int total_size = 0;
-
-  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // optional .valhalla.odin.TripPath.LatLng min_ll = 1;
-    if (has_min_ll()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
-          this->min_ll());
-    }
-
-    // optional .valhalla.odin.TripPath.LatLng max_ll = 2;
-    if (has_max_ll()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
-          this->max_ll());
-    }
-
-  }
-  if (!unknown_fields().empty()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        unknown_fields());
-  }
-  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
-  _cached_size_ = total_size;
-  GOOGLE_SAFE_CONCURRENT_WRITES_END();
-  return total_size;
-}
-
-void TripPath_BoundingBox::MergeFrom(const ::google::protobuf::Message& from) {
-  GOOGLE_CHECK_NE(&from, this);
-  const TripPath_BoundingBox* source =
-    ::google::protobuf::internal::dynamic_cast_if_available<const TripPath_BoundingBox*>(
-      &from);
-  if (source == NULL) {
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
-  } else {
-    MergeFrom(*source);
-  }
-}
-
-void TripPath_BoundingBox::MergeFrom(const TripPath_BoundingBox& from) {
-  GOOGLE_CHECK_NE(&from, this);
-  if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (from.has_min_ll()) {
-      mutable_min_ll()->::valhalla::odin::TripPath_LatLng::MergeFrom(from.min_ll());
-    }
-    if (from.has_max_ll()) {
-      mutable_max_ll()->::valhalla::odin::TripPath_LatLng::MergeFrom(from.max_ll());
-    }
-  }
-  mutable_unknown_fields()->MergeFrom(from.unknown_fields());
-}
-
-void TripPath_BoundingBox::CopyFrom(const ::google::protobuf::Message& from) {
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
-
-void TripPath_BoundingBox::CopyFrom(const TripPath_BoundingBox& from) {
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
-
-bool TripPath_BoundingBox::IsInitialized() const {
-
-  return true;
-}
-
-void TripPath_BoundingBox::Swap(TripPath_BoundingBox* other) {
-  if (other != this) {
-    std::swap(min_ll_, other->min_ll_);
-    std::swap(max_ll_, other->max_ll_);
-    std::swap(_has_bits_[0], other->_has_bits_[0]);
-    _unknown_fields_.Swap(&other->_unknown_fields_);
-    std::swap(_cached_size_, other->_cached_size_);
-  }
-}
-
-::google::protobuf::Metadata TripPath_BoundingBox::GetMetadata() const {
-  protobuf_AssignDescriptorsOnce();
-  ::google::protobuf::Metadata metadata;
-  metadata.descriptor = TripPath_BoundingBox_descriptor_;
-  metadata.reflection = TripPath_BoundingBox_reflection_;
-  return metadata;
-}
-
-
-// -------------------------------------------------------------------
-
-const ::google::protobuf::EnumDescriptor* TripPath_Location_Type_descriptor() {
-  protobuf_AssignDescriptorsOnce();
-  return TripPath_Location_Type_descriptor_;
-}
-bool TripPath_Location_Type_IsValid(int value) {
-  switch(value) {
-    case 0:
-    case 1:
-      return true;
-    default:
-      return false;
-  }
-}
-
-#ifndef _MSC_VER
-const TripPath_Location_Type TripPath_Location::kBreak;
-const TripPath_Location_Type TripPath_Location::kThrough;
-const TripPath_Location_Type TripPath_Location::Type_MIN;
-const TripPath_Location_Type TripPath_Location::Type_MAX;
-const int TripPath_Location::Type_ARRAYSIZE;
-#endif  // _MSC_VER
-const ::google::protobuf::EnumDescriptor* TripPath_Location_SideOfStreet_descriptor() {
-  protobuf_AssignDescriptorsOnce();
-  return TripPath_Location_SideOfStreet_descriptor_;
-}
-bool TripPath_Location_SideOfStreet_IsValid(int value) {
+bool TripPath_CycleLane_IsValid(int value) {
   switch(value) {
     case 0:
     case 1:
     case 2:
+    case 3:
       return true;
     default:
       return false;
@@ -1350,763 +791,39 @@ bool TripPath_Location_SideOfStreet_IsValid(int value) {
 }
 
 #ifndef _MSC_VER
-const TripPath_Location_SideOfStreet TripPath_Location::kNone;
-const TripPath_Location_SideOfStreet TripPath_Location::kLeft;
-const TripPath_Location_SideOfStreet TripPath_Location::kRight;
-const TripPath_Location_SideOfStreet TripPath_Location::SideOfStreet_MIN;
-const TripPath_Location_SideOfStreet TripPath_Location::SideOfStreet_MAX;
-const int TripPath_Location::SideOfStreet_ARRAYSIZE;
+const TripPath_CycleLane TripPath::kNoCycleLane;
+const TripPath_CycleLane TripPath::kShared;
+const TripPath_CycleLane TripPath::kDedicated;
+const TripPath_CycleLane TripPath::kSeparated;
+const TripPath_CycleLane TripPath::CycleLane_MIN;
+const TripPath_CycleLane TripPath::CycleLane_MAX;
+const int TripPath::CycleLane_ARRAYSIZE;
 #endif  // _MSC_VER
+const ::google::protobuf::EnumDescriptor* TripPath_Sidewalk_descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return TripPath_Sidewalk_descriptor_;
+}
+bool TripPath_Sidewalk_IsValid(int value) {
+  switch(value) {
+    case 0:
+    case 1:
+    case 2:
+    case 3:
+      return true;
+    default:
+      return false;
+  }
+}
+
 #ifndef _MSC_VER
-const int TripPath_Location::kLlFieldNumber;
-const int TripPath_Location::kTypeFieldNumber;
-const int TripPath_Location::kHeadingFieldNumber;
-const int TripPath_Location::kNameFieldNumber;
-const int TripPath_Location::kStreetFieldNumber;
-const int TripPath_Location::kCityFieldNumber;
-const int TripPath_Location::kStateFieldNumber;
-const int TripPath_Location::kPostalCodeFieldNumber;
-const int TripPath_Location::kCountryFieldNumber;
-const int TripPath_Location::kDateTimeFieldNumber;
-const int TripPath_Location::kSideOfStreetFieldNumber;
-#endif  // !_MSC_VER
-
-TripPath_Location::TripPath_Location()
-  : ::google::protobuf::Message() {
-  SharedCtor();
-}
-
-void TripPath_Location::InitAsDefaultInstance() {
-  ll_ = const_cast< ::valhalla::odin::TripPath_LatLng*>(&::valhalla::odin::TripPath_LatLng::default_instance());
-}
-
-TripPath_Location::TripPath_Location(const TripPath_Location& from)
-  : ::google::protobuf::Message() {
-  SharedCtor();
-  MergeFrom(from);
-}
-
-void TripPath_Location::SharedCtor() {
-  _cached_size_ = 0;
-  ll_ = NULL;
-  type_ = 0;
-  heading_ = 0u;
-  name_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
-  street_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
-  city_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
-  state_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
-  postal_code_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
-  country_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
-  date_time_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
-  side_of_street_ = 0;
-  ::memset(_has_bits_, 0, sizeof(_has_bits_));
-}
-
-TripPath_Location::~TripPath_Location() {
-  SharedDtor();
-}
-
-void TripPath_Location::SharedDtor() {
-  if (name_ != &::google::protobuf::internal::kEmptyString) {
-    delete name_;
-  }
-  if (street_ != &::google::protobuf::internal::kEmptyString) {
-    delete street_;
-  }
-  if (city_ != &::google::protobuf::internal::kEmptyString) {
-    delete city_;
-  }
-  if (state_ != &::google::protobuf::internal::kEmptyString) {
-    delete state_;
-  }
-  if (postal_code_ != &::google::protobuf::internal::kEmptyString) {
-    delete postal_code_;
-  }
-  if (country_ != &::google::protobuf::internal::kEmptyString) {
-    delete country_;
-  }
-  if (date_time_ != &::google::protobuf::internal::kEmptyString) {
-    delete date_time_;
-  }
-  if (this != default_instance_) {
-    delete ll_;
-  }
-}
-
-void TripPath_Location::SetCachedSize(int size) const {
-  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
-  _cached_size_ = size;
-  GOOGLE_SAFE_CONCURRENT_WRITES_END();
-}
-const ::google::protobuf::Descriptor* TripPath_Location::descriptor() {
-  protobuf_AssignDescriptorsOnce();
-  return TripPath_Location_descriptor_;
-}
-
-const TripPath_Location& TripPath_Location::default_instance() {
-  if (default_instance_ == NULL) protobuf_AddDesc_trippath_2eproto();
-  return *default_instance_;
-}
-
-TripPath_Location* TripPath_Location::default_instance_ = NULL;
-
-TripPath_Location* TripPath_Location::New() const {
-  return new TripPath_Location;
-}
-
-void TripPath_Location::Clear() {
-  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (has_ll()) {
-      if (ll_ != NULL) ll_->::valhalla::odin::TripPath_LatLng::Clear();
-    }
-    type_ = 0;
-    heading_ = 0u;
-    if (has_name()) {
-      if (name_ != &::google::protobuf::internal::kEmptyString) {
-        name_->clear();
-      }
-    }
-    if (has_street()) {
-      if (street_ != &::google::protobuf::internal::kEmptyString) {
-        street_->clear();
-      }
-    }
-    if (has_city()) {
-      if (city_ != &::google::protobuf::internal::kEmptyString) {
-        city_->clear();
-      }
-    }
-    if (has_state()) {
-      if (state_ != &::google::protobuf::internal::kEmptyString) {
-        state_->clear();
-      }
-    }
-    if (has_postal_code()) {
-      if (postal_code_ != &::google::protobuf::internal::kEmptyString) {
-        postal_code_->clear();
-      }
-    }
-  }
-  if (_has_bits_[8 / 32] & (0xffu << (8 % 32))) {
-    if (has_country()) {
-      if (country_ != &::google::protobuf::internal::kEmptyString) {
-        country_->clear();
-      }
-    }
-    if (has_date_time()) {
-      if (date_time_ != &::google::protobuf::internal::kEmptyString) {
-        date_time_->clear();
-      }
-    }
-    side_of_street_ = 0;
-  }
-  ::memset(_has_bits_, 0, sizeof(_has_bits_));
-  mutable_unknown_fields()->Clear();
-}
-
-bool TripPath_Location::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
-#define DO_(EXPRESSION) if (!(EXPRESSION)) return false
-  ::google::protobuf::uint32 tag;
-  while ((tag = input->ReadTag()) != 0) {
-    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // optional .valhalla.odin.TripPath.LatLng ll = 1;
-      case 1: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
-               input, mutable_ll()));
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(16)) goto parse_type;
-        break;
-      }
-
-      // optional .valhalla.odin.TripPath.Location.Type type = 2;
-      case 2: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-         parse_type:
-          int value;
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
-                 input, &value)));
-          if (::valhalla::odin::TripPath_Location_Type_IsValid(value)) {
-            set_type(static_cast< ::valhalla::odin::TripPath_Location_Type >(value));
-          } else {
-            mutable_unknown_fields()->AddVarint(2, value);
-          }
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(24)) goto parse_heading;
-        break;
-      }
-
-      // optional uint32 heading = 3;
-      case 3: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-         parse_heading:
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
-                 input, &heading_)));
-          set_has_heading();
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(34)) goto parse_name;
-        break;
-      }
-
-      // optional string name = 4;
-      case 4: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
-         parse_name:
-          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
-                input, this->mutable_name()));
-          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-            this->name().data(), this->name().length(),
-            ::google::protobuf::internal::WireFormat::PARSE);
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(42)) goto parse_street;
-        break;
-      }
-
-      // optional string street = 5;
-      case 5: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
-         parse_street:
-          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
-                input, this->mutable_street()));
-          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-            this->street().data(), this->street().length(),
-            ::google::protobuf::internal::WireFormat::PARSE);
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(50)) goto parse_city;
-        break;
-      }
-
-      // optional string city = 6;
-      case 6: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
-         parse_city:
-          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
-                input, this->mutable_city()));
-          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-            this->city().data(), this->city().length(),
-            ::google::protobuf::internal::WireFormat::PARSE);
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(58)) goto parse_state;
-        break;
-      }
-
-      // optional string state = 7;
-      case 7: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
-         parse_state:
-          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
-                input, this->mutable_state()));
-          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-            this->state().data(), this->state().length(),
-            ::google::protobuf::internal::WireFormat::PARSE);
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(66)) goto parse_postal_code;
-        break;
-      }
-
-      // optional string postal_code = 8;
-      case 8: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
-         parse_postal_code:
-          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
-                input, this->mutable_postal_code()));
-          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-            this->postal_code().data(), this->postal_code().length(),
-            ::google::protobuf::internal::WireFormat::PARSE);
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(74)) goto parse_country;
-        break;
-      }
-
-      // optional string country = 9;
-      case 9: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
-         parse_country:
-          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
-                input, this->mutable_country()));
-          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-            this->country().data(), this->country().length(),
-            ::google::protobuf::internal::WireFormat::PARSE);
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(82)) goto parse_date_time;
-        break;
-      }
-
-      // optional string date_time = 10;
-      case 10: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
-         parse_date_time:
-          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
-                input, this->mutable_date_time()));
-          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-            this->date_time().data(), this->date_time().length(),
-            ::google::protobuf::internal::WireFormat::PARSE);
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(88)) goto parse_side_of_street;
-        break;
-      }
-
-      // optional .valhalla.odin.TripPath.Location.SideOfStreet side_of_street = 11;
-      case 11: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-         parse_side_of_street:
-          int value;
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
-                 input, &value)));
-          if (::valhalla::odin::TripPath_Location_SideOfStreet_IsValid(value)) {
-            set_side_of_street(static_cast< ::valhalla::odin::TripPath_Location_SideOfStreet >(value));
-          } else {
-            mutable_unknown_fields()->AddVarint(11, value);
-          }
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectAtEnd()) return true;
-        break;
-      }
-
-      default: {
-      handle_uninterpreted:
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
-          return true;
-        }
-        DO_(::google::protobuf::internal::WireFormat::SkipField(
-              input, tag, mutable_unknown_fields()));
-        break;
-      }
-    }
-  }
-  return true;
-#undef DO_
-}
-
-void TripPath_Location::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // optional .valhalla.odin.TripPath.LatLng ll = 1;
-  if (has_ll()) {
-    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      1, this->ll(), output);
-  }
-
-  // optional .valhalla.odin.TripPath.Location.Type type = 2;
-  if (has_type()) {
-    ::google::protobuf::internal::WireFormatLite::WriteEnum(
-      2, this->type(), output);
-  }
-
-  // optional uint32 heading = 3;
-  if (has_heading()) {
-    ::google::protobuf::internal::WireFormatLite::WriteUInt32(3, this->heading(), output);
-  }
-
-  // optional string name = 4;
-  if (has_name()) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->name().data(), this->name().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE);
-    ::google::protobuf::internal::WireFormatLite::WriteString(
-      4, this->name(), output);
-  }
-
-  // optional string street = 5;
-  if (has_street()) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->street().data(), this->street().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE);
-    ::google::protobuf::internal::WireFormatLite::WriteString(
-      5, this->street(), output);
-  }
-
-  // optional string city = 6;
-  if (has_city()) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->city().data(), this->city().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE);
-    ::google::protobuf::internal::WireFormatLite::WriteString(
-      6, this->city(), output);
-  }
-
-  // optional string state = 7;
-  if (has_state()) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->state().data(), this->state().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE);
-    ::google::protobuf::internal::WireFormatLite::WriteString(
-      7, this->state(), output);
-  }
-
-  // optional string postal_code = 8;
-  if (has_postal_code()) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->postal_code().data(), this->postal_code().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE);
-    ::google::protobuf::internal::WireFormatLite::WriteString(
-      8, this->postal_code(), output);
-  }
-
-  // optional string country = 9;
-  if (has_country()) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->country().data(), this->country().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE);
-    ::google::protobuf::internal::WireFormatLite::WriteString(
-      9, this->country(), output);
-  }
-
-  // optional string date_time = 10;
-  if (has_date_time()) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->date_time().data(), this->date_time().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE);
-    ::google::protobuf::internal::WireFormatLite::WriteString(
-      10, this->date_time(), output);
-  }
-
-  // optional .valhalla.odin.TripPath.Location.SideOfStreet side_of_street = 11;
-  if (has_side_of_street()) {
-    ::google::protobuf::internal::WireFormatLite::WriteEnum(
-      11, this->side_of_street(), output);
-  }
-
-  if (!unknown_fields().empty()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        unknown_fields(), output);
-  }
-}
-
-::google::protobuf::uint8* TripPath_Location::SerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
-  // optional .valhalla.odin.TripPath.LatLng ll = 1;
-  if (has_ll()) {
-    target = ::google::protobuf::internal::WireFormatLite::
-      WriteMessageNoVirtualToArray(
-        1, this->ll(), target);
-  }
-
-  // optional .valhalla.odin.TripPath.Location.Type type = 2;
-  if (has_type()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
-      2, this->type(), target);
-  }
-
-  // optional uint32 heading = 3;
-  if (has_heading()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(3, this->heading(), target);
-  }
-
-  // optional string name = 4;
-  if (has_name()) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->name().data(), this->name().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE);
-    target =
-      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        4, this->name(), target);
-  }
-
-  // optional string street = 5;
-  if (has_street()) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->street().data(), this->street().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE);
-    target =
-      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        5, this->street(), target);
-  }
-
-  // optional string city = 6;
-  if (has_city()) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->city().data(), this->city().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE);
-    target =
-      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        6, this->city(), target);
-  }
-
-  // optional string state = 7;
-  if (has_state()) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->state().data(), this->state().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE);
-    target =
-      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        7, this->state(), target);
-  }
-
-  // optional string postal_code = 8;
-  if (has_postal_code()) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->postal_code().data(), this->postal_code().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE);
-    target =
-      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        8, this->postal_code(), target);
-  }
-
-  // optional string country = 9;
-  if (has_country()) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->country().data(), this->country().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE);
-    target =
-      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        9, this->country(), target);
-  }
-
-  // optional string date_time = 10;
-  if (has_date_time()) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->date_time().data(), this->date_time().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE);
-    target =
-      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        10, this->date_time(), target);
-  }
-
-  // optional .valhalla.odin.TripPath.Location.SideOfStreet side_of_street = 11;
-  if (has_side_of_street()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
-      11, this->side_of_street(), target);
-  }
-
-  if (!unknown_fields().empty()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        unknown_fields(), target);
-  }
-  return target;
-}
-
-int TripPath_Location::ByteSize() const {
-  int total_size = 0;
-
-  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // optional .valhalla.odin.TripPath.LatLng ll = 1;
-    if (has_ll()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
-          this->ll());
-    }
-
-    // optional .valhalla.odin.TripPath.Location.Type type = 2;
-    if (has_type()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::EnumSize(this->type());
-    }
-
-    // optional uint32 heading = 3;
-    if (has_heading()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::UInt32Size(
-          this->heading());
-    }
-
-    // optional string name = 4;
-    if (has_name()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::StringSize(
-          this->name());
-    }
-
-    // optional string street = 5;
-    if (has_street()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::StringSize(
-          this->street());
-    }
-
-    // optional string city = 6;
-    if (has_city()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::StringSize(
-          this->city());
-    }
-
-    // optional string state = 7;
-    if (has_state()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::StringSize(
-          this->state());
-    }
-
-    // optional string postal_code = 8;
-    if (has_postal_code()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::StringSize(
-          this->postal_code());
-    }
-
-  }
-  if (_has_bits_[8 / 32] & (0xffu << (8 % 32))) {
-    // optional string country = 9;
-    if (has_country()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::StringSize(
-          this->country());
-    }
-
-    // optional string date_time = 10;
-    if (has_date_time()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::StringSize(
-          this->date_time());
-    }
-
-    // optional .valhalla.odin.TripPath.Location.SideOfStreet side_of_street = 11;
-    if (has_side_of_street()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::EnumSize(this->side_of_street());
-    }
-
-  }
-  if (!unknown_fields().empty()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        unknown_fields());
-  }
-  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
-  _cached_size_ = total_size;
-  GOOGLE_SAFE_CONCURRENT_WRITES_END();
-  return total_size;
-}
-
-void TripPath_Location::MergeFrom(const ::google::protobuf::Message& from) {
-  GOOGLE_CHECK_NE(&from, this);
-  const TripPath_Location* source =
-    ::google::protobuf::internal::dynamic_cast_if_available<const TripPath_Location*>(
-      &from);
-  if (source == NULL) {
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
-  } else {
-    MergeFrom(*source);
-  }
-}
-
-void TripPath_Location::MergeFrom(const TripPath_Location& from) {
-  GOOGLE_CHECK_NE(&from, this);
-  if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (from.has_ll()) {
-      mutable_ll()->::valhalla::odin::TripPath_LatLng::MergeFrom(from.ll());
-    }
-    if (from.has_type()) {
-      set_type(from.type());
-    }
-    if (from.has_heading()) {
-      set_heading(from.heading());
-    }
-    if (from.has_name()) {
-      set_name(from.name());
-    }
-    if (from.has_street()) {
-      set_street(from.street());
-    }
-    if (from.has_city()) {
-      set_city(from.city());
-    }
-    if (from.has_state()) {
-      set_state(from.state());
-    }
-    if (from.has_postal_code()) {
-      set_postal_code(from.postal_code());
-    }
-  }
-  if (from._has_bits_[8 / 32] & (0xffu << (8 % 32))) {
-    if (from.has_country()) {
-      set_country(from.country());
-    }
-    if (from.has_date_time()) {
-      set_date_time(from.date_time());
-    }
-    if (from.has_side_of_street()) {
-      set_side_of_street(from.side_of_street());
-    }
-  }
-  mutable_unknown_fields()->MergeFrom(from.unknown_fields());
-}
-
-void TripPath_Location::CopyFrom(const ::google::protobuf::Message& from) {
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
-
-void TripPath_Location::CopyFrom(const TripPath_Location& from) {
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
-
-bool TripPath_Location::IsInitialized() const {
-
-  return true;
-}
-
-void TripPath_Location::Swap(TripPath_Location* other) {
-  if (other != this) {
-    std::swap(ll_, other->ll_);
-    std::swap(type_, other->type_);
-    std::swap(heading_, other->heading_);
-    std::swap(name_, other->name_);
-    std::swap(street_, other->street_);
-    std::swap(city_, other->city_);
-    std::swap(state_, other->state_);
-    std::swap(postal_code_, other->postal_code_);
-    std::swap(country_, other->country_);
-    std::swap(date_time_, other->date_time_);
-    std::swap(side_of_street_, other->side_of_street_);
-    std::swap(_has_bits_[0], other->_has_bits_[0]);
-    _unknown_fields_.Swap(&other->_unknown_fields_);
-    std::swap(_cached_size_, other->_cached_size_);
-  }
-}
-
-::google::protobuf::Metadata TripPath_Location::GetMetadata() const {
-  protobuf_AssignDescriptorsOnce();
-  ::google::protobuf::Metadata metadata;
-  metadata.descriptor = TripPath_Location_descriptor_;
-  metadata.reflection = TripPath_Location_reflection_;
-  return metadata;
-}
-
-
-// -------------------------------------------------------------------
-
+const TripPath_Sidewalk TripPath::kNoSidewalk;
+const TripPath_Sidewalk TripPath::kLeft;
+const TripPath_Sidewalk TripPath::kRight;
+const TripPath_Sidewalk TripPath::kBothSides;
+const TripPath_Sidewalk TripPath::Sidewalk_MIN;
+const TripPath_Sidewalk TripPath::Sidewalk_MAX;
+const int TripPath::Sidewalk_ARRAYSIZE;
+#endif  // _MSC_VER
 #ifndef _MSC_VER
 const int TripPath_Sign::kExitNumberFieldNumber;
 const int TripPath_Sign::kExitBranchFieldNumber;
@@ -3270,7 +1987,7 @@ const int TripPath_Edge::kBridgeFieldNumber;
 const int TripPath_Edge::kRoundaboutFieldNumber;
 const int TripPath_Edge::kInternalIntersectionFieldNumber;
 const int TripPath_Edge::kDriveOnRightFieldNumber;
-const int TripPath_Edge::kEndNodeIndexFieldNumber;
+const int TripPath_Edge::kSurfaceFieldNumber;
 const int TripPath_Edge::kSignFieldNumber;
 const int TripPath_Edge::kTravelModeFieldNumber;
 const int TripPath_Edge::kVehicleTypeFieldNumber;
@@ -3283,6 +2000,14 @@ const int TripPath_Edge::kWayIdFieldNumber;
 const int TripPath_Edge::kWeightedGradeFieldNumber;
 const int TripPath_Edge::kMaxUpwardGradeFieldNumber;
 const int TripPath_Edge::kMaxDownwardGradeFieldNumber;
+const int TripPath_Edge::kLaneCountFieldNumber;
+const int TripPath_Edge::kCycleLaneFieldNumber;
+const int TripPath_Edge::kBicycleNetworkFieldNumber;
+const int TripPath_Edge::kSidewalkFieldNumber;
+const int TripPath_Edge::kDensityFieldNumber;
+const int TripPath_Edge::kSpeedLimitFieldNumber;
+const int TripPath_Edge::kTruckSpeedFieldNumber;
+const int TripPath_Edge::kTruckRouteFieldNumber;
 #endif  // !_MSC_VER
 
 TripPath_Edge::TripPath_Edge()
@@ -3319,7 +2044,7 @@ void TripPath_Edge::SharedCtor() {
   roundabout_ = false;
   internal_intersection_ = false;
   drive_on_right_ = true;
-  end_node_index_ = 0u;
+  surface_ = 0;
   sign_ = NULL;
   travel_mode_ = 0;
   vehicle_type_ = 0;
@@ -3332,6 +2057,14 @@ void TripPath_Edge::SharedCtor() {
   weighted_grade_ = 0;
   max_upward_grade_ = 0;
   max_downward_grade_ = 0;
+  lane_count_ = 0u;
+  cycle_lane_ = 0;
+  bicycle_network_ = 0u;
+  sidewalk_ = 0;
+  density_ = 0u;
+  speed_limit_ = 0u;
+  truck_speed_ = 0;
+  truck_route_ = false;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -3389,7 +2122,7 @@ void TripPath_Edge::Clear() {
   }
   if (_has_bits_[16 / 32] & (0xffu << (16 % 32))) {
     drive_on_right_ = true;
-    end_node_index_ = 0u;
+    surface_ = 0;
     if (has_sign()) {
       if (sign_ != NULL) sign_->::valhalla::odin::TripPath_Sign::Clear();
     }
@@ -3408,6 +2141,16 @@ void TripPath_Edge::Clear() {
     weighted_grade_ = 0;
     max_upward_grade_ = 0;
     max_downward_grade_ = 0;
+    lane_count_ = 0u;
+    cycle_lane_ = 0;
+  }
+  if (_has_bits_[32 / 32] & (0xffu << (32 % 32))) {
+    bicycle_network_ = 0u;
+    sidewalk_ = 0;
+    density_ = 0u;
+    speed_limit_ = 0u;
+    truck_speed_ = 0;
+    truck_route_ = false;
   }
   name_.Clear();
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
@@ -3706,19 +2449,24 @@ bool TripPath_Edge::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(144)) goto parse_end_node_index;
+        if (input->ExpectTag(144)) goto parse_surface;
         break;
       }
 
-      // optional uint32 end_node_index = 18;
+      // optional .valhalla.odin.TripPath.Surface surface = 18;
       case 18: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-         parse_end_node_index:
+         parse_surface:
+          int value;
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
-                 input, &end_node_index_)));
-          set_has_end_node_index();
+                   int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
+                 input, &value)));
+          if (::valhalla::odin::TripPath_Surface_IsValid(value)) {
+            set_surface(static_cast< ::valhalla::odin::TripPath_Surface >(value));
+          } else {
+            mutable_unknown_fields()->AddVarint(18, value);
+          }
         } else {
           goto handle_uninterpreted;
         }
@@ -3935,6 +2683,144 @@ bool TripPath_Edge::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
+        if (input->ExpectTag(248)) goto parse_lane_count;
+        break;
+      }
+
+      // optional uint32 lane_count = 31;
+      case 31: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_lane_count:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
+                 input, &lane_count_)));
+          set_has_lane_count();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(256)) goto parse_cycle_lane;
+        break;
+      }
+
+      // optional .valhalla.odin.TripPath.CycleLane cycle_lane = 32;
+      case 32: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_cycle_lane:
+          int value;
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
+                 input, &value)));
+          if (::valhalla::odin::TripPath_CycleLane_IsValid(value)) {
+            set_cycle_lane(static_cast< ::valhalla::odin::TripPath_CycleLane >(value));
+          } else {
+            mutable_unknown_fields()->AddVarint(32, value);
+          }
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(264)) goto parse_bicycle_network;
+        break;
+      }
+
+      // optional uint32 bicycle_network = 33;
+      case 33: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_bicycle_network:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
+                 input, &bicycle_network_)));
+          set_has_bicycle_network();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(272)) goto parse_sidewalk;
+        break;
+      }
+
+      // optional .valhalla.odin.TripPath.Sidewalk sidewalk = 34;
+      case 34: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_sidewalk:
+          int value;
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
+                 input, &value)));
+          if (::valhalla::odin::TripPath_Sidewalk_IsValid(value)) {
+            set_sidewalk(static_cast< ::valhalla::odin::TripPath_Sidewalk >(value));
+          } else {
+            mutable_unknown_fields()->AddVarint(34, value);
+          }
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(280)) goto parse_density;
+        break;
+      }
+
+      // optional uint32 density = 35;
+      case 35: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_density:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
+                 input, &density_)));
+          set_has_density();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(288)) goto parse_speed_limit;
+        break;
+      }
+
+      // optional uint32 speed_limit = 36;
+      case 36: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_speed_limit:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
+                 input, &speed_limit_)));
+          set_has_speed_limit();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(301)) goto parse_truck_speed;
+        break;
+      }
+
+      // optional float truck_speed = 37;
+      case 37: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_FIXED32) {
+         parse_truck_speed:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
+                 input, &truck_speed_)));
+          set_has_truck_speed();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(304)) goto parse_truck_route;
+        break;
+      }
+
+      // optional bool truck_route = 38;
+      case 38: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_truck_route:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
+                 input, &truck_route_)));
+          set_has_truck_route();
+        } else {
+          goto handle_uninterpreted;
+        }
         if (input->ExpectAtEnd()) return true;
         break;
       }
@@ -4049,9 +2935,10 @@ void TripPath_Edge::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteBool(17, this->drive_on_right(), output);
   }
 
-  // optional uint32 end_node_index = 18;
-  if (has_end_node_index()) {
-    ::google::protobuf::internal::WireFormatLite::WriteUInt32(18, this->end_node_index(), output);
+  // optional .valhalla.odin.TripPath.Surface surface = 18;
+  if (has_surface()) {
+    ::google::protobuf::internal::WireFormatLite::WriteEnum(
+      18, this->surface(), output);
   }
 
   // optional .valhalla.odin.TripPath.Sign sign = 19;
@@ -4119,6 +3006,48 @@ void TripPath_Edge::SerializeWithCachedSizes(
   // optional int32 max_downward_grade = 30;
   if (has_max_downward_grade()) {
     ::google::protobuf::internal::WireFormatLite::WriteInt32(30, this->max_downward_grade(), output);
+  }
+
+  // optional uint32 lane_count = 31;
+  if (has_lane_count()) {
+    ::google::protobuf::internal::WireFormatLite::WriteUInt32(31, this->lane_count(), output);
+  }
+
+  // optional .valhalla.odin.TripPath.CycleLane cycle_lane = 32;
+  if (has_cycle_lane()) {
+    ::google::protobuf::internal::WireFormatLite::WriteEnum(
+      32, this->cycle_lane(), output);
+  }
+
+  // optional uint32 bicycle_network = 33;
+  if (has_bicycle_network()) {
+    ::google::protobuf::internal::WireFormatLite::WriteUInt32(33, this->bicycle_network(), output);
+  }
+
+  // optional .valhalla.odin.TripPath.Sidewalk sidewalk = 34;
+  if (has_sidewalk()) {
+    ::google::protobuf::internal::WireFormatLite::WriteEnum(
+      34, this->sidewalk(), output);
+  }
+
+  // optional uint32 density = 35;
+  if (has_density()) {
+    ::google::protobuf::internal::WireFormatLite::WriteUInt32(35, this->density(), output);
+  }
+
+  // optional uint32 speed_limit = 36;
+  if (has_speed_limit()) {
+    ::google::protobuf::internal::WireFormatLite::WriteUInt32(36, this->speed_limit(), output);
+  }
+
+  // optional float truck_speed = 37;
+  if (has_truck_speed()) {
+    ::google::protobuf::internal::WireFormatLite::WriteFloat(37, this->truck_speed(), output);
+  }
+
+  // optional bool truck_route = 38;
+  if (has_truck_route()) {
+    ::google::protobuf::internal::WireFormatLite::WriteBool(38, this->truck_route(), output);
   }
 
   if (!unknown_fields().empty()) {
@@ -4221,9 +3150,10 @@ void TripPath_Edge::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(17, this->drive_on_right(), target);
   }
 
-  // optional uint32 end_node_index = 18;
-  if (has_end_node_index()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(18, this->end_node_index(), target);
+  // optional .valhalla.odin.TripPath.Surface surface = 18;
+  if (has_surface()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
+      18, this->surface(), target);
   }
 
   // optional .valhalla.odin.TripPath.Sign sign = 19;
@@ -4293,6 +3223,48 @@ void TripPath_Edge::SerializeWithCachedSizes(
   // optional int32 max_downward_grade = 30;
   if (has_max_downward_grade()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(30, this->max_downward_grade(), target);
+  }
+
+  // optional uint32 lane_count = 31;
+  if (has_lane_count()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(31, this->lane_count(), target);
+  }
+
+  // optional .valhalla.odin.TripPath.CycleLane cycle_lane = 32;
+  if (has_cycle_lane()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
+      32, this->cycle_lane(), target);
+  }
+
+  // optional uint32 bicycle_network = 33;
+  if (has_bicycle_network()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(33, this->bicycle_network(), target);
+  }
+
+  // optional .valhalla.odin.TripPath.Sidewalk sidewalk = 34;
+  if (has_sidewalk()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
+      34, this->sidewalk(), target);
+  }
+
+  // optional uint32 density = 35;
+  if (has_density()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(35, this->density(), target);
+  }
+
+  // optional uint32 speed_limit = 36;
+  if (has_speed_limit()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(36, this->speed_limit(), target);
+  }
+
+  // optional float truck_speed = 37;
+  if (has_truck_speed()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteFloatToArray(37, this->truck_speed(), target);
+  }
+
+  // optional bool truck_route = 38;
+  if (has_truck_route()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(38, this->truck_route(), target);
   }
 
   if (!unknown_fields().empty()) {
@@ -4401,11 +3373,10 @@ int TripPath_Edge::ByteSize() const {
       total_size += 2 + 1;
     }
 
-    // optional uint32 end_node_index = 18;
-    if (has_end_node_index()) {
+    // optional .valhalla.odin.TripPath.Surface surface = 18;
+    if (has_surface()) {
       total_size += 2 +
-        ::google::protobuf::internal::WireFormatLite::UInt32Size(
-          this->end_node_index());
+        ::google::protobuf::internal::WireFormatLite::EnumSize(this->surface());
     }
 
     // optional .valhalla.odin.TripPath.Sign sign = 19;
@@ -4485,6 +3456,58 @@ int TripPath_Edge::ByteSize() const {
       total_size += 2 +
         ::google::protobuf::internal::WireFormatLite::Int32Size(
           this->max_downward_grade());
+    }
+
+    // optional uint32 lane_count = 31;
+    if (has_lane_count()) {
+      total_size += 2 +
+        ::google::protobuf::internal::WireFormatLite::UInt32Size(
+          this->lane_count());
+    }
+
+    // optional .valhalla.odin.TripPath.CycleLane cycle_lane = 32;
+    if (has_cycle_lane()) {
+      total_size += 2 +
+        ::google::protobuf::internal::WireFormatLite::EnumSize(this->cycle_lane());
+    }
+
+  }
+  if (_has_bits_[32 / 32] & (0xffu << (32 % 32))) {
+    // optional uint32 bicycle_network = 33;
+    if (has_bicycle_network()) {
+      total_size += 2 +
+        ::google::protobuf::internal::WireFormatLite::UInt32Size(
+          this->bicycle_network());
+    }
+
+    // optional .valhalla.odin.TripPath.Sidewalk sidewalk = 34;
+    if (has_sidewalk()) {
+      total_size += 2 +
+        ::google::protobuf::internal::WireFormatLite::EnumSize(this->sidewalk());
+    }
+
+    // optional uint32 density = 35;
+    if (has_density()) {
+      total_size += 2 +
+        ::google::protobuf::internal::WireFormatLite::UInt32Size(
+          this->density());
+    }
+
+    // optional uint32 speed_limit = 36;
+    if (has_speed_limit()) {
+      total_size += 2 +
+        ::google::protobuf::internal::WireFormatLite::UInt32Size(
+          this->speed_limit());
+    }
+
+    // optional float truck_speed = 37;
+    if (has_truck_speed()) {
+      total_size += 2 + 4;
+    }
+
+    // optional bool truck_route = 38;
+    if (has_truck_route()) {
+      total_size += 2 + 1;
     }
 
   }
@@ -4574,8 +3597,8 @@ void TripPath_Edge::MergeFrom(const TripPath_Edge& from) {
     if (from.has_drive_on_right()) {
       set_drive_on_right(from.drive_on_right());
     }
-    if (from.has_end_node_index()) {
-      set_end_node_index(from.end_node_index());
+    if (from.has_surface()) {
+      set_surface(from.surface());
     }
     if (from.has_sign()) {
       mutable_sign()->::valhalla::odin::TripPath_Sign::MergeFrom(from.sign());
@@ -4614,6 +3637,32 @@ void TripPath_Edge::MergeFrom(const TripPath_Edge& from) {
     }
     if (from.has_max_downward_grade()) {
       set_max_downward_grade(from.max_downward_grade());
+    }
+    if (from.has_lane_count()) {
+      set_lane_count(from.lane_count());
+    }
+    if (from.has_cycle_lane()) {
+      set_cycle_lane(from.cycle_lane());
+    }
+  }
+  if (from._has_bits_[32 / 32] & (0xffu << (32 % 32))) {
+    if (from.has_bicycle_network()) {
+      set_bicycle_network(from.bicycle_network());
+    }
+    if (from.has_sidewalk()) {
+      set_sidewalk(from.sidewalk());
+    }
+    if (from.has_density()) {
+      set_density(from.density());
+    }
+    if (from.has_speed_limit()) {
+      set_speed_limit(from.speed_limit());
+    }
+    if (from.has_truck_speed()) {
+      set_truck_speed(from.truck_speed());
+    }
+    if (from.has_truck_route()) {
+      set_truck_route(from.truck_route());
     }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
@@ -4655,7 +3704,7 @@ void TripPath_Edge::Swap(TripPath_Edge* other) {
     std::swap(roundabout_, other->roundabout_);
     std::swap(internal_intersection_, other->internal_intersection_);
     std::swap(drive_on_right_, other->drive_on_right_);
-    std::swap(end_node_index_, other->end_node_index_);
+    std::swap(surface_, other->surface_);
     std::swap(sign_, other->sign_);
     std::swap(travel_mode_, other->travel_mode_);
     std::swap(vehicle_type_, other->vehicle_type_);
@@ -4668,7 +3717,16 @@ void TripPath_Edge::Swap(TripPath_Edge* other) {
     std::swap(weighted_grade_, other->weighted_grade_);
     std::swap(max_upward_grade_, other->max_upward_grade_);
     std::swap(max_downward_grade_, other->max_downward_grade_);
+    std::swap(lane_count_, other->lane_count_);
+    std::swap(cycle_lane_, other->cycle_lane_);
+    std::swap(bicycle_network_, other->bicycle_network_);
+    std::swap(sidewalk_, other->sidewalk_);
+    std::swap(density_, other->density_);
+    std::swap(speed_limit_, other->speed_limit_);
+    std::swap(truck_speed_, other->truck_speed_);
+    std::swap(truck_route_, other->truck_route_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
+    std::swap(_has_bits_[1], other->_has_bits_[1]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);
   }
@@ -5145,7 +4203,7 @@ TripPath_TransitStopInfo::TripPath_TransitStopInfo()
 }
 
 void TripPath_TransitStopInfo::InitAsDefaultInstance() {
-  ll_ = const_cast< ::valhalla::odin::TripPath_LatLng*>(&::valhalla::odin::TripPath_LatLng::default_instance());
+  ll_ = const_cast< ::valhalla::odin::LatLng*>(&::valhalla::odin::LatLng::default_instance());
 }
 
 TripPath_TransitStopInfo::TripPath_TransitStopInfo(const TripPath_TransitStopInfo& from)
@@ -5236,7 +4294,7 @@ void TripPath_TransitStopInfo::Clear() {
     is_parent_stop_ = false;
     assumed_schedule_ = false;
     if (has_ll()) {
-      if (ll_ != NULL) ll_->::valhalla::odin::TripPath_LatLng::Clear();
+      if (ll_ != NULL) ll_->::valhalla::odin::LatLng::Clear();
     }
   }
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
@@ -5369,7 +4427,7 @@ bool TripPath_TransitStopInfo::MergePartialFromCodedStream(
         break;
       }
 
-      // optional .valhalla.odin.TripPath.LatLng ll = 8;
+      // optional .valhalla.odin.LatLng ll = 8;
       case 8: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
@@ -5453,7 +4511,7 @@ void TripPath_TransitStopInfo::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteBool(7, this->assumed_schedule(), output);
   }
 
-  // optional .valhalla.odin.TripPath.LatLng ll = 8;
+  // optional .valhalla.odin.LatLng ll = 8;
   if (has_ll()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
       8, this->ll(), output);
@@ -5523,7 +4581,7 @@ void TripPath_TransitStopInfo::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(7, this->assumed_schedule(), target);
   }
 
-  // optional .valhalla.odin.TripPath.LatLng ll = 8;
+  // optional .valhalla.odin.LatLng ll = 8;
   if (has_ll()) {
     target = ::google::protobuf::internal::WireFormatLite::
       WriteMessageNoVirtualToArray(
@@ -5585,7 +4643,7 @@ int TripPath_TransitStopInfo::ByteSize() const {
       total_size += 1 + 1;
     }
 
-    // optional .valhalla.odin.TripPath.LatLng ll = 8;
+    // optional .valhalla.odin.LatLng ll = 8;
     if (has_ll()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
@@ -5641,7 +4699,7 @@ void TripPath_TransitStopInfo::MergeFrom(const TripPath_TransitStopInfo& from) {
       set_assumed_schedule(from.assumed_schedule());
     }
     if (from.has_ll()) {
-      mutable_ll()->::valhalla::odin::TripPath_LatLng::MergeFrom(from.ll());
+      mutable_ll()->::valhalla::odin::LatLng::MergeFrom(from.ll());
     }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
@@ -5734,6 +4792,7 @@ const int TripPath_Node::kAdminIndexFieldNumber;
 const int TripPath_Node::kTypeFieldNumber;
 const int TripPath_Node::kForkFieldNumber;
 const int TripPath_Node::kTransitStopInfoFieldNumber;
+const int TripPath_Node::kTimeZoneFieldNumber;
 #endif  // !_MSC_VER
 
 TripPath_Node::TripPath_Node()
@@ -5760,6 +4819,7 @@ void TripPath_Node::SharedCtor() {
   type_ = 0;
   fork_ = false;
   transit_stop_info_ = NULL;
+  time_zone_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -5768,6 +4828,9 @@ TripPath_Node::~TripPath_Node() {
 }
 
 void TripPath_Node::SharedDtor() {
+  if (time_zone_ != &::google::protobuf::internal::kEmptyString) {
+    delete time_zone_;
+  }
   if (this != default_instance_) {
     delete edge_;
     delete transit_stop_info_;
@@ -5806,6 +4869,11 @@ void TripPath_Node::Clear() {
     fork_ = false;
     if (has_transit_stop_info()) {
       if (transit_stop_info_ != NULL) transit_stop_info_->::valhalla::odin::TripPath_TransitStopInfo::Clear();
+    }
+    if (has_time_zone()) {
+      if (time_zone_ != &::google::protobuf::internal::kEmptyString) {
+        time_zone_->clear();
+      }
     }
   }
   intersecting_edge_.Clear();
@@ -5926,6 +4994,23 @@ bool TripPath_Node::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
+        if (input->ExpectTag(66)) goto parse_time_zone;
+        break;
+      }
+
+      // optional string time_zone = 8;
+      case 8: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_time_zone:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_time_zone()));
+          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+            this->time_zone().data(), this->time_zone().length(),
+            ::google::protobuf::internal::WireFormat::PARSE);
+        } else {
+          goto handle_uninterpreted;
+        }
         if (input->ExpectAtEnd()) return true;
         break;
       }
@@ -5987,6 +5072,15 @@ void TripPath_Node::SerializeWithCachedSizes(
       7, this->transit_stop_info(), output);
   }
 
+  // optional string time_zone = 8;
+  if (has_time_zone()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->time_zone().data(), this->time_zone().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      8, this->time_zone(), output);
+  }
+
   if (!unknown_fields().empty()) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         unknown_fields(), output);
@@ -6037,6 +5131,16 @@ void TripPath_Node::SerializeWithCachedSizes(
         7, this->transit_stop_info(), target);
   }
 
+  // optional string time_zone = 8;
+  if (has_time_zone()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->time_zone().data(), this->time_zone().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        8, this->time_zone(), target);
+  }
+
   if (!unknown_fields().empty()) {
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         unknown_fields(), target);
@@ -6085,6 +5189,13 @@ int TripPath_Node::ByteSize() const {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
           this->transit_stop_info());
+    }
+
+    // optional string time_zone = 8;
+    if (has_time_zone()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::StringSize(
+          this->time_zone());
     }
 
   }
@@ -6141,6 +5252,9 @@ void TripPath_Node::MergeFrom(const TripPath_Node& from) {
     if (from.has_transit_stop_info()) {
       mutable_transit_stop_info()->::valhalla::odin::TripPath_TransitStopInfo::MergeFrom(from.transit_stop_info());
     }
+    if (from.has_time_zone()) {
+      set_time_zone(from.time_zone());
+    }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
@@ -6171,6 +5285,7 @@ void TripPath_Node::Swap(TripPath_Node* other) {
     std::swap(type_, other->type_);
     std::swap(fork_, other->fork_);
     std::swap(transit_stop_info_, other->transit_stop_info_);
+    std::swap(time_zone_, other->time_zone_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);
@@ -6585,6 +5700,7 @@ void TripPath_Admin::Swap(TripPath_Admin* other) {
 // -------------------------------------------------------------------
 
 #ifndef _MSC_VER
+const int TripPath::kOsmChangesetFieldNumber;
 const int TripPath::kTripIdFieldNumber;
 const int TripPath::kLegIdFieldNumber;
 const int TripPath::kLegCountFieldNumber;
@@ -6601,7 +5717,7 @@ TripPath::TripPath()
 }
 
 void TripPath::InitAsDefaultInstance() {
-  bbox_ = const_cast< ::valhalla::odin::TripPath_BoundingBox*>(&::valhalla::odin::TripPath_BoundingBox::default_instance());
+  bbox_ = const_cast< ::valhalla::odin::BoundingBox*>(&::valhalla::odin::BoundingBox::default_instance());
 }
 
 TripPath::TripPath(const TripPath& from)
@@ -6612,6 +5728,7 @@ TripPath::TripPath(const TripPath& from)
 
 void TripPath::SharedCtor() {
   _cached_size_ = 0;
+  osm_changeset_ = GOOGLE_ULONGLONG(0);
   trip_id_ = GOOGLE_ULONGLONG(0);
   leg_id_ = 0u;
   leg_count_ = 0u;
@@ -6656,6 +5773,7 @@ TripPath* TripPath::New() const {
 
 void TripPath::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    osm_changeset_ = GOOGLE_ULONGLONG(0);
     trip_id_ = GOOGLE_ULONGLONG(0);
     leg_id_ = 0u;
     leg_count_ = 0u;
@@ -6664,8 +5782,10 @@ void TripPath::Clear() {
         shape_->clear();
       }
     }
+  }
+  if (_has_bits_[8 / 32] & (0xffu << (8 % 32))) {
     if (has_bbox()) {
-      if (bbox_ != NULL) bbox_->::valhalla::odin::TripPath_BoundingBox::Clear();
+      if (bbox_ != NULL) bbox_->::valhalla::odin::BoundingBox::Clear();
     }
   }
   location_.Clear();
@@ -6681,10 +5801,26 @@ bool TripPath::MergePartialFromCodedStream(
   ::google::protobuf::uint32 tag;
   while ((tag = input->ReadTag()) != 0) {
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // optional uint64 trip_id = 1;
+      // optional uint64 osm_changeset = 1;
       case 1: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::uint64, ::google::protobuf::internal::WireFormatLite::TYPE_UINT64>(
+                 input, &osm_changeset_)));
+          set_has_osm_changeset();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(16)) goto parse_trip_id;
+        break;
+      }
+
+      // optional uint64 trip_id = 2;
+      case 2: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_trip_id:
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::uint64, ::google::protobuf::internal::WireFormatLite::TYPE_UINT64>(
                  input, &trip_id_)));
@@ -6692,12 +5828,12 @@ bool TripPath::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(16)) goto parse_leg_id;
+        if (input->ExpectTag(24)) goto parse_leg_id;
         break;
       }
 
-      // optional uint32 leg_id = 2;
-      case 2: {
+      // optional uint32 leg_id = 3;
+      case 3: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
          parse_leg_id:
@@ -6708,12 +5844,12 @@ bool TripPath::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(24)) goto parse_leg_count;
+        if (input->ExpectTag(32)) goto parse_leg_count;
         break;
       }
 
-      // optional uint32 leg_count = 3;
-      case 3: {
+      // optional uint32 leg_count = 4;
+      case 4: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
          parse_leg_count:
@@ -6724,12 +5860,12 @@ bool TripPath::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(34)) goto parse_location;
+        if (input->ExpectTag(42)) goto parse_location;
         break;
       }
 
-      // repeated .valhalla.odin.TripPath.Location location = 4;
-      case 4: {
+      // repeated .valhalla.odin.Location location = 5;
+      case 5: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
          parse_location:
@@ -6738,13 +5874,13 @@ bool TripPath::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(34)) goto parse_location;
-        if (input->ExpectTag(42)) goto parse_node;
+        if (input->ExpectTag(42)) goto parse_location;
+        if (input->ExpectTag(50)) goto parse_node;
         break;
       }
 
-      // repeated .valhalla.odin.TripPath.Node node = 5;
-      case 5: {
+      // repeated .valhalla.odin.TripPath.Node node = 6;
+      case 6: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
          parse_node:
@@ -6753,13 +5889,13 @@ bool TripPath::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(42)) goto parse_node;
-        if (input->ExpectTag(50)) goto parse_admin;
+        if (input->ExpectTag(50)) goto parse_node;
+        if (input->ExpectTag(58)) goto parse_admin;
         break;
       }
 
-      // repeated .valhalla.odin.TripPath.Admin admin = 6;
-      case 6: {
+      // repeated .valhalla.odin.TripPath.Admin admin = 7;
+      case 7: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
          parse_admin:
@@ -6768,13 +5904,13 @@ bool TripPath::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(50)) goto parse_admin;
-        if (input->ExpectTag(58)) goto parse_shape;
+        if (input->ExpectTag(58)) goto parse_admin;
+        if (input->ExpectTag(66)) goto parse_shape;
         break;
       }
 
-      // optional string shape = 7;
-      case 7: {
+      // optional string shape = 8;
+      case 8: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
          parse_shape:
@@ -6786,12 +5922,12 @@ bool TripPath::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(66)) goto parse_bbox;
+        if (input->ExpectTag(74)) goto parse_bbox;
         break;
       }
 
-      // optional .valhalla.odin.TripPath.BoundingBox bbox = 8;
-      case 8: {
+      // optional .valhalla.odin.BoundingBox bbox = 9;
+      case 9: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
          parse_bbox:
@@ -6822,52 +5958,57 @@ bool TripPath::MergePartialFromCodedStream(
 
 void TripPath::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // optional uint64 trip_id = 1;
+  // optional uint64 osm_changeset = 1;
+  if (has_osm_changeset()) {
+    ::google::protobuf::internal::WireFormatLite::WriteUInt64(1, this->osm_changeset(), output);
+  }
+
+  // optional uint64 trip_id = 2;
   if (has_trip_id()) {
-    ::google::protobuf::internal::WireFormatLite::WriteUInt64(1, this->trip_id(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteUInt64(2, this->trip_id(), output);
   }
 
-  // optional uint32 leg_id = 2;
+  // optional uint32 leg_id = 3;
   if (has_leg_id()) {
-    ::google::protobuf::internal::WireFormatLite::WriteUInt32(2, this->leg_id(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteUInt32(3, this->leg_id(), output);
   }
 
-  // optional uint32 leg_count = 3;
+  // optional uint32 leg_count = 4;
   if (has_leg_count()) {
-    ::google::protobuf::internal::WireFormatLite::WriteUInt32(3, this->leg_count(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteUInt32(4, this->leg_count(), output);
   }
 
-  // repeated .valhalla.odin.TripPath.Location location = 4;
+  // repeated .valhalla.odin.Location location = 5;
   for (int i = 0; i < this->location_size(); i++) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      4, this->location(i), output);
+      5, this->location(i), output);
   }
 
-  // repeated .valhalla.odin.TripPath.Node node = 5;
+  // repeated .valhalla.odin.TripPath.Node node = 6;
   for (int i = 0; i < this->node_size(); i++) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      5, this->node(i), output);
+      6, this->node(i), output);
   }
 
-  // repeated .valhalla.odin.TripPath.Admin admin = 6;
+  // repeated .valhalla.odin.TripPath.Admin admin = 7;
   for (int i = 0; i < this->admin_size(); i++) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      6, this->admin(i), output);
+      7, this->admin(i), output);
   }
 
-  // optional string shape = 7;
+  // optional string shape = 8;
   if (has_shape()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->shape().data(), this->shape().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
     ::google::protobuf::internal::WireFormatLite::WriteString(
-      7, this->shape(), output);
+      8, this->shape(), output);
   }
 
-  // optional .valhalla.odin.TripPath.BoundingBox bbox = 8;
+  // optional .valhalla.odin.BoundingBox bbox = 9;
   if (has_bbox()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      8, this->bbox(), output);
+      9, this->bbox(), output);
   }
 
   if (!unknown_fields().empty()) {
@@ -6878,57 +6019,62 @@ void TripPath::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* TripPath::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
-  // optional uint64 trip_id = 1;
+  // optional uint64 osm_changeset = 1;
+  if (has_osm_changeset()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt64ToArray(1, this->osm_changeset(), target);
+  }
+
+  // optional uint64 trip_id = 2;
   if (has_trip_id()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteUInt64ToArray(1, this->trip_id(), target);
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt64ToArray(2, this->trip_id(), target);
   }
 
-  // optional uint32 leg_id = 2;
+  // optional uint32 leg_id = 3;
   if (has_leg_id()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(2, this->leg_id(), target);
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(3, this->leg_id(), target);
   }
 
-  // optional uint32 leg_count = 3;
+  // optional uint32 leg_count = 4;
   if (has_leg_count()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(3, this->leg_count(), target);
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(4, this->leg_count(), target);
   }
 
-  // repeated .valhalla.odin.TripPath.Location location = 4;
+  // repeated .valhalla.odin.Location location = 5;
   for (int i = 0; i < this->location_size(); i++) {
     target = ::google::protobuf::internal::WireFormatLite::
       WriteMessageNoVirtualToArray(
-        4, this->location(i), target);
+        5, this->location(i), target);
   }
 
-  // repeated .valhalla.odin.TripPath.Node node = 5;
+  // repeated .valhalla.odin.TripPath.Node node = 6;
   for (int i = 0; i < this->node_size(); i++) {
     target = ::google::protobuf::internal::WireFormatLite::
       WriteMessageNoVirtualToArray(
-        5, this->node(i), target);
+        6, this->node(i), target);
   }
 
-  // repeated .valhalla.odin.TripPath.Admin admin = 6;
+  // repeated .valhalla.odin.TripPath.Admin admin = 7;
   for (int i = 0; i < this->admin_size(); i++) {
     target = ::google::protobuf::internal::WireFormatLite::
       WriteMessageNoVirtualToArray(
-        6, this->admin(i), target);
+        7, this->admin(i), target);
   }
 
-  // optional string shape = 7;
+  // optional string shape = 8;
   if (has_shape()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->shape().data(), this->shape().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
     target =
       ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        7, this->shape(), target);
+        8, this->shape(), target);
   }
 
-  // optional .valhalla.odin.TripPath.BoundingBox bbox = 8;
+  // optional .valhalla.odin.BoundingBox bbox = 9;
   if (has_bbox()) {
     target = ::google::protobuf::internal::WireFormatLite::
       WriteMessageNoVirtualToArray(
-        8, this->bbox(), target);
+        9, this->bbox(), target);
   }
 
   if (!unknown_fields().empty()) {
@@ -6942,35 +6088,44 @@ int TripPath::ByteSize() const {
   int total_size = 0;
 
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // optional uint64 trip_id = 1;
+    // optional uint64 osm_changeset = 1;
+    if (has_osm_changeset()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::UInt64Size(
+          this->osm_changeset());
+    }
+
+    // optional uint64 trip_id = 2;
     if (has_trip_id()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::UInt64Size(
           this->trip_id());
     }
 
-    // optional uint32 leg_id = 2;
+    // optional uint32 leg_id = 3;
     if (has_leg_id()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::UInt32Size(
           this->leg_id());
     }
 
-    // optional uint32 leg_count = 3;
+    // optional uint32 leg_count = 4;
     if (has_leg_count()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::UInt32Size(
           this->leg_count());
     }
 
-    // optional string shape = 7;
+    // optional string shape = 8;
     if (has_shape()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::StringSize(
           this->shape());
     }
 
-    // optional .valhalla.odin.TripPath.BoundingBox bbox = 8;
+  }
+  if (_has_bits_[8 / 32] & (0xffu << (8 % 32))) {
+    // optional .valhalla.odin.BoundingBox bbox = 9;
     if (has_bbox()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
@@ -6978,7 +6133,7 @@ int TripPath::ByteSize() const {
     }
 
   }
-  // repeated .valhalla.odin.TripPath.Location location = 4;
+  // repeated .valhalla.odin.Location location = 5;
   total_size += 1 * this->location_size();
   for (int i = 0; i < this->location_size(); i++) {
     total_size +=
@@ -6986,7 +6141,7 @@ int TripPath::ByteSize() const {
         this->location(i));
   }
 
-  // repeated .valhalla.odin.TripPath.Node node = 5;
+  // repeated .valhalla.odin.TripPath.Node node = 6;
   total_size += 1 * this->node_size();
   for (int i = 0; i < this->node_size(); i++) {
     total_size +=
@@ -6994,7 +6149,7 @@ int TripPath::ByteSize() const {
         this->node(i));
   }
 
-  // repeated .valhalla.odin.TripPath.Admin admin = 6;
+  // repeated .valhalla.odin.TripPath.Admin admin = 7;
   total_size += 1 * this->admin_size();
   for (int i = 0; i < this->admin_size(); i++) {
     total_size +=
@@ -7031,6 +6186,9 @@ void TripPath::MergeFrom(const TripPath& from) {
   node_.MergeFrom(from.node_);
   admin_.MergeFrom(from.admin_);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (from.has_osm_changeset()) {
+      set_osm_changeset(from.osm_changeset());
+    }
     if (from.has_trip_id()) {
       set_trip_id(from.trip_id());
     }
@@ -7043,8 +6201,10 @@ void TripPath::MergeFrom(const TripPath& from) {
     if (from.has_shape()) {
       set_shape(from.shape());
     }
+  }
+  if (from._has_bits_[8 / 32] & (0xffu << (8 % 32))) {
     if (from.has_bbox()) {
-      mutable_bbox()->::valhalla::odin::TripPath_BoundingBox::MergeFrom(from.bbox());
+      mutable_bbox()->::valhalla::odin::BoundingBox::MergeFrom(from.bbox());
     }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
@@ -7069,6 +6229,7 @@ bool TripPath::IsInitialized() const {
 
 void TripPath::Swap(TripPath* other) {
   if (other != this) {
+    std::swap(osm_changeset_, other->osm_changeset_);
     std::swap(trip_id_, other->trip_id_);
     std::swap(leg_id_, other->leg_id_);
     std::swap(leg_count_, other->leg_count_);

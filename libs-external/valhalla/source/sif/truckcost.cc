@@ -1,11 +1,11 @@
 #include "sif/truckcost.h"
 
 #include <iostream>
-#include <valhalla/midgard/constants.h>
-#include <valhalla/baldr/directededge.h>
-#include <valhalla/baldr/nodeinfo.h>
-#include <valhalla/baldr/accessrestriction.h>
-#include <valhalla/midgard/logging.h>
+#include "midgard/constants.h"
+#include "baldr/directededge.h"
+#include "baldr/nodeinfo.h"
+#include "baldr/accessrestriction.h"
+#include "midgard/logging.h"
 
 using namespace valhalla::baldr;
 
@@ -95,6 +95,13 @@ class TruckCost : public DynamicCost {
   virtual bool AllowMultiPass() const;
 
   /**
+   * Disables entrance into destination only areas. This should only be used
+   * for bidirectional path algorithms (and generally only for driving),
+   * otherwise a destination only penalty should be used.
+   */
+  virtual void DisableDestinationOnly();
+
+  /**
    * Get the access mode used by this costing method.
    * @return  Returns access mode.
    */
@@ -123,15 +130,16 @@ class TruckCost : public DynamicCost {
    * @param  edge           Pointer to a directed edge.
    * @param  pred           Predecessor edge information.
    * @param  opp_edge       Pointer to the opposing directed edge.
-   * @param  tile           current tile
-   * @param  edgeid         edgeid that we care about
+   * @param  tile           Tile for the opposing edge (for looking
+   *                        up restrictions).
+   * @param  opp_edgeid     Opposing edge Id
    * @return  Returns true if access is allowed, false if not.
    */
   virtual bool AllowedReverse(const baldr::DirectedEdge* edge,
                  const EdgeLabel& pred,
                  const baldr::DirectedEdge* opp_edge,
                  const baldr::GraphTile*& tile,
-                 const baldr::GraphId& edgeid) const;
+                 const baldr::GraphId& opp_edgeid) const;
 
   /**
    * Checks if access is allowed for the provided node. Node access can
@@ -167,16 +175,14 @@ class TruckCost : public DynamicCost {
    * when using a reverse search (from destination towards the origin).
    * @param  idx   Directed edge local index
    * @param  node  Node (intersection) where transition occurs.
-   * @param  opp_edge  Pointer to the opposing directed edge - this is the
-   *                   "from" or predecessor edge in the transition.
-   * @param  opp_pred_edge  Pointer to the opposing directed edge to the
-   *                        predecessor. This is the "to" edge.
+   * @param  pred  the opposing current edge in the reverse tree.
+   * @param  edge  the opposing predecessor in the reverse tree
    * @return  Returns the cost and time (seconds)
    */
-  virtual Cost TransitionCostReverse(const uint32_t idx,
-                              const baldr::NodeInfo* node,
-                              const baldr::DirectedEdge* opp_edge,
-                              const baldr::DirectedEdge* opp_pred_edge) const;
+  virtual Cost TransitionCostReverse(
+      const uint32_t idx, const baldr::NodeInfo* node,
+      const baldr::DirectedEdge* pred,
+      const baldr::DirectedEdge* edge) const;
 
   /**
    * Get the cost factor for A* heuristics. This factor is multiplied
@@ -313,6 +319,12 @@ bool TruckCost::AllowMultiPass() const {
   return true;
 }
 
+// Set to disable destination only transitions.
+void TruckCost::DisableDestinationOnly() {
+  disable_destination_only_ = true;
+  destination_only_penalty_ = 0;
+}
+
 // Get the access mode used by this costing method.
 uint32_t TruckCost::access_mode() const {
   return kTruckAccess;
@@ -328,7 +340,9 @@ bool TruckCost::Allowed(const baldr::DirectedEdge* edge,
   if (!(edge->forwardaccess() & kTruckAccess) ||
       (pred.opp_local_idx() == edge->localedgeidx()) ||
       (pred.restrictions() & (1 << edge->localedgeidx())) ||
-       edge->surface() == Surface::kImpassable) {
+       edge->surface() == Surface::kImpassable ||
+       IsUserAvoidEdge(edgeid) ||
+      (disable_destination_only_ && !pred.destonly() && edge->destonly())) {
     return false;
   }
 
@@ -379,19 +393,21 @@ bool TruckCost::AllowedReverse(const baldr::DirectedEdge* edge,
                const EdgeLabel& pred,
                const baldr::DirectedEdge* opp_edge,
                const baldr::GraphTile*& tile,
-               const baldr::GraphId& edgeid) const {
+               const baldr::GraphId& opp_edgeid) const {
   // Check access, U-turn, and simple turn restriction.
   // TODO - perhaps allow U-turns at dead-end nodes?
   if (!(opp_edge->forwardaccess() & kTruckAccess) ||
        (pred.opp_local_idx() == edge->localedgeidx()) ||
        (opp_edge->restrictions() & (1 << pred.opp_local_idx())) ||
-       opp_edge->surface() == Surface::kImpassable) {
+       opp_edge->surface() == Surface::kImpassable ||
+       IsUserAvoidEdge(opp_edgeid) ||
+      (disable_destination_only_ && !pred.destonly() && opp_edge->destonly())) {
     return false;
   }
 
   if (edge->access_restriction()) {
     const std::vector<baldr::AccessRestriction>& restrictions =
-          tile->GetAccessRestrictions(edgeid.id(), kTruckAccess);
+          tile->GetAccessRestrictions(opp_edgeid.id(), kTruckAccess);
 
     for (const auto& restriction : restrictions ) {
       // TODO:  Need to handle restictions that take place only at certain
@@ -486,7 +502,9 @@ Cost TruckCost::TransitionCost(const baldr::DirectedEdge* edge,
   if (pred.use() != Use::kAlley && edge->use() == Use::kAlley) {
     penalty += alley_penalty_;
   }
-  if (!node->name_consistency(idx, edge->localedgeidx())) {
+  // Ignore name inconsistency when entering a link to avoid double penalizing.
+  if (!edge->link() && !node->name_consistency(idx, edge->localedgeidx())) {
+    // Slight maneuver penalty
     penalty += maneuver_penalty_;
   }
 
@@ -517,9 +535,9 @@ Cost TruckCost::TransitionCost(const baldr::DirectedEdge* edge,
 // pred is the opposing current edge in the reverse tree
 // edge is the opposing predecessor in the reverse tree
 Cost TruckCost::TransitionCostReverse(const uint32_t idx,
-                            const baldr::NodeInfo* node,
-                            const baldr::DirectedEdge* pred,
-                            const baldr::DirectedEdge* edge) const {
+                                      const baldr::NodeInfo* node,
+                                      const baldr::DirectedEdge* pred,
+                                      const baldr::DirectedEdge* edge) const {
   // Accumulate cost and penalty
   float seconds = 0.0f;
   float penalty = 0.0f;
@@ -546,7 +564,8 @@ Cost TruckCost::TransitionCostReverse(const uint32_t idx,
   if (pred->use() != Use::kAlley && edge->use() == Use::kAlley) {
     penalty += alley_penalty_;
   }
-  if (!node->name_consistency(idx, edge->localedgeidx())) {
+  // Ignore name inconsistency when entering a link to avoid double penalizing.
+  if (!edge->link() && !node->name_consistency(idx, edge->localedgeidx())) {
     penalty += maneuver_penalty_;
   }
 

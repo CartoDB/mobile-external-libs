@@ -1,5 +1,5 @@
 #include "baldr/pathlocation.h"
-#include <valhalla/midgard/util.h>
+#include "midgard/util.h"
 
 namespace valhalla{
 namespace baldr{
@@ -42,7 +42,7 @@ namespace baldr{
       boost::property_tree::ptree e;
       e.put("id", edge.id.value);
       e.put("dist", edge.dist);
-      e.put("sos", edge.sos);
+      e.put("sos", static_cast<int>(edge.sos));
       e.put("score", edge.score);
 
       // Serialize projected lat,lng as double (otherwise leads to shape
@@ -55,6 +55,32 @@ namespace baldr{
     correlated.put("location_index", index);
     return correlated;
   }
+
+  rapidjson::Value PathLocation::ToRapidJson(size_t index, rapidjson::Document::AllocatorType& allocator) const {
+    rapidjson::Value value{rapidjson::kObjectType};
+    rapidjson::Value array{rapidjson::kArrayType};
+    array.Reserve(edges.size(), allocator);
+    for(const auto& edge : edges) {
+      rapidjson::Value e{rapidjson::kObjectType};
+      e.AddMember("id", edge.id.value, allocator)
+          .AddMember("dist", edge.dist, allocator)
+          .AddMember("sos", static_cast<int>(edge.sos), allocator)
+          .AddMember("score", edge.score, allocator);
+
+      // Serialize projected lat,lng as double (otherwise leads to shape
+      // artifacts at begin/end of routes as the float values are rounded
+      rapidjson::Value vtx{rapidjson::kObjectType};
+      vtx.AddMember("lon", static_cast<double>(edge.projected.first), allocator)
+          .AddMember("lat", static_cast<double>(edge.projected.second), allocator);
+
+      e.AddMember("projected", vtx.Move(), allocator);
+      array.PushBack(e.Move(), allocator);
+    }
+    value.AddMember("edges", array.Move(), allocator)
+        .AddMember("location_index", static_cast<int>(index), allocator);
+    return value;
+  }
+
 
   PathLocation PathLocation::FromPtree(const std::vector<Location>& locations, const boost::property_tree::ptree& path_location){
     auto index = path_location.get<size_t>("location_index");

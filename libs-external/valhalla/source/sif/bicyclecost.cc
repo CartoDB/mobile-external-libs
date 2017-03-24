@@ -1,11 +1,11 @@
 #include "sif/bicyclecost.h"
 #include "sif/costconstants.h"
 
-#include <valhalla/baldr/directededge.h>
-#include <valhalla/baldr/nodeinfo.h>
-#include <valhalla/midgard/constants.h>
-#include <valhalla/baldr/accessrestriction.h>
-#include <valhalla/midgard/logging.h>
+#include "baldr/directededge.h"
+#include "baldr/nodeinfo.h"
+#include "midgard/constants.h"
+#include "baldr/accessrestriction.h"
+#include "midgard/logging.h"
 
 using namespace valhalla::baldr;
 
@@ -209,15 +209,16 @@ class BicycleCost : public DynamicCost {
    * @param  edge           Pointer to a directed edge.
    * @param  pred           Predecessor edge information.
    * @param  opp_edge       Pointer to the opposing directed edge.
-   * @param  tile           current tile
-   * @param  edgeid         edgeid that we care about
+   * @param  tile           Tile for the opposing edge (for looking
+   *                        up restrictions).
+   * @param  opp_edgeid     Opposing edge Id
    * @return  Returns true if access is allowed, false if not.
    */
   virtual bool AllowedReverse(const baldr::DirectedEdge* edge,
                  const EdgeLabel& pred,
                  const baldr::DirectedEdge* opp_edge,
                  const baldr::GraphTile*& tile,
-                 const baldr::GraphId& edgeid) const;
+                 const baldr::GraphId& opp_edgeid) const;
 
   /**
    * Checks if access is allowed for the provided node. Node access can
@@ -253,16 +254,14 @@ class BicycleCost : public DynamicCost {
    * when using a reverse search (from destination towards the origin).
    * @param  idx   Directed edge local index
    * @param  node  Node (intersection) where transition occurs.
-   * @param  opp_edge  Pointer to the opposing directed edge - this is the
-   *                   "from" or predecessor edge in the transition.
-   * @param  opp_pred_edge  Pointer to the opposing directed edge to the
-   *                        predecessor. This is the "to" edge.
+   * @param  pred  the opposing current edge in the reverse tree.
+   * @param  edge  the opposing predecessor in the reverse tree
    * @return  Returns the cost and time (seconds)
    */
   virtual Cost TransitionCostReverse(const uint32_t idx,
-                              const baldr::NodeInfo* node,
-                              const baldr::DirectedEdge* opp_edge,
-                              const baldr::DirectedEdge* opp_pred_edge) const;
+                                     const baldr::NodeInfo* node,
+                                     const baldr::DirectedEdge* pred,
+                                     const baldr::DirectedEdge* edge) const;
 
   /**
    * Get the cost factor for A* heuristics. This factor is multiplied
@@ -513,10 +512,10 @@ bool BicycleCost::Allowed(const baldr::DirectedEdge* edge,
   // Check bicycle access and turn restrictions. Bicycles should obey
   // vehicular turn restrictions. Allow Uturns at dead ends only.
   // Skip impassable edges and shortcut edges.
-  if (!(edge->forwardaccess() & kBicycleAccess) ||
-        edge->is_shortcut() ||
-      (pred.opp_local_idx() == edge->localedgeidx() && !pred.deadend()) ||
-      (pred.restrictions() & (1 << edge->localedgeidx()))) {
+  if (!(edge->forwardaccess() & kBicycleAccess) || edge->is_shortcut() ||
+      (!pred.deadend() && pred.opp_local_idx() == edge->localedgeidx()) ||
+      (pred.restrictions() & (1 << edge->localedgeidx())) ||
+      IsUserAvoidEdge(edgeid)) {
     return false;
   }
 
@@ -536,15 +535,16 @@ bool BicycleCost::AllowedReverse(const baldr::DirectedEdge* edge,
                const EdgeLabel& pred,
                const baldr::DirectedEdge* opp_edge,
                const baldr::GraphTile*& tile,
-               const baldr::GraphId& edgeid) const {
+               const baldr::GraphId& opp_edgeid) const {
   // TODO - obtain and check the access restrictions.
 
   // Check access, U-turn (allow at dead-ends), and simple turn restriction.
   // Do not allow transit connection edges.
   if (!(opp_edge->forwardaccess() & kBicycleAccess) ||
         opp_edge->is_shortcut() || opp_edge->use() == Use::kTransitConnection ||
-       (pred.opp_local_idx() == edge->localedgeidx() && !pred.deadend()) ||
-       (opp_edge->restrictions() & (1 << pred.opp_local_idx()))) {
+       (!pred.deadend() && pred.opp_local_idx() == edge->localedgeidx()) ||
+       (opp_edge->restrictions() & (1 << pred.opp_local_idx())) ||
+       IsUserAvoidEdge(opp_edgeid)) {
     return false;
   }
 
@@ -639,8 +639,8 @@ Cost BicycleCost::EdgeCost(const baldr::DirectedEdge* edge) const {
 
 // Returns the time (in seconds) to make the transition from the predecessor
 Cost BicycleCost::TransitionCost(const baldr::DirectedEdge* edge,
-                               const baldr::NodeInfo* node,
-                               const EdgeLabel& pred) const {
+                                 const baldr::NodeInfo* node,
+                                 const EdgeLabel& pred) const {
   // Accumulate cost and penalty
   float seconds = 0.0f;
   float penalty = 0.0f;
@@ -667,7 +667,10 @@ Cost BicycleCost::TransitionCost(const baldr::DirectedEdge* edge,
     seconds += ferry_cost_;
     penalty += ferry_penalty_;
   }
-  if (!node->name_consistency(idx, edge->localedgeidx())) {
+
+  // Ignore name inconsistency when entering a link to avoid double penalizing.
+  if (!edge->link() && !node->name_consistency(idx, edge->localedgeidx())) {
+    // Slight maneuver penalty
     penalty += maneuver_penalty_;
   }
 
@@ -701,9 +704,9 @@ Cost BicycleCost::TransitionCost(const baldr::DirectedEdge* edge,
 // pred is the opposing current edge in the reverse tree
 // edge is the opposing predecessor in the reverse tree
 Cost BicycleCost::TransitionCostReverse(const uint32_t idx,
-                            const baldr::NodeInfo* node,
-                            const baldr::DirectedEdge* pred,
-                            const baldr::DirectedEdge* edge) const {
+                                        const baldr::NodeInfo* node,
+                                        const baldr::DirectedEdge* pred,
+                                        const baldr::DirectedEdge* edge) const {
   // Accumulate cost and penalty
   float seconds = 0.0f;
   float penalty = 0.0f;
@@ -729,7 +732,10 @@ Cost BicycleCost::TransitionCostReverse(const uint32_t idx,
     seconds += ferry_cost_;
     penalty += ferry_penalty_;
   }
-  if (!node->name_consistency(idx, edge->localedgeidx())) {
+
+  // Ignore name inconsistency when entering a link to avoid double penalizing.
+  if (!edge->link() && !node->name_consistency(idx, edge->localedgeidx())) {
+    // Slight maneuver penalty
     penalty += maneuver_penalty_;
   }
 

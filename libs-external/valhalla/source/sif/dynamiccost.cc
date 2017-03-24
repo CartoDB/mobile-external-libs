@@ -1,5 +1,5 @@
 #include "sif/dynamiccost.h"
-#include <valhalla/baldr/double_bucket_queue.h> // For kInvalidLabel
+#include "baldr/double_bucket_queue.h" // For kInvalidLabel
 
 using namespace valhalla::baldr;
 
@@ -58,6 +58,7 @@ namespace sif {
 DynamicCost::DynamicCost(const boost::property_tree::ptree& pt,
                          const TravelMode mode)
     : allow_transit_connections_(false),
+      disable_destination_only_(false),
       travel_mode_(mode) {
   // Parse property tree to get hierarchy limits
   // TODO - get the number of levels
@@ -65,6 +66,14 @@ DynamicCost::DynamicCost(const boost::property_tree::ptree& pt,
       sizeof(kDefaultMaxUpTransitions[0]);
   for (uint32_t level = 0; level < n_levels; level++) {
     hierarchy_limits_.emplace_back(HierarchyLimits(pt, level));
+  }
+
+  // Parse property tree to get avoid edges
+  auto avoid_edges = pt.get_child_optional("avoid_edges");
+  if (avoid_edges) {
+    for (auto& edgeid : *avoid_edges) {
+      user_avoid_edges_.insert(GraphId(edgeid.second.get_value<uint64_t>()));
+    }
   }
 }
 
@@ -101,10 +110,10 @@ Cost DynamicCost::TransitionCost(const DirectedEdge* edge,
 // when using a reverse search (from destination towards the origin).
 // Defaults to 0. Costing models that wish to include edge transition
 // costs (i.e., intersection/turn costs) must override this method.
-Cost DynamicCost::TransitionCostReverse(const uint32_t idx,
-                            const baldr::NodeInfo* node,
-                            const baldr::DirectedEdge* opp_edge,
-                            const baldr::DirectedEdge* opp_pred_edge) const {
+Cost DynamicCost::TransitionCostReverse(
+    const uint32_t idx, const baldr::NodeInfo* node,
+    const baldr::DirectedEdge* opp_edge,
+    const baldr::DirectedEdge* opp_pred_edge) const {
   return { 0.0f, 0.0f };
 }
 
@@ -153,6 +162,11 @@ uint32_t DynamicCost::UnitSize() const {
 // Set to allow use of transit connections.
 void DynamicCost::SetAllowTransitConnections(const bool allow) {
   allow_transit_connections_ = allow;
+}
+
+// Set to allow use of transit connections.
+void DynamicCost::DisableDestinationOnly() {
+  disable_destination_only_ = true;
 }
 
 // Returns the maximum transfer distance between stops that you are willing
@@ -230,6 +244,13 @@ bool DynamicCost::IsExcluded(const baldr::GraphTile*& tile,
 bool DynamicCost::IsExcluded(const baldr::GraphTile*& tile,
                              const baldr::NodeInfo* node) {
   return false;
+}
+
+// Adds a list of edges (GraphIds) to the user specified avoid list.
+void DynamicCost::AddUserAvoidEdges(const std::vector<GraphId>& avoid_edges) {
+  for (auto edgeid : avoid_edges) {
+    user_avoid_edges_.insert(edgeid);
+  }
 }
 
 }

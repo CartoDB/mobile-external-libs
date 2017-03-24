@@ -1,8 +1,8 @@
 #include <iostream> // TODO remove if not needed
 #include <map>
 #include <algorithm>
-#include <valhalla/baldr/datetime.h>
-#include <valhalla/midgard/logging.h>
+#include "baldr/datetime.h"
+#include "midgard/logging.h"
 #include "thor/astar.h"
 
 using namespace valhalla::baldr;
@@ -18,7 +18,7 @@ constexpr uint64_t kInitialEdgeLabelCount = 500000;
 
 // Default constructor
 AStarPathAlgorithm::AStarPathAlgorithm()
-    : mode_(TravelMode::kDrive),
+    : PathAlgorithm(), mode_(TravelMode::kDrive),
       travel_type_(0),
       adjacencylist_(nullptr),
       edgestatus_(nullptr),
@@ -134,7 +134,14 @@ std::vector<PathInfo> AStarPathAlgorithm::GetBestPath(PathLocation& origin,
   uint32_t nc = 0;       // Count of iterations with no convergence
                          // towards destination
   const GraphTile* tile;
+  size_t total_labels = 0;
   while (true) {
+    // Allow this process to be aborted
+    size_t current_labels = edgelabels_.size();
+    if(interrupt && total_labels/kInterruptIterationsInterval < current_labels/kInterruptIterationsInterval)
+      (*interrupt)();
+    total_labels = current_labels;
+
     // Get next element from adjacency list. Check that it is valid. An
     // invalid label indicates there are no edges that can be expanded.
     uint32_t predindex = adjacencylist_->pop();
@@ -246,6 +253,12 @@ std::vector<PathInfo> AStarPathAlgorithm::GetBestPath(PathLocation& origin,
         continue;
       }
 
+      // Check for complex restriction
+      if (costing->Restricted(directededge, pred, edgelabels_, tile,
+                               edgeid, true)) {
+        continue;
+      }
+
       // Update the_shortcuts mask
       shortcuts |= directededge->shortcut();
 
@@ -321,11 +334,17 @@ void AStarPathAlgorithm::SetOrigin(GraphReader& graphreader,
                  PathLocation& origin,
                  const PathLocation& destination,
                  const std::shared_ptr<DynamicCost>& costing) {
+  // Only skip inbound edges if we have other options
+  bool has_other_edges = false;
+  std::for_each(origin.edges.cbegin(), origin.edges.cend(), [&has_other_edges](const PathLocation::PathEdge& e){
+    has_other_edges = has_other_edges || !e.end_node();
+  });
+
   // Iterate through edges and add to adjacency list
   const NodeInfo* nodeinfo = nullptr;
   for (const auto& edge : origin.edges) {
     // If origin is at a node - skip any inbound edge (dist = 1)
-    if (edge.end_node()) {
+    if (has_other_edges && edge.end_node()) {
       continue;
     }
 
@@ -356,10 +375,11 @@ void AStarPathAlgorithm::SetOrigin(GraphReader& graphreader,
     auto p = destinations_.find(edgeid);
     if (p != destinations_.end()) {
       if (IsTrivial(edgeid, origin, destination)) {
-        // Update cost and use A* heuristic from the origin location rather
-        // than the end node of this edge
+        // a trivial route passes along a single edge, meaning that the
+        // destination point must be on this edge, and so the distance
+        // remaining must be zero.
         cost -= p->second;
-        dist = astarheuristic_.GetDistance(origin.latlng_);
+        dist = 0.0;
       }
     }
 
@@ -391,11 +411,17 @@ void AStarPathAlgorithm::SetOrigin(GraphReader& graphreader,
 uint32_t AStarPathAlgorithm::SetDestination(GraphReader& graphreader,
                      const PathLocation& dest,
                      const std::shared_ptr<DynamicCost>& costing) {
+  // Only skip outbound edges if we have other options
+  bool has_other_edges = false;
+  std::for_each(dest.edges.cbegin(), dest.edges.cend(), [&has_other_edges](const PathLocation::PathEdge& e){
+    has_other_edges = has_other_edges || !e.begin_node();
+  });
+
   // For each edge
   uint32_t density = 0;
   for (const auto& edge : dest.edges) {
     // If destination is at a node skip any outbound edges
-    if (edge.begin_node()) {
+    if (has_other_edges && edge.begin_node()) {
       continue;
     }
 
@@ -435,8 +461,8 @@ bool AStarPathAlgorithm::IsTrivial(const GraphId& edgeid,
 // Form the path from the adjacency list.
 std::vector<PathInfo> AStarPathAlgorithm::FormPath(const uint32_t dest) {
   // Metrics to track
-  LOG_INFO("path_cost::" + std::to_string(edgelabels_[dest].cost().cost));
-  LOG_INFO("path_iterations::" + std::to_string(edgelabels_.size()));
+  LOG_DEBUG("path_cost::" + std::to_string(edgelabels_[dest].cost().cost));
+  LOG_DEBUG("path_iterations::" + std::to_string(edgelabels_.size()));
 
   // Work backwards from the destination
   std::vector<PathInfo> path;

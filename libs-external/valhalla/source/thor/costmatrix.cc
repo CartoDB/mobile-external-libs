@@ -1,9 +1,8 @@
 #include <vector>
 #include <algorithm>
 #include "thor/costmatrix.h"
-#include <valhalla/midgard/logging.h>
-#include <valhalla/baldr/errorcode_util.h>
-#include "config.h"
+#include "midgard/logging.h"
+#include "baldr/errorcode_util.h"
 
 using namespace valhalla::baldr;
 using namespace valhalla::sif;
@@ -26,7 +25,8 @@ namespace thor {
 
 // Constructor with cost threshold.
 CostMatrix::CostMatrix(float cost_threshold)
-    : access_mode_(kAutoAccess),
+    : mode_(TravelMode::kDrive),
+      access_mode_(kAutoAccess),
       source_count_(0),
       remaining_sources_(0),
       target_count_(0),
@@ -136,7 +136,7 @@ std::vector<TimeDistance> CostMatrix::SourceToTarget(
 
     // Break out when remaining sources and targets to expand are both 0
     if (remaining_sources_ == 0 && remaining_targets_ == 0) {
-      LOG_INFO("SourceToTarget iterations: n = " + std::to_string(n));
+      LOG_DEBUG("SourceToTarget iterations: n = " + std::to_string(n));
       break;
     }
 
@@ -261,6 +261,12 @@ void CostMatrix::ExpandForward(GraphReader& graphreader,
       continue;
     }
 
+    // Check for complex restriction
+    if (costing_->Restricted(directededge, pred, edgelabels, tile,
+                             edgeid, true)) {
+      continue;
+    }
+
     // Get cost and accumulated distance. Update the_shortcuts mask.
     shortcuts |= directededge->shortcut();
     Cost tc = costing_->TransitionCost(directededge, nodeinfo, pred);
@@ -358,6 +364,13 @@ void CostMatrix::ForwardSearch(const uint32_t index, const uint32_t n,
 // on the reverse search trees.
 void CostMatrix::CheckForwardConnections(const uint32_t source,
                               const EdgeLabel& pred, const uint32_t n) {
+  // Disallow connections that are part of a complex restriction.
+  // TODO - validate that we do not need to "walk" the paths forward
+  // and backward to see if they match a restriction.
+  if (pred.on_complex_rest()) {
+    return;
+  }
+
   // Get the opposing edge. An invalid opposing edge occurs for transition
   // edges - skip them.
   GraphId oppedge = pred.opp_edgeid();
@@ -529,7 +542,13 @@ void CostMatrix::ExpandReverse(GraphReader& graphreader,
     // Get opposing directed edge and check if allowed.
     const DirectedEdge* opp_edge = t2->directededge(oppedge);
     if (!costing_->AllowedReverse(directededge, pred, opp_edge,
-                      tile, edgeid)) {
+                      t2, oppedge)) {
+      continue;
+    }
+
+    // Check for complex restriction
+    if (costing_->Restricted(directededge, pred, edgelabels, tile,
+                             edgeid, false)) {
       continue;
     }
 
@@ -742,7 +761,9 @@ void CostMatrix::SetTargets(baldr::GraphReader& graphreader,
       const DirectedEdge* opp_dir_edge = graphreader.GetOpposingEdge(edgeid);
 
       // Get cost. Get distance along the remainder of this edge.
-      Cost edgecost = costing_->EdgeCost(opp_dir_edge);
+      // Use the directed edge for costing, as this is the forward direction
+      // along the destination edge.
+      Cost edgecost = costing_->EdgeCost(directededge);
       Cost cost = edgecost * edge.dist;
       uint32_t d = std::round(directededge->length() * edge.dist);
 

@@ -28,7 +28,10 @@ GraphId TileHierarchy::GetGraphId(const midgard::PointLL& pointll, const unsigne
   GraphId id;
   const auto& tl = levels_.find(level);
   if(tl != levels_.end()) {
-    id.Set(static_cast<int32_t>(tl->second.tiles.TileId(pointll)), level, 0);
+    auto tile_id = tl->second.tiles.TileId(pointll);
+    if (tile_id >= 0) {
+      id.Set(tile_id, level, 0);
+    }
   }
   return id;
 }
@@ -41,7 +44,40 @@ uint8_t TileHierarchy::get_level(const RoadClass roadclass) const {
     return 1;
   } else {
     return 2;
-  };
+  }
+}
+
+std::vector<GraphId> TileHierarchy::GetGraphIds(
+  const midgard::AABB2<midgard::PointLL> &bbox,
+  uint8_t level) const {
+
+  std::vector<GraphId> ids;
+
+  auto itr = levels_.find(level);
+  if (itr != levels_.end()) {
+    auto tile_ids = itr->second.tiles.TileList(bbox);
+    ids.reserve(tile_ids.size());
+
+    for (auto tile_id : tile_ids) {
+      ids.emplace_back(tile_id, level, 0);
+    }
+  }
+
+  return ids;
+}
+
+std::vector<GraphId> TileHierarchy::GetGraphIds(
+  const midgard::AABB2<midgard::PointLL> &bbox) const {
+
+  std::vector<GraphId> ids;
+
+  for (const auto &entry : levels_) {
+    auto level_ids = GetGraphIds(bbox, entry.first);
+    ids.reserve(ids.size() + level_ids.size());
+    ids.insert(ids.end(), level_ids.begin(), level_ids.end());
+  }
+
+  return ids;
 }
 
 }

@@ -9,11 +9,11 @@
 
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/json_parser.hpp>
-#include <valhalla/midgard/logging.h>
-#include <valhalla/midgard/constants.h>
-#include <valhalla/baldr/json.h>
-#include <valhalla/baldr/geojson.h>
-#include <valhalla/baldr/errorcode_util.h>
+#include "midgard/logging.h"
+#include "midgard/constants.h"
+#include "baldr/json.h"
+#include "baldr/geojson.h"
+#include "baldr/errorcode_util.h"
 
 #include <prime_server/prime_server.hpp>
 
@@ -57,25 +57,48 @@ namespace {
 namespace valhalla {
   namespace thor {
 
+    const std::unordered_map<std::string, thor_worker_t::SHAPE_MATCH> thor_worker_t::STRING_TO_MATCH {
+      {"edge_walk", thor_worker_t::EDGE_WALK},
+      {"map_snap", thor_worker_t::MAP_SNAP},
+      {"walk_or_snap", thor_worker_t::WALK_OR_SNAP}
+    };
+
     thor_worker_t::thor_worker_t(const boost::property_tree::ptree& config):
       mode(valhalla::sif::TravelMode::kPedestrian),
-      config(config), matcher_factory(config), reader(config.get_child("mjolnir")),
-      long_request(config.get<float>("thor.logging.long_request")),
-      gps_accuracy(config.get<float>("meili.default.gps_accuracy")),
-      search_radius(config.get<float>("meili.default.search_radius")){
+      config(config), matcher_factory(config), reader(matcher_factory.graphreader()),
+      long_request(config.get<float>("thor.logging.long_request")){
       // Register edge/node costing methods
       factory.Register("auto", sif::CreateAutoCost);
       factory.Register("auto_shorter", sif::CreateAutoShorterCost);
       factory.Register("bus", CreateBusCost);
       factory.Register("bicycle", sif::CreateBicycleCost);
+      factory.Register("hov", sif::CreateHOVCost);
       factory.Register("pedestrian", sif::CreatePedestrianCost);
       factory.Register("transit", sif::CreateTransitCost);
       factory.Register("truck", sif::CreateTruckCost);
+
+      for (const auto& item : config.get_child("meili.customizable")) {
+        trace_customizable.insert(item.second.get_value<std::string>());
+      }
+
+      // Select the matrix algorithm based on the conf file (defaults to
+      // select_optimal if not present)
+      auto conf_algorithm = config.get<std::string>("thor.source_to_target_algorithm",
+                                                          "select_optimal");
+      if (conf_algorithm == "timedistancematrix") {
+        source_to_target_algorithm = TIME_DISTANCE_MATRIX;
+      } else if (conf_algorithm == "costmatrix") {
+        source_to_target_algorithm = COST_MATRIX;
+      } else {
+        source_to_target_algorithm = SELECT_OPTIMAL;
+      }
+
+      interrupt_callback = nullptr;
     }
 
     thor_worker_t::~thor_worker_t(){}
 
-    worker_t::result_t thor_worker_t::jsonify_error(const valhalla_exception_t& exception, http_request_t::info_t& request_info) const {
+    worker_t::result_t thor_worker_t::jsonify_error(const valhalla_exception_t& exception, http_request_info_t& request_info) const {
 
        //build up the json map
       auto json_error = json::map({});
@@ -100,10 +123,10 @@ namespace valhalla {
       return result;
     }
 
-    worker_t::result_t thor_worker_t::work(const std::list<zmq::message_t>& job, void* request_info) {
+    worker_t::result_t thor_worker_t::work(const std::list<zmq::message_t>& job, void* request_info, const worker_t::interrupt_function_t& interrupt) {
       //get time for start of request
       auto s = std::chrono::system_clock::now();
-      auto& info = *static_cast<http_request_t::info_t*>(request_info);
+      auto& info = *static_cast<http_request_info_t*>(request_info);
       LOG_INFO("Got Thor Request " + std::to_string(info.id));
       try{
         //get some info about what we need to do
@@ -123,8 +146,17 @@ namespace valhalla {
           return jsonify_error({500, 401}, info);
         }
 
+        // Set the interrupt function
+        interrupt_callback = &interrupt;
+
+        //flag healthcheck requests; do not send to logstash
+        healthcheck = request.get<bool>("healthcheck", false);
         // Initialize request - get the PathALgorithm to use
         ACTION_TYPE action = static_cast<ACTION_TYPE>(request.get<int>("action"));
+        // Allow the request to be aborted
+        astar.set_interrupt(&interrupt);
+        bidir_astar.set_interrupt(&interrupt);
+        multi_modal_astar.set_interrupt(&interrupt);
         //what action is it
         switch (action) {
           case ONE_TO_MANY:
@@ -133,14 +165,14 @@ namespace valhalla {
           case SOURCES_TO_TARGETS:
             return matrix(action, request, info);
           case OPTIMIZED_ROUTE:
-            return optimized_route(request, request_str, info.do_not_track);
+            return optimized_route(request, request_str, info.spare);
           case ISOCHRONE:
             return isochrone(request, info);
           case ROUTE:
           case VIAROUTE:
-            return route(request, request_str, request.get_optional<int>("date_time.type"), info.do_not_track);
+            return route(request, request_str, request.get_optional<int>("date_time.type"), info.spare);
           case TRACE_ROUTE:
-            return trace_route(request, request_str, info.do_not_track);
+            return trace_route(request, request_str, info.spare);
           case TRACE_ATTRIBUTES:
             return trace_attributes(request, request_str, info);
           default:
@@ -244,12 +276,65 @@ namespace valhalla {
 
     }
 
+    void thor_worker_t::parse_trace_config(const boost::property_tree::ptree& request) {
+      auto costing = request.get<std::string>("costing");
+      trace_config.put<std::string>("mode", costing);
+
+      if (trace_customizable.empty()) {
+        return;
+      }
+
+      auto trace_options = request.get_child_optional("trace_options");
+      if (!trace_options) {
+        return;
+      }
+      
+      for (const auto& pair : *trace_options) {
+        const auto& name = pair.first;
+        const auto& values = pair.second.data();
+        if (trace_customizable.find(name) != trace_customizable.end()
+            && !values.empty() ){
+          try {
+            // Possibly throw std::invalid_argument or std::out_of_range
+            trace_config.put<float>(name, std::stof(values));
+          } catch (const std::invalid_argument& ex) {
+            throw std::invalid_argument("Invalid argument: unable to parse " + name + " to float");
+          } catch (const std::out_of_range& ex) {
+            throw std::out_of_range("Invalid argument: " + name + " is out of float range");
+          }
+        }
+      }
+    }
+
+    void thor_worker_t::log_admin(valhalla::odin::TripPath& trip_path) {
+      if (!healthcheck) {
+        std::unordered_set<std::string> state_iso;
+        std::unordered_set<std::string> country_iso;
+        std::stringstream s_ss, c_ss;
+        if (trip_path.admin_size() > 0) {
+          for (const auto& admin : trip_path.admin()) {
+            if (admin.has_state_code())
+              state_iso.insert(admin.state_code());
+            if (admin.has_country_code())
+              country_iso.insert(admin.country_code());
+          }
+          for (const std::string& x: state_iso)
+            s_ss << " " << x;
+          for (const std::string& x: country_iso)
+            c_ss << " " << x;
+          if (!s_ss.eof()) valhalla::midgard::logging::Log("admin_state_iso::" + s_ss.str() + ' ', " [ANALYTICS] ");
+          if (!c_ss.eof()) valhalla::midgard::logging::Log("admin_country_iso::" + c_ss.str() + ' ', " [ANALYTICS] ");
+        }
+      }
+    }
+
     void thor_worker_t::cleanup() {
       jsonp = boost::none;
       astar.Clear();
       bidir_astar.Clear();
       multi_modal_astar.Clear();
       locations.clear();
+      shape.clear();
       correlated.clear();
       correlated_s.clear();
       correlated_t.clear();
@@ -266,12 +351,13 @@ namespace valhalla {
       auto downstream_endpoint = config.get<std::string>("odin.service.proxy") + "_in";
       //or returns just location information back to the server
       auto loopback_endpoint = config.get<std::string>("httpd.service.loopback");
+      auto interrupt_endpoint = config.get<std::string>("httpd.service.interrupt");
 
       //listen for requests
       zmq::context_t context;
       thor_worker_t thor_worker(config);
-      prime_server::worker_t worker(context, upstream_endpoint, downstream_endpoint, loopback_endpoint,
-        std::bind(&thor_worker_t::work, std::ref(thor_worker), std::placeholders::_1, std::placeholders::_2),
+      prime_server::worker_t worker(context, upstream_endpoint, downstream_endpoint, loopback_endpoint, interrupt_endpoint,
+        std::bind(&thor_worker_t::work, std::ref(thor_worker), std::placeholders::_1, std::placeholders::_2, std::placeholders::_3),
         std::bind(&thor_worker_t::cleanup, std::ref(thor_worker)));
       worker.work();
 

@@ -2,12 +2,12 @@
 #include <boost/algorithm/string/split.hpp>
 #include <boost/algorithm/string/classification.hpp>
 #include <boost/property_tree/json_parser.hpp>
-#include "config.h"
 
 #include "baldr/location.h"
-#include <valhalla/midgard/pointll.h>
-#include <valhalla/midgard/logging.h>
-#include <valhalla/midgard/util.h>
+#include "baldr/rapidjson_utils.h"
+#include "midgard/pointll.h"
+#include "midgard/logging.h"
+#include "midgard/util.h"
 
 namespace valhalla {
 namespace baldr {
@@ -41,9 +41,41 @@ boost::property_tree::ptree Location::ToPtree() const {
     location.put("date_time", *date_time_);
   if(heading_)
     location.put("heading", *heading_);
+  if(heading_tolerance_)
+    location.put("heading_tolerance", *heading_tolerance_);
   if(way_id_)
     location.put("way_id", *way_id_);
 
+  return location;
+}
+
+rapidjson::Value Location::ToRapidJson(rapidjson::Document::AllocatorType& a) const {
+  rapidjson::Value location(rapidjson::kObjectType);
+
+  location.AddMember("lat", latlng_.lat(), a);
+  location.AddMember("lon", latlng_.lng(), a);
+  if (stoptype_ == StopType::THROUGH)
+    location.AddMember("type", "through", a);
+  else location.AddMember("type", "break", a);
+
+  if(!name_.empty())
+    location.AddMember("name", name_, a);
+  if(!street_.empty())
+    location.AddMember("street", street_, a);
+  if(!city_.empty())
+    location.AddMember("city", city_, a);
+  if(!state_.empty())
+    location.AddMember("state", state_, a);
+  if(!zip_.empty())
+    location.AddMember("postal_code", zip_, a);
+  if(!country_.empty())
+    location.AddMember("country", country_, a);
+  if(date_time_ && !date_time_->empty())
+    location.AddMember("date_time", *date_time_, a);
+  if(heading_)
+    location.AddMember("heading", *heading_, a);
+  if(way_id_)
+    location.AddMember("way_id", *way_id_, a);
   return location;
 }
 
@@ -61,6 +93,7 @@ Location Location::FromPtree(const boost::property_tree::ptree& pt) {
 
   location.date_time_ = pt.get_optional<std::string>("date_time");
   location.heading_ = pt.get_optional<int>("heading");
+  location.heading_tolerance_ = pt.get_optional<int>("heading_tolerance");
   location.way_id_ = pt.get_optional<uint64_t>("way_id");
 
   auto name = pt.get_optional<std::string>("name");
@@ -90,12 +123,69 @@ Location Location::FromPtree(const boost::property_tree::ptree& pt) {
   return location;
 }
 
-Location Location::FromJson(const std::string& json) {
-  std::stringstream stream;
-  stream << json;
-  boost::property_tree::ptree pt;
-  boost::property_tree::read_json(stream, pt);
-  return FromPtree(pt);
+Location Location::FromRapidJson(const rapidjson::Value& d){
+  auto lat = GetOptionalFromRapidJson<float>(d, "/lat");
+  if (! lat) throw std::runtime_error{"lat is missing"};
+
+  if (*lat < -90.0f || *lat > 90.0f)
+    throw std::runtime_error("Latitude must be in the range [-90, 90] degrees");
+
+  auto lon = GetOptionalFromRapidJson<float>(d, "/lon");
+  if (! lon) throw std::runtime_error{"lon is missing"};
+
+  lon = midgard::circular_range_clamp<float>(*lon, -180, 180);
+
+  StopType stop_type{StopType::BREAK};
+  auto stop_type_json = GetOptionalFromRapidJson<std::string>(d, "/type");
+  if (stop_type_json && *stop_type_json == std::string("through")){
+    stop_type = StopType::THROUGH;
+  }
+
+  Location location{{*lon,*lat}, stop_type};
+
+  location.date_time_ = GetOptionalFromRapidJson<std::string>(d, "/date_time");
+  location.heading_ = GetOptionalFromRapidJson<int>(d, "/heading");
+  location.way_id_ = GetOptionalFromRapidJson<uint64_t>(d, "/way_id");
+
+  if (auto name = GetOptionalFromRapidJson<std::string>(d, "/name"))
+    location.name_ = *name;
+
+  if (auto street = GetOptionalFromRapidJson<std::string>(d, "/street"))
+    location.street_ = *street;
+
+  if (auto city = GetOptionalFromRapidJson<std::string>(d, "/city"))
+    location.city_ = *city;
+
+  if (auto state = GetOptionalFromRapidJson<std::string>(d, "/state"))
+    location.state_ = *state;
+
+  if (auto zip = GetOptionalFromRapidJson<std::string>(d, "/postal_code"))
+    location.zip_ = *zip;
+
+  if (auto country = GetOptionalFromRapidJson<std::string>(d, "/country"))
+    location.country_ = *country;
+
+  return location;
+}
+
+Location Location::FromJson(const std::string& json, const ParseMethod& method){
+  switch(method){
+  case ParseMethod::PTREE: {
+    std::stringstream stream;
+    stream << json;
+    boost::property_tree::ptree pt;
+    boost::property_tree::read_json(stream, pt);
+    return FromPtree(pt);
+    }
+  case ParseMethod::RAPIDJSON: {
+    rapidjson::Document d;
+    d.Parse(json.c_str());
+    if (d.HasParseError())
+      throw std::runtime_error("Parse Error");
+    return FromRapidJson(d);
+    }
+  default: throw std::runtime_error("Bad parse method");
+  }
 }
 
 Location Location::FromCsv(const std::string& csv) {
@@ -123,7 +213,8 @@ bool Location::operator==(const Location& o) const {
   return latlng_ == o.latlng_ && stoptype_ == o.stoptype_ &&
          name_ == o.name_ && street_ == o.street_ && city_ == o.city_ &&
          state_ == o.state_ && zip_ == o.zip_ && country_ == o.country_ &&
-         date_time_ == o.date_time_ && heading_ == o.heading_ && way_id_ == o.way_id_;
+         date_time_ == o.date_time_ && heading_ == o.heading_ &&
+         heading_tolerance_ == o.heading_tolerance_ && way_id_ == o.way_id_;
 }
 
 }

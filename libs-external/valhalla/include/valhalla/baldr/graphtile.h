@@ -7,6 +7,7 @@
 #include <valhalla/baldr/complexrestriction.h>
 #include <valhalla/baldr/directededge.h>
 #include <valhalla/baldr/nodeinfo.h>
+#include <valhalla/baldr/trafficassociation.h>
 #include <valhalla/baldr/transitdeparture.h>
 #include <valhalla/baldr/transitroute.h>
 #include <valhalla/baldr/transitstop.h>
@@ -219,11 +220,13 @@ class GraphTile {
    * Get the departure given the directed edge Id and tripid
    * @param   lineid  Transit Line Id
    * @param   tripid  Trip Id.
+   * @param   current_time      Current time (seconds from midnight).
    * @return  Returns a pointer to the transit departure information.
    *          Returns nullptr if no departure is found.
    */
   const TransitDeparture* GetTransitDeparture(const uint32_t lineid,
-                                              const uint32_t tripid) const;
+                                              const uint32_t tripid,
+                                              const uint32_t current_time) const;
 
   /**
    * Get the departures based on the line Id
@@ -301,11 +304,20 @@ class GraphTile {
    */
   midgard::iterable_t<GraphId> GetBin(size_t index) const;
 
+  /**
+   * Get traffic segment(s) associated to this edge.
+   * @param  edge  GraphId of the directed edge.
+   * @return  Returns a list of traffic segment Ids and weights that associate
+   *          to this edge.
+   */
+  std::vector<TrafficSegment> GetTrafficSegments(const size_t idx) const;
+
+
  protected:
 
   // Graph tile memory, this must be shared so that we can put it into cache
   // Apparently you can std::move a non-copyable
-  boost::shared_array<char> graphtile_;
+  boost::shared_ptr<std::vector<char>> graphtile_;
 
   // Header information for the tile
   GraphTileHeader* header_;
@@ -373,6 +385,16 @@ class GraphTile {
   // List of edge graph ids. The list is broken up in bins which have
   // indices in the tile header.
   GraphId* edge_bins_;
+
+  // Traffic segment association. Count is the same as the directed edge count.
+  TrafficAssociation* traffic_segments_;
+
+  // Traffic chunks. Chunks are an array of uint64_t which combines a traffic
+  // segment Id (GraphId) and weight (combined int a single uint64_t).
+  TrafficChunk* traffic_chunks_;
+
+  // Number of bytes in the traffic chunk list
+  std::size_t traffic_chunk_size_;
 
   // Map of stop one stops in this tile.
   std::unordered_map<std::string, tile_index_pair> stop_one_stops;

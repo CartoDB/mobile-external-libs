@@ -85,7 +85,7 @@ class GraphTileFsStorage : public GraphTileStorage {
   // (Tar) extract of tiles - the contents are empty if not being used
   struct tile_extract_t;
   std::shared_ptr<const tile_extract_t> tile_extract_;
-  static std::shared_ptr<const GraphFsStorage::tile_extract_t> get_extract_instance(const boost::property_tree::ptree& pt);
+  static std::shared_ptr<const tile_extract_t> get_extract_instance(const boost::property_tree::ptree& pt);
 
   std::string tile_dir_;
 

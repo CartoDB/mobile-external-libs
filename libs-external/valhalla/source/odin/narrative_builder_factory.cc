@@ -1,6 +1,6 @@
 #include <boost/property_tree/ptree.hpp>
 
-#include <valhalla/midgard/util.h>
+#include "midgard/util.h"
 
 #include "proto/directions_options.pb.h"
 #include "odin/narrative_builder_factory.h"
@@ -31,6 +31,9 @@ std::unique_ptr<NarrativeBuilder> NarrativeBuilderFactory::Create(
         directions_options, trip_path, *phrase_dictionary->second);
   } else if (phrase_dictionary->second->GetLanguageTag() == "hi-IN") {
     return midgard::make_unique<NarrativeBuilder_hiIN>(
+        directions_options, trip_path, *phrase_dictionary->second);
+  } else if (phrase_dictionary->second->GetLanguageTag() == "it-IT") {
+    return midgard::make_unique<NarrativeBuilder_itIT>(
         directions_options, trip_path, *phrase_dictionary->second);
   }
 

@@ -6,9 +6,9 @@
 #include <string>
 #include <ostream>
 #include <utility>
-#include <algorithm>
 #include <unordered_map>
 #include <unordered_set>
+#include <algorithm>
 #include <memory>
 #include <limits>
 
@@ -73,6 +73,19 @@ template<class T>
 T sqr(const T a) {
   return a * a;
 }
+
+/**
+ * Trim the front of a polyline (represented as a list or vector of Point2).
+ * Returns the trimmed portion of the polyline. The supplied polyline is
+ * altered (the trimmed part is removed).
+ * @param  pts    List of points. This is modified - the result is the
+ *                remaining points after trimming the front.
+ * @param  dist   Distance to trim.
+ * @return Returns a list of points along the supplied polyline. The total
+ *         length of the returned polyline is dist.
+ */
+template <class container_t>
+container_t trim_front(container_t& pts, const float dist);
 
 // Compute the length of the polyline represented by a set of lat,lng points.
 // Avoids having to copy the points into a polyline, polyline should really just extend

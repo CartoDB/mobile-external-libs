@@ -2,9 +2,9 @@
 #include <map>
 #include <algorithm>
 #include "thor/isochrone.h"
-#include <valhalla/baldr/datetime.h>
-#include <valhalla/midgard/distanceapproximator.h>
-#include <valhalla/midgard/logging.h>
+#include "baldr/datetime.h"
+#include "midgard/distanceapproximator.h"
+#include "midgard/logging.h"
 
 using namespace valhalla::midgard;
 using namespace valhalla::baldr;
@@ -47,7 +47,8 @@ constexpr uint64_t kInitialEdgeLabelCount = 500000;
 
 // Default constructor
 Isochrone::Isochrone()
-    : tile_creation_date_(0),
+    : access_mode_(kAutoAccess),
+      tile_creation_date_(0),
       shape_interval_(50.0f),
       mode_(TravelMode::kDrive),
       adjacencylist_(nullptr),
@@ -168,7 +169,7 @@ std::shared_ptr<const GriddedData<PointLL> > Isochrone::Compute(
 
     // Return after the time interval has been met
     if (pred.cost().secs > max_seconds) {
-      LOG_INFO("Exceed time interval: n = " + std::to_string(n));
+      LOG_DEBUG("Exceed time interval: n = " + std::to_string(n));
       return isotile_;
     }
 
@@ -203,8 +204,11 @@ std::shared_ptr<const GriddedData<PointLL> > Isochrone::Compute(
         continue;
       }
 
-      // Skip if no access is allowed to this edge (based on the costing method.
-      if (!costing->Allowed(directededge, pred, tile, edgeid)) {
+      // Skip if no access is allowed to this edge (based on the costing
+      // method) or if a complex restriction exists for this path.
+      if (!costing->Allowed(directededge, pred, tile, edgeid) ||
+           costing->Restricted(directededge, pred, edgelabels_, tile,
+                               edgeid, true)) {
         continue;
       }
 
@@ -280,7 +284,7 @@ std::shared_ptr<const GriddedData<PointLL> > Isochrone::ComputeReverse(
 
     // Return after the time interval has been met
     if (pred.cost().secs > max_seconds) {
-      LOG_INFO("Exceed time interval: n = " + std::to_string(n));
+      LOG_DEBUG("Exceed time interval: n = " + std::to_string(n));
       return isotile_;
     }
 
@@ -335,7 +339,13 @@ std::shared_ptr<const GriddedData<PointLL> > Isochrone::ComputeReverse(
       // Get opposing directed edge and check if allowed.
       const DirectedEdge* opp_edge = t2->directededge(oppedge);
       if (!costing->AllowedReverse(directededge, pred, opp_edge,
-                                   tile, edgeid)) {
+                                   t2, oppedge)) {
+        continue;
+      }
+
+      // Check for complex restriction
+      if (costing->Restricted(directededge, pred, edgelabels_, tile,
+                               edgeid, false)) {
         continue;
       }
 
@@ -416,6 +426,7 @@ std::shared_ptr<const GriddedData<PointLL> > Isochrone::ComputeMultiModal(
   bool date_set = false;
   uint32_t blockid, tripid;
   std::unordered_map<std::string, uint32_t> operators;
+  std::unordered_set<uint32_t> processed_tiles;
   const GraphTile* tile;
   while (true) {
     // Get next element from adjacency list. Check that it is valid. An
@@ -443,7 +454,7 @@ std::shared_ptr<const GriddedData<PointLL> > Isochrone::ComputeMultiModal(
 
     // Return after the time interval has been met
     if (pred.cost().secs > max_seconds) {
-      LOG_INFO("Exceed time interval: n = " + std::to_string(n));
+      LOG_DEBUG("Exceed time interval: n = " + std::to_string(n));
       return isotile_;
     }
 
@@ -469,6 +480,15 @@ std::shared_ptr<const GriddedData<PointLL> > Isochrone::ComputeMultiModal(
       if (mode_ == TravelMode::kPedestrian && prior_stop.Is_Valid() && has_transit) {
         transfer_cost = tc->TransferCost();
       }
+
+      if (processed_tiles.find(tile->id().tileid()) == processed_tiles.end()) {
+        tc->AddToExcludeList(tile);
+        processed_tiles.emplace(tile->id().tileid());
+      }
+
+      //check if excluded.
+      if (tc->IsExcluded(tile, nodeinfo))
+        continue;
 
       // Add transfer time to the local time when entering a stop
       // as a pedestrian. This is a small added cost on top of
@@ -542,6 +562,10 @@ std::shared_ptr<const GriddedData<PointLL> > Isochrone::ComputeMultiModal(
         if (!tc->Allowed(directededge, pred, tile, edgeid)) {
           continue;
         }
+
+        //check if excluded.
+        if (tc->IsExcluded(tile, directededge))
+          continue;
 
         // Look up the next departure along this edge
         const TransitDeparture* departure = tile->GetNextDeparture(
@@ -770,11 +794,17 @@ void Isochrone::SetOriginLocations(GraphReader& graphreader,
     // Set time at the origin lat, lon grid to 0
     isotile_->Set(origin.latlng_, 0);
 
+    // Only skip inbound edges if we have other options
+    bool has_other_edges = false;
+    std::for_each(origin.edges.cbegin(), origin.edges.cend(), [&has_other_edges](const PathLocation::PathEdge& e){
+      has_other_edges = has_other_edges || !e.end_node();
+    });
+
     // Iterate through edges and add to adjacency list
     const NodeInfo* nodeinfo = nullptr;
     for (const auto& edge : (origin.edges)) {
       // If origin is at a node - skip any inbound edge (dist = 1)
-      if (edge.end_node()) {
+      if (has_other_edges && edge.end_node()) {
         continue;
       }
 
@@ -830,12 +860,18 @@ void Isochrone::SetDestinationLocations(GraphReader& graphreader,
     // Set time at the origin lat, lon grid to 0
     isotile_->Set(dest.latlng_, 0);
 
+    // Only skip outbound edges if we have other options
+    bool has_other_edges = false;
+    std::for_each(dest.edges.cbegin(), dest.edges.cend(), [&has_other_edges](const PathLocation::PathEdge& e){
+      has_other_edges = has_other_edges || !e.begin_node();
+    });
+
     // Iterate through edges and add to adjacency list
     Cost c;
     for (const auto& edge : dest.edges) {
       // If the destination is at a node, skip any outbound edges (so any
       // opposing inbound edges are not considered)
-      if (edge.begin_node()) {
+      if (has_other_edges && edge.begin_node()) {
         continue;
       }
 
@@ -854,8 +890,9 @@ void Isochrone::SetDestinationLocations(GraphReader& graphreader,
       // Get cost and sort cost (based on distance from endnode of this edge
       // to the origin. Make sure we use the reverse A* heuristic. Note that
       // the end node of the opposing edge is in the same tile as the directed
-      // edge.
-      Cost cost = costing->EdgeCost(opp_dir_edge) * edge.dist;
+      // edge.  Use the directed edge for costing, as this is the forward
+      // direction along the destination edge.
+      Cost cost = costing->EdgeCost(directededge) * edge.dist;
 
       // Add EdgeLabel to the adjacency list. Set the predecessor edge index
       // to invalid to indicate the origin of the path. Make sure the opposing

@@ -2,12 +2,12 @@
 #include <unordered_set>
 #include <unordered_map>
 
-#include <valhalla/midgard/distanceapproximator.h>
-#include <valhalla/baldr/graphid.h>
-#include <valhalla/baldr/graphreader.h>
-#include <valhalla/baldr/pathlocation.h>
-#include <valhalla/sif/dynamiccost.h>
-#include <valhalla/sif/costconstants.h>
+#include "midgard/distanceapproximator.h"
+#include "baldr/graphid.h"
+#include "baldr/graphreader.h"
+#include "baldr/pathlocation.h"
+#include "sif/dynamiccost.h"
+#include "sif/costconstants.h"
 
 #include "meili/graph_helpers.h"
 #include "meili/geometry_helpers.h"
@@ -208,11 +208,13 @@ IsEdgeAllowed(const baldr::DirectedEdge* edge,
               const baldr::GraphTile* tile)
 {
   if (costing && pred_edgelabel) {
+    // TODO let sif do this?
     // Still on the same edge and the predecessor's show-up here
     // means it was allowed so we give it a pass directly
-
-    // TODO let sif do this?
     return edgeid == pred_edgelabel->edgeid()
+        // Transition edges are exceptions here because
+        // costing::Allowed only conisders non-transition edges
+        || edge->trans_up() || edge->trans_down()
         || costing->Allowed(edge, *pred_edgelabel, tile, edgeid);
   }
 
@@ -242,22 +244,22 @@ void set_origin(baldr::GraphReader& reader,
       const auto nodeid = helpers::edge_startnodeid(reader, edge.id, tile);
       if (!nodeid.Is_Valid()) continue;
 
-#if 1  // TODO perhaps we shouldn't check start node
+      // If both origin and destination are nodes, then always check
+      // the origin node but won't check the destination node
       const auto nodeinfo = helpers::edge_nodeinfo(reader, nodeid, tile);
       if (!nodeinfo) continue;
       if (costing && !costing->Allowed(nodeinfo)) continue;
-#endif
 
       labelset.put(nodeid, travelmode, edgelabel);
     } else if (edge.end_node()) {
       const auto nodeid = helpers::edge_endnodeid(reader, edge.id, tile);
       if (!nodeid.Is_Valid()) continue;
 
-#if 1  // TODO perhaps we shouldn't check start node
+      // If both origin and destination are nodes, then always check
+      // the origin node but won't check the destination node
       const auto nodeinfo = helpers::edge_nodeinfo(reader, nodeid, tile);
       if (!nodeinfo) continue;
       if (costing && !costing->Allowed(nodeinfo)) continue;
-#endif
 
       labelset.put(nodeid, travelmode, edgelabel);
     } else {
@@ -352,6 +354,14 @@ get_outbound_edge_heading(const baldr::GraphTile* tile,
 }
 
 
+inline bool
+isTransition(baldr::GraphReader& graphreader, const baldr::GraphId& edgeid, const baldr::GraphTile* tile)
+{
+  const auto edge = helpers::edge_directededge(graphreader, edgeid, tile);
+  return edge && (edge->trans_up() || edge->trans_down());
+}
+
+
 // This heuristic function estimates cost from current node
 // (incorporated in the approximator) to a cluster of destinations
 // within a circle formed by the search radius around the lnglat (the
@@ -418,8 +428,22 @@ find_shortest_path(baldr::GraphReader& reader,
     // So we cache the costs that will be used during expanding
     const auto label_cost = label.cost;
     const auto label_turn_cost = label.turn_cost;
-    // and edgelabel pointer for checking edge accessibility later
-    const auto pred_edgelabel = label.edgelabel;
+
+    // Find the first non-transition edgelabel
+    // Note only use edgelabel to determine if edge is allowed or not
+    auto pred_edgelabel = label.edgelabel;
+    {
+      auto pred_idx = label_idx;
+      auto pred_edgeid = label.edgeid;
+      while (pred_idx != kInvalidLabelIndex
+             && pred_edgeid.Is_Valid()
+             && isTransition(reader, pred_edgeid, tile)) {
+        const auto& pred_label = labelset.label(pred_idx);
+        pred_idx = pred_label.predecessor;
+        pred_edgeid = pred_label.edgeid;
+        pred_edgelabel = pred_label.edgelabel;
+      }
+    }
 
     if (label.nodeid.Is_Valid()) {
       const auto nodeid = label.nodeid;

@@ -2,12 +2,12 @@
 
 using namespace prime_server;
 
-#include <valhalla/midgard/logging.h>
-#include <valhalla/midgard/constants.h>
-#include <valhalla/baldr/json.h>
-#include <valhalla/sif/autocost.h>
-#include <valhalla/sif/bicyclecost.h>
-#include <valhalla/sif/pedestriancost.h>
+#include "midgard/logging.h"
+#include "midgard/constants.h"
+#include "baldr/json.h"
+#include "sif/autocost.h"
+#include "sif/bicyclecost.h"
+#include "sif/pedestriancost.h"
 
 #include "thor/service.h"
 #include "thor/optimizer.h"
@@ -34,7 +34,8 @@ namespace valhalla {
     parse_locations(request);
     auto costing = parse_costing(request);
 
-    valhalla::midgard::logging::Log("matrix_type::optimized_route", " [ANALYTICS] ");
+    if (!healthcheck)
+      valhalla::midgard::logging::Log("matrix_type::optimized_route", " [ANALYTICS] ");
     worker_t::result_t result{true};
     //get time for start of request
     auto s = std::chrono::system_clock::now();
@@ -72,17 +73,21 @@ namespace valhalla {
       best_order.emplace_back(correlated[order[i]]);
 
     auto trippaths = path_depart_at(best_order, costing, date_time_type, request_str);
-    for (const auto &trippath: trippaths)
+    size_t order_index = 0;
+    for (auto& trippath: trippaths) {
+      for (auto& location : *trippath.mutable_location())
+        location.set_original_index(order[order_index++]);
+      --order_index;
       result.messages.emplace_back(trippath.SerializeAsString());
-
+    }
     //get processing time for thor
     auto e = std::chrono::system_clock::now();
     std::chrono::duration<float, std::milli> elapsed_time = e - s;
     //log request if greater than X (ms)
-    if (!header_dnt && ((elapsed_time.count() / correlated_s.size()) || elapsed_time.count() / correlated_t.size()) > long_request) {
+    if (!healthcheck && !header_dnt && ((elapsed_time.count() / correlated_s.size()) || elapsed_time.count() / correlated_t.size()) > long_request) {
       LOG_WARN("thor::optimized_route elapsed time (ms)::"+ std::to_string(elapsed_time.count()));
       LOG_WARN("thor::optimized_route exceeded threshold::"+ request_str);
-      midgard::logging::Log("valhalla_thor_long_request_manytomany", " [ANALYTICS] ");
+      midgard::logging::Log("valhalla_thor_long_request_optimized", " [ANALYTICS] ");
     }
     return result;
   }

@@ -1,4 +1,4 @@
-#include <valhalla/midgard/distanceapproximator.h>
+#include "midgard/distanceapproximator.h"
 
 #include "meili/graph_helpers.h"
 #include "meili/routing.h"
@@ -335,7 +335,8 @@ MapMatcher::MapMatcher(const boost::property_tree::ptree& config,
       candidatequery_(candidatequery),
       mode_costing_(mode_costing),
       travelmode_(travelmode),
-      mapmatching_(graphreader_, mode_costing_, travelmode_, config_) {}
+      mapmatching_(graphreader_, mode_costing_, travelmode_, config_),
+      interrupt_(nullptr) {}
 
 
 MapMatcher::~MapMatcher() {}
@@ -399,6 +400,10 @@ MapMatcher::OfflineMatch(const std::vector<Measurement>& measurements)
 Time
 MapMatcher::AppendMeasurement(const Measurement& measurement)
 {
+  // Test interrupt
+  if (interrupt_) {
+    (*interrupt_)();
+  }
   const auto& candidates = candidatequery_.Query(
       measurement.lnglat(),
       measurement.sq_search_radius(),

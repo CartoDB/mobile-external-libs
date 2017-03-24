@@ -9,11 +9,10 @@
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <boost/algorithm/string.hpp>
 
-#include <valhalla/baldr/datetime.h>
-#include <valhalla/baldr/graphconstants.h>
+#include "baldr/datetime.h"
+#include "baldr/graphconstants.h"
 
 #include "date_time_zonespec.h"
-#include "config.h"
 
 using namespace valhalla::baldr;
 
@@ -53,6 +52,17 @@ const tz_db_t& get_tz_db() {
   //thread safe static initialization of global singleton
   static const tz_db_t tz_db;
   return tz_db;
+}
+
+//default testing date and time is the next Tues @ 08:00
+std::string get_testing_date_time() {
+  auto tz = get_tz_db().from_index(get_tz_db().to_index("America/New_York"));
+  boost::gregorian::date d = get_formatted_date(iso_date_time(tz));
+
+  while (d.day_of_week() != boost::date_time::Tuesday)
+    d += boost::gregorian::days(1);
+
+  return to_iso_extended_string(d) + "T08:00";
 }
 
 //get a formatted date.
@@ -162,7 +172,8 @@ uint64_t get_service_days(boost::gregorian::date& start_date, boost::gregorian::
         break;
     }
 
-    //were we supposed to be on for this day
+    //were we supposed to be on for this day?
+    //and are we at or after the start date?
     if ((dow_mask & dow) && (itr >= start_date))
       bit_set |= static_cast<uint64_t>(1) << x;
 
@@ -173,9 +184,15 @@ uint64_t get_service_days(boost::gregorian::date& start_date, boost::gregorian::
 }
 
 //add a service day to the days if it is in range.
-uint64_t add_service_day(const uint64_t& days, const boost::gregorian::date& start_date,
-                         const boost::gregorian::date& end_date, const boost::gregorian::date& added_date) {
+uint64_t add_service_day(const uint64_t& days,
+                         const boost::gregorian::date& end_date,
+                         const uint32_t tile_date,
+                         const boost::gregorian::date& added_date) {
+
+  // adding a service day must start at the tile header date.
+  boost::gregorian::date start_date = pivot_date_ + boost::gregorian::days(tile_date);
   boost::gregorian::date enddate = start_date + boost::gregorian::days(59);
+
   if (enddate > end_date)
     enddate = end_date;
 
@@ -188,9 +205,15 @@ uint64_t add_service_day(const uint64_t& days, const boost::gregorian::date& sta
 }
 
 //remove a service day to the days if it is in range.
-uint64_t remove_service_day(const uint64_t& days, const boost::gregorian::date& start_date,
-                            const boost::gregorian::date& end_date, const boost::gregorian::date& removed_date) {
+uint64_t remove_service_day(const uint64_t& days,
+                            const boost::gregorian::date& end_date,
+                            const uint32_t tile_date,
+                            const boost::gregorian::date& removed_date) {
+
+  // removing a service day must start at the tile header date.
+  boost::gregorian::date start_date = pivot_date_ + boost::gregorian::days(tile_date);
   boost::gregorian::date enddate = start_date + boost::gregorian::days(59);
+
   if (enddate > end_date)
     enddate = end_date;
 
@@ -474,7 +497,10 @@ void seconds_to_date(const bool is_depart_at,
       ss_time << origin_tz->dst_offset() + origin_tz->base_utc_offset();
     else ss_time << origin_tz->base_utc_offset();
 
-    iso_origin = to_iso_extended_string(date) + "T" + time + ss_time.str();
+    //postive tz
+    if (ss_time.str().find("+") == std::string::npos && ss_time.str().find("-") == std::string::npos)
+      iso_origin = to_iso_extended_string(date) + "T" + time + "+" + ss_time.str();
+    else iso_origin = to_iso_extended_string(date) + "T" + time + ss_time.str();
 
     found = iso_origin.find_last_of(":"); // remove seconds.
     if (found != std::string::npos)
@@ -495,7 +521,10 @@ void seconds_to_date(const bool is_depart_at,
       ss_time << dest_tz->dst_offset() + dest_tz->base_utc_offset();
     else ss_time << dest_tz->base_utc_offset();
 
-    iso_dest = to_iso_extended_string(date) + "T" + time + ss_time.str();
+    //postive tz
+    if (ss_time.str().find("+") == std::string::npos && ss_time.str().find("-") == std::string::npos)
+      iso_dest = to_iso_extended_string(date) + "T" + time + "+" + ss_time.str();
+    else iso_dest = to_iso_extended_string(date) + "T" + time + ss_time.str();
 
     found = iso_dest.find_last_of(":"); // remove seconds.
     if (found != std::string::npos)
@@ -598,9 +627,19 @@ std::string get_duration(const std::string& date_time, const uint32_t seconds,
   std::string tz_abbrev;
   if (dt.is_dst()) {
     ss << tz->dst_offset() + tz->base_utc_offset();
+    //positive tz
+    if (ss.str().find("+") == std::string::npos && ss.str().find("-") == std::string::npos) {
+      ss.str("");
+      ss << "+" << tz->dst_offset() + tz->base_utc_offset();
+    }
     tz_abbrev = tz->dst_zone_abbrev();
   } else {
     ss << tz->base_utc_offset();
+    //positive tz
+    if (ss.str().find("+") == std::string::npos && ss.str().find("-") == std::string::npos) {
+      ss.str("");
+      ss << "+" << tz->base_utc_offset();
+    }
     tz_abbrev = tz->std_zone_abbrev();
   }
 
