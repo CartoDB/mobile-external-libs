@@ -2,6 +2,7 @@
 #include <rapidjson/error/en.h>
 
 #include "meili/geojson_reader.h"
+#include "config.h"
 
 
 namespace valhalla {

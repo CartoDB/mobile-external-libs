@@ -1,3 +1,4 @@
+#include "config.h"
 #include "odin/sign.h"
 #include "odin/util.h"
 

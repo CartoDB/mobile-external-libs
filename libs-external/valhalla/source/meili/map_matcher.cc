@@ -1,4 +1,5 @@
 #include "midgard/distanceapproximator.h"
+#include "config.h"
 
 #include "meili/graph_helpers.h"
 #include "meili/routing.h"

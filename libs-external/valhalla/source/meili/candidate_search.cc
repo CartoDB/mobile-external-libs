@@ -1,3 +1,4 @@
+#include "config.h"
 #include "meili/candidate_search.h"
 #include "meili/graph_helpers.h"
 #include "meili/geometry_helpers.h"

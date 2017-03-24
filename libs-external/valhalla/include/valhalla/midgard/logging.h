@@ -4,6 +4,7 @@
 #include <string>
 #include <mutex>
 #include <unordered_map>
+#include "config.h"
 
 namespace valhalla {
 namespace midgard {
@@ -25,6 +26,10 @@ class LoggerFactory :
 bool RegisterLogger(const std::string& name, LoggerCreator function_ptr);
 
 //the Log levels we support
+#ifdef DEBUG
+#undef DEBUG
+#define DEBUG DEBUG
+#endif
 enum class LogLevel : char { TRACE, DEBUG, INFO, WARN, ERROR };
 
 //logger base class, not pure virtual so you can use as a null logger if you want

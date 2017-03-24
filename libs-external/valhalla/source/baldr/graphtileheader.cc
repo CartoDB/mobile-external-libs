@@ -4,7 +4,7 @@
 #include "baldr/directededge.h"
 #include "baldr/edgeinfo.h"
 #include "baldr/datetime.h"
-#include "config.h"
+#include "baldr/../config.h"
 
 using namespace valhalla::baldr;
 

@@ -1,8 +1,12 @@
+#ifndef RAPIDJSON_HAS_STDSTRING
+#define RAPIDJSON_HAS_STDSTRING 1
+#endif
 #include <stdexcept>
 #include <boost/algorithm/string/split.hpp>
 #include <boost/algorithm/string/classification.hpp>
 #include <boost/property_tree/json_parser.hpp>
 
+#include "config.h"
 #include "baldr/location.h"
 #include "baldr/rapidjson_utils.h"
 #include "midgard/pointll.h"
@@ -59,19 +63,19 @@ rapidjson::Value Location::ToRapidJson(rapidjson::Document::AllocatorType& a) co
   else location.AddMember("type", "break", a);
 
   if(!name_.empty())
-    location.AddMember("name", name_, a);
+    location.AddMember("name", rapidjson::Value(name_, a), a);
   if(!street_.empty())
-    location.AddMember("street", street_, a);
+    location.AddMember("street", rapidjson::Value(street_, a), a);
   if(!city_.empty())
-    location.AddMember("city", city_, a);
+    location.AddMember("city", rapidjson::Value(city_, a), a);
   if(!state_.empty())
-    location.AddMember("state", state_, a);
+    location.AddMember("state", rapidjson::Value(state_, a), a);
   if(!zip_.empty())
-    location.AddMember("postal_code", zip_, a);
+    location.AddMember("postal_code", rapidjson::Value(zip_, a), a);
   if(!country_.empty())
-    location.AddMember("country", country_, a);
+    location.AddMember("country", rapidjson::Value(country_, a), a);
   if(date_time_ && !date_time_->empty())
-    location.AddMember("date_time", *date_time_, a);
+    location.AddMember("date_time", rapidjson::Value(*date_time_, a), a);
   if(heading_)
     location.AddMember("heading", *heading_, a);
   if(way_id_)

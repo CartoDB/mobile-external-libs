@@ -1,5 +1,6 @@
 #include <unordered_map>
 
+#include "config.h"
 #include "proto/tripdirections.pb.h"
 #include "proto/directions_options.pb.h"
 #include "odin/transitstop.h"

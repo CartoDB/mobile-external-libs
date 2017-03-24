@@ -1,6 +1,7 @@
 #ifndef VALHALLA_BALDR_GRAPHCONSTANTS_H_
 #define VALHALLA_BALDR_GRAPHCONSTANTS_H_
 
+#include "config.h"
 #include <unordered_map>
 #include <string>
 

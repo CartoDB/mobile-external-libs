@@ -1,3 +1,4 @@
+#include "config.h"
 #include "odin/transitrouteinfo.h"
 #include "odin/util.h"
 
