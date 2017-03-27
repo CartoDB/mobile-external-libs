@@ -15,7 +15,7 @@
 #include <miniz.c>
 
 namespace {
-  bool inflate(const char* in, size_t in_size, std::vector<char>& out) {
+  bool inflate(const unsigned char* in, size_t in_size, std::vector<char>& out) {
     if (in_size < 14) {
       return false;
     }
@@ -59,7 +59,7 @@ namespace {
     infstream.opaque = NULL;
     int err = MZ_OK;
     infstream.avail_in = static_cast<unsigned int>(in_size - offset - 4); // size of input
-    infstream.next_in = reinterpret_cast<const unsigned char *>(&in[offset]);
+    infstream.next_in = &in[offset];
     infstream.avail_out = sizeof(buf); // size of output
     infstream.next_out = reinterpret_cast<unsigned char *>(&buf[0]); // output char array
     ::mz_inflateInit2(&infstream, -MZ_DEFAULT_WINDOW_BITS);
@@ -124,13 +124,13 @@ bool GraphTileMBTStorage::ReadTile(const GraphId& graphid, const TileHierarchy& 
   for (auto& mbt_db : mbt_dbs_) {
     try {
       std::tuple<int, int, int> tile_coords = FromGraphId(graphid, tile_hierarchy);
-      sqlite3pp::query query(*mbt_db, "SELECT LENGTH(tile_data), tile_data FROM tiles WHERE zoom_level=:z AND tile_row=:y and tile_column=:y");
+      sqlite3pp::query query(*mbt_db, "SELECT tile_data FROM tiles WHERE zoom_level=:z AND tile_row=:y and tile_column=:x");
       query.bind(":z", std::get<0>(tile_coords));
       query.bind(":x", std::get<1>(tile_coords));
       query.bind(":y", std::get<2>(tile_coords));
       for (auto it = query.begin(); it != query.end(); it++) {
-        int data_size = (*it).get<int>(0);
-        const char* data_ptr = static_cast<const char*>((*it).get<const void*>(1));
+        std::size_t data_size = (*it).column_bytes(0);
+        const unsigned char* data_ptr = static_cast<const unsigned char*>((*it).get<const void*>(0));
         tile_data.clear();
         return inflate(data_ptr, data_size, tile_data);
       }
