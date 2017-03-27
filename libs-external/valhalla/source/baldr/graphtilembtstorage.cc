@@ -80,59 +80,62 @@ namespace {
 namespace valhalla {
 namespace baldr {
 
-GraphTileMBTStorage::GraphTileMBTStorage(const std::string& mbt_file)
-    : mbt_db_() {
-  try {
-    mbt_db_.reset(new sqlite3pp::database(mbt_file.c_str()));
-  } catch (...) {
-    throw std::runtime_error("Failed to open graph file: " + mbt_file);
-  }
+GraphTileMBTStorage::GraphTileMBTStorage(const std::vector<std::shared_ptr<sqlite3pp::database>>& dbs)
+    : mbt_dbs_(dbs) {
 }
 
 std::unordered_set<GraphId> GraphTileMBTStorage::FindTiles(const TileHierarchy& tile_hierarchy) const {
   std::unordered_set<GraphId> graphids;
-  try {
-    sqlite3pp::query query(*mbt_db_, "SELECT zoom_level, tile_column, tile_row FROM tiles");
-    for (auto it = query.begin(); it != query.end(); it++) {
-      int z = (*it).get<int>(0);
-      int x = (*it).get<int>(1);
-      int y = (*it).get<int>(2);
-      graphids.insert(ToGraphId(std::make_tuple(z, x, y), tile_hierarchy));
+  for (auto& mbt_db : mbt_dbs_) {
+    try {
+      sqlite3pp::query query(*mbt_db, "SELECT zoom_level, tile_column, tile_row FROM tiles");
+      for (auto it = query.begin(); it != query.end(); it++) {
+        int z = (*it).get<int>(0);
+        int x = (*it).get<int>(1);
+        int y = (*it).get<int>(2);
+        graphids.insert(ToGraphId(std::make_tuple(z, x, y), tile_hierarchy));
+      }
+    } catch (const std::exception&) {
     }
-  } catch (const std::exception&) {
   }
   return graphids;
 }
 
 bool GraphTileMBTStorage::DoesTileExist(const GraphId& graphid, const TileHierarchy& tile_hierarchy) const {
-  try {
-    std::tuple<int, int, int> tile_coords = FromGraphId(graphid, tile_hierarchy);
-    sqlite3pp::query query(*mbt_db_, "SELECT count(*) FROM tiles WHERE zoom_level=:z AND tile_row=:y and tile_column=:y");
-    query.bind(":z", std::get<0>(tile_coords));
-    query.bind(":x", std::get<1>(tile_coords));
-    query.bind(":y", std::get<2>(tile_coords));
-    for (auto it = query.begin(); it != query.end(); it++) {
-      return (*it).get<int>(0) > 0;
+  for (auto& mbt_db : mbt_dbs_) {
+    try {
+      std::tuple<int, int, int> tile_coords = FromGraphId(graphid, tile_hierarchy);
+      sqlite3pp::query query(*mbt_db, "SELECT COUNT(*) FROM tiles WHERE zoom_level=:z AND tile_row=:y and tile_column=:y");
+      query.bind(":z", std::get<0>(tile_coords));
+      query.bind(":x", std::get<1>(tile_coords));
+      query.bind(":y", std::get<2>(tile_coords));
+      for (auto it = query.begin(); it != query.end(); it++) {
+        if ((*it).get<int>(0) > 0) {
+          return true;
+        }
+      }
+    } catch (const std::exception&) {
     }
-  } catch (const std::exception&) {
   }
   return false;
 }
 
 bool GraphTileMBTStorage::ReadTile(const GraphId& graphid, const TileHierarchy& tile_hierarchy, std::vector<char>& tile_data) const {
-  try {
-    std::tuple<int, int, int> tile_coords = FromGraphId(graphid, tile_hierarchy);
-    sqlite3pp::query query(*mbt_db_, "SELECT LENGTH(tile_data), tile_data FROM tiles WHERE zoom_level=:z AND tile_row=:y and tile_column=:y");
-    query.bind(":z", std::get<0>(tile_coords));
-    query.bind(":x", std::get<1>(tile_coords));
-    query.bind(":y", std::get<2>(tile_coords));
-    for (auto it = query.begin(); it != query.end(); it++) {
-      int data_size = (*it).get<int>(0);
-      const char* data_ptr = static_cast<const char*>((*it).get<const void*>(1));
-      tile_data.clear();
-      return inflate(data_ptr, data_size, tile_data);
+  for (auto& mbt_db : mbt_dbs_) {
+    try {
+      std::tuple<int, int, int> tile_coords = FromGraphId(graphid, tile_hierarchy);
+      sqlite3pp::query query(*mbt_db, "SELECT LENGTH(tile_data), tile_data FROM tiles WHERE zoom_level=:z AND tile_row=:y and tile_column=:y");
+      query.bind(":z", std::get<0>(tile_coords));
+      query.bind(":x", std::get<1>(tile_coords));
+      query.bind(":y", std::get<2>(tile_coords));
+      for (auto it = query.begin(); it != query.end(); it++) {
+        int data_size = (*it).get<int>(0);
+        const char* data_ptr = static_cast<const char*>((*it).get<const void*>(1));
+        tile_data.clear();
+        return inflate(data_ptr, data_size, tile_data);
+      }
+    } catch (const std::exception&) {
     }
-  } catch (const std::exception&) {
   }
   return false;
 }

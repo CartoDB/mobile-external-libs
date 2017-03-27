@@ -2,6 +2,8 @@
 #define VALHALLA_BALDR_GRAPHTILEMBTSTORAGE_H_
 
 #include <tuple>
+#include <memory>
+#include <vector>
 #include <valhalla/baldr/graphtilestorage.h>
 
 namespace sqlite3pp {
@@ -16,9 +18,9 @@ class GraphTileMBTStorage : public GraphTileStorage {
 
   /**
    * Constructor
-   * @param mbt_file The name of the MBTiles file that stores the tiles.
+   * @param dbs The routing databases.
    */
-  GraphTileMBTStorage(const std::string& mbt_file);
+  GraphTileMBTStorage(const std::vector<std::shared_ptr<sqlite3pp::database>>& dbs);
 
   /**
    * Destructor
@@ -64,7 +66,7 @@ class GraphTileMBTStorage : public GraphTileStorage {
 
   static GraphId ToGraphId(const std::tuple<int, int, int>& tile_coords, const TileHierarchy& tile_hierarchy);
 
-  std::shared_ptr<sqlite3pp::database> mbt_db_;
+  std::vector<std::shared_ptr<sqlite3pp::database>> mbt_dbs_;
 
 };
 
