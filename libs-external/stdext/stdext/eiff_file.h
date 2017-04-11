@@ -159,6 +159,4 @@ namespace eiff {
     
 } // namespace eiff
 
-#endif
-
-
+#endif // _EIFF_FILE_H_INCLUDED_

@@ -80,7 +80,6 @@ namespace miniz {
         return err == MZ_OK || err == MZ_STREAM_END;
     }
 
-}
+} // namespace miniz
 
-#endif
-
+#endif // _MINIZ_H_INCLUDED_

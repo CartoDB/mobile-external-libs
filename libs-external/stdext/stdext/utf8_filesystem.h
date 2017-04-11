@@ -95,6 +95,6 @@ namespace utf8_filesystem {
 #endif
     }
 
-}
+} // namespace utf8_filesystem
 
-#endif
+#endif //_UTF8_FILESYSTEM_H_INCLUDED_

@@ -64,6 +64,6 @@ namespace zlib {
         return inflate_gzip(in_data, in_size, nullptr, 0, out);
     }
 
-}
+} // namespace zlib
 
-#endif
+#endif // _ZLIB_H_INCLUDED_
