@@ -228,7 +228,7 @@ namespace boost {
 				      const uint32_t seed, const void *out )
       {
 	const uint8_t *const data = static_cast<const uint8_t*>(key);
-	const int nblocks = len / 16;
+	const ptrdiff_t nblocks = len / 16;
 
 	uint32_t h1 = seed;
 	uint32_t h2 = seed;
@@ -245,7 +245,7 @@ namespace boost {
 
 	const uint32_t *const blocks = reinterpret_cast<const uint32_t *>(data + nblocks*16);
 
-	for(int i = -nblocks; i; i++)
+	for(ptrdiff_t i = -nblocks; i; i++)
 	  {
 	    uint32_t k1 = getblock(blocks,i*4+0);
 	    uint32_t k2 = getblock(blocks,i*4+1);
@@ -333,7 +333,7 @@ namespace boost {
 			              const uint32_t seed, const void * out )
       {
 	const uint8_t *const data = static_cast<const uint8_t*>(key);
-	const int nblocks = len / 16;
+	const ptrdiff_t nblocks = len / 16;
 
 	uint64_t h1 = seed;
 	uint64_t h2 = seed;
@@ -346,7 +346,7 @@ namespace boost {
 
 	const uint64_t *const  blocks = reinterpret_cast<const uint64_t *>(data);
 
-	for(int i = 0; i < nblocks; i++)
+	for(ptrdiff_t i = 0; i < nblocks; i++)
 	  {
 	    uint64_t k1 = getblock(blocks,i*2+0);
 	    uint64_t k2 = getblock(blocks,i*2+1);
