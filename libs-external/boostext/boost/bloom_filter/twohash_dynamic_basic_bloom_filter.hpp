@@ -122,7 +122,13 @@ namespace boost {
 	return this->bits;
       }
 
-      //* core ops
+	  bitset_type&
+		  data()
+	  {
+		  return this->bits;
+	  }
+
+	  //* core ops
       void insert(const T& t)
       {
 	apply_hash_type::insert(t, bits);
