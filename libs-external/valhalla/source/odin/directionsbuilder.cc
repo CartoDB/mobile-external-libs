@@ -85,9 +85,9 @@ TripDirections DirectionsBuilder::Build(
     maneuvers = maneuversBuilder.Build();
 
     // Create the narrative
-    std::unique_ptr<NarrativeBuilder> narrative_builder =
-        NarrativeBuilderFactory::Create(directions_options, etp);
-    narrative_builder->Build(directions_options, etp, maneuvers);
+//    std::unique_ptr<NarrativeBuilder> narrative_builder =
+//        NarrativeBuilderFactory::Create(directions_options, etp);
+//    narrative_builder->Build(directions_options, etp, maneuvers);
   }
 
   // Return trip directions
