@@ -224,6 +224,22 @@ namespace cglib
     }
     
     /**
+     * Calculates pointwise product of two vectors.
+     * @relates vec
+     */
+    
+    template <typename T, size_t N, typename Traits> CGLIB_FORCEINLINE vec<T, N, Traits>
+        pointwise_product(const vec<T, N, Traits> & v1, const vec<T, N, Traits> & v2)
+    {
+        vec<T, N, Traits> pp;
+        for_each_unrolled<N>([&](size_t i)
+        {
+            pp(i) = v1(i) * v2(i);
+        });
+        return pp;
+    }
+    
+    /**
      * Calculates vector product of two vectors. Defined only for N=3, N=4.
      * @relates vec
      */

@@ -845,6 +845,25 @@ namespace cglib
         }
         return mi;
     }
+
+    /**
+     * Calculates Hadamard product of two matrices.
+     * @relates mat
+     */
+    
+    template <typename T, size_t N, typename Traits> mat<T, N, Traits>
+        hadamard_product(const mat<T, N, Traits> & m1, const mat<T, N, Traits> & m2)
+    {
+        mat<T, N, Traits> mhp;
+        for (size_t i = 0; i < N; i++)
+        {
+            for (size_t j = 0; j < N; j++)
+            {
+                mhp(i, j) = m1(i, j) * m2(i, j);
+            }
+        }
+        return mhp;
+    }
     
     /**
      * @relates mat
