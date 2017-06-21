@@ -80,7 +80,7 @@ void msdfErrorCorrection(Bitmap<FloatRGB> &output, const Vector2 &threshold) {
     }
 }
 
-void generateSDF(Bitmap<float> &output, const Shape &shape, double range, const Vector2 &scale, const Vector2 &translate) {
+void generateSDF(Bitmap<float> &output, const Shape &shape, double range, const Vector2 &scale, const Vector2 &translate, double maxValue) {
     int contourCount = shape.contours.size();
     int w = output.width(), h = output.height();
     std::vector<int> windings;
@@ -111,9 +111,12 @@ void generateSDF(Bitmap<float> &output, const Shape &shape, double range, const 
                 std::vector<Contour>::const_iterator contour = shape.contours.begin();
                 std::vector<EdgeBounds>::const_iterator bounds = edgeBounds.begin();
                 for (int i = 0; i < contourCount; ++i, ++contour) {
-                    SignedDistance minDistance;
-                    if (closestEdge)
-                        minDistance = closestEdge->signedDistance(p, dummy);
+                    SignedDistance minDistance(-maxValue, 1);
+                    if (closestEdge) {
+                        SignedDistance distance = closestEdge->signedDistance(p, dummy);
+                        if (distance < minDistance)
+                            minDistance = distance;
+                    }
 
                     for (std::vector<EdgeHolder>::const_iterator edge = contour->edges.begin(); edge != contour->edges.end(); ++edge, ++bounds) {
                         double absDist = fabs(minDistance.distance);
@@ -363,7 +366,7 @@ void generateMSDF(Bitmap<FloatRGB> &output, const Shape &shape, double range, co
         msdfErrorCorrection(output, edgeThreshold/(scale*range));
 }
 
-void generateSDF_legacy(Bitmap<float> &output, const Shape &shape, double range, const Vector2 &scale, const Vector2 &translate) {
+void generateSDF_legacy(Bitmap<float> &output, const Shape &shape, double range, const Vector2 &scale, const Vector2 &translate, double maxValue) {
     int w = output.width(), h = output.height();
     std::vector<EdgeBounds> edgeBounds = buildEdgeBounds(shape);
 #ifdef MSDFGEN_USE_OPENMP
@@ -375,9 +378,12 @@ void generateSDF_legacy(Bitmap<float> &output, const Shape &shape, double range,
         for (int x = 0; x < w; ++x) {
             double dummy;
             Point2 p = Vector2(x+.5, y+.5)/scale-translate;
-            SignedDistance minDistance;
-            if (closestEdge)
-                minDistance = closestEdge->signedDistance(p, dummy);
+            SignedDistance minDistance(-maxValue, 1);
+            if (closestEdge) {
+                SignedDistance distance = closestEdge->signedDistance(p, dummy);
+                if (distance < minDistance)
+                    minDistance = distance;
+            }
             std::vector<EdgeBounds>::const_iterator bounds = edgeBounds.begin();
             for (std::vector<Contour>::const_iterator contour = shape.contours.begin(); contour != shape.contours.end(); ++contour)
                 for (std::vector<EdgeHolder>::const_iterator edge = contour->edges.begin(); edge != contour->edges.end(); ++edge, ++bounds) {
