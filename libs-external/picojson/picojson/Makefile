@@ -7,10 +7,10 @@ test: test-core test-core-int64
 	./test-core
 	./test-core-int64
 
-test-core: test.cc picotest/picotest.c picotest/picotest.h
+test-core: picojson.h test.cc picotest/picotest.c picotest/picotest.h
 	$(CXX) -Wall test.cc picotest/picotest.c -o $@
 
-test-core-int64: test.cc picotest/picotest.c picotest/picotest.h
+test-core-int64: picojson.h test.cc picotest/picotest.c picotest/picotest.h
 	$(CXX) -Wall -DPICOJSON_USE_INT64 test.cc picotest/picotest.c -o $@
 
 clean:
@@ -23,4 +23,7 @@ install:
 uninstall:
 	rm -f $(DESTDIR)$(includedir)/picojson.h
 
-.PHONY: test check clean install uninstall
+clang-format: picojson.h examples/github-issues.cc examples/iostream.cc examples/streaming.cc
+	clang-format -i $?
+
+.PHONY: test check clean install uninstall clang-format
