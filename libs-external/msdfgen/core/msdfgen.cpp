@@ -14,6 +14,12 @@ struct EdgeBounds {
     double l, b, r, t;
 };
 
+struct EdgeState {
+    EdgeBounds bounds;
+    Point2 closestPoint;
+    double closestDist;
+};
+
 static inline bool pixelClash(const FloatRGB &a, const FloatRGB &b, double threshold) {
     // Only consider pair where both are on the inside or both are on the outside
     bool aIn = (a.r > .5f)+(a.g > .5f)+(a.b > .5f) >= 2;
@@ -48,18 +54,22 @@ static inline bool pixelClash(const FloatRGB &a, const FloatRGB &b, double thres
         && fabsf(ac-.5f) >= fabsf(bc-.5f); // Out of the pair, only flag the pixel farther from a shape edge
 }
 
-static std::vector<EdgeBounds> buildEdgeBounds(const Shape &shape) {
-    std::vector<EdgeBounds> edgeBounds;
+static std::vector<EdgeState> buildEdgeState(const Shape &shape) {
+    std::vector<EdgeState> edgeState;
     for (std::vector<Contour>::const_iterator contour = shape.contours.begin(); contour != shape.contours.end(); ++contour) {
         for (std::vector<EdgeHolder>::const_iterator edge = contour->edges.begin(); edge != contour->edges.end(); ++edge) {
             EdgeBounds bounds;
             bounds.l = bounds.b = fabs(SignedDistance::INFINITE.distance);
             bounds.r = bounds.t = -fabs(SignedDistance::INFINITE.distance);
             (*edge)->bounds(bounds.l, bounds.b, bounds.r, bounds.t);
-            edgeBounds.push_back(bounds);
+            EdgeState state;
+            state.bounds = bounds;
+            state.closestPoint = Point2(0, 0);
+            state.closestDist = -1;
+            edgeState.push_back(state);
         }
     }
-    return edgeBounds;
+    return edgeState;
 }
 
 void msdfErrorCorrection(Bitmap<FloatRGB> &output, const Vector2 &threshold) {
@@ -87,7 +97,7 @@ void generateSDF(Bitmap<float> &output, const Shape &shape, double range, const 
     windings.reserve(contourCount);
     for (std::vector<Contour>::const_iterator contour = shape.contours.begin(); contour != shape.contours.end(); ++contour)
         windings.push_back(contour->winding());
-    std::vector<EdgeBounds> edgeBounds = buildEdgeBounds(shape);
+    std::vector<EdgeState> edgeState = buildEdgeState(shape);
 
 #ifdef MSDFGEN_USE_OPENMP
     #pragma omp parallel
@@ -109,7 +119,7 @@ void generateSDF(Bitmap<float> &output, const Shape &shape, double range, const 
                 int winding = 0;
 
                 std::vector<Contour>::const_iterator contour = shape.contours.begin();
-                std::vector<EdgeBounds>::const_iterator bounds = edgeBounds.begin();
+                std::vector<EdgeState>::const_iterator state = edgeState.begin();
                 for (int i = 0; i < contourCount; ++i, ++contour) {
                     SignedDistance minDistance(-maxValue, 1);
                     if (closestEdge) {
@@ -118,9 +128,9 @@ void generateSDF(Bitmap<float> &output, const Shape &shape, double range, const 
                             minDistance = distance;
                     }
 
-                    for (std::vector<EdgeHolder>::const_iterator edge = contour->edges.begin(); edge != contour->edges.end(); ++edge, ++bounds) {
+                    for (std::vector<EdgeHolder>::const_iterator edge = contour->edges.begin(); edge != contour->edges.end(); ++edge, ++state) {
                         double absDist = fabs(minDistance.distance);
-                        if (p.x + absDist < bounds->l || bounds->r + absDist < p.x || p.y + absDist < bounds->b || bounds->t + absDist < p.y)
+                        if (p.x + absDist < state->bounds.l || state->bounds.r + absDist < p.x || p.y + absDist < state->bounds.b || state->bounds.t + absDist < p.y)
                             continue;
 
                         SignedDistance distance = (*edge)->signedDistance(p, dummy);
@@ -368,34 +378,54 @@ void generateMSDF(Bitmap<FloatRGB> &output, const Shape &shape, double range, co
 
 void generateSDF_legacy(Bitmap<float> &output, const Shape &shape, double range, const Vector2 &scale, const Vector2 &translate, double maxValue) {
     int w = output.width(), h = output.height();
-    std::vector<EdgeBounds> edgeBounds = buildEdgeBounds(shape);
+    std::vector<EdgeState> edgeState = buildEdgeState(shape);
 #ifdef MSDFGEN_USE_OPENMP
     #pragma omp parallel for
 #endif
     EdgeHolder closestEdge;
+    std::vector<EdgeState>::iterator closestState;
     for (int y = 0; y < h; ++y) {
         int row = shape.inverseYAxis ? h-y-1 : y;
-        for (int x = 0; x < w; ++x) {
+        for (int n = 0; n < w; n++) {
+            int x = (y & 1 ? w - n - 1 : n);
             double dummy;
-            Point2 p = Vector2(x+.5, y+.5)/scale-translate;
+            Point2 p = Vector2(x + .5, y + .5) / scale - translate;
             SignedDistance minDistance(-maxValue, 1);
             if (closestEdge) {
-                SignedDistance distance = closestEdge->signedDistance(p, dummy);
-                if (distance < minDistance)
-                    minDistance = distance;
+                double absDist = std::abs(minDistance.distance);
+                float dx = static_cast<float>(closestState->closestPoint.x - p.x), dy = static_cast<float>(closestState->closestPoint.y - p.y);
+                if (absDist + std::sqrtf(dx * dx + dy * dy) > closestState->closestDist) {
+                    SignedDistance distance = closestEdge->signedDistance(p, dummy);
+                    closestState->closestPoint = p;
+                    closestState->closestDist = std::abs(distance.distance);
+                    if (distance < minDistance) {
+                        minDistance = distance;
+                    }
+                }
             }
-            std::vector<EdgeBounds>::const_iterator bounds = edgeBounds.begin();
-            for (std::vector<Contour>::const_iterator contour = shape.contours.begin(); contour != shape.contours.end(); ++contour)
-                for (std::vector<EdgeHolder>::const_iterator edge = contour->edges.begin(); edge != contour->edges.end(); ++edge, ++bounds) {
-                    double absDist = fabs(minDistance.distance);
-                    if (p.x + absDist < bounds->l || bounds->r + absDist < p.x || p.y + absDist < bounds->b || bounds->t + absDist < p.y)
+            
+            std::vector<EdgeState>::iterator state = edgeState.begin();
+            for (std::vector<Contour>::const_iterator contour = shape.contours.begin(); contour != shape.contours.end(); ++contour) {
+                for (std::vector<EdgeHolder>::const_iterator edge = contour->edges.begin(); edge != contour->edges.end(); ++edge, ++state) {
+                    double absDist = std::abs(minDistance.distance);
+                    if (p.x + absDist <= state->bounds.l || state->bounds.r + absDist <= p.x || p.y + absDist <= state->bounds.b || state->bounds.t + absDist <= p.y)
                         continue;
                     
-                    SignedDistance distance = (*edge)->signedDistance(p, dummy);
-                    if (distance < minDistance)
-                        minDistance = distance;
+                    float dx = static_cast<float>(state->closestPoint.x - p.x), dy = static_cast<float>(state->closestPoint.y - p.y);
+                    if (absDist + std::sqrtf(dx * dx + dy * dy) > state->closestDist) {
+                        SignedDistance distance = (*edge)->signedDistance(p, dummy);
+                        state->closestPoint = p;
+                        state->closestDist = std::abs(distance.distance);
+                        if (distance < minDistance) {
+                            minDistance = distance;
+                            closestEdge = *edge;
+                            closestState = state;
+                        }
+                    }
                 }
-            output(x, row) = float(minDistance.distance/range+.5);
+            }
+            
+            output(x, row) = float(minDistance.distance / range + .5);
         }
     }
 }
