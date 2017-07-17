@@ -3,6 +3,8 @@
 
 #include "arithmetics.hpp"
 
+#include <cmath>
+
 namespace msdfgen {
 
 struct MultiDistance {
@@ -394,7 +396,7 @@ void generateSDF_legacy(Bitmap<float> &output, const Shape &shape, double range,
             if (closestEdge) {
                 double absDist = std::abs(minDistance.distance);
                 float dx = static_cast<float>(closestState->closestPoint.x - p.x), dy = static_cast<float>(closestState->closestPoint.y - p.y);
-                if (absDist + std::sqrtf(dx * dx + dy * dy) > closestState->closestDist) {
+                if (absDist + std::sqrt(dx * dx + dy * dy) > closestState->closestDist) {
                     SignedDistance distance = closestEdge->signedDistance(p, dummy);
                     closestState->closestPoint = p;
                     closestState->closestDist = std::abs(distance.distance);
@@ -412,7 +414,7 @@ void generateSDF_legacy(Bitmap<float> &output, const Shape &shape, double range,
                         continue;
                     
                     float dx = static_cast<float>(state->closestPoint.x - p.x), dy = static_cast<float>(state->closestPoint.y - p.y);
-                    if (absDist + std::sqrtf(dx * dx + dy * dy) > state->closestDist) {
+                    if (absDist + std::sqrt(dx * dx + dy * dy) > state->closestDist) {
                         SignedDistance distance = (*edge)->signedDistance(p, dummy);
                         state->closestPoint = p;
                         state->closestDist = std::abs(distance.distance);
