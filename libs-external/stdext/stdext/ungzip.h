@@ -55,6 +55,9 @@ namespace zlib {
                 infstream.avail_out = sizeof(out_buf); // size of output
                 infstream.next_out = out_buf; // output char array
                 err = ::inflate(&infstream, Z_NO_FLUSH);
+                if (err == Z_BUF_ERROR) {
+                    err = Z_OK;
+                }
                 if (err != Z_OK && err != Z_STREAM_END) {
                     break;
                 }
