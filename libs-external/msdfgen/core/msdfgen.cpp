@@ -410,7 +410,7 @@ void generateSDF_legacy(Bitmap<float> &output, const Shape &shape, double range,
             for (std::vector<Contour>::const_iterator contour = shape.contours.begin(); contour != shape.contours.end(); ++contour) {
                 for (std::vector<EdgeHolder>::const_iterator edge = contour->edges.begin(); edge != contour->edges.end(); ++edge, ++state) {
                     double absDist = std::abs(minDistance.distance);
-                    if (p.x + absDist <= state->bounds.l || state->bounds.r + absDist <= p.x || p.y + absDist <= state->bounds.b || state->bounds.t + absDist <= p.y)
+                    if (p.x + absDist < state->bounds.l || state->bounds.r + absDist < p.x || p.y + absDist < state->bounds.b || state->bounds.t + absDist < p.y)
                         continue;
                     
                     float dx = static_cast<float>(state->closestPoint.x - p.x), dy = static_cast<float>(state->closestPoint.y - p.y);
