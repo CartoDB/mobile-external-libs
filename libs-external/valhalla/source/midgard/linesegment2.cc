@@ -56,7 +56,8 @@ float LineSegment2<coord_t>::DistanceSquared(const coord_t& p,
     }
     else {
       // Closest point is along the segment - the projection of w onto v.
-      closest = a_ + v * (n / d);
+      auto cc = a_ + v * (n / d);
+      closest.Set(cc.x(), cc.y());
     }
   }
   return closest.DistanceSquared(p);
@@ -101,7 +102,8 @@ bool LineSegment2<coord_t>::Intersect(const LineSegment2<coord_t>& segment,
     return false;
 
   // An intersect occurs.  Set the intersect point and return true
-  intersect = a_ + b * t;
+  auto ii = a_ + b * t;
+  intersect.Set(ii.x(), ii.y());
   return true;
 }
 
@@ -209,7 +211,9 @@ bool LineSegment2<coord_t>::ClipToPolygon(const std::vector<coord_t>& poly,
   }
 
   // If candidate interval is not empty then set the clip segment
-  clip_segment = { a_ + c * t_in, a_ + c * t_out };
+  auto p0 = a_ + c * t_in;
+  auto p1 = a_ + c * t_out;
+  clip_segment = { coord_t(p0.x(), p0.y()), coord_t(p1.x(), p1.y()) };
   return true;
 }
 

@@ -67,11 +67,11 @@ container_t trim_front(container_t& pts, const float dist) {
     if ((d + segdist) > dist) {
       double frac = (dist - d) / segdist;
       auto midpoint = p1->AffineCombination((1.0-frac), frac, *p2);
-      result.push_back(midpoint);
+      result.emplace_back(midpoint.x(), midpoint.y());
 
       // Remove used part of polyline
       pts.erase(pts.begin(), p1);
-      pts.front() = midpoint;
+      pts.front().Set(midpoint.x(), midpoint.y());
       return result;
     } else {
       d += segdist;
@@ -145,7 +145,8 @@ container_t resample_spherical_polyline(const container_t& polyline, double reso
   container_t resampled = {polyline.front()};
   resolution *= RAD_PER_METER;
   double remaining = resolution;
-  PointLL last = resampled.back();
+  PointLL last;
+  last.Set(resampled.back().x(), resampled.back().y());
   for(auto p = std::next(polyline.cbegin()); p != polyline.cend(); ++p) {
     //radians
     auto lon2 = p->first * -RAD_PER_DEG;
@@ -181,7 +182,7 @@ container_t resample_spherical_polyline(const container_t& polyline, double reso
     }
     //we're going to the next point so consume whatever's left
     remaining -= d;
-    last = *p;
+    last.Set(p->x(), p->y());
     if(preserve)
       resampled.push_back(last);
   }

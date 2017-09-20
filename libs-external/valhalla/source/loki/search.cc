@@ -56,7 +56,8 @@ float tangent_angle(size_t index, const PointLL& point, const std::vector<PointL
     //are we done yet?
     if(remaining <= d) {
       auto coef = remaining / d;
-      u = u.AffineCombination(1 - coef, coef, *i);
+      auto uu = u.AffineCombination(1 - coef, coef, *i);
+      u.Set(uu.x(), uu.y());
       return u.Heading(point);
     }
     //next one
@@ -74,7 +75,8 @@ float tangent_angle(size_t index, const PointLL& point, const std::vector<PointL
     //are we done yet?
     if(remaining <= d) {
       auto coef = remaining / d;
-      v = v.AffineCombination(1 - coef, coef, *i);
+      auto vv = v.AffineCombination(1 - coef, coef, *i);
+      v.Set(vv.x(), vv.y());
       return u.Heading(v);
     }
     //next one
