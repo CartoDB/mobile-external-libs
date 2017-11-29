@@ -70,6 +70,7 @@ namespace protobuf {
 		inline message read_message();
 		inline std::string read_string();
 		inline std::string read_bytes();
+                inline const char * read_raw_string(std::size_t & size);
 		inline std::int32_t read_int32();
 		inline std::int64_t read_int64();
 		inline std::int32_t read_sint32();
@@ -148,6 +149,13 @@ namespace protobuf {
 	inline std::string message::read_bytes()
 	{
 		return read_string();
+	}
+
+	inline const char * message::read_raw_string(std::size_t & size)
+	{
+		size = static_cast<std::size_t>(read_varint64());
+		skip_bytes(size);
+                return data_ - size;
 	}
 
 	inline std::int32_t message::read_int32()
