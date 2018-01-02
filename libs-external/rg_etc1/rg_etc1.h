@@ -74,3 +74,4 @@ namespace rg_etc1
 // 3. This notice may not be removed or altered from any source distribution.
 //
 //------------------------------------------------------------------------------
+
