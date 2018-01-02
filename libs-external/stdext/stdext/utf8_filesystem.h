@@ -57,7 +57,7 @@ namespace utf8_filesystem {
     inline int ftruncate64(FILE* fp, std::int64_t size) {
 #ifdef _WIN32
         return ::_chsize_s(_fileno(fp), size);
-#elif defined(__ANRDOID__)
+#elif defined(__ANDROID__)
         return ::ftruncate64(fileno(fp), size);
 #elif defined(__APPLE__)
         return ::ftruncate(fileno(fp), size);
