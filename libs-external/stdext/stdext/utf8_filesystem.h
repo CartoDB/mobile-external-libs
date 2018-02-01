@@ -58,7 +58,11 @@ namespace utf8_filesystem {
 #ifdef _WIN32
         return ::_chsize_s(_fileno(fp), size);
 #elif defined(__ANDROID__)
+    #if __ANDROID_API__ >= 21
         return ::ftruncate64(fileno(fp), size);
+    #else
+        return ::ftruncate(fileno(fp), size);
+    #endif
 #elif defined(__APPLE__)
         return ::ftruncate(fileno(fp), size);
 #endif
