@@ -8,7 +8,10 @@
 #undef DEBUG
 #endif
 
-#ifdef __ANDROID__
+#include <string>
+
+#if defined(__ANDROID__) && !defined(_LIBCPP_STRING)
+
 #include <boost/lexical_cast.hpp>
 #include <cmath>
 
