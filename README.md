@@ -6,7 +6,7 @@ Here are copies of external libraries used on CARTO Mobile SDK. Some projects ar
 Use `git submodule` to resolve all source-level dependencies
 
 ```
-git submodule update --init --recursive
+git submodule update --init --remote --recursive
 ```
 
 ## Compiling
