@@ -6,6 +6,7 @@
 #include <miniz.c>
 #include <vector>
 #include <cstdlib>
+#include <cstring>
 
 namespace miniz {
 
