@@ -1,4 +1,4 @@
 [submodule "boost"]
 	path = boost
 	url = https://github.com/boostorg/boost.git
-	branch = master
+	branch = boost-1.69.0
