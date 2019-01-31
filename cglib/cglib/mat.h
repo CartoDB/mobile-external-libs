@@ -322,9 +322,38 @@ namespace cglib
         star_matrix(const vec<T, 3, Traits> & v)
     {
         mat<T, 3, Traits> m;
-        m(0, 0) = 0;	 m(0, 1) = -v(2); m(0, 2) = v(1);
-        m(1, 0) =  v(2); m(1, 1) = 0;	  m(1, 2) = -v(0);
+        m(0, 0) = 0;     m(0, 1) = -v(2); m(0, 2) = v(1);
+        m(1, 0) =  v(2); m(1, 1) = 0;     m(1, 2) = -v(0);
         m(2, 0) = -v(1); m(2, 1) = v(0);  m(2, 2) = 0;
+        return m;
+    }
+
+    /**
+     * Gives scaling matrix for given scaling coefficents.
+     * @relates mat
+     */
+
+    template <typename T, typename Traits> mat<T, 2, Traits>
+        scale2_matrix(const vec<T, 2, Traits> & s)
+    {
+        mat<T, 2, Traits> m;
+        m(0, 0) = s(0);  m(0, 1) = 0;
+        m(1, 0) = 0;     m(1, 1) = s(1);
+        return m;
+    }
+
+    /**
+     * Gives scaling matrix for given scaling coefficents.
+     * @relates mat
+     */
+
+    template <typename T, typename Traits> mat<T, 3, Traits>
+        scale3_matrix(const vec<T, 2, Traits> & s)
+    {
+        mat<T, 3, Traits> m;
+        m(0, 0) = s(0);  m(0, 1) = 0;    m(0, 2) = 0;
+        m(1, 0) = 0;     m(1, 1) = s(1); m(1, 2) = 0;
+        m(2, 0) = 0;     m(2, 1) = 0;    m(2, 2) = 1;
         return m;
     }
 
@@ -337,7 +366,7 @@ namespace cglib
         scale3_matrix(const vec<T, 3, Traits> & s)
     {
         mat<T, 3, Traits> m;
-        m(0, 0) = s(0);	 m(0, 1) = 0;    m(0, 2) = 0;
+        m(0, 0) = s(0);  m(0, 1) = 0;    m(0, 2) = 0;
         m(1, 0) = 0;     m(1, 1) = s(1); m(1, 2) = 0;
         m(2, 0) = 0;     m(2, 1) = 0;    m(2, 2) = s(2);
         return m;
@@ -352,10 +381,39 @@ namespace cglib
         scale4_matrix(const vec<T, 3, Traits> & s)
     {
         mat<T, 4, Traits> m;
-        m(0, 0) = s(0);	 m(0, 1) = 0;    m(0, 2) = 0;    m(0, 3) = 0;
+        m(0, 0) = s(0);  m(0, 1) = 0;    m(0, 2) = 0;    m(0, 3) = 0;
         m(1, 0) = 0;     m(1, 1) = s(1); m(1, 2) = 0;    m(1, 3) = 0;
         m(2, 0) = 0;     m(2, 1) = 0;    m(2, 2) = s(2); m(2, 3) = 0;
         m(3, 0) = 0;     m(3, 1) = 0;    m(3, 2) = 0;    m(3, 3) = 1;
+        return m;
+    }
+
+    /**
+     * Gives translation matrix for given translation vector.
+     * @relates mat
+     */
+
+    template <typename T, typename Traits> mat<T, 2, Traits>
+        translate2_matrix(const vec<T, 2, Traits> & t)
+    {
+        mat<T, 2, Traits> m;
+        m(0, 0) = 1;     m(0, 1) = t(0);
+        m(1, 0) = 0;     m(1, 1) = t(1);
+        return m;
+    }
+
+    /**
+     * Gives translation matrix for given translation vector.
+     * @relates mat
+     */
+
+    template <typename T, typename Traits> mat<T, 3, Traits>
+        translate3_matrix(const vec<T, 2, Traits> & t)
+    {
+        mat<T, 3, Traits> m;
+        m(0, 0) = 1;     m(0, 1) = 0;    m(0, 2) = t(0);
+        m(1, 0) = 0;     m(1, 1) = 1;    m(1, 2) = t(1);
+        m(2, 0) = 0;     m(2, 1) = 0;    m(2, 2) = 1;
         return m;
     }
 
@@ -368,7 +426,7 @@ namespace cglib
         translate3_matrix(const vec<T, 3, Traits> & t)
     {
         mat<T, 3, Traits> m;
-        m(0, 0) = 1;	 m(0, 1) = 0;    m(0, 2) = t(0);
+        m(0, 0) = 1;     m(0, 1) = 0;    m(0, 2) = t(0);
         m(1, 0) = 0;     m(1, 1) = 1;    m(1, 2) = t(1);
         m(2, 0) = 0;     m(2, 1) = 0;    m(2, 2) = t(2);
         return m;
@@ -383,7 +441,7 @@ namespace cglib
         translate4_matrix(const vec<T, 3, Traits> & t)
     {
         mat<T, 4, Traits> m;
-        m(0, 0) = 1;	 m(0, 1) = 0;    m(0, 2) = 0;    m(0, 3) = t(0);
+        m(0, 0) = 1;     m(0, 1) = 0;    m(0, 2) = 0;    m(0, 3) = t(0);
         m(1, 0) = 0;     m(1, 1) = 1;    m(1, 2) = 0;    m(1, 3) = t(1);
         m(2, 0) = 0;     m(2, 1) = 0;    m(2, 2) = 1;    m(2, 3) = t(2);
         m(3, 0) = 0;     m(3, 1) = 0;    m(3, 2) = 0;    m(3, 3) = 1;
@@ -398,10 +456,11 @@ namespace cglib
     template <typename T, typename Traits> mat<T, 3, Traits>
         euler3_matrix(const vec<T, 3, Traits> & hpb)
     {
-        mat<T, 3, Traits> m;
         T sh = Traits::sin(hpb(0)), ch = Traits::cos(hpb(0));
         T sp = Traits::sin(hpb(1)), cp = Traits::cos(hpb(1));
         T sb = Traits::sin(hpb(2)), cb = Traits::cos(hpb(2));
+
+        mat<T, 3, Traits> m;
         m(0, 0) =  cb*ch - sb*sp*sh;
         m(0, 1) = -sb*cp;
         m(0, 2) =  cb*sh + sb*sp*ch;
@@ -422,10 +481,11 @@ namespace cglib
     template <typename T, typename Traits> mat<T, 4, Traits>
         euler4_matrix(const vec<T, 3, Traits> & hpb)
     {
-        mat<T, 4, Traits> m;
         T sh = Traits::sin(hpb(0)), ch = Traits::cos(hpb(0));
         T sp = Traits::sin(hpb(1)), cp = Traits::cos(hpb(1));
         T sb = Traits::sin(hpb(2)), cb = Traits::cos(hpb(2));
+
+        mat<T, 4, Traits> m;
         m(0, 0) =  cb*ch - sb*sp*sh;
         m(0, 1) = -sb*cp;
         m(0, 2) =  cb*sh + sb*sp*ch;
@@ -487,10 +547,42 @@ namespace cglib
      * @relates mat
      */
 
+    template <typename T, typename Traits = float_traits<T> > mat<T, 2, Traits>
+        rotate2_matrix(T a)
+    {
+        T s = Traits::sin(a), c = Traits::cos(a);
+
+        mat<T, 2, Traits> m;
+        m(0, 0) = c;  m(0, 1) = -s;
+        m(1, 0) = s;  m(1, 1) =  c;
+        return m;
+    }
+
+    /**
+     * Gives rotation matrix for given vector and angle.
+     * @relates mat
+     */
+
+    template <typename T, typename Traits = float_traits<T> > mat<T, 3, Traits>
+        rotate3_matrix(T a)
+    {
+        T s = Traits::sin(a), c = Traits::cos(a);
+
+        mat<T, 3, Traits> m;
+        m(0, 0) = c;  m(0, 1) = -s;  m(0, 2) = 0;
+        m(1, 0) = s;  m(1, 1) =  c;  m(1, 2) = 0;
+        m(2, 0) = 0;  m(2, 1) =  0;  m(2, 2) = 1;
+        return m;
+    }
+
+    /**
+     * Gives rotation matrix for given vector and angle.
+     * @relates mat
+     */
+
     template <typename T, typename Traits> mat<T, 3, Traits>
         rotate3_matrix(const vec<T, 3, Traits> & v, T a)
     {
-        mat<T, 3, Traits> m;
         vec<T, 3, Traits> u = unit(v);
         T s = Traits::sin(a), c = Traits::cos(a);
         T x = u[0], y = u[1], z = u[2];
@@ -498,6 +590,8 @@ namespace cglib
         T xy = x * y, yz = y * z, zx = z * x;
         T xs = x * s, ys = y * s, zs = z * s;
         T one_c = 1 - c;
+
+        mat<T, 3, Traits> m;
         m(0, 0) = (one_c * xx) + c;  m(0, 1) = (one_c * xy) - zs; m(0, 2) = (one_c * zx) + ys;
         m(1, 0) = (one_c * xy) + zs; m(1, 1) = (one_c * yy) + c;  m(1, 2) = (one_c * yz) - xs;
         m(2, 0) = (one_c * zx) - ys; m(2, 1) = (one_c * yz) + xs; m(2, 2) = (one_c * zz) + c;
@@ -512,7 +606,6 @@ namespace cglib
     template <typename T, typename Traits> mat<T, 4, Traits>
         rotate4_matrix(const vec<T, 3, Traits> & v, T a)
     {
-        mat<T, 4, Traits> m;
         vec<T, 3, Traits> u = unit(v);
         T s = Traits::sin(a), c = Traits::cos(a);
         T x = u[0], y = u[1], z = u[2];
@@ -520,6 +613,8 @@ namespace cglib
         T xy = x * y, yz = y * z, zx = z * x;
         T xs = x * s, ys = y * s, zs = z * s;
         T one_c = 1 - c;
+
+        mat<T, 4, Traits> m;
         m(0, 0) = (one_c * xx) + c;  m(0, 1) = (one_c * xy) - zs; m(0, 2) = (one_c * zx) + ys; m(0, 3) = 0;
         m(1, 0) = (one_c * xy) + zs; m(1, 1) = (one_c * yy) + c;  m(1, 2) = (one_c * yz) - xs; m(1, 3) = 0;
         m(2, 0) = (one_c * zx) - ys; m(2, 1) = (one_c * yz) + xs; m(2, 2) = (one_c * zz) + c;  m(2, 3) = 0;
@@ -603,9 +698,9 @@ namespace cglib
     template <typename T, typename Traits> mat<T, 4, Traits>
         reflection4_matrix(const vec<T, 4, Traits> & plane)
     {
-        mat<T, 4, Traits> m;
         T q = plane(0) * plane(0) + plane(1) * plane(1) + plane(2) * plane(2);
 
+        mat<T, 4, Traits> m;
         m(0, 0) = q - 2 * plane(0) * plane(0);
         m(0, 1) = - 2 * plane(0) * plane(1);
         m(0, 2) = - 2 * plane(0) * plane(2);
