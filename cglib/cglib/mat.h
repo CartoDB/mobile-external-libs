@@ -814,12 +814,6 @@ namespace cglib
         return w;
     }
 
-    /**
-     * Calculates MxM subdeterminant of NxN matrix with given disabled rows
-     * and columns.
-     * @relates mat
-     */
-    
     template <typename T, size_t N, typename Traits> T
         fast_subdet(const mat<T, N, Traits> & m, size_t n)
     {
@@ -831,6 +825,9 @@ namespace cglib
             return (m(0, 0) * m(1, 1)) -
                    (m(0, 1) * m(1, 0));
         case 3:
+        case 4: // assuming last row is 0, 0, 0, 1
+            return (m(0, 0) * m(1, 1) * m(2, 2) + m(0, 1) * m(1, 2) * m(2, 0) + m(0, 2) * m(1, 0) * m(2, 1)) -
+                   (m(0, 2) * m(1, 1) * m(2, 0) + m(0, 1) * m(1, 0) * m(2, 2) + m(0, 0) * m(1, 2) * m(2, 1));
             return (m(0, 0) * m(1, 1) * m(2, 2) + m(0, 1) * m(1, 2) * m(2, 0) + m(0, 2) * m(1, 0) * m(2, 1)) -
                    (m(0, 2) * m(1, 1) * m(2, 0) + m(0, 1) * m(1, 0) * m(2, 2) + m(0, 0) * m(1, 2) * m(2, 1));
         }
@@ -840,7 +837,7 @@ namespace cglib
     template <typename T, size_t N, typename Traits> T
         subdeterminant(const mat<T, N, Traits> & m, size_t n)
     {
-        if (n < 4)
+        if (n < 4 || (n == 4 && m(3, 0) == 0 && m(3, 1) == 0 && m(3, 2) == 0 && m(3, 3) == 1))
             return fast_subdet(m, n);
         
         mat<T, N, Traits> ms;
@@ -895,6 +892,49 @@ namespace cglib
         return mt;
     }
     
+    template <typename T, size_t N, typename Traits> mat<T, N, Traits>
+        fast_inv(const mat<T, N, Traits> & m, T invdet)
+    {
+        switch (N)
+        {
+        case 1:
+            return mat<T, N, Traits>
+            {
+                { invdet }
+            };
+        case 2:
+            return mat<T, N, Traits>
+            {
+                {  m(1, 1) * invdet, -m(0, 1) * invdet },
+                { -m(1, 0) * invdet,  m(0, 0) * invdet }
+            };
+        case 3:
+            return mat<T, N, Traits>
+            {
+                {  (m(1, 1) * m(2, 2) - m(1, 2) * m(2, 1)) * invdet, (m(0, 2) * m(2, 1) - m(0, 1) * m(2, 2)) * invdet, (m(0, 1) * m(1, 2) - m(0, 2) * m(1, 1)) * invdet },
+                {  (m(1, 2) * m(2, 0) - m(1, 0) * m(2, 2)) * invdet, (m(0, 0) * m(2, 2) - m(0, 2) * m(2, 0)) * invdet, (m(0, 2) * m(1, 0) - m(0, 0) * m(1, 2)) * invdet },
+                {  (m(1, 0) * m(2, 1) - m(1, 1) * m(2, 0)) * invdet, (m(0, 1) * m(2, 0) - m(0, 0) * m(2, 1)) * invdet, (m(0, 0) * m(1, 1) - m(0, 1) * m(1, 0)) * invdet }
+            };
+        case 4: // assuming last row is 0, 0, 0, 1
+            {
+                T x =  m(0, 3) * m(1, 2) * m(2, 1) - m(0, 2) * m(1, 3) * m(2, 1) - m(0, 3) * m(1, 1) * m(2, 2) +
+                       m(0, 1) * m(1, 3) * m(2, 2) + m(0, 2) * m(1, 1) * m(2, 3) - m(0, 1) * m(1, 2) * m(2, 3);
+                T y = -m(0, 3) * m(1, 2) * m(2, 0) + m(0, 2) * m(1, 3) * m(2, 0) + m(0, 3) * m(1, 0) * m(2, 2) -
+                       m(0, 0) * m(1, 3) * m(2, 2) - m(0, 2) * m(1, 0) * m(2, 3) + m(0, 0) * m(1, 2) * m(2, 3);
+                T z =  m(0, 3) * m(1, 1) * m(2, 0) - m(0, 1) * m(1, 3) * m(2, 0) - m(0, 3) * m(1, 0) * m(2, 1) +
+                       m(0, 0) * m(1, 3) * m(2, 1) + m(0, 1) * m(1, 0) * m(2, 3) - m(0, 0) * m(1, 1) * m(2, 3);
+                return mat<T, N, Traits>
+                {
+                    {  (m(1, 1) * m(2, 2) - m(1, 2) * m(2, 1)) * invdet, (m(0, 2) * m(2, 1) - m(0, 1) * m(2, 2)) * invdet, (m(0, 1) * m(1, 2) - m(0, 2) * m(1, 1)) * invdet, x * invdet },
+                    {  (m(1, 2) * m(2, 0) - m(1, 0) * m(2, 2)) * invdet, (m(0, 0) * m(2, 2) - m(0, 2) * m(2, 0)) * invdet, (m(0, 2) * m(1, 0) - m(0, 0) * m(1, 2)) * invdet, y * invdet },
+                    {  (m(1, 0) * m(2, 1) - m(1, 1) * m(2, 0)) * invdet, (m(0, 1) * m(2, 0) - m(0, 0) * m(2, 1)) * invdet, (m(0, 0) * m(1, 1) - m(0, 1) * m(1, 0)) * invdet, z * invdet },
+                    {                                                 0,                                                0,                                                0,          1 }
+                };
+            }
+        }
+        return m;
+    }
+
     /**
      * Calculates inversion of NxN matrix M. Assumes that det(M) != 0.
      * @relates mat
@@ -908,6 +948,9 @@ namespace cglib
             invdet = Traits::infinity();
         else
             invdet = 1 / det;
+
+        if (N < 4 || (N == 4 && m(3, 0) == 0 && m(3, 1) == 0 && m(3, 2) == 0 && m(3, 3) == 1))
+            return fast_inv(m, invdet);
         
         mat<T, N, Traits> mi;
         for (size_t i = 0; i < N; i++)
