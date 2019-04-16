@@ -966,7 +966,7 @@ namespace cglib
                 }
                 r++;
             }
-            T sign = static_cast<T>(1 - ((int) (i % 2) * 2));
+            T sign = static_cast<T>(1 - (static_cast<int>(i % 2) * 2));
             mi(0, i) = subdeterminant(ms, N - 1) * sign * invdet;
             for (size_t j = 1; j < N; j++)
             {
