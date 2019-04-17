@@ -229,7 +229,7 @@ hb_feature_from_string (const char *str, int len,
   hb_feature_t feat;
 
   if (len < 0)
-    len = strlen (str);
+    len = (int) strlen (str);
 
   if (likely (parse_one_feature (&str, str + len, &feat)))
   {

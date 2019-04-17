@@ -123,7 +123,7 @@ struct hb_utf8_t
   static inline unsigned int
   strlen (const uint8_t *text)
   {
-    return ::strlen ((const char *) text);
+    return (unsigned int) ::strlen ((const char *) text);
   }
 };
 

@@ -282,7 +282,7 @@ struct hb_font_t {
 					hb_codepoint_t *glyph)
   {
     *glyph = 0;
-    if (len == -1) len = strlen (name);
+    if (len == -1) len = (int) strlen (name);
     return klass->get.f.glyph_from_name (this, user_data,
 					 name, len,
 					 glyph,
@@ -480,7 +480,7 @@ struct hb_font_t {
   {
     if (get_glyph_from_name (s, len, glyph)) return true;
 
-    if (len == -1) len = strlen (s);
+    if (len == -1) len = (int) strlen (s);
 
     /* Straight glyph index. */
     if (hb_codepoint_parse (s, len, 10, glyph))

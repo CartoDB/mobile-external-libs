@@ -421,7 +421,7 @@ hb_buffer_deserialize_glyphs (hb_buffer_t *buffer,
 	  buffer->content_type == HB_BUFFER_CONTENT_TYPE_GLYPHS);
 
   if (buf_len == -1)
-    buf_len = strlen (buf);
+    buf_len = (int) strlen (buf);
 
   if (!buf_len)
   {

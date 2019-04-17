@@ -847,10 +847,10 @@ lang_compare_first_component (const char *a,
   const char *p;
 
   p = strchr (a, '-');
-  da = p ? (unsigned int) (p - a) : strlen (a);
+  da = p ? (unsigned int) (p - a) : (unsigned int) strlen (a);
 
   p = strchr (b, '-');
-  db = p ? (unsigned int) (p - b) : strlen (b);
+  db = p ? (unsigned int) (p - b) : (unsigned int) strlen (b);
 
   return strncmp (a, b, MAX (da, db));
 }
@@ -858,7 +858,7 @@ lang_compare_first_component (const char *a,
 static hb_bool_t
 lang_matches (const char *lang_str, const char *spec)
 {
-  unsigned int len = strlen (spec);
+  unsigned int len = (unsigned int) strlen (spec);
 
   return strncmp (lang_str, spec, len) == 0 &&
 	 (lang_str[len] == '\0' || lang_str[len] == '-');

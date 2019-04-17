@@ -640,7 +640,7 @@ _hb_print_func (const char *func)
 {
   if (func)
   {
-    unsigned int func_len = strlen (func);
+    unsigned int func_len = (unsigned int) strlen (func);
     /* Skip "static" */
     if (0 == strncmp (func, "static ", 7))
       func += 7;
