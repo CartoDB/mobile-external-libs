@@ -779,9 +779,9 @@ NAMESPACE_END
 // ************** Deprecated ***************
 
 #if (CRYPTOPP_GCC_VERSION >= 40500) || (CRYPTOPP_LLVM_CLANG_VERSION >= 20800)
-# define CRYPTOPP_DEPRECATED(msg) __attribute__((deprecated (msg)));
+# define CRYPTOPP_DEPRECATED(msg)
 #elif (CRYPTOPP_GCC_VERSION)
-# define CRYPTOPP_DEPRECATED(msg) __attribute__((deprecated));
+# define CRYPTOPP_DEPRECATED(msg)
 #else
 # define CRYPTOPP_DEPRECATED(msg)
 #endif
