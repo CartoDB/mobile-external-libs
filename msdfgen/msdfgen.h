@@ -21,7 +21,6 @@
 #include "core/Bitmap.h"
 #include "core/edge-coloring.h"
 #include "core/render-sdf.h"
-#include "core/save-bmp.h"
 #include "core/shape-description.h"
 
 #define MSDFGEN_VERSION "1.4"

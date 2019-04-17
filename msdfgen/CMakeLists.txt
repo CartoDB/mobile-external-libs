@@ -2,7 +2,9 @@ project(msdfgen)
 
 set(CMAKE_BINARY_DIR "${CMAKE_SOURCE_DIR}/build")
 
+if(ANDROID OR IOS)
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fno-strict-aliasing")
+endif()
 
 file(GLOB msdfgen_SRC_FILES "core/*.cpp")
 
