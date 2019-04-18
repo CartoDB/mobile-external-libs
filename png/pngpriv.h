@@ -129,7 +129,7 @@
     */
 #  if (defined(__ARM_NEON__) || defined(__ARM_NEON)) && \
    defined(PNG_ALIGNED_MEMORY_SUPPORTED)
-#     define PNG_ARM_NEON_OPT 2
+#     define PNG_ARM_NEON_OPT 0
 #  else
 #     define PNG_ARM_NEON_OPT 0
 #  endif
@@ -189,7 +189,7 @@
 
 #ifndef PNG_MIPS_MSA_OPT
 #  if defined(__mips_msa) && (__mips_isa_rev >= 5) && defined(PNG_ALIGNED_MEMORY_SUPPORTED)
-#     define PNG_MIPS_MSA_OPT 2
+#     define PNG_MIPS_MSA_OPT 0
 #  else
 #     define PNG_MIPS_MSA_OPT 0
 #  endif
@@ -197,7 +197,7 @@
 
 #ifndef PNG_POWERPC_VSX_OPT
 #  if defined(__PPC64__) && defined(__ALTIVEC__) && defined(__VSX__)
-#     define PNG_POWERPC_VSX_OPT 2
+#     define PNG_POWERPC_VSX_OPT 0
 #  else
 #     define PNG_POWERPC_VSX_OPT 0
 #  endif
@@ -212,7 +212,7 @@
 #     if defined(__SSE4_1__) || defined(__AVX__) || defined(__SSSE3__) || \
        defined(__SSE2__) || defined(_M_X64) || defined(_M_AMD64) || \
        (defined(_M_IX86_FP) && _M_IX86_FP >= 2)
-#         define PNG_INTEL_SSE_OPT 1
+#         define PNG_INTEL_SSE_OPT 0
 #      else
 #         define PNG_INTEL_SSE_OPT 0
 #      endif
