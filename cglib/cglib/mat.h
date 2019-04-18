@@ -815,12 +815,15 @@ namespace cglib
     }
 
     template <typename T, size_t N, typename Traits> T
-        fast_subdet(const mat<T, N, Traits> & m, size_t n)
+        subdeterminant(const mat<T, N, Traits> & m, size_t n);
+
+    template <typename T, size_t N, typename Traits> T
+        _fast_subdet(const mat<T, N, Traits> & m, size_t n)
     {
         switch (n)
         {
         case 1:
-            return (m(0, 0));
+            return m(0, 0);
         case 2:
             return (m(0, 0) * m(1, 1)) -
                    (m(0, 1) * m(1, 0));
@@ -830,6 +833,8 @@ namespace cglib
                    (m(0, 2) * m(1, 1) * m(2, 0) + m(0, 1) * m(1, 0) * m(2, 2) + m(0, 0) * m(1, 2) * m(2, 1));
             return (m(0, 0) * m(1, 1) * m(2, 2) + m(0, 1) * m(1, 2) * m(2, 0) + m(0, 2) * m(1, 0) * m(2, 1)) -
                    (m(0, 2) * m(1, 1) * m(2, 0) + m(0, 1) * m(1, 0) * m(2, 2) + m(0, 0) * m(1, 2) * m(2, 1));
+        default:
+            return subdeterminant(m, n);
         }
         return 1;
     }
@@ -838,7 +843,7 @@ namespace cglib
         subdeterminant(const mat<T, N, Traits> & m, size_t n)
     {
         if (n < 4 || (n == 4 && m(3, 0) == 0 && m(3, 1) == 0 && m(3, 2) == 0 && m(3, 3) == 1))
-            return fast_subdet(m, n);
+            return _fast_subdet(m, n);
         
         mat<T, N, Traits> ms;
         for (size_t i = 1; i < n; i++)
@@ -893,7 +898,10 @@ namespace cglib
     }
     
     template <typename T, size_t N, typename Traits> mat<T, N, Traits>
-        fast_inv(const mat<T, N, Traits> & m, T invdet)
+        inverse(const mat<T, N, Traits> & m);
+
+    template <typename T, size_t N, typename Traits> mat<T, N, Traits>
+        _fast_inv(const mat<T, N, Traits> & m, T invdet)
     {
         switch (N)
         {
@@ -931,6 +939,8 @@ namespace cglib
                     {                                                 0,                                                0,                                                0,          1 }
                 };
             }
+        default:
+            return inverse(m);
         }
         return m;
     }
@@ -950,7 +960,7 @@ namespace cglib
             invdet = 1 / det;
 
         if (N < 4 || (N == 4 && m(3, 0) == 0 && m(3, 1) == 0 && m(3, 2) == 0 && m(3, 3) == 1))
-            return fast_inv(m, invdet);
+            return _fast_inv(m, invdet);
         
         mat<T, N, Traits> mi;
         for (size_t i = 0; i < N; i++)
