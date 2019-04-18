@@ -822,6 +822,8 @@ namespace cglib
     {
         switch (n)
         {
+        case 0:
+            return 1;
         case 1:
             return m(0, 0);
         case 2:
@@ -836,7 +838,6 @@ namespace cglib
         default:
             return subdeterminant(m, n);
         }
-        return 1;
     }
 
     template <typename T, size_t N, typename Traits> T
@@ -905,6 +906,10 @@ namespace cglib
     {
         switch (N)
         {
+        case 0:
+            return mat<T, N, Traits>
+            {
+            };
         case 1:
             return mat<T, N, Traits>
             {
@@ -942,7 +947,6 @@ namespace cglib
         default:
             return inverse(m);
         }
-        return m;
     }
 
     /**
