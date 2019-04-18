@@ -5,7 +5,7 @@
 
 #include "gzguts.h"
 
-#if defined(STDC)
+#if defined(STDC) && !defined(_WIN32)
 #  include <unistd.h>
 #endif
 
