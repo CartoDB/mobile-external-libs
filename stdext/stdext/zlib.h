@@ -1,9 +1,9 @@
 #ifndef _ZLIB_H_INCLUDED_
 #define _ZLIB_H_INCLUDED_
 
-#include <vector>
 #include <cstdlib>
 #include <cstring>
+#include <vector>
 
 #include <zlib.h>
 
@@ -15,7 +15,7 @@ namespace zlib {
 
         out.reserve(in_size);
 
-        unsigned char buf[4096];
+        std::vector<unsigned char> buf(16384);
         ::z_stream infstream;
         std::memset(&infstream, 0, sizeof(infstream));
         infstream.zalloc = NULL;
@@ -24,20 +24,20 @@ namespace zlib {
         int err = Z_OK;
         infstream.avail_in = static_cast<unsigned int>(in_size); // size of input
         infstream.next_in = const_cast<Bytef*>(reinterpret_cast<const Bytef*>(in_data)); // input char array
-        infstream.avail_out = sizeof(buf); // size of output
-        infstream.next_out = buf; // output char array
+        infstream.avail_out = static_cast<unsigned int>(buf.size()); // size of output
+        infstream.next_out = buf.data(); // output char array
         ::inflateInit2(&infstream, -MAX_WBITS);
         if (dict) {
             ::inflateSetDictionary(&infstream, reinterpret_cast<const Bytef*>(dict), static_cast<unsigned int>(dict_size));
         }
         do {
-            infstream.avail_out = sizeof(buf); // size of output
-            infstream.next_out = buf; // output char array
+            infstream.avail_out = static_cast<unsigned int>(buf.size()); // size of output
+            infstream.next_out = buf.data(); // output char array
             err = ::inflate(&infstream, infstream.avail_in > 0 ? Z_NO_FLUSH : Z_FINISH);
             if (err != Z_OK && err != Z_STREAM_END) {
                 break;
             }
-            out.insert(out.end(), reinterpret_cast<T*>(&buf[0]), reinterpret_cast<T*>(&buf[0]) + sizeof(buf) - infstream.avail_out);
+            out.insert(out.end(), reinterpret_cast<T*>(buf.data()), reinterpret_cast<T*>(buf.data() + buf.size() - infstream.avail_out));
         } while (err != Z_STREAM_END);
         ::inflateEnd(&infstream);
         return err == Z_OK || err == Z_STREAM_END;
@@ -54,7 +54,7 @@ namespace zlib {
 
         out.reserve(in_size);
 
-        unsigned char buf[4096];
+        std::vector<unsigned char> buf(16384);
         ::z_stream infstream;
         std::memset(&infstream, 0, sizeof(infstream));
         infstream.zalloc = NULL;
@@ -63,20 +63,20 @@ namespace zlib {
         int err = Z_OK;
         infstream.avail_in = static_cast<unsigned int>(in_size); // size of input
         infstream.next_in = const_cast<Bytef*>(reinterpret_cast<const Bytef*>(in_data)); // input char array
-        infstream.avail_out = sizeof(buf); // size of output
-        infstream.next_out = buf; // output char array
+        infstream.avail_out = static_cast<unsigned int>(buf.size()); // size of output
+        infstream.next_out = buf.data(); // output char array
         ::inflateInit2(&infstream, MAX_WBITS);
         if (dict) {
             ::inflateSetDictionary(&infstream, reinterpret_cast<const Bytef*>(dict), static_cast<unsigned int>(dict_size));
         }
         do {
-            infstream.avail_out = sizeof(buf); // size of output
-            infstream.next_out = buf; // output char array
+            infstream.avail_out = static_cast<unsigned int>(buf.size()); // size of output
+            infstream.next_out = buf.data(); // output char array
             err = ::inflate(&infstream, infstream.avail_in > 0 ? Z_NO_FLUSH : Z_FINISH);
             if (err != Z_OK && err != Z_STREAM_END) {
                 break;
             }
-            out.insert(out.end(), reinterpret_cast<T*>(&buf[0]), reinterpret_cast<T*>(&buf[0]) + sizeof(buf) - infstream.avail_out);
+            out.insert(out.end(), reinterpret_cast<T*>(buf.data()), reinterpret_cast<T*>(buf.data() + buf.size() - infstream.avail_out));
         } while (err != Z_STREAM_END);
         ::inflateEnd(&infstream);
         return err == Z_OK || err == Z_STREAM_END;
@@ -109,7 +109,7 @@ namespace zlib {
             out.reserve(out_size);
         }
 
-        unsigned char buf[4096];
+        std::vector<unsigned char> buf(16384);
         ::z_stream infstream;
         std::memset(&infstream, 0, sizeof(infstream));
         infstream.zalloc = NULL;
@@ -118,20 +118,20 @@ namespace zlib {
         int err = Z_OK;
         infstream.avail_in = static_cast<unsigned int>(in_size); // size of input
         infstream.next_in = const_cast<Bytef*>(reinterpret_cast<const Bytef*>(in_data)); // input char array
-        infstream.avail_out = sizeof(buf); // size of output
-        infstream.next_out = buf; // output char array
+        infstream.avail_out = static_cast<unsigned int>(buf.size()); // size of output
+        infstream.next_out = buf.data(); // output char array
         ::inflateInit2(&infstream, MAX_WBITS + 16);
         if (dict) {
             ::inflateSetDictionary(&infstream, reinterpret_cast<const Bytef*>(dict), static_cast<unsigned int>(dict_size));
         }
         do {
-            infstream.avail_out = sizeof(buf); // size of output
-            infstream.next_out = buf; // output char array
+            infstream.avail_out = static_cast<unsigned int>(buf.size()); // size of output
+            infstream.next_out = buf.data(); // output char array
             err = ::inflate(&infstream, infstream.avail_in > 0 ? Z_NO_FLUSH : Z_FINISH);
             if (err != Z_OK && err != Z_STREAM_END) {
                 break;
             }
-            out.insert(out.end(), reinterpret_cast<T*>(&buf[0]), reinterpret_cast<T*>(&buf[0]) + sizeof(buf) - infstream.avail_out);
+            out.insert(out.end(), reinterpret_cast<T*>(buf.data()), reinterpret_cast<T*>(buf.data() + buf.size() - infstream.avail_out));
         } while (err != Z_STREAM_END);
         ::inflateEnd(&infstream);
         return err == Z_OK || err == Z_STREAM_END;

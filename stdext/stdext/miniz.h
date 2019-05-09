@@ -3,10 +3,11 @@
 
 #define MINIZ_HEADER_FILE_ONLY
 #define MINIZ_NO_ZLIB_COMPATIBLE_NAMES
+
 #include <miniz.c>
-#include <vector>
 #include <cstdlib>
 #include <cstring>
+#include <vector>
 
 namespace miniz {
 
@@ -56,7 +57,7 @@ namespace miniz {
             out.reserve(out_size);
         }
 
-        unsigned char buf[4096];
+        std::vector<unsigned char> buf(16384);
         ::mz_stream infstream;
         std::memset(&infstream, 0, sizeof(infstream));
         infstream.zalloc = NULL;
@@ -65,17 +66,17 @@ namespace miniz {
         int err = MZ_OK;
         infstream.avail_in = static_cast<unsigned int>(in_size - offset - 4); // size of input
         infstream.next_in = &in[offset]; // input char array
-        infstream.avail_out = sizeof(buf); // size of output
-        infstream.next_out = buf; // output char array
+        infstream.avail_out = static_cast<unsigned int>(buf.size()); // size of output
+        infstream.next_out = buf.data(); // output char array
         ::mz_inflateInit2(&infstream, -MZ_DEFAULT_WINDOW_BITS);
         do {
-            infstream.avail_out = sizeof(buf); // size of output
-            infstream.next_out = buf; // output char array
+            infstream.avail_out = static_cast<unsigned int>(buf.size()); // size of output
+            infstream.next_out = buf.data(); // output char array
             err = ::mz_inflate(&infstream, infstream.avail_in > 0 ? MZ_NO_FLUSH : MZ_FINISH);
             if (err != MZ_OK && err != MZ_STREAM_END) {
                 break;
             }
-            out.insert(out.end(), reinterpret_cast<T*>(&buf[0]), reinterpret_cast<T*>(&buf[0]) + sizeof(buf) - infstream.avail_out);
+            out.insert(out.end(), reinterpret_cast<T*>(buf.data()), reinterpret_cast<T*>(buf.data() + buf.size() - infstream.avail_out));
         } while (err != MZ_STREAM_END);
         ::mz_inflateEnd(&infstream);
         return err == MZ_OK || err == MZ_STREAM_END;

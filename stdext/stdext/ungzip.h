@@ -4,6 +4,7 @@
 #include <cstdlib>
 #include <cstring>
 #include <cstdio>
+#include <vector>
 
 #include <zlib.h>
 
@@ -27,21 +28,21 @@ namespace zlib {
             return false;
         }
 
-        unsigned char in_buf[4096];
-        unsigned char out_buf[16384];
+        std::vector<unsigned char> in_buf(4096);
+        std::vector<unsigned char> out_buf(16384);
         ::z_stream infstream;
         std::memset(&infstream, 0, sizeof(infstream));
         infstream.zalloc = NULL;
         infstream.zfree = NULL;
         infstream.opaque = NULL;
         int err = Z_OK;
-        infstream.avail_in = sizeof(in_buf); // size of input
-        infstream.next_in = in_buf;
-        infstream.avail_out = sizeof(out_buf); // size of output
-        infstream.next_out = out_buf; // output char array
+        infstream.avail_in = static_cast<unsigned int>(in_buf.size()); // size of input
+        infstream.next_in = in_buf.data();
+        infstream.avail_out = static_cast<unsigned int>(out_buf.size()); // size of output
+        infstream.next_out = out_buf.data(); // output char array
         ::inflateInit2(&infstream, MAX_WBITS + 16);
         do {
-            infstream.avail_in = fread(in_buf, 1, sizeof(in_buf), in_file);
+            infstream.avail_in = static_cast<unsigned int>(fread(in_buf.data(), 1, in_buf.size(), in_file));
             if (ferror(in_file)) {
                 err = Z_ERRNO;
                 break;
@@ -49,11 +50,11 @@ namespace zlib {
             if (infstream.avail_in == 0) {
                 break;
             }
-            infstream.next_in = in_buf;
+            infstream.next_in = in_buf.data();
 
             do {
-                infstream.avail_out = sizeof(out_buf); // size of output
-                infstream.next_out = out_buf; // output char array
+                infstream.avail_out = static_cast<unsigned int>(out_buf.size()); // size of output
+                infstream.next_out = out_buf.data(); // output char array
                 err = ::inflate(&infstream, Z_NO_FLUSH);
                 if (err == Z_BUF_ERROR) {
                     err = Z_OK;
@@ -62,7 +63,7 @@ namespace zlib {
                     break;
                 }
 
-                fwrite(out_buf, 1, sizeof(out_buf) - infstream.avail_out, out_file);
+                fwrite(out_buf.data(), 1, out_buf.size() - infstream.avail_out, out_file);
                 if (ferror(out_file)) {
                     err = Z_ERRNO;
                     break;
