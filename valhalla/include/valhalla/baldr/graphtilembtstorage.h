@@ -62,11 +62,16 @@ class GraphTileMBTStorage : public GraphTileStorage {
 
  private:
 
+  struct MBTDatabase {
+    std::shared_ptr<sqlite3pp::database> database;
+    std::shared_ptr<std::vector<unsigned char>> zdict;
+  };
+
   static std::tuple<int, int, int> FromGraphId(const GraphId& graphid, const TileHierarchy& tile_hierarchy);
 
   static GraphId ToGraphId(const std::tuple<int, int, int>& tile_coords, const TileHierarchy& tile_hierarchy);
 
-  std::vector<std::shared_ptr<sqlite3pp::database>> mbt_dbs_;
+  std::vector<MBTDatabase> mbt_dbs_;
 
 };
 
