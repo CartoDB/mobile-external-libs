@@ -1,97 +1,65 @@
 #include "baldr/pathlocation.h"
 #include "midgard/util.h"
 
-namespace valhalla{
-namespace baldr{
+namespace valhalla {
+namespace baldr {
 
-  PathLocation::PathEdge::PathEdge(const GraphId& id, const float dist,
-    const midgard::PointLL& projected, const float score, const SideOfStreet sos):
-    id(id), dist(dist), projected(projected), sos(sos), score(score) {
-  }
-  bool PathLocation::PathEdge::begin_node() const {
-    return dist == 0.f;
-  }
-  bool PathLocation::PathEdge::end_node() const {
-    return dist == 1.f;
+PathLocation::PathEdge::PathEdge(const GraphId& id,
+                                 const float dist,
+                                 const midgard::PointLL& projected,
+                                 const float score,
+                                 const SideOfStreet sos,
+                                 const unsigned int outbound_reach,
+                                 const unsigned int inbound_reach)
+    : id(id), percent_along(dist), projected(projected), sos(sos), distance(score),
+      outbound_reach(outbound_reach), inbound_reach(inbound_reach) {
+}
+bool PathLocation::PathEdge::begin_node() const {
+  return percent_along == 0.f;
+}
+bool PathLocation::PathEdge::end_node() const {
+  return percent_along == 1.f;
+}
+
+PathLocation::PathLocation(const Location& location) : Location(location) {
+  edges.reserve(16);
+}
+
+bool PathLocation::operator==(const PathLocation& other) const {
+  // Check all of the scalar properties
+  if (other.min_outbound_reach_ != min_outbound_reach_ ||
+      other.min_inbound_reach_ != min_inbound_reach_ || other.radius_ != radius_ ||
+      other.stoptype_ != stoptype_ || other.latlng_ != latlng_ || other.heading_ != heading_ ||
+      other.heading_tolerance_ != heading_tolerance_ ||
+      other.node_snap_tolerance_ != node_snap_tolerance_ || other.way_id_ != way_id_ ||
+      other.city_ != city_ || other.country_ != country_ || other.date_time_ != date_time_ ||
+      other.name_ != name_ || other.state_ != state_ || other.street_ != street_ ||
+      other.zip_ != zip_ || other.edges.size() != edges.size()) {
+    return false;
   }
 
-  PathLocation::PathLocation(const Location& location):Location(location) {
-    edges.reserve(16);
-  }
+  return shares_edges(other);
+}
 
-  bool PathLocation::operator==(const PathLocation& other) const {
-    for(const auto& edge : edges) {
-      bool found = false;
-      for(const auto& other_edge : other.edges) {
-        if(edge.id == other_edge.id && edge.sos == other_edge.sos && midgard::equal<float>(edge.dist, other_edge.dist) &&
-            midgard::equal<float>(edge.score, other_edge.score, .1f) && edge.projected.ApproximatelyEqual(other_edge.projected)){
-          found = true;
-          break;
-        }
+bool PathLocation::shares_edges(const PathLocation& other) const {
+  // Check that the other PathLocation has all the edges we do
+  for (const auto& edge : edges) {
+    bool found = false;
+    for (const auto& other_edge : other.edges) {
+      if (edge.id == other_edge.id && edge.sos == other_edge.sos &&
+          midgard::equal<float>(edge.percent_along, other_edge.percent_along) &&
+          midgard::equal<float>(edge.distance, other_edge.distance, .1f) &&
+          edge.projected.ApproximatelyEqual(other_edge.projected)) {
+        found = true;
+        break;
       }
-      if(!found)
-        return false;
     }
-    return true;
-  }
-
-  boost::property_tree::ptree PathLocation::ToPtree(size_t index) const {
-    boost::property_tree::ptree correlated;
-    auto& array = correlated.put_child("edges", boost::property_tree::ptree());
-    for(const auto& edge : edges) {
-      boost::property_tree::ptree e;
-      e.put("id", edge.id.value);
-      e.put("dist", edge.dist);
-      e.put("sos", static_cast<int>(edge.sos));
-      e.put("score", edge.score);
-
-      // Serialize projected lat,lng as double (otherwise leads to shape
-      // artifacts at begin/end of routes as the float values are rounded
-      auto& vtx = e.put_child("projected", boost::property_tree::ptree());
-      vtx.put("lon", static_cast<double>(edge.projected.first));
-      vtx.put("lat", static_cast<double>(edge.projected.second));
-      array.push_back(std::make_pair("", e));
+    if (!found) {
+      return false;
     }
-    correlated.put("location_index", index);
-    return correlated;
   }
-
-  rapidjson::Value PathLocation::ToRapidJson(size_t index, rapidjson::Document::AllocatorType& allocator) const {
-    rapidjson::Value value{rapidjson::kObjectType};
-    rapidjson::Value array{rapidjson::kArrayType};
-    array.Reserve(edges.size(), allocator);
-    for(const auto& edge : edges) {
-      rapidjson::Value e{rapidjson::kObjectType};
-      e.AddMember("id", edge.id.value, allocator)
-          .AddMember("dist", edge.dist, allocator)
-          .AddMember("sos", static_cast<int>(edge.sos), allocator)
-          .AddMember("score", edge.score, allocator);
-
-      // Serialize projected lat,lng as double (otherwise leads to shape
-      // artifacts at begin/end of routes as the float values are rounded
-      rapidjson::Value vtx{rapidjson::kObjectType};
-      vtx.AddMember("lon", static_cast<double>(edge.projected.first), allocator)
-          .AddMember("lat", static_cast<double>(edge.projected.second), allocator);
-
-      e.AddMember("projected", vtx.Move(), allocator);
-      array.PushBack(e.Move(), allocator);
-    }
-    value.AddMember("edges", array.Move(), allocator)
-        .AddMember("location_index", static_cast<int>(index), allocator);
-    return value;
-  }
-
-
-  PathLocation PathLocation::FromPtree(const std::vector<Location>& locations, const boost::property_tree::ptree& path_location){
-    auto index = path_location.get<size_t>("location_index");
-    PathLocation p(locations[index]);
-    for(const auto& edge : path_location.get_child("edges")) {
-      p.edges.emplace_back(GraphId(edge.second.get<uint64_t>("id")), edge.second.get<float>("dist"),
-        midgard::PointLL(edge.second.get<double>("projected.lon"), edge.second.get<double>("projected.lat")),
-        edge.second.get<float>("score"), static_cast<SideOfStreet>(edge.second.get<int>("sos")));
-    }
-    return p;
-  }
-
+  return true;
 }
-}
+
+} // namespace baldr
+} // namespace valhalla

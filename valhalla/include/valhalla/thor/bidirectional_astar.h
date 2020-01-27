@@ -1,18 +1,20 @@
 #ifndef VALHALLA_THOR_BIDIRECTIONAL_ASTAR_H_
 #define VALHALLA_THOR_BIDIRECTIONAL_ASTAR_H_
 
-#include <vector>
+#include <cstdint>
 #include <map>
+#include <memory>
 #include <unordered_map>
 #include <utility>
-#include <memory>
+#include <vector>
 
 #include <valhalla/baldr/double_bucket_queue.h>
+#include <valhalla/proto/api.pb.h>
 #include <valhalla/sif/edgelabel.h>
 #include <valhalla/sif/hierarchylimits.h>
-#include <valhalla/thor/pathalgorithm.h>
 #include <valhalla/thor/astarheuristic.h>
 #include <valhalla/thor/edgestatus.h>
+#include <valhalla/thor/pathalgorithm.h>
 
 namespace valhalla {
 namespace thor {
@@ -25,13 +27,19 @@ struct CandidateConnection {
   baldr::GraphId edgeid;
   baldr::GraphId opp_edgeid;
   float cost;
+  bool operator<(const CandidateConnection& o) const {
+    return cost < o.cost;
+  }
+  bool operator<(float c) const {
+    return cost < c;
+  }
 };
 
 /**
  * Bidirectional A* algorithm. Method for finding least-cost path.
  */
 class BidirectionalAStar : public PathAlgorithm {
- public:
+public:
   /**
    * Constructor.
    */
@@ -53,17 +61,20 @@ class BidirectionalAStar : public PathAlgorithm {
    * @return  Returns the path edges (and elapsed time/modes at end of
    *          each edge).
    */
-  std::vector<PathInfo> GetBestPath(baldr::PathLocation& origin,
-           baldr::PathLocation& dest, baldr::GraphReader& graphreader,
-           const std::shared_ptr<sif::DynamicCost>* mode_costing,
-           const sif::TravelMode mode);
+  std::vector<std::vector<PathInfo>>
+  GetBestPath(valhalla::Location& origin,
+              valhalla::Location& dest,
+              baldr::GraphReader& graphreader,
+              const std::shared_ptr<sif::DynamicCost>* mode_costing,
+              const sif::TravelMode mode,
+              const Options& options = Options::default_instance());
 
   /**
    * Clear the temporary information generated during path construction.
    */
   void Clear();
 
- protected:
+protected:
   // Access mode used by the costing method
   uint32_t access_mode_;
 
@@ -81,23 +92,24 @@ class BidirectionalAStar : public PathAlgorithm {
   std::vector<sif::HierarchyLimits> hierarchy_limits_reverse_;
 
   // A* heuristic
+  float cost_diff_;
   AStarHeuristic astarheuristic_forward_;
   AStarHeuristic astarheuristic_reverse_;
 
   // Vector of edge labels (requires access by index).
-  std::vector<sif::EdgeLabel> edgelabels_forward_;
-  std::vector<sif::EdgeLabel> edgelabels_reverse_;
+  std::vector<sif::BDEdgeLabel> edgelabels_forward_;
+  std::vector<sif::BDEdgeLabel> edgelabels_reverse_;
 
   // Adjacency list - approximate double bucket sort
   std::shared_ptr<baldr::DoubleBucketQueue> adjacencylist_forward_;
   std::shared_ptr<baldr::DoubleBucketQueue> adjacencylist_reverse_;
 
   // Edge status. Mark edges that are in adjacency list or settled.
-  std::shared_ptr<EdgeStatus> edgestatus_forward_;
-  std::shared_ptr<EdgeStatus> edgestatus_reverse_;
+  EdgeStatus edgestatus_forward_;
+  EdgeStatus edgestatus_reverse_;
 
   // Best candidate connection and threshold to extend search.
-  uint32_t threshold_;
+  float threshold_;
   CandidateConnection best_connection_;
 
   /**
@@ -105,105 +117,93 @@ class BidirectionalAStar : public PathAlgorithm {
    * and reverse search.
    * @param  origll  Lat,lng of the origin.
    * @param  destll  Lat,lng of the destination.
-   * @param  costing Dynamic costing method.
    */
-  void Init(const PointLL& origll, const PointLL& destll);
+  void Init(const midgard::PointLL& origll, const midgard::PointLL& destll);
 
   /**
    * Expand from the node along the forward search path.
    */
-  void ExpandForward(baldr::GraphReader& graphreader,
-           const baldr::GraphTile* tile,
-           const baldr::GraphId& node, const baldr::NodeInfo* nodeinfo,
-           sif::EdgeLabel& pred, const uint32_t pred_idx,
-           const bool from_transition);
+  bool ExpandForward(baldr::GraphReader& graphreader,
+                     const baldr::GraphId& node,
+                     sif::BDEdgeLabel& pred,
+                     const uint32_t pred_idx,
+                     const bool from_transition);
+  // Private helper function for `ExpandForward`
+  bool ExpandForwardInner(baldr::GraphReader& graphreader,
+                          const sif::BDEdgeLabel& pred,
+                          const baldr::NodeInfo* nodeinfo,
+                          const uint32_t pred_idx,
+                          const EdgeMetadata& meta,
+                          uint32_t& shortcuts,
+                          const baldr::GraphTile* tile);
 
   /**
    * Expand from the node along the reverse search path.
    */
-  void ExpandReverse(baldr::GraphReader& graphreader,
-           const baldr::GraphTile* tile,
-           const baldr::GraphId& node, const baldr::NodeInfo* nodeinfo,
-           sif::EdgeLabel& pred, const uint32_t pred_idx,
-           const baldr::DirectedEdge* opp_pred_edge,
-           const bool from_transition);
+  bool ExpandReverse(baldr::GraphReader& graphreader,
+                     const baldr::GraphId& node,
+                     sif::BDEdgeLabel& pred,
+                     const uint32_t pred_idx,
+                     const baldr::DirectedEdge* opp_pred_edge,
+                     const bool from_transition);
 
+  // Private helper function for `ExpandReverse`
+  bool ExpandReverseInner(baldr::GraphReader& graphreader,
+                          const sif::BDEdgeLabel& pred,
+                          const baldr::DirectedEdge* opp_pred_edge,
+                          const baldr::NodeInfo* nodeinfo,
+                          const uint32_t pred_idx,
+                          const EdgeMetadata& meta,
+                          uint32_t& shortcuts,
+                          const baldr::GraphTile* tile);
   /**
    * Add edges at the origin to the forward adjacency list.
    * @param  graphreader  Graph tile reader.
    * @param  origin       Location information of the destination
-   * @param  costing      Dynamic costing
    */
-  void SetOrigin(baldr::GraphReader& graphreader,
-                 baldr::PathLocation& origin);
+  void SetOrigin(baldr::GraphReader& graphreader, valhalla::Location& origin);
 
   /**
    * Add destination edges to the reverse path adjacency list.
+   * @param   graphreader  Graph tile reader.
    * @param   dest         Location information of the destination
-   * @param   costing      Dynamic costing
    */
-  void SetDestination(baldr::GraphReader& graphreader,
-                       const baldr::PathLocation& dest);
+  void SetDestination(baldr::GraphReader& graphreader, const valhalla::Location& dest);
 
   /**
    * The edge on the forward search connects to a reached edge on the reverse
    * search tree. Check if this is the best connection so far and set the
    * search threshold.
    * @param  pred  Edge label of the predecessor.
+   * @return Returns true if a connection was set, false if not (if on a complex restriction).
    */
-  void SetForwardConnection(const sif::EdgeLabel& pred);
+  bool SetForwardConnection(baldr::GraphReader& graphreader, const sif::BDEdgeLabel& pred);
 
   /**
    * The edge on the reverse search connects to a reached edge on the forward
    * search tree. Check if this is the best connection so far and set the
    * search threshold.
    * @param  pred  Edge label of the predecessor.
+   * @return Returns true if a connection was set, false if not (if on a complex restriction).
    */
-  void SetReverseConnection(const sif::EdgeLabel& pred);
+  bool SetReverseConnection(baldr::GraphReader& graphreader, const sif::BDEdgeLabel& pred);
 
   /**
-   * Check if edge is temporarily labeled and this path has less cost. If
-   * less cost the predecessor is updated and the sort cost is decremented
-   * by the difference in real cost (A* heuristic doesn't change).
-   * @param  idx        Index into the edge status list.
-   * @param  predindex  Index of the predecessor edge.
-   * @param  newcost    Cost of the new path.
-   * @param  tc         Transition cost onto this edge.
+   * Form the path from the adjacency lists. Recovers the path from the
+   * where the paths meet back towards the origin then reverses this path.
+   * The path from where the paths meet to the destination is then appended
+   * using the opposing edges (so the path is traversed forward).
+   * @param   graphreader  Graph tile reader (for getting opposing edges).
+   * @param   options      Controls whether or not we get alternatives
+   * @return  Returns the path infos, a list of GraphIds representing the
+   *          directed edges along the path - ordered from origin to
+   *          destination - along with travel modes and elapsed time.
    */
-  void CheckIfLowerCostPathForward(const uint32_t idx,
-                            const uint32_t predindex,
-                            const sif::Cost& newcost,
-                            const sif::Cost& tc);
-
-  /**
-   * Check if edge is temporarily labeled and this path has less cost. If
-   * less cost the predecessor is updated and the sort cost is decremented
-   * by the difference in real cost (A* heuristic doesn't change). This
-   * method applies to the reverse path portion of the bidirectional search.
-   * @param  idx        Index into the edge status list.
-   * @param  predindex  Index of the predecessor edge.
-   * @param  newcost    Cost of the new path.
-   * @param  tc         Transition cost onto this edge.
-   */
-  void CheckIfLowerCostPathReverse(const uint32_t idx,
-                           const uint32_t predindex,
-                           const sif::Cost& newcost,
-                           const sif::Cost& tc);
-
-   /**
-    * Form the path from the adjacency lists. Recovers the path from the
-    * where the paths meet back towards the origin then reverses this path.
-    * The path from where the paths meet to the destination is then appended
-    * using the opposing edges (so the path is traversed forward).
-    * @param   graphreader  Graph tile reader (for getting opposing edges).
-    * @return  Returns the path info, a list of GraphIds representing the
-    *          directed edges along the path - ordered from origin to
-    *          destination - along with travel modes and elapsed time.
-    */
-  std::vector<PathInfo> FormPath(baldr::GraphReader& graphreader);
+  std::vector<std::vector<PathInfo>> FormPath(baldr::GraphReader& graphreader,
+                                              const Options& options);
 };
 
-}
-}
+} // namespace thor
+} // namespace valhalla
 
-#endif  // VALHALLA_THOR_BIDIRECTIONAL_ASTAR_H_
+#endif // VALHALLA_THOR_BIDIRECTIONAL_ASTAR_H_

@@ -1,106 +1,103 @@
 #ifndef VALHALLA_MIDGARD_TILEHIERARCHY_H
 #define VALHALLA_MIDGARD_TILEHIERARCHY_H
 
+#include <cstdint>
 #include <map>
 #include <string>
-#include <cstdint>
-#include <memory>
-#include <boost/property_tree/ptree.hpp>
-#include <boost/property_tree/json_parser.hpp>
 
+#include <valhalla/baldr/graphconstants.h>
+#include <valhalla/baldr/graphid.h>
 #include <valhalla/midgard/pointll.h>
 #include <valhalla/midgard/tiles.h>
-#include <valhalla/baldr/graphid.h>
-#include <valhalla/baldr/graphconstants.h>
 
 namespace valhalla {
 namespace baldr {
 
-class GraphTileStorage;
-
-//TODO: hack and slash this. this should just be the levels and operations we commonly do
-//with them like getting the transit level or getting the highest or lowest non transit level
-//this can be static and accessed through a singleton or just static functions on the struct
-//tile_dir doesnt belong here anyway
+/**
+ * TileLevel: Defines a level in the hierarchy of the tiles. Includes:
+ *          Hierarchy level.
+ *          Minimum (largest value) road class in this level.
+ *          Name for the level.
+ *          Lat,lon tiling (in particular, tile size) of this level
+ */
+struct TileLevel {
+  uint8_t level;
+  RoadClass importance;
+  std::string name;
+  midgard::Tiles<midgard::PointLL> tiles;
+};
 
 /**
- * class used to get information about a given hierarchy of tiles
+ * Set of static methods used to get information the hierarchy of tiles. The
+ * tile hierarchy levels are static.
  */
 class TileHierarchy {
- public:
+public:
   /**
-   * Constructor
+   * Get the set of levels in this hierarchy.
+   * @return set of TileLevel objects.
    */
-  TileHierarchy(const std::shared_ptr<GraphTileStorage>& tile_storage);
+  static const std::map<uint8_t, TileLevel>& levels();
 
   /**
-   * Encapsulates a few types together to define a level in the hierarchy
+   * Get the transit level in this hierarchy.
+   * @return the transit TileLevel object.
    */
-  struct TileLevel{
-    bool operator<(const TileLevel& other) const;
-    uint8_t level;
-    RoadClass importance;
-    std::string name;
-    midgard::Tiles<midgard::PointLL> tiles;
-  };
+  static const TileLevel& GetTransitLevel();
 
   /**
-   * Get the set of levels in this hierarchy
-   *
-   * @return set of TileLevel objects
+   * Returns the GraphId of the requested tile based on a lat,lng and a level.
+   * If the level is not supported an invalid id will be returned.
+   * @param pointll  Lat,lng location within the tile.
+   * @param level    Level of the requested tile.
    */
-  const std::map<uint8_t, TileLevel>& levels() const;
+  static GraphId GetGraphId(const midgard::PointLL& pointll, const uint8_t level);
 
   /**
-   * Get the root tile directory where the tiles are stored
-   *
-   * @return string directory
+   * Returns bounding box for the given GraphId .
+   * @param id corresponding GraphId.
+   * @return Bounding box of the tile which corresponding GraphId stands for.
    */
-  const std::shared_ptr<GraphTileStorage>& tile_storage() const;
+  static midgard::AABB2<midgard::PointLL> GetGraphIdBoundingBox(const GraphId& id);
 
   /**
-   * Returns the graphid of the requested tile based on a lat,lng and a level
-   * if the level is not supported an invalid id will be returned
-   *
-   * @param pointll a lat,lng location within the tile
-   * @param level   the level of the requested tile
-   */
-  GraphId GetGraphId(const midgard::PointLL& pointll, const uint8_t level) const;
-
-  /**
-   * Returns all the graphids of the tiles which intersect the given bounding
+   * Returns all the GraphIds of the tiles which intersect the given bounding
    * box at that level.
-   *
-   * @param bbox  the bounding box of tiles to find.
-   * @param level the level of the tiles to return.
+   * @param bbox  Bounding box of tiles to find.
+   * @param level Level of the tiles to return.
    */
-  std::vector<GraphId> GetGraphIds(const midgard::AABB2<midgard::PointLL> &bbox, uint8_t level) const;
+  static std::vector<GraphId> GetGraphIds(const midgard::AABB2<midgard::PointLL>& bbox,
+                                          const uint8_t level);
 
   /**
-   * Returns all the graphids of the tiles which intersect the given bounding
+   * Returns all the GraphIds of the tiles which intersect the given bounding
    * box at any level.
-   *
-   * @param bbox  the bounding box of tiles to find.
+   * @param bbox  Bounding box of tiles to find.
    */
-  std::vector<GraphId> GetGraphIds(const midgard::AABB2<midgard::PointLL> &bbox) const;
+  static std::vector<GraphId> GetGraphIds(const midgard::AABB2<midgard::PointLL>& bbox);
 
   /**
    * Gets the hierarchy level given the road class.
-   * @param  road_class  Road classification.
+   * @param  roadclass  Road classification.
    * @return Returns the level.
    */
-  uint8_t get_level(const RoadClass roadclass) const;
+  static uint8_t get_level(const RoadClass roadclass);
 
- private:
-  explicit TileHierarchy();
+  /**
+   * Gets the maximum level supported in the hierarchy.
+   * @return  Returns the max. level.
+   */
+  static uint8_t get_max_level();
 
-  // a place to keep each level of the hierarchy
-  std::map<uint8_t, TileLevel> levels_;
-  // the tiles are stored
-  std::shared_ptr<GraphTileStorage> tile_storage_;
+  /**
+   * Get the tiling system for a specified level.
+   * @param level  Level Id.
+   * @return Returns a const reference to the tiling system for this level.
+   */
+  static const midgard::Tiles<midgard::PointLL>& get_tiling(const uint8_t level);
 };
 
-}
-}
+} // namespace baldr
+} // namespace valhalla
 
-#endif  // VALHALLA_MIDGARD_TILEHIERARCHY_H
+#endif // VALHALLA_MIDGARD_TILEHIERARCHY_H

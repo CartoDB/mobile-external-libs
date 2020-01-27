@@ -20,11 +20,9 @@
 #endif
 
 #include <google/protobuf/generated_message_util.h>
-#include <google/protobuf/message.h>
+#include <google/protobuf/message_lite.h>
 #include <google/protobuf/repeated_field.h>
 #include <google/protobuf/extension_set.h>
-#include <google/protobuf/generated_enum_reflection.h>
-#include <google/protobuf/unknown_field_set.h>
 // @@protoc_insertion_point(includes)
 
 namespace valhalla {
@@ -36,7 +34,7 @@ void protobuf_AssignDesc_transit_2eproto();
 void protobuf_ShutdownFile_transit_2eproto();
 
 class Transit;
-class Transit_Stop;
+class Transit_Node;
 class Transit_StopPair;
 class Transit_Route;
 class Transit_Shape;
@@ -56,50 +54,40 @@ const Transit_VehicleType Transit_VehicleType_VehicleType_MIN = Transit_VehicleT
 const Transit_VehicleType Transit_VehicleType_VehicleType_MAX = Transit_VehicleType_kFunicular;
 const int Transit_VehicleType_VehicleType_ARRAYSIZE = Transit_VehicleType_VehicleType_MAX + 1;
 
-const ::google::protobuf::EnumDescriptor* Transit_VehicleType_descriptor();
-inline const ::std::string& Transit_VehicleType_Name(Transit_VehicleType value) {
-  return ::google::protobuf::internal::NameOfEnum(
-    Transit_VehicleType_descriptor(), value);
-}
-inline bool Transit_VehicleType_Parse(
-    const ::std::string& name, Transit_VehicleType* value) {
-  return ::google::protobuf::internal::ParseNamedEnum<Transit_VehicleType>(
-    Transit_VehicleType_descriptor(), name, value);
-}
 // ===================================================================
 
-class Transit_Stop : public ::google::protobuf::Message {
+class Transit_Node : public ::google::protobuf::MessageLite {
  public:
-  Transit_Stop();
-  virtual ~Transit_Stop();
+  Transit_Node();
+  virtual ~Transit_Node();
 
-  Transit_Stop(const Transit_Stop& from);
+  Transit_Node(const Transit_Node& from);
 
-  inline Transit_Stop& operator=(const Transit_Stop& from) {
+  inline Transit_Node& operator=(const Transit_Node& from) {
     CopyFrom(from);
     return *this;
   }
 
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
-    return _unknown_fields_;
+  static const Transit_Node& default_instance();
+
+  #ifdef GOOGLE_PROTOBUF_NO_STATIC_INITIALIZER
+  // Returns the internal default instance pointer. This function can
+  // return NULL thus should not be used by the user. This is intended
+  // for Protobuf internal code. Please use default_instance() declared
+  // above instead.
+  static inline const Transit_Node* internal_default_instance() {
+    return default_instance_;
   }
+  #endif
 
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
-    return &_unknown_fields_;
-  }
-
-  static const ::google::protobuf::Descriptor* descriptor();
-  static const Transit_Stop& default_instance();
-
-  void Swap(Transit_Stop* other);
+  void Swap(Transit_Node* other);
 
   // implements Message ----------------------------------------------
 
-  Transit_Stop* New() const;
-  void CopyFrom(const ::google::protobuf::Message& from);
-  void MergeFrom(const ::google::protobuf::Message& from);
-  void CopyFrom(const Transit_Stop& from);
-  void MergeFrom(const Transit_Stop& from);
+  Transit_Node* New() const;
+  void CheckTypeAndMergeFrom(const ::google::protobuf::MessageLite& from);
+  void CopyFrom(const Transit_Node& from);
+  void MergeFrom(const Transit_Node& from);
   void Clear();
   bool IsInitialized() const;
 
@@ -108,7 +96,6 @@ class Transit_Stop : public ::google::protobuf::Message {
       ::google::protobuf::io::CodedInputStream* input);
   void SerializeWithCachedSizes(
       ::google::protobuf::io::CodedOutputStream* output) const;
-  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
   int GetCachedSize() const { return _cached_size_; }
   private:
   void SharedCtor();
@@ -116,7 +103,7 @@ class Transit_Stop : public ::google::protobuf::Message {
   void SetCachedSize(int size) const;
   public:
 
-  ::google::protobuf::Metadata GetMetadata() const;
+  ::std::string GetTypeName() const;
 
   // nested types ----------------------------------------------------
 
@@ -136,17 +123,31 @@ class Transit_Stop : public ::google::protobuf::Message {
   inline float lat() const;
   inline void set_lat(float value);
 
-  // optional uint64 graphid = 3;
+  // optional uint32 type = 3;
+  inline bool has_type() const;
+  inline void clear_type();
+  static const int kTypeFieldNumber = 3;
+  inline ::google::protobuf::uint32 type() const;
+  inline void set_type(::google::protobuf::uint32 value);
+
+  // optional uint64 graphid = 4;
   inline bool has_graphid() const;
   inline void clear_graphid();
-  static const int kGraphidFieldNumber = 3;
+  static const int kGraphidFieldNumber = 4;
   inline ::google::protobuf::uint64 graphid() const;
   inline void set_graphid(::google::protobuf::uint64 value);
 
-  // optional string name = 4;
+  // optional uint64 prev_type_graphid = 5;
+  inline bool has_prev_type_graphid() const;
+  inline void clear_prev_type_graphid();
+  static const int kPrevTypeGraphidFieldNumber = 5;
+  inline ::google::protobuf::uint64 prev_type_graphid() const;
+  inline void set_prev_type_graphid(::google::protobuf::uint64 value);
+
+  // optional string name = 6;
   inline bool has_name() const;
   inline void clear_name();
-  static const int kNameFieldNumber = 4;
+  static const int kNameFieldNumber = 6;
   inline const ::std::string& name() const;
   inline void set_name(const ::std::string& value);
   inline void set_name(const char* value);
@@ -155,10 +156,10 @@ class Transit_Stop : public ::google::protobuf::Message {
   inline ::std::string* release_name();
   inline void set_allocated_name(::std::string* name);
 
-  // optional string onestop_id = 5;
+  // optional string onestop_id = 7;
   inline bool has_onestop_id() const;
   inline void clear_onestop_id();
-  static const int kOnestopIdFieldNumber = 5;
+  static const int kOnestopIdFieldNumber = 7;
   inline const ::std::string& onestop_id() const;
   inline void set_onestop_id(const ::std::string& value);
   inline void set_onestop_id(const char* value);
@@ -167,35 +168,58 @@ class Transit_Stop : public ::google::protobuf::Message {
   inline ::std::string* release_onestop_id();
   inline void set_allocated_onestop_id(::std::string* onestop_id);
 
-  // optional uint64 osm_way_id = 6;
+  // optional uint64 osm_way_id = 8;
   inline bool has_osm_way_id() const;
   inline void clear_osm_way_id();
-  static const int kOsmWayIdFieldNumber = 6;
+  static const int kOsmWayIdFieldNumber = 8;
   inline ::google::protobuf::uint64 osm_way_id() const;
   inline void set_osm_way_id(::google::protobuf::uint64 value);
 
-  // optional uint32 timezone = 8;
+  // optional string timezone = 9;
   inline bool has_timezone() const;
   inline void clear_timezone();
-  static const int kTimezoneFieldNumber = 8;
-  inline ::google::protobuf::uint32 timezone() const;
-  inline void set_timezone(::google::protobuf::uint32 value);
+  static const int kTimezoneFieldNumber = 9;
+  inline const ::std::string& timezone() const;
+  inline void set_timezone(const ::std::string& value);
+  inline void set_timezone(const char* value);
+  inline void set_timezone(const char* value, size_t size);
+  inline ::std::string* mutable_timezone();
+  inline ::std::string* release_timezone();
+  inline void set_allocated_timezone(::std::string* timezone);
 
-  // optional bool wheelchair_boarding = 9;
+  // optional bool wheelchair_boarding = 10;
   inline bool has_wheelchair_boarding() const;
   inline void clear_wheelchair_boarding();
-  static const int kWheelchairBoardingFieldNumber = 9;
+  static const int kWheelchairBoardingFieldNumber = 10;
   inline bool wheelchair_boarding() const;
   inline void set_wheelchair_boarding(bool value);
 
-  // @@protoc_insertion_point(class_scope:valhalla.mjolnir.Transit.Stop)
+  // optional bool generated = 11;
+  inline bool has_generated() const;
+  inline void clear_generated();
+  static const int kGeneratedFieldNumber = 11;
+  inline bool generated() const;
+  inline void set_generated(bool value);
+
+  // optional uint32 traversability = 12;
+  inline bool has_traversability() const;
+  inline void clear_traversability();
+  static const int kTraversabilityFieldNumber = 12;
+  inline ::google::protobuf::uint32 traversability() const;
+  inline void set_traversability(::google::protobuf::uint32 value);
+
+  // @@protoc_insertion_point(class_scope:valhalla.mjolnir.Transit.Node)
  private:
   inline void set_has_lon();
   inline void clear_has_lon();
   inline void set_has_lat();
   inline void clear_has_lat();
+  inline void set_has_type();
+  inline void clear_has_type();
   inline void set_has_graphid();
   inline void clear_has_graphid();
+  inline void set_has_prev_type_graphid();
+  inline void clear_has_prev_type_graphid();
   inline void set_has_name();
   inline void clear_has_name();
   inline void set_has_onestop_id();
@@ -206,31 +230,41 @@ class Transit_Stop : public ::google::protobuf::Message {
   inline void clear_has_timezone();
   inline void set_has_wheelchair_boarding();
   inline void clear_has_wheelchair_boarding();
-
-  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+  inline void set_has_generated();
+  inline void clear_has_generated();
+  inline void set_has_traversability();
+  inline void clear_has_traversability();
 
   float lon_;
   float lat_;
   ::google::protobuf::uint64 graphid_;
+  ::google::protobuf::uint64 prev_type_graphid_;
   ::std::string* name_;
   ::std::string* onestop_id_;
   ::google::protobuf::uint64 osm_way_id_;
-  ::google::protobuf::uint32 timezone_;
+  ::google::protobuf::uint32 type_;
   bool wheelchair_boarding_;
+  bool generated_;
+  ::std::string* timezone_;
+  ::google::protobuf::uint32 traversability_;
 
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(8 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(12 + 31) / 32];
 
+  #ifdef GOOGLE_PROTOBUF_NO_STATIC_INITIALIZER
+  friend void  protobuf_AddDesc_transit_2eproto_impl();
+  #else
   friend void  protobuf_AddDesc_transit_2eproto();
+  #endif
   friend void protobuf_AssignDesc_transit_2eproto();
   friend void protobuf_ShutdownFile_transit_2eproto();
 
   void InitAsDefaultInstance();
-  static Transit_Stop* default_instance_;
+  static Transit_Node* default_instance_;
 };
 // -------------------------------------------------------------------
 
-class Transit_StopPair : public ::google::protobuf::Message {
+class Transit_StopPair : public ::google::protobuf::MessageLite {
  public:
   Transit_StopPair();
   virtual ~Transit_StopPair();
@@ -242,24 +276,24 @@ class Transit_StopPair : public ::google::protobuf::Message {
     return *this;
   }
 
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
-    return _unknown_fields_;
-  }
-
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
-    return &_unknown_fields_;
-  }
-
-  static const ::google::protobuf::Descriptor* descriptor();
   static const Transit_StopPair& default_instance();
+
+  #ifdef GOOGLE_PROTOBUF_NO_STATIC_INITIALIZER
+  // Returns the internal default instance pointer. This function can
+  // return NULL thus should not be used by the user. This is intended
+  // for Protobuf internal code. Please use default_instance() declared
+  // above instead.
+  static inline const Transit_StopPair* internal_default_instance() {
+    return default_instance_;
+  }
+  #endif
 
   void Swap(Transit_StopPair* other);
 
   // implements Message ----------------------------------------------
 
   Transit_StopPair* New() const;
-  void CopyFrom(const ::google::protobuf::Message& from);
-  void MergeFrom(const ::google::protobuf::Message& from);
+  void CheckTypeAndMergeFrom(const ::google::protobuf::MessageLite& from);
   void CopyFrom(const Transit_StopPair& from);
   void MergeFrom(const Transit_StopPair& from);
   void Clear();
@@ -270,7 +304,6 @@ class Transit_StopPair : public ::google::protobuf::Message {
       ::google::protobuf::io::CodedInputStream* input);
   void SerializeWithCachedSizes(
       ::google::protobuf::io::CodedOutputStream* output) const;
-  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
   int GetCachedSize() const { return _cached_size_; }
   private:
   void SharedCtor();
@@ -278,7 +311,7 @@ class Transit_StopPair : public ::google::protobuf::Message {
   void SetCachedSize(int size) const;
   public:
 
-  ::google::protobuf::Metadata GetMetadata() const;
+  ::std::string GetTypeName() const;
 
   // nested types ----------------------------------------------------
 
@@ -445,13 +478,6 @@ class Transit_StopPair : public ::google::protobuf::Message {
   inline bool wheelchair_accessible() const;
   inline void set_wheelchair_accessible(bool value);
 
-  // optional uint32 line_id = 19;
-  inline bool has_line_id() const;
-  inline void clear_line_id();
-  static const int kLineIdFieldNumber = 19;
-  inline ::google::protobuf::uint32 line_id() const;
-  inline void set_line_id(::google::protobuf::uint32 value);
-
   // optional uint32 shape_id = 20;
   inline bool has_shape_id() const;
   inline void clear_shape_id();
@@ -519,8 +545,6 @@ class Transit_StopPair : public ::google::protobuf::Message {
   inline void clear_has_trip_id();
   inline void set_has_wheelchair_accessible();
   inline void clear_has_wheelchair_accessible();
-  inline void set_has_line_id();
-  inline void clear_has_line_id();
   inline void set_has_shape_id();
   inline void clear_has_shape_id();
   inline void set_has_origin_dist_traveled();
@@ -531,8 +555,6 @@ class Transit_StopPair : public ::google::protobuf::Message {
   inline void clear_has_frequency_end_time();
   inline void set_has_frequency_headway_seconds();
   inline void clear_has_frequency_headway_seconds();
-
-  ::google::protobuf::UnknownFieldSet _unknown_fields_;
 
   ::google::protobuf::uint32 block_id_;
   ::google::protobuf::uint32 destination_arrival_time_;
@@ -552,7 +574,6 @@ class Transit_StopPair : public ::google::protobuf::Message {
   ::std::string* trip_headsign_;
   ::google::protobuf::uint32 service_start_date_;
   ::google::protobuf::uint32 trip_id_;
-  ::google::protobuf::uint32 line_id_;
   ::google::protobuf::uint32 shape_id_;
   float origin_dist_traveled_;
   float destination_dist_traveled_;
@@ -560,9 +581,13 @@ class Transit_StopPair : public ::google::protobuf::Message {
   ::google::protobuf::uint32 frequency_headway_seconds_;
 
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(24 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(23 + 31) / 32];
 
+  #ifdef GOOGLE_PROTOBUF_NO_STATIC_INITIALIZER
+  friend void  protobuf_AddDesc_transit_2eproto_impl();
+  #else
   friend void  protobuf_AddDesc_transit_2eproto();
+  #endif
   friend void protobuf_AssignDesc_transit_2eproto();
   friend void protobuf_ShutdownFile_transit_2eproto();
 
@@ -571,7 +596,7 @@ class Transit_StopPair : public ::google::protobuf::Message {
 };
 // -------------------------------------------------------------------
 
-class Transit_Route : public ::google::protobuf::Message {
+class Transit_Route : public ::google::protobuf::MessageLite {
  public:
   Transit_Route();
   virtual ~Transit_Route();
@@ -583,24 +608,24 @@ class Transit_Route : public ::google::protobuf::Message {
     return *this;
   }
 
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
-    return _unknown_fields_;
-  }
-
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
-    return &_unknown_fields_;
-  }
-
-  static const ::google::protobuf::Descriptor* descriptor();
   static const Transit_Route& default_instance();
+
+  #ifdef GOOGLE_PROTOBUF_NO_STATIC_INITIALIZER
+  // Returns the internal default instance pointer. This function can
+  // return NULL thus should not be used by the user. This is intended
+  // for Protobuf internal code. Please use default_instance() declared
+  // above instead.
+  static inline const Transit_Route* internal_default_instance() {
+    return default_instance_;
+  }
+  #endif
 
   void Swap(Transit_Route* other);
 
   // implements Message ----------------------------------------------
 
   Transit_Route* New() const;
-  void CopyFrom(const ::google::protobuf::Message& from);
-  void MergeFrom(const ::google::protobuf::Message& from);
+  void CheckTypeAndMergeFrom(const ::google::protobuf::MessageLite& from);
   void CopyFrom(const Transit_Route& from);
   void MergeFrom(const Transit_Route& from);
   void Clear();
@@ -611,7 +636,6 @@ class Transit_Route : public ::google::protobuf::Message {
       ::google::protobuf::io::CodedInputStream* input);
   void SerializeWithCachedSizes(
       ::google::protobuf::io::CodedOutputStream* output) const;
-  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
   int GetCachedSize() const { return _cached_size_; }
   private:
   void SharedCtor();
@@ -619,7 +643,7 @@ class Transit_Route : public ::google::protobuf::Message {
   void SetCachedSize(int size) const;
   public:
 
-  ::google::protobuf::Metadata GetMetadata() const;
+  ::std::string GetTypeName() const;
 
   // nested types ----------------------------------------------------
 
@@ -753,8 +777,6 @@ class Transit_Route : public ::google::protobuf::Message {
   inline void set_has_vehicle_type();
   inline void clear_has_vehicle_type();
 
-  ::google::protobuf::UnknownFieldSet _unknown_fields_;
-
   ::std::string* name_;
   ::std::string* onestop_id_;
   ::std::string* operated_by_name_;
@@ -769,7 +791,11 @@ class Transit_Route : public ::google::protobuf::Message {
   mutable int _cached_size_;
   ::google::protobuf::uint32 _has_bits_[(10 + 31) / 32];
 
+  #ifdef GOOGLE_PROTOBUF_NO_STATIC_INITIALIZER
+  friend void  protobuf_AddDesc_transit_2eproto_impl();
+  #else
   friend void  protobuf_AddDesc_transit_2eproto();
+  #endif
   friend void protobuf_AssignDesc_transit_2eproto();
   friend void protobuf_ShutdownFile_transit_2eproto();
 
@@ -778,7 +804,7 @@ class Transit_Route : public ::google::protobuf::Message {
 };
 // -------------------------------------------------------------------
 
-class Transit_Shape : public ::google::protobuf::Message {
+class Transit_Shape : public ::google::protobuf::MessageLite {
  public:
   Transit_Shape();
   virtual ~Transit_Shape();
@@ -790,24 +816,24 @@ class Transit_Shape : public ::google::protobuf::Message {
     return *this;
   }
 
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
-    return _unknown_fields_;
-  }
-
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
-    return &_unknown_fields_;
-  }
-
-  static const ::google::protobuf::Descriptor* descriptor();
   static const Transit_Shape& default_instance();
+
+  #ifdef GOOGLE_PROTOBUF_NO_STATIC_INITIALIZER
+  // Returns the internal default instance pointer. This function can
+  // return NULL thus should not be used by the user. This is intended
+  // for Protobuf internal code. Please use default_instance() declared
+  // above instead.
+  static inline const Transit_Shape* internal_default_instance() {
+    return default_instance_;
+  }
+  #endif
 
   void Swap(Transit_Shape* other);
 
   // implements Message ----------------------------------------------
 
   Transit_Shape* New() const;
-  void CopyFrom(const ::google::protobuf::Message& from);
-  void MergeFrom(const ::google::protobuf::Message& from);
+  void CheckTypeAndMergeFrom(const ::google::protobuf::MessageLite& from);
   void CopyFrom(const Transit_Shape& from);
   void MergeFrom(const Transit_Shape& from);
   void Clear();
@@ -818,7 +844,6 @@ class Transit_Shape : public ::google::protobuf::Message {
       ::google::protobuf::io::CodedInputStream* input);
   void SerializeWithCachedSizes(
       ::google::protobuf::io::CodedOutputStream* output) const;
-  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
   int GetCachedSize() const { return _cached_size_; }
   private:
   void SharedCtor();
@@ -826,7 +851,7 @@ class Transit_Shape : public ::google::protobuf::Message {
   void SetCachedSize(int size) const;
   public:
 
-  ::google::protobuf::Metadata GetMetadata() const;
+  ::std::string GetTypeName() const;
 
   // nested types ----------------------------------------------------
 
@@ -858,15 +883,17 @@ class Transit_Shape : public ::google::protobuf::Message {
   inline void set_has_encoded_shape();
   inline void clear_has_encoded_shape();
 
-  ::google::protobuf::UnknownFieldSet _unknown_fields_;
-
   ::std::string* encoded_shape_;
   ::google::protobuf::uint32 shape_id_;
 
   mutable int _cached_size_;
   ::google::protobuf::uint32 _has_bits_[(2 + 31) / 32];
 
+  #ifdef GOOGLE_PROTOBUF_NO_STATIC_INITIALIZER
+  friend void  protobuf_AddDesc_transit_2eproto_impl();
+  #else
   friend void  protobuf_AddDesc_transit_2eproto();
+  #endif
   friend void protobuf_AssignDesc_transit_2eproto();
   friend void protobuf_ShutdownFile_transit_2eproto();
 
@@ -875,7 +902,7 @@ class Transit_Shape : public ::google::protobuf::Message {
 };
 // -------------------------------------------------------------------
 
-class Transit : public ::google::protobuf::Message {
+class Transit : public ::google::protobuf::MessageLite {
  public:
   Transit();
   virtual ~Transit();
@@ -887,24 +914,24 @@ class Transit : public ::google::protobuf::Message {
     return *this;
   }
 
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
-    return _unknown_fields_;
-  }
-
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
-    return &_unknown_fields_;
-  }
-
-  static const ::google::protobuf::Descriptor* descriptor();
   static const Transit& default_instance();
+
+  #ifdef GOOGLE_PROTOBUF_NO_STATIC_INITIALIZER
+  // Returns the internal default instance pointer. This function can
+  // return NULL thus should not be used by the user. This is intended
+  // for Protobuf internal code. Please use default_instance() declared
+  // above instead.
+  static inline const Transit* internal_default_instance() {
+    return default_instance_;
+  }
+  #endif
 
   void Swap(Transit* other);
 
   // implements Message ----------------------------------------------
 
   Transit* New() const;
-  void CopyFrom(const ::google::protobuf::Message& from);
-  void MergeFrom(const ::google::protobuf::Message& from);
+  void CheckTypeAndMergeFrom(const ::google::protobuf::MessageLite& from);
   void CopyFrom(const Transit& from);
   void MergeFrom(const Transit& from);
   void Clear();
@@ -915,7 +942,6 @@ class Transit : public ::google::protobuf::Message {
       ::google::protobuf::io::CodedInputStream* input);
   void SerializeWithCachedSizes(
       ::google::protobuf::io::CodedOutputStream* output) const;
-  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
   int GetCachedSize() const { return _cached_size_; }
   private:
   void SharedCtor();
@@ -923,11 +949,11 @@ class Transit : public ::google::protobuf::Message {
   void SetCachedSize(int size) const;
   public:
 
-  ::google::protobuf::Metadata GetMetadata() const;
+  ::std::string GetTypeName() const;
 
   // nested types ----------------------------------------------------
 
-  typedef Transit_Stop Stop;
+  typedef Transit_Node Node;
   typedef Transit_StopPair StopPair;
   typedef Transit_Route Route;
   typedef Transit_Shape Shape;
@@ -950,31 +976,20 @@ class Transit : public ::google::protobuf::Message {
     Transit_VehicleType_VehicleType_MAX;
   static const int VehicleType_ARRAYSIZE =
     Transit_VehicleType_VehicleType_ARRAYSIZE;
-  static inline const ::google::protobuf::EnumDescriptor*
-  VehicleType_descriptor() {
-    return Transit_VehicleType_descriptor();
-  }
-  static inline const ::std::string& VehicleType_Name(VehicleType value) {
-    return Transit_VehicleType_Name(value);
-  }
-  static inline bool VehicleType_Parse(const ::std::string& name,
-      VehicleType* value) {
-    return Transit_VehicleType_Parse(name, value);
-  }
 
   // accessors -------------------------------------------------------
 
-  // repeated .valhalla.mjolnir.Transit.Stop stops = 1;
-  inline int stops_size() const;
-  inline void clear_stops();
-  static const int kStopsFieldNumber = 1;
-  inline const ::valhalla::mjolnir::Transit_Stop& stops(int index) const;
-  inline ::valhalla::mjolnir::Transit_Stop* mutable_stops(int index);
-  inline ::valhalla::mjolnir::Transit_Stop* add_stops();
-  inline const ::google::protobuf::RepeatedPtrField< ::valhalla::mjolnir::Transit_Stop >&
-      stops() const;
-  inline ::google::protobuf::RepeatedPtrField< ::valhalla::mjolnir::Transit_Stop >*
-      mutable_stops();
+  // repeated .valhalla.mjolnir.Transit.Node nodes = 1;
+  inline int nodes_size() const;
+  inline void clear_nodes();
+  static const int kNodesFieldNumber = 1;
+  inline const ::valhalla::mjolnir::Transit_Node& nodes(int index) const;
+  inline ::valhalla::mjolnir::Transit_Node* mutable_nodes(int index);
+  inline ::valhalla::mjolnir::Transit_Node* add_nodes();
+  inline const ::google::protobuf::RepeatedPtrField< ::valhalla::mjolnir::Transit_Node >&
+      nodes() const;
+  inline ::google::protobuf::RepeatedPtrField< ::valhalla::mjolnir::Transit_Node >*
+      mutable_nodes();
 
   // repeated .valhalla.mjolnir.Transit.StopPair stop_pairs = 2;
   inline int stop_pairs_size() const;
@@ -1015,9 +1030,7 @@ class Transit : public ::google::protobuf::Message {
   // @@protoc_insertion_point(class_scope:valhalla.mjolnir.Transit)
  private:
 
-  ::google::protobuf::UnknownFieldSet _unknown_fields_;
-
-  ::google::protobuf::RepeatedPtrField< ::valhalla::mjolnir::Transit_Stop > stops_;
+  ::google::protobuf::RepeatedPtrField< ::valhalla::mjolnir::Transit_Node > nodes_;
   ::google::protobuf::RepeatedPtrField< ::valhalla::mjolnir::Transit_StopPair > stop_pairs_;
   ::google::protobuf::RepeatedPtrField< ::valhalla::mjolnir::Transit_Route > routes_;
   ::google::protobuf::RepeatedPtrField< ::valhalla::mjolnir::Transit_Shape > shapes_;
@@ -1025,7 +1038,11 @@ class Transit : public ::google::protobuf::Message {
   mutable int _cached_size_;
   ::google::protobuf::uint32 _has_bits_[(4 + 31) / 32];
 
+  #ifdef GOOGLE_PROTOBUF_NO_STATIC_INITIALIZER
+  friend void  protobuf_AddDesc_transit_2eproto_impl();
+  #else
   friend void  protobuf_AddDesc_transit_2eproto();
+  #endif
   friend void protobuf_AssignDesc_transit_2eproto();
   friend void protobuf_ShutdownFile_transit_2eproto();
 
@@ -1037,122 +1054,166 @@ class Transit : public ::google::protobuf::Message {
 
 // ===================================================================
 
-// Transit_Stop
+// Transit_Node
 
 // optional float lon = 1;
-inline bool Transit_Stop::has_lon() const {
+inline bool Transit_Node::has_lon() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
-inline void Transit_Stop::set_has_lon() {
+inline void Transit_Node::set_has_lon() {
   _has_bits_[0] |= 0x00000001u;
 }
-inline void Transit_Stop::clear_has_lon() {
+inline void Transit_Node::clear_has_lon() {
   _has_bits_[0] &= ~0x00000001u;
 }
-inline void Transit_Stop::clear_lon() {
+inline void Transit_Node::clear_lon() {
   lon_ = 0;
   clear_has_lon();
 }
-inline float Transit_Stop::lon() const {
+inline float Transit_Node::lon() const {
   return lon_;
 }
-inline void Transit_Stop::set_lon(float value) {
+inline void Transit_Node::set_lon(float value) {
   set_has_lon();
   lon_ = value;
 }
 
 // optional float lat = 2;
-inline bool Transit_Stop::has_lat() const {
+inline bool Transit_Node::has_lat() const {
   return (_has_bits_[0] & 0x00000002u) != 0;
 }
-inline void Transit_Stop::set_has_lat() {
+inline void Transit_Node::set_has_lat() {
   _has_bits_[0] |= 0x00000002u;
 }
-inline void Transit_Stop::clear_has_lat() {
+inline void Transit_Node::clear_has_lat() {
   _has_bits_[0] &= ~0x00000002u;
 }
-inline void Transit_Stop::clear_lat() {
+inline void Transit_Node::clear_lat() {
   lat_ = 0;
   clear_has_lat();
 }
-inline float Transit_Stop::lat() const {
+inline float Transit_Node::lat() const {
   return lat_;
 }
-inline void Transit_Stop::set_lat(float value) {
+inline void Transit_Node::set_lat(float value) {
   set_has_lat();
   lat_ = value;
 }
 
-// optional uint64 graphid = 3;
-inline bool Transit_Stop::has_graphid() const {
+// optional uint32 type = 3;
+inline bool Transit_Node::has_type() const {
   return (_has_bits_[0] & 0x00000004u) != 0;
 }
-inline void Transit_Stop::set_has_graphid() {
+inline void Transit_Node::set_has_type() {
   _has_bits_[0] |= 0x00000004u;
 }
-inline void Transit_Stop::clear_has_graphid() {
+inline void Transit_Node::clear_has_type() {
   _has_bits_[0] &= ~0x00000004u;
 }
-inline void Transit_Stop::clear_graphid() {
+inline void Transit_Node::clear_type() {
+  type_ = 0u;
+  clear_has_type();
+}
+inline ::google::protobuf::uint32 Transit_Node::type() const {
+  return type_;
+}
+inline void Transit_Node::set_type(::google::protobuf::uint32 value) {
+  set_has_type();
+  type_ = value;
+}
+
+// optional uint64 graphid = 4;
+inline bool Transit_Node::has_graphid() const {
+  return (_has_bits_[0] & 0x00000008u) != 0;
+}
+inline void Transit_Node::set_has_graphid() {
+  _has_bits_[0] |= 0x00000008u;
+}
+inline void Transit_Node::clear_has_graphid() {
+  _has_bits_[0] &= ~0x00000008u;
+}
+inline void Transit_Node::clear_graphid() {
   graphid_ = GOOGLE_ULONGLONG(0);
   clear_has_graphid();
 }
-inline ::google::protobuf::uint64 Transit_Stop::graphid() const {
+inline ::google::protobuf::uint64 Transit_Node::graphid() const {
   return graphid_;
 }
-inline void Transit_Stop::set_graphid(::google::protobuf::uint64 value) {
+inline void Transit_Node::set_graphid(::google::protobuf::uint64 value) {
   set_has_graphid();
   graphid_ = value;
 }
 
-// optional string name = 4;
-inline bool Transit_Stop::has_name() const {
-  return (_has_bits_[0] & 0x00000008u) != 0;
+// optional uint64 prev_type_graphid = 5;
+inline bool Transit_Node::has_prev_type_graphid() const {
+  return (_has_bits_[0] & 0x00000010u) != 0;
 }
-inline void Transit_Stop::set_has_name() {
-  _has_bits_[0] |= 0x00000008u;
+inline void Transit_Node::set_has_prev_type_graphid() {
+  _has_bits_[0] |= 0x00000010u;
 }
-inline void Transit_Stop::clear_has_name() {
-  _has_bits_[0] &= ~0x00000008u;
+inline void Transit_Node::clear_has_prev_type_graphid() {
+  _has_bits_[0] &= ~0x00000010u;
 }
-inline void Transit_Stop::clear_name() {
+inline void Transit_Node::clear_prev_type_graphid() {
+  prev_type_graphid_ = GOOGLE_ULONGLONG(0);
+  clear_has_prev_type_graphid();
+}
+inline ::google::protobuf::uint64 Transit_Node::prev_type_graphid() const {
+  return prev_type_graphid_;
+}
+inline void Transit_Node::set_prev_type_graphid(::google::protobuf::uint64 value) {
+  set_has_prev_type_graphid();
+  prev_type_graphid_ = value;
+}
+
+// optional string name = 6;
+inline bool Transit_Node::has_name() const {
+  return (_has_bits_[0] & 0x00000020u) != 0;
+}
+inline void Transit_Node::set_has_name() {
+  _has_bits_[0] |= 0x00000020u;
+}
+inline void Transit_Node::clear_has_name() {
+  _has_bits_[0] &= ~0x00000020u;
+}
+inline void Transit_Node::clear_name() {
   if (name_ != &::google::protobuf::internal::kEmptyString) {
     name_->clear();
   }
   clear_has_name();
 }
-inline const ::std::string& Transit_Stop::name() const {
+inline const ::std::string& Transit_Node::name() const {
   return *name_;
 }
-inline void Transit_Stop::set_name(const ::std::string& value) {
+inline void Transit_Node::set_name(const ::std::string& value) {
   set_has_name();
   if (name_ == &::google::protobuf::internal::kEmptyString) {
     name_ = new ::std::string;
   }
   name_->assign(value);
 }
-inline void Transit_Stop::set_name(const char* value) {
+inline void Transit_Node::set_name(const char* value) {
   set_has_name();
   if (name_ == &::google::protobuf::internal::kEmptyString) {
     name_ = new ::std::string;
   }
   name_->assign(value);
 }
-inline void Transit_Stop::set_name(const char* value, size_t size) {
+inline void Transit_Node::set_name(const char* value, size_t size) {
   set_has_name();
   if (name_ == &::google::protobuf::internal::kEmptyString) {
     name_ = new ::std::string;
   }
   name_->assign(reinterpret_cast<const char*>(value), size);
 }
-inline ::std::string* Transit_Stop::mutable_name() {
+inline ::std::string* Transit_Node::mutable_name() {
   set_has_name();
   if (name_ == &::google::protobuf::internal::kEmptyString) {
     name_ = new ::std::string;
   }
   return name_;
 }
-inline ::std::string* Transit_Stop::release_name() {
+inline ::std::string* Transit_Node::release_name() {
   clear_has_name();
   if (name_ == &::google::protobuf::internal::kEmptyString) {
     return NULL;
@@ -1162,7 +1223,7 @@ inline ::std::string* Transit_Stop::release_name() {
     return temp;
   }
 }
-inline void Transit_Stop::set_allocated_name(::std::string* name) {
+inline void Transit_Node::set_allocated_name(::std::string* name) {
   if (name_ != &::google::protobuf::internal::kEmptyString) {
     delete name_;
   }
@@ -1175,54 +1236,54 @@ inline void Transit_Stop::set_allocated_name(::std::string* name) {
   }
 }
 
-// optional string onestop_id = 5;
-inline bool Transit_Stop::has_onestop_id() const {
-  return (_has_bits_[0] & 0x00000010u) != 0;
+// optional string onestop_id = 7;
+inline bool Transit_Node::has_onestop_id() const {
+  return (_has_bits_[0] & 0x00000040u) != 0;
 }
-inline void Transit_Stop::set_has_onestop_id() {
-  _has_bits_[0] |= 0x00000010u;
+inline void Transit_Node::set_has_onestop_id() {
+  _has_bits_[0] |= 0x00000040u;
 }
-inline void Transit_Stop::clear_has_onestop_id() {
-  _has_bits_[0] &= ~0x00000010u;
+inline void Transit_Node::clear_has_onestop_id() {
+  _has_bits_[0] &= ~0x00000040u;
 }
-inline void Transit_Stop::clear_onestop_id() {
+inline void Transit_Node::clear_onestop_id() {
   if (onestop_id_ != &::google::protobuf::internal::kEmptyString) {
     onestop_id_->clear();
   }
   clear_has_onestop_id();
 }
-inline const ::std::string& Transit_Stop::onestop_id() const {
+inline const ::std::string& Transit_Node::onestop_id() const {
   return *onestop_id_;
 }
-inline void Transit_Stop::set_onestop_id(const ::std::string& value) {
+inline void Transit_Node::set_onestop_id(const ::std::string& value) {
   set_has_onestop_id();
   if (onestop_id_ == &::google::protobuf::internal::kEmptyString) {
     onestop_id_ = new ::std::string;
   }
   onestop_id_->assign(value);
 }
-inline void Transit_Stop::set_onestop_id(const char* value) {
+inline void Transit_Node::set_onestop_id(const char* value) {
   set_has_onestop_id();
   if (onestop_id_ == &::google::protobuf::internal::kEmptyString) {
     onestop_id_ = new ::std::string;
   }
   onestop_id_->assign(value);
 }
-inline void Transit_Stop::set_onestop_id(const char* value, size_t size) {
+inline void Transit_Node::set_onestop_id(const char* value, size_t size) {
   set_has_onestop_id();
   if (onestop_id_ == &::google::protobuf::internal::kEmptyString) {
     onestop_id_ = new ::std::string;
   }
   onestop_id_->assign(reinterpret_cast<const char*>(value), size);
 }
-inline ::std::string* Transit_Stop::mutable_onestop_id() {
+inline ::std::string* Transit_Node::mutable_onestop_id() {
   set_has_onestop_id();
   if (onestop_id_ == &::google::protobuf::internal::kEmptyString) {
     onestop_id_ = new ::std::string;
   }
   return onestop_id_;
 }
-inline ::std::string* Transit_Stop::release_onestop_id() {
+inline ::std::string* Transit_Node::release_onestop_id() {
   clear_has_onestop_id();
   if (onestop_id_ == &::google::protobuf::internal::kEmptyString) {
     return NULL;
@@ -1232,7 +1293,7 @@ inline ::std::string* Transit_Stop::release_onestop_id() {
     return temp;
   }
 }
-inline void Transit_Stop::set_allocated_onestop_id(::std::string* onestop_id) {
+inline void Transit_Node::set_allocated_onestop_id(::std::string* onestop_id) {
   if (onestop_id_ != &::google::protobuf::internal::kEmptyString) {
     delete onestop_id_;
   }
@@ -1245,70 +1306,162 @@ inline void Transit_Stop::set_allocated_onestop_id(::std::string* onestop_id) {
   }
 }
 
-// optional uint64 osm_way_id = 6;
-inline bool Transit_Stop::has_osm_way_id() const {
-  return (_has_bits_[0] & 0x00000020u) != 0;
+// optional uint64 osm_way_id = 8;
+inline bool Transit_Node::has_osm_way_id() const {
+  return (_has_bits_[0] & 0x00000080u) != 0;
 }
-inline void Transit_Stop::set_has_osm_way_id() {
-  _has_bits_[0] |= 0x00000020u;
+inline void Transit_Node::set_has_osm_way_id() {
+  _has_bits_[0] |= 0x00000080u;
 }
-inline void Transit_Stop::clear_has_osm_way_id() {
-  _has_bits_[0] &= ~0x00000020u;
+inline void Transit_Node::clear_has_osm_way_id() {
+  _has_bits_[0] &= ~0x00000080u;
 }
-inline void Transit_Stop::clear_osm_way_id() {
+inline void Transit_Node::clear_osm_way_id() {
   osm_way_id_ = GOOGLE_ULONGLONG(0);
   clear_has_osm_way_id();
 }
-inline ::google::protobuf::uint64 Transit_Stop::osm_way_id() const {
+inline ::google::protobuf::uint64 Transit_Node::osm_way_id() const {
   return osm_way_id_;
 }
-inline void Transit_Stop::set_osm_way_id(::google::protobuf::uint64 value) {
+inline void Transit_Node::set_osm_way_id(::google::protobuf::uint64 value) {
   set_has_osm_way_id();
   osm_way_id_ = value;
 }
 
-// optional uint32 timezone = 8;
-inline bool Transit_Stop::has_timezone() const {
-  return (_has_bits_[0] & 0x00000040u) != 0;
+// optional string timezone = 9;
+inline bool Transit_Node::has_timezone() const {
+  return (_has_bits_[0] & 0x00000100u) != 0;
 }
-inline void Transit_Stop::set_has_timezone() {
-  _has_bits_[0] |= 0x00000040u;
+inline void Transit_Node::set_has_timezone() {
+  _has_bits_[0] |= 0x00000100u;
 }
-inline void Transit_Stop::clear_has_timezone() {
-  _has_bits_[0] &= ~0x00000040u;
+inline void Transit_Node::clear_has_timezone() {
+  _has_bits_[0] &= ~0x00000100u;
 }
-inline void Transit_Stop::clear_timezone() {
-  timezone_ = 0u;
+inline void Transit_Node::clear_timezone() {
+  if (timezone_ != &::google::protobuf::internal::kEmptyString) {
+    timezone_->clear();
+  }
   clear_has_timezone();
 }
-inline ::google::protobuf::uint32 Transit_Stop::timezone() const {
+inline const ::std::string& Transit_Node::timezone() const {
+  return *timezone_;
+}
+inline void Transit_Node::set_timezone(const ::std::string& value) {
+  set_has_timezone();
+  if (timezone_ == &::google::protobuf::internal::kEmptyString) {
+    timezone_ = new ::std::string;
+  }
+  timezone_->assign(value);
+}
+inline void Transit_Node::set_timezone(const char* value) {
+  set_has_timezone();
+  if (timezone_ == &::google::protobuf::internal::kEmptyString) {
+    timezone_ = new ::std::string;
+  }
+  timezone_->assign(value);
+}
+inline void Transit_Node::set_timezone(const char* value, size_t size) {
+  set_has_timezone();
+  if (timezone_ == &::google::protobuf::internal::kEmptyString) {
+    timezone_ = new ::std::string;
+  }
+  timezone_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* Transit_Node::mutable_timezone() {
+  set_has_timezone();
+  if (timezone_ == &::google::protobuf::internal::kEmptyString) {
+    timezone_ = new ::std::string;
+  }
   return timezone_;
 }
-inline void Transit_Stop::set_timezone(::google::protobuf::uint32 value) {
-  set_has_timezone();
-  timezone_ = value;
+inline ::std::string* Transit_Node::release_timezone() {
+  clear_has_timezone();
+  if (timezone_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = timezone_;
+    timezone_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+inline void Transit_Node::set_allocated_timezone(::std::string* timezone) {
+  if (timezone_ != &::google::protobuf::internal::kEmptyString) {
+    delete timezone_;
+  }
+  if (timezone) {
+    set_has_timezone();
+    timezone_ = timezone;
+  } else {
+    clear_has_timezone();
+    timezone_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  }
 }
 
-// optional bool wheelchair_boarding = 9;
-inline bool Transit_Stop::has_wheelchair_boarding() const {
-  return (_has_bits_[0] & 0x00000080u) != 0;
+// optional bool wheelchair_boarding = 10;
+inline bool Transit_Node::has_wheelchair_boarding() const {
+  return (_has_bits_[0] & 0x00000200u) != 0;
 }
-inline void Transit_Stop::set_has_wheelchair_boarding() {
-  _has_bits_[0] |= 0x00000080u;
+inline void Transit_Node::set_has_wheelchair_boarding() {
+  _has_bits_[0] |= 0x00000200u;
 }
-inline void Transit_Stop::clear_has_wheelchair_boarding() {
-  _has_bits_[0] &= ~0x00000080u;
+inline void Transit_Node::clear_has_wheelchair_boarding() {
+  _has_bits_[0] &= ~0x00000200u;
 }
-inline void Transit_Stop::clear_wheelchair_boarding() {
+inline void Transit_Node::clear_wheelchair_boarding() {
   wheelchair_boarding_ = false;
   clear_has_wheelchair_boarding();
 }
-inline bool Transit_Stop::wheelchair_boarding() const {
+inline bool Transit_Node::wheelchair_boarding() const {
   return wheelchair_boarding_;
 }
-inline void Transit_Stop::set_wheelchair_boarding(bool value) {
+inline void Transit_Node::set_wheelchair_boarding(bool value) {
   set_has_wheelchair_boarding();
   wheelchair_boarding_ = value;
+}
+
+// optional bool generated = 11;
+inline bool Transit_Node::has_generated() const {
+  return (_has_bits_[0] & 0x00000400u) != 0;
+}
+inline void Transit_Node::set_has_generated() {
+  _has_bits_[0] |= 0x00000400u;
+}
+inline void Transit_Node::clear_has_generated() {
+  _has_bits_[0] &= ~0x00000400u;
+}
+inline void Transit_Node::clear_generated() {
+  generated_ = false;
+  clear_has_generated();
+}
+inline bool Transit_Node::generated() const {
+  return generated_;
+}
+inline void Transit_Node::set_generated(bool value) {
+  set_has_generated();
+  generated_ = value;
+}
+
+// optional uint32 traversability = 12;
+inline bool Transit_Node::has_traversability() const {
+  return (_has_bits_[0] & 0x00000800u) != 0;
+}
+inline void Transit_Node::set_has_traversability() {
+  _has_bits_[0] |= 0x00000800u;
+}
+inline void Transit_Node::clear_has_traversability() {
+  _has_bits_[0] &= ~0x00000800u;
+}
+inline void Transit_Node::clear_traversability() {
+  traversability_ = 0u;
+  clear_has_traversability();
+}
+inline ::google::protobuf::uint32 Transit_Node::traversability() const {
+  return traversability_;
+}
+inline void Transit_Node::set_traversability(::google::protobuf::uint32 value) {
+  set_has_traversability();
+  traversability_ = value;
 }
 
 // -------------------------------------------------------------------
@@ -1912,37 +2065,15 @@ inline void Transit_StopPair::set_wheelchair_accessible(bool value) {
   wheelchair_accessible_ = value;
 }
 
-// optional uint32 line_id = 19;
-inline bool Transit_StopPair::has_line_id() const {
-  return (_has_bits_[0] & 0x00040000u) != 0;
-}
-inline void Transit_StopPair::set_has_line_id() {
-  _has_bits_[0] |= 0x00040000u;
-}
-inline void Transit_StopPair::clear_has_line_id() {
-  _has_bits_[0] &= ~0x00040000u;
-}
-inline void Transit_StopPair::clear_line_id() {
-  line_id_ = 0u;
-  clear_has_line_id();
-}
-inline ::google::protobuf::uint32 Transit_StopPair::line_id() const {
-  return line_id_;
-}
-inline void Transit_StopPair::set_line_id(::google::protobuf::uint32 value) {
-  set_has_line_id();
-  line_id_ = value;
-}
-
 // optional uint32 shape_id = 20;
 inline bool Transit_StopPair::has_shape_id() const {
-  return (_has_bits_[0] & 0x00080000u) != 0;
+  return (_has_bits_[0] & 0x00040000u) != 0;
 }
 inline void Transit_StopPair::set_has_shape_id() {
-  _has_bits_[0] |= 0x00080000u;
+  _has_bits_[0] |= 0x00040000u;
 }
 inline void Transit_StopPair::clear_has_shape_id() {
-  _has_bits_[0] &= ~0x00080000u;
+  _has_bits_[0] &= ~0x00040000u;
 }
 inline void Transit_StopPair::clear_shape_id() {
   shape_id_ = 0u;
@@ -1958,13 +2089,13 @@ inline void Transit_StopPair::set_shape_id(::google::protobuf::uint32 value) {
 
 // optional float origin_dist_traveled = 21;
 inline bool Transit_StopPair::has_origin_dist_traveled() const {
-  return (_has_bits_[0] & 0x00100000u) != 0;
+  return (_has_bits_[0] & 0x00080000u) != 0;
 }
 inline void Transit_StopPair::set_has_origin_dist_traveled() {
-  _has_bits_[0] |= 0x00100000u;
+  _has_bits_[0] |= 0x00080000u;
 }
 inline void Transit_StopPair::clear_has_origin_dist_traveled() {
-  _has_bits_[0] &= ~0x00100000u;
+  _has_bits_[0] &= ~0x00080000u;
 }
 inline void Transit_StopPair::clear_origin_dist_traveled() {
   origin_dist_traveled_ = 0;
@@ -1980,13 +2111,13 @@ inline void Transit_StopPair::set_origin_dist_traveled(float value) {
 
 // optional float destination_dist_traveled = 22;
 inline bool Transit_StopPair::has_destination_dist_traveled() const {
-  return (_has_bits_[0] & 0x00200000u) != 0;
+  return (_has_bits_[0] & 0x00100000u) != 0;
 }
 inline void Transit_StopPair::set_has_destination_dist_traveled() {
-  _has_bits_[0] |= 0x00200000u;
+  _has_bits_[0] |= 0x00100000u;
 }
 inline void Transit_StopPair::clear_has_destination_dist_traveled() {
-  _has_bits_[0] &= ~0x00200000u;
+  _has_bits_[0] &= ~0x00100000u;
 }
 inline void Transit_StopPair::clear_destination_dist_traveled() {
   destination_dist_traveled_ = 0;
@@ -2002,13 +2133,13 @@ inline void Transit_StopPair::set_destination_dist_traveled(float value) {
 
 // optional uint32 frequency_end_time = 23;
 inline bool Transit_StopPair::has_frequency_end_time() const {
-  return (_has_bits_[0] & 0x00400000u) != 0;
+  return (_has_bits_[0] & 0x00200000u) != 0;
 }
 inline void Transit_StopPair::set_has_frequency_end_time() {
-  _has_bits_[0] |= 0x00400000u;
+  _has_bits_[0] |= 0x00200000u;
 }
 inline void Transit_StopPair::clear_has_frequency_end_time() {
-  _has_bits_[0] &= ~0x00400000u;
+  _has_bits_[0] &= ~0x00200000u;
 }
 inline void Transit_StopPair::clear_frequency_end_time() {
   frequency_end_time_ = 0u;
@@ -2024,13 +2155,13 @@ inline void Transit_StopPair::set_frequency_end_time(::google::protobuf::uint32 
 
 // optional uint32 frequency_headway_seconds = 24;
 inline bool Transit_StopPair::has_frequency_headway_seconds() const {
-  return (_has_bits_[0] & 0x00800000u) != 0;
+  return (_has_bits_[0] & 0x00400000u) != 0;
 }
 inline void Transit_StopPair::set_has_frequency_headway_seconds() {
-  _has_bits_[0] |= 0x00800000u;
+  _has_bits_[0] |= 0x00400000u;
 }
 inline void Transit_StopPair::clear_has_frequency_headway_seconds() {
-  _has_bits_[0] &= ~0x00800000u;
+  _has_bits_[0] &= ~0x00400000u;
 }
 inline void Transit_StopPair::clear_frequency_headway_seconds() {
   frequency_headway_seconds_ = 0u;
@@ -2705,29 +2836,29 @@ inline void Transit_Shape::set_allocated_encoded_shape(::std::string* encoded_sh
 
 // Transit
 
-// repeated .valhalla.mjolnir.Transit.Stop stops = 1;
-inline int Transit::stops_size() const {
-  return stops_.size();
+// repeated .valhalla.mjolnir.Transit.Node nodes = 1;
+inline int Transit::nodes_size() const {
+  return nodes_.size();
 }
-inline void Transit::clear_stops() {
-  stops_.Clear();
+inline void Transit::clear_nodes() {
+  nodes_.Clear();
 }
-inline const ::valhalla::mjolnir::Transit_Stop& Transit::stops(int index) const {
-  return stops_.Get(index);
+inline const ::valhalla::mjolnir::Transit_Node& Transit::nodes(int index) const {
+  return nodes_.Get(index);
 }
-inline ::valhalla::mjolnir::Transit_Stop* Transit::mutable_stops(int index) {
-  return stops_.Mutable(index);
+inline ::valhalla::mjolnir::Transit_Node* Transit::mutable_nodes(int index) {
+  return nodes_.Mutable(index);
 }
-inline ::valhalla::mjolnir::Transit_Stop* Transit::add_stops() {
-  return stops_.Add();
+inline ::valhalla::mjolnir::Transit_Node* Transit::add_nodes() {
+  return nodes_.Add();
 }
-inline const ::google::protobuf::RepeatedPtrField< ::valhalla::mjolnir::Transit_Stop >&
-Transit::stops() const {
-  return stops_;
+inline const ::google::protobuf::RepeatedPtrField< ::valhalla::mjolnir::Transit_Node >&
+Transit::nodes() const {
+  return nodes_;
 }
-inline ::google::protobuf::RepeatedPtrField< ::valhalla::mjolnir::Transit_Stop >*
-Transit::mutable_stops() {
-  return &stops_;
+inline ::google::protobuf::RepeatedPtrField< ::valhalla::mjolnir::Transit_Node >*
+Transit::mutable_nodes() {
+  return &nodes_;
 }
 
 // repeated .valhalla.mjolnir.Transit.StopPair stop_pairs = 2;
@@ -2810,19 +2941,6 @@ Transit::mutable_shapes() {
 
 }  // namespace mjolnir
 }  // namespace valhalla
-
-#ifndef SWIG
-namespace google {
-namespace protobuf {
-
-template <>
-inline const EnumDescriptor* GetEnumDescriptor< ::valhalla::mjolnir::Transit_VehicleType>() {
-  return ::valhalla::mjolnir::Transit_VehicleType_descriptor();
-}
-
-}  // namespace google
-}  // namespace protobuf
-#endif  // SWIG
 
 // @@protoc_insertion_point(global_scope)
 
