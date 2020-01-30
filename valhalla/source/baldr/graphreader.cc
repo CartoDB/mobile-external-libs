@@ -746,7 +746,8 @@ bool GraphReader::AreEdgesConnected(const GraphId& edge1, const GraphId& edge2) 
     return false;
   }
   const DirectedEdge* de2 = t2->directededge(edge2);
-  if (de1->endnode() == de2->endnode() || is_transition(de1->endnode(), de2->endnode())) {
+  // CARTOHACK
+  if (de1 && de2 && (de1->endnode() == de2->endnode() || is_transition(de1->endnode(), de2->endnode()))) {
     return true;
   }
 
@@ -759,7 +760,8 @@ bool GraphReader::AreEdgesConnected(const GraphId& edge1, const GraphId& edge2) 
 
   // Get opposing edge to de2 and compare to both edge1 endnodes
   const DirectedEdge* de2_opp = GetOpposingEdge(edge2, t2);
-  if (de2_opp && (de2_opp->endnode() == de1->endnode() || de2_opp->endnode() == de1_opp->endnode() ||
+  // CARTOHACK
+  if (de1_opp && de2_opp && (de2_opp->endnode() == de1->endnode() || de2_opp->endnode() == de1_opp->endnode() ||
                   is_transition(de2_opp->endnode(), de1->endnode()) ||
                   is_transition(de2_opp->endnode(), de1_opp->endnode()))) {
     return true;
