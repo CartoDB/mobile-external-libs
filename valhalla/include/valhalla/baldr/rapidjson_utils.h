@@ -16,6 +16,9 @@
 #define RAPIDJSON_ASSERT(x)                                                                          \
   if (!(x))                                                                                          \
   throw std::logic_error(RAPIDJSON_STRINGIFY(x))
+// CARTOHACK
+#undef RAPIDJSON_HAS_CXX11_NOEXCEPT
+#define RAPIDJSON_HAS_CXX11_NOEXCEPT 0
 
 #include <rapidjson/document.h>
 #include <rapidjson/error/en.h>
