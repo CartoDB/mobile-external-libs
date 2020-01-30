@@ -12,6 +12,10 @@ json::ArrayPtr serialize_edges(const PathLocation& location, GraphReader& reader
     try {
       // get the osm way id
       auto tile = reader.GetGraphTile(edge.id);
+      // CARTOHACK
+      if (!tile) {
+        continue;
+      }
       auto* directed_edge = tile->directededge(edge.id);
       auto edge_info = tile->edgeinfo(directed_edge->edgeinfo_offset());
       // they want MOAR!
@@ -73,6 +77,10 @@ json::ArrayPtr serialize_nodes(const PathLocation& location, GraphReader& reader
   for (auto node_id : nodes) {
     GraphId n(node_id);
     const GraphTile* tile = reader.GetGraphTile(n);
+    // CARTOHACK
+    if (!tile) {
+      continue;
+    }
     auto* node_info = tile->node(n);
     json::MapPtr node;
     if (verbose) {

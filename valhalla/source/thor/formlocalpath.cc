@@ -20,6 +20,10 @@ constexpr uint32_t kLocalLevel = 2;
 GraphId PathAlgorithm::GetStartNode(GraphReader& graphreader, const DirectedEdge* directededge) {
   // Get the end node of directed edge
   const GraphTile* tile = graphreader.GetGraphTile(directededge->endnode());
+  // CARTOHACK
+  if (!tile) {
+    return {};
+  }
   const NodeInfo* nodeinfo = tile->node(directededge->endnode());
 
   // Get the opposing edge and then get its endnode
@@ -31,6 +35,10 @@ GraphId PathAlgorithm::GetStartNode(GraphReader& graphreader, const DirectedEdge
     // The transition down edge will be one of the last edges (transition up
     // edges are last if they exist)
     tile = graphreader.GetGraphTile(endnode);
+    // CARTOHACK
+    if (!tile) {
+      return {};
+    }
     nodeinfo = tile->node(endnode);
     edge = tile->directededge(nodeinfo->edge_index() + nodeinfo->edge_count() - 1);
     uint32_t n = 0;
@@ -64,6 +72,10 @@ std::vector<GraphId> PathAlgorithm::FormLocalPath(const uint32_t dest, GraphRead
     // Get the GraphId of the directed edge and and get the directed edge info
     GraphId edgeid = edgelabels_[edgelabel_index].edgeid();
     const GraphTile* tile = graphreader.GetGraphTile(edgeid);
+    // CARTOHACK
+    if (!tile) {
+      return {};
+    }
     const DirectedEdge* directededge = tile->directededge(edgeid);
 
     // Store the end node if a downward transition to the local level
@@ -98,6 +110,10 @@ std::vector<GraphId> PathAlgorithm::FormLocalPath(const uint32_t dest, GraphRead
         // prior local node
         uint32_t n = 0;
         const GraphTile* tile = graphreader.GetGraphTile(startnode);
+        // CARTOHACK
+        if (!tile) {
+          return {};
+        }
         const NodeInfo* nodeinfo = tile->node(startnode);
         uint32_t edgeindex = nodeinfo->edge_index();
         directededge = tile->directededge(edgeindex);

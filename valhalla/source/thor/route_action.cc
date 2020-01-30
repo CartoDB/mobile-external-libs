@@ -185,6 +185,10 @@ std::string thor_worker_t::expansion(Api& request) {
                                 baldr::GraphId edgeid, const char* status, bool full_shape = false) {
     // full shape might be overkill but meh, its trace
     const auto* tile = reader.GetGraphTile(edgeid);
+    // CARTOHACK
+    if (!tile) {
+      return;
+    }
     const auto* edge = tile->directededge(edgeid);
     auto shape = tile->edgeinfo(edge->edgeinfo_offset()).shape();
     if (!edge->forward())

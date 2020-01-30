@@ -950,6 +950,10 @@ void Isochrone::UpdateIsoTile(const EdgeLabel& pred,
 
   // Get the DirectedEdge because we'll need its shape
   const GraphTile* tile = graphreader.GetGraphTile(pred.edgeid().Tile_Base());
+  // CARTOHACK
+  if (!tile) {
+    return;
+  }
   const DirectedEdge* edge = tile->directededge(pred.edgeid());
 
   // Transit lines and ferries can't really be "reached" you really just
@@ -1062,6 +1066,10 @@ void Isochrone::SetOriginLocations(
 
       // Get the directed edge
       const GraphTile* tile = graphreader.GetGraphTile(edgeid);
+      // CARTOHACK
+      if (!tile) {
+        continue;
+      }
       const DirectedEdge* directededge = tile->directededge(edgeid);
 
       // Get the tile at the end node. Skip if tile not found as we won't be
@@ -1137,6 +1145,10 @@ void Isochrone::SetOriginLocationsMM(
 
       // Get the directed edge
       const GraphTile* tile = graphreader.GetGraphTile(edgeid);
+      // CARTOHACK
+      if (!tile) {
+        continue;
+      }
       const DirectedEdge* directededge = tile->directededge(edgeid);
 
       // Get the tile at the end node. Skip if tile not found as we won't be
@@ -1211,6 +1223,10 @@ void Isochrone::SetDestinationLocations(
       // Get the directed edge
       GraphId edgeid(edge.graph_id());
       const GraphTile* tile = graphreader.GetGraphTile(edgeid);
+      // CARTOHACK
+      if (!tile) {
+        continue;
+      }
       const DirectedEdge* directededge = tile->directededge(edgeid);
 
       // Get the opposing directed edge, continue if we cannot get it

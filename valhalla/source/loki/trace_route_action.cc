@@ -202,6 +202,10 @@ void loki_worker_t::locations_from_shape(Api& request) {
       for (auto& e : *orig->mutable_path_edges()) {
         GraphId edgeid(e.graph_id());
         const GraphTile* tile = reader->GetGraphTile(edgeid);
+        // CARTOHACK
+        if (!tile) {
+          throw std::runtime_error("Missing tile");
+        }
         const DirectedEdge* de = tile->directededge(edgeid);
         auto& shape = tile->edgeinfo(de->edgeinfo_offset()).shape();
         auto closest = orig_ll.ClosestPoint(shape);
@@ -229,6 +233,10 @@ void loki_worker_t::locations_from_shape(Api& request) {
       for (auto& e : *dest->mutable_path_edges()) {
         GraphId edgeid(e.graph_id());
         const GraphTile* tile = reader->GetGraphTile(edgeid);
+        // CARTOHACK
+        if (!tile) {
+          throw std::runtime_error("Missing tile");
+        }
         const DirectedEdge* de = tile->directededge(edgeid);
         auto& shape = tile->edgeinfo(de->edgeinfo_offset()).shape();
         auto closest = dest_ll.ClosestPoint(shape);

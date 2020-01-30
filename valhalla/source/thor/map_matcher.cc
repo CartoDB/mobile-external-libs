@@ -198,6 +198,10 @@ MapMatcher::FormPath(meili::MapMatcher* matcher,
     // Get the directed edge
     GraphId edge_id = edge_segment.edgeid;
     matcher->graphreader().GetGraphTile(edge_id, tile);
+    // CARTOHACK
+    if (!tile) {
+      continue;
+    }
     directededge = tile->directededge(edge_id);
     // Check if connected to prior edge
     if (prior_edge.Is_Valid() &&
@@ -242,6 +246,10 @@ MapMatcher::FormPath(meili::MapMatcher* matcher,
     prior_edge = edge_id;
     prior_node = directededge->endnode();
     const GraphTile* end_tile = matcher->graphreader().GetGraphTile(prior_node);
+    // CARTOHACK
+    if (!end_tile) {
+      continue;
+    }
     nodeinfo = end_tile->node(prior_node);
 
     // Create a predecessor EdgeLabel (for transition costing)

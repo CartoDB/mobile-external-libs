@@ -716,6 +716,10 @@ bool GraphReader::AreEdgesConnected(const GraphId& edge1, const GraphId& edge2) 
       return false;
     } else {
       const GraphTile* tile = GetGraphTile(n1);
+      // CARTOHACK
+      if (!tile) {
+        return false;
+      }
       const NodeInfo* ni = tile->node(n1);
       if (ni->transition_count() == 0)
         return false;
@@ -731,8 +735,16 @@ bool GraphReader::AreEdgesConnected(const GraphId& edge1, const GraphId& edge2) 
 
   // Get both directed edges
   const GraphTile* t1 = GetGraphTile(edge1);
+  // CARTOHACK
+  if (!t1) {
+    return false;
+  }
   const DirectedEdge* de1 = t1->directededge(edge1);
   const GraphTile* t2 = (edge2.Tile_Base() == edge1.Tile_Base()) ? t1 : GetGraphTile(edge2);
+  // CARTOHACK
+  if (!t2) {
+    return false;
+  }
   const DirectedEdge* de2 = t2->directededge(edge2);
   if (de1->endnode() == de2->endnode() || is_transition(de1->endnode(), de2->endnode())) {
     return true;
@@ -819,6 +831,10 @@ GraphId GraphReader::GetShortcut(const GraphId& id) {
 
   // If this edge is a shortcut return this edge Id
   const GraphTile* tile = GetGraphTile(id);
+  // CARTOHACK
+  if (!tile) {
+    return {};
+  }
   const DirectedEdge* directededge = tile->directededge(id);
   if (directededge->is_shortcut()) {
     return id;
@@ -843,6 +859,10 @@ GraphId GraphReader::GetShortcut(const GraphId& id) {
     GraphId endnode = cont_de->endnode();
     if (cont_de->leaves_tile()) {
       tile = GetGraphTile(endnode.Tile_Base());
+      // CARTOHACK
+      if (!tile) {
+        return {};
+      }
     }
     node = tile->node(endnode);
 
@@ -863,6 +883,10 @@ GraphId GraphReader::GetShortcut(const GraphId& id) {
 std::vector<GraphId> GraphReader::RecoverShortcut(const GraphId& shortcut_id) {
   // grab the shortcut edge
   const GraphTile* tile = GetGraphTile(shortcut_id);
+  // CARTOHACK
+  if (!tile) {
+    return {};
+  }
   const DirectedEdge* shortcut = tile->directededge(shortcut_id);
 
   // bail if this isnt a shortcut

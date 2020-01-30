@@ -461,6 +461,10 @@ void TimeDepReverse::SetOrigin(GraphReader& graphreader,
     // Get the directed edge
     GraphId edgeid(edge.graph_id());
     const GraphTile* tile = graphreader.GetGraphTile(edgeid);
+    // CARTOHACK
+    if (!tile) {
+      continue;
+    }
     const DirectedEdge* directededge = tile->directededge(edgeid);
 
     // Get the opposing directed edge, continue if we cannot get it
@@ -559,6 +563,10 @@ uint32_t TimeDepReverse::SetDestination(GraphReader& graphreader, const valhalla
     // up to the end of the destination edge.
     GraphId id(edge.graph_id());
     const GraphTile* tile = graphreader.GetGraphTile(id);
+    // CARTOHACK
+    if (!tile) {
+      continue;
+    }
     const DirectedEdge* directededge = tile->directededge(id);
 
     // The opposing edge Id is added as a destination since the search

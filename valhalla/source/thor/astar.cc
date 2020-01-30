@@ -385,6 +385,11 @@ void AStarPathAlgorithm::SetOrigin(GraphReader& graphreader,
 
     // Get the directed edge
     const GraphTile* tile = graphreader.GetGraphTile(edgeid);
+    // CARTOHACK
+    if (!tile) {
+      continue;
+    }
+
     const DirectedEdge* directededge = tile->directededge(edgeid);
 
     // Get the tile at the end node. Skip if tile not found as we won't be
@@ -491,6 +496,10 @@ uint32_t AStarPathAlgorithm::SetDestination(GraphReader& graphreader,
     // Keep the cost to traverse the partial distance for the remainder of the edge. This cost
     // is subtracted from the total cost up to the end of the destination edge.
     const GraphTile* tile = graphreader.GetGraphTile(edgeid);
+    // CARTOHACK
+    if (!tile) {
+      continue;
+    }
     const DirectedEdge* directededge = tile->directededge(edgeid);
     destinations_[edge.graph_id()] =
         costing_->EdgeCost(directededge, tile) * (1.0f - edge.percent_along());

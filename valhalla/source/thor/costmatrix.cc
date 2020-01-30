@@ -701,6 +701,10 @@ void CostMatrix::SetSources(GraphReader& graphreader,
 
       // Get the directed edge and the opposing edge Id
       const GraphTile* tile = graphreader.GetGraphTile(edgeid);
+      // CARTOHACK
+      if (!tile) {
+        continue;
+      }
       const DirectedEdge* directededge = tile->directededge(edgeid);
       GraphId oppedge = graphreader.GetOpposingEdgeId(edgeid);
 
@@ -780,6 +784,10 @@ void CostMatrix::SetTargets(baldr::GraphReader& graphreader,
 
       // Get the directed edge
       const GraphTile* tile = graphreader.GetGraphTile(edgeid);
+      // CARTOHACK
+      if (!tile) {
+        continue;
+      }
       const DirectedEdge* directededge = tile->directededge(edgeid);
 
       // Get the opposing directed edge, continue if we cannot get it

@@ -1087,8 +1087,17 @@ TripLegBuilder::Build(const AttributesController& controller,
   // Get the first nodes graph id by using the end node of the first edge to get the tile with the
   // opposing edge then use the opposing index to get the opposing edge, and its end node is the
   // begin node of the original edge
-  auto* first_edge = graphreader.GetGraphTile(path_begin->edgeid)->directededge(path_begin->edgeid);
+  // CARTOHACK
+  auto* first_edge_tile = graphreader.GetGraphTile(path_begin->edgeid);
+  if (!first_edge_tile) {
+    throw std::runtime_error("First edge tile missing");
+  }
+  auto* first_edge = first_edge_tile->directededge(path_begin->edgeid);
   auto* first_tile = graphreader.GetGraphTile(first_edge->endnode());
+  // CARTOHACK
+  if (!first_tile) {
+    throw std::runtime_error("First tile missing");
+  }
   auto* first_node = first_tile->node(first_edge->endnode());
   GraphId startnode =
       first_tile->directededge(first_node->edge_index() + first_edge->opp_index())->endnode();
@@ -1153,6 +1162,10 @@ TripLegBuilder::Build(const AttributesController& controller,
   // If the path was only one edge we have a special case
   if ((path_end - path_begin) == 1) {
     const GraphTile* tile = graphreader.GetGraphTile(path_begin->edgeid);
+    // CARTOHACK
+    if (!first_tile) {
+      throw std::runtime_error("Tile missing");
+    }
     const DirectedEdge* edge = tile->directededge(path_begin->edgeid);
 
     // Get the shape. Reverse if the directed edge direction does
@@ -1265,6 +1278,10 @@ TripLegBuilder::Build(const AttributesController& controller,
     const GraphId& edge = edge_itr->edgeid;
     const uint32_t trip_id = edge_itr->trip_id;
     graphtile = graphreader.GetGraphTile(edge, graphtile);
+    // CARTOHACK
+    if (!graphtile) {
+      throw std::runtime_error("Graph tile missing");
+    }
     const DirectedEdge* directededge = graphtile->directededge(edge);
     const sif::TravelMode mode = edge_itr->mode;
     const uint8_t travel_type = travel_types[static_cast<uint32_t>(mode)];
@@ -1273,6 +1290,10 @@ TripLegBuilder::Build(const AttributesController& controller,
     // Set node attributes - only set if they are true since they are optional
     const GraphTile* start_tile = graphtile;
     start_tile = graphreader.GetGraphTile(startnode, start_tile);
+    // CARTOHACK
+    if (!start_tile) {
+      throw std::runtime_error("Start tile missing");
+    }
     const NodeInfo* node = start_tile->node(startnode);
 
     if (osmchangeset == 0 && controller.attributes.at(kOsmChangeset)) {
@@ -1377,6 +1398,10 @@ TripLegBuilder::Build(const AttributesController& controller,
           if (dir_edge->use() == Use::kPlatformConnection) {
             GraphId endnode = dir_edge->endnode();
             const GraphTile* endtile = graphreader.GetGraphTile(endnode);
+            // CARTOHACK
+            if (!endtile) {
+              throw std::runtime_error("End tile missing");
+            }
             const NodeInfo* nodeinfo2 = endtile->node(endnode);
             const TransitStop* transit_station = endtile->GetTransitStop(nodeinfo2->stop_index());
 
@@ -1700,6 +1725,10 @@ TripLegBuilder::Build(const AttributesController& controller,
   auto* node = trip_path.add_node();
   if (controller.attributes.at(kNodeaAdminIndex)) {
     auto* last_tile = graphreader.GetGraphTile(startnode);
+    // CARTOHACK
+    if (!last_tile) {
+      throw std::runtime_error("Last tile missing");
+    }
     node->set_admin_index(
         GetAdminIndex(last_tile->admininfo(last_tile->node(startnode)->admin_index()), admin_info_map,
                       admin_info_list));
