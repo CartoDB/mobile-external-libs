@@ -92,7 +92,7 @@ static_assert(HAS_REMOTE_API == 0 ? AUTO_DOWNLOAD == 0 : true,
 #  endif
 #  ifndef MISSING_LEAP_SECONDS
 #    ifdef __APPLE__
-#      define MISSING_LEAP_SECONDS 1
+#      define MISSING_LEAP_SECONDS 0
 #    else
 #      define MISSING_LEAP_SECONDS 0
 #    endif

@@ -9,7 +9,7 @@ list(REMOVE_ITEM valhalla_SRC_FILES "${PROJECT_SOURCE_DIR}/source/meili/valhalla
 list(REMOVE_ITEM valhalla_SRC_FILES "${PROJECT_SOURCE_DIR}/source/thor/formlocalpath.cc" "${PROJECT_SOURCE_DIR}/source/thor/expandfromnode.cc")
 list(REMOVE_ITEM valhalla_SRC_FILES "${PROJECT_SOURCE_DIR}/source/tyr/actor.cc")
 if(APPLE)
-list(APPEND valhalla_SRC_FILES "source/date/ios.mm")
+list(APPEND valhalla_SRC_FILES "${PROJECT_SOURCE_DIR}/source/date/ios.mm")
 endif(APPLE)
 
 include_directories(BEFORE "${PROJECT_SOURCE_DIR}/include/valhalla" "${PROJECT_SOURCE_DIR}/../protobuf/src" "${PROJECT_SOURCE_DIR}/../rapidjson/include")
