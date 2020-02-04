@@ -8,11 +8,8 @@ file(GLOB valhalla_SRC_FILES "source/*/*.cc" "source/*.cc")
 list(REMOVE_ITEM valhalla_SRC_FILES "${PROJECT_SOURCE_DIR}/source/meili/valhalla_run_map_match.cc" "${PROJECT_SOURCE_DIR}/source/meili/traffic_segment_matcher.cc")
 list(REMOVE_ITEM valhalla_SRC_FILES "${PROJECT_SOURCE_DIR}/source/thor/formlocalpath.cc" "${PROJECT_SOURCE_DIR}/source/thor/expandfromnode.cc")
 list(REMOVE_ITEM valhalla_SRC_FILES "${PROJECT_SOURCE_DIR}/source/tyr/actor.cc")
-if(APPLE)
-list(APPEND valhalla_SRC_FILES "${PROJECT_SOURCE_DIR}/source/date/ios.mm")
-endif(APPLE)
 
-include_directories(BEFORE "${PROJECT_SOURCE_DIR}/include/valhalla" "${PROJECT_SOURCE_DIR}/../protobuf/src" "${PROJECT_SOURCE_DIR}/../rapidjson/include")
+include_directories(BEFORE "${PROJECT_SOURCE_DIR}/include/valhalla" "${PROJECT_SOURCE_DIR}/../protobuf/src" "${PROJECT_SOURCE_DIR}/../rapidjson/include" "${PROJECT_SOURCE_DIR}/../date/include")
 
 if(SINGLE_LIBRARY)
 add_library(valhalla INTERFACE)
