@@ -1,42 +1,17 @@
 #include "valhalla/midgard/point2.h"
 
-#include <limits>
 #include <cmath>
+#include <limits>
 #include <list>
 
 #include "midgard/util.h"
 #include "midgard/vector2.h"
 
-namespace {
-constexpr float EPSILON = .00002f;
-}
-
 namespace valhalla {
 namespace midgard {
 
-float Point2::x() const {
-  return first;
-}
-
-float Point2::y() const {
-  return second;
-}
-
-void Point2::set_x(const float x) {
-  first = x;
-}
-
-void Point2::set_y(const float y) {
-  second = y;
-}
-
-void Point2::Set(const float x, const float y) {
-  first = x;
-  second = y;
-}
-
-bool Point2::ApproximatelyEqual(const Point2& p) const {
-  return equal<first_type>(first, p.first, EPSILON) && equal<second_type>(second, p.second, EPSILON);
+bool Point2::ApproximatelyEqual(const Point2& p, float e) const {
+  return equal<first_type>(first, p.first, e) && equal<second_type>(second, p.second, e);
 }
 
 float Point2::DistanceSquared(const Point2& p) const {
@@ -47,8 +22,7 @@ float Point2::Distance(const Point2& p) const {
   return sqrtf(sqr(first - p.first) + sqr(second - p.second));
 }
 
-Point2 Point2::AffineCombination(const float a0, const float a1,
-                                 const Point2& p1) const {
+Point2 Point2::AffineCombination(const float a0, const float a1, const Point2& p1) const {
   return Point2(a0 * first + a1 * p1.first, a0 * second + a1 * p1.second);
 }
 
@@ -56,38 +30,40 @@ Point2 Point2::MidPoint(const Point2& p1) const {
   return Point2(0.5f * (first + p1.first), 0.5f * (second + p1.second));
 }
 
-Point2 Point2::operator +(const Vector2& v) const {
+Point2 Point2::operator+(const Vector2& v) const {
   return Point2(first + v.x(), second + v.y());
 }
 
-Point2 Point2::operator -(const Vector2& v) const {
+Point2 Point2::operator-(const Vector2& v) const {
   return Point2(first - v.x(), second - v.y());
 }
 
-Vector2 Point2::operator -(const Point2& p) const {
+Vector2 Point2::operator-(const Point2& p) const {
   return Vector2(first - p.first, second - p.second);
 }
 
 std::tuple<Point2, float, int> Point2::ClosestPoint(const std::vector<Point2>& pts) const {
   Point2 closest;
-  int idx;
   float mindist = std::numeric_limits<float>::max();
 
   // If there are no points we are done
-  if(pts.size() == 0)
-    return std::make_tuple(std::move(closest), std::move(mindist), std::move(idx));
+  if (pts.size() == 0) {
+    return std::make_tuple(std::move(closest), std::move(mindist), 0);
+  }
   // If there is one point we are done
-  if(pts.size() == 1)
-    return std::make_tuple(pts.front(), DistanceSquared(pts.front()), 0);
+  if (pts.size() == 1) {
+    return std::make_tuple(pts.front(), std::sqrt(DistanceSquared(pts.front())), 0);
+  }
 
   // Iterate through the pts
-  bool beyond_end = true;   // Need to test past the end point?
-  Vector2 v1;               // Segment vector (v1)
-  Vector2 v2;               // Vector from origin to target (v2)
-  Point2 projpt;            // Projected point along v1
-  float dot;                // Dot product of v1 and v2
-  float comp;               // Component of v2 along v1
-  float dist;   // Squared distance from target to closest point on line
+  bool beyond_end = true; // Need to test past the end point?
+  int idx;                // Index of closest segment so far
+  Vector2 v1;             // Segment vector (v1)
+  Vector2 v2;             // Vector from origin to target (v2)
+  Point2 projpt;          // Projected point along v1
+  float dot;              // Dot product of v1 and v2
+  float comp;             // Component of v2 along v1
+  float dist;             // Squared distance from target to closest point on line
 
   for (size_t index = 0; index < pts.size() - 1; ++index) {
     // Get the current segment
@@ -96,8 +72,9 @@ std::tuple<Point2, float, int> Point2::ClosestPoint(const std::vector<Point2>& p
 
     // Construct vector v1 - represents the segment.  Skip 0 length segments
     v1.Set(p0, p1);
-    if (v1.x() == 0.0f && v1.y() == 0.0f)
+    if (v1.x() == 0.0f && v1.y() == 0.0f) {
       continue;
+    }
 
     // Vector v2 from the segment origin to the target point
     v2.Set(p0, *this);
@@ -124,9 +101,9 @@ std::tuple<Point2, float, int> Point2::ClosestPoint(const std::vector<Point2>& p
     // If component >= 1.0 the segment end is the closest point. A future
     // polyline segment will be closer.  If last segment we need to check
     // distance to the endpoint.  Set flag so this happens.
-    if (comp >= 1.0f)
+    if (comp >= 1.0f) {
       beyond_end = true;
-    else {
+    } else {
       // Closest point is along the segment.  The closest point is found
       // by adding the projection of v2 onto v1 to the origin point.
       // The squared distance from this point to the target is then found.
@@ -150,33 +127,24 @@ std::tuple<Point2, float, int> Point2::ClosestPoint(const std::vector<Point2>& p
       idx = static_cast<int>(pts.size() - 2);
     }
   }
-  return std::make_tuple(std::move(closest), std::move(mindist), std::move(idx));
-}
-
-// Test whether this point is to the left of a segment from p1 to p2. Uses a
-// 2-D cross product and tests the sign (> 0 indicates the point is to the
-// left).
-float Point2::IsLeft(const Point2& p1, const Point2& p2) const {
-  return (p2.x() - p1.x()) * (   y() - p1.y()) -
-             (x() - p1.x()) * (p2.y() - p1.y());
+  return std::make_tuple(std::move(closest), std::move(std::sqrt(mindist)), std::move(idx));
 }
 
 // Tests whether this point is within a polygon. Iterate through the
 // edges - to be inside the point must be to the same side of each edge.
-template <class container_t>
-bool Point2::WithinPolygon(const container_t& poly) const {
+template <class container_t> bool Point2::WithinPolygon(const container_t& poly) const {
   auto p1 = poly.front() == poly.back() ? poly.begin() : std::prev(poly.end());
   auto p2 = poly.front() == poly.back() ? std::next(p1) : poly.begin();
-  //for each edge
+  // for each edge
   size_t winding_number = 0;
-  for(; p2 != poly.end(); p1 = p2, ++p2) {
-    //going upward
-    if(p1->second <= second) {
-      //crosses if its in between on the y and to the left
+  for (; p2 != poly.end(); p1 = p2, ++p2) {
+    // going upward
+    if (p1->second <= second) {
+      // crosses if its in between on the y and to the left
       winding_number += p2->second > second && IsLeft(*p1, *p2) > 0;
-    }//going downward maybe
+    } // going downward maybe
     else {
-      //crosses if its in between or on and to the right
+      // crosses if its in between or on and to the right
       winding_number -= p2->second <= second && IsLeft(*p1, *p2) < 0;
     }
   }
@@ -185,11 +153,13 @@ bool Point2::WithinPolygon(const container_t& poly) const {
   return winding_number != 0;
 }
 
-bool Point2::IsSpherical() { return false; }
+bool Point2::IsSpherical() {
+  return false;
+}
 
 // Explicit instantiations
 template bool Point2::WithinPolygon(const std::vector<Point2>&) const;
 template bool Point2::WithinPolygon(const std::list<Point2>&) const;
 
-}
-}
+} // namespace midgard
+} // namespace valhalla

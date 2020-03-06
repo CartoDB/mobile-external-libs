@@ -10,274 +10,61 @@
 #include <google/protobuf/stubs/once.h>
 #include <google/protobuf/io/coded_stream.h>
 #include <google/protobuf/wire_format_lite_inl.h>
-#include <google/protobuf/descriptor.h>
-#include <google/protobuf/generated_message_reflection.h>
-#include <google/protobuf/reflection_ops.h>
-#include <google/protobuf/wire_format.h>
 // @@protoc_insertion_point(includes)
 
 namespace valhalla {
 namespace mjolnir {
 
-namespace {
-
-const ::google::protobuf::Descriptor* Transit_descriptor_ = NULL;
-const ::google::protobuf::internal::GeneratedMessageReflection*
-  Transit_reflection_ = NULL;
-const ::google::protobuf::Descriptor* Transit_Stop_descriptor_ = NULL;
-const ::google::protobuf::internal::GeneratedMessageReflection*
-  Transit_Stop_reflection_ = NULL;
-const ::google::protobuf::Descriptor* Transit_StopPair_descriptor_ = NULL;
-const ::google::protobuf::internal::GeneratedMessageReflection*
-  Transit_StopPair_reflection_ = NULL;
-const ::google::protobuf::Descriptor* Transit_Route_descriptor_ = NULL;
-const ::google::protobuf::internal::GeneratedMessageReflection*
-  Transit_Route_reflection_ = NULL;
-const ::google::protobuf::Descriptor* Transit_Shape_descriptor_ = NULL;
-const ::google::protobuf::internal::GeneratedMessageReflection*
-  Transit_Shape_reflection_ = NULL;
-const ::google::protobuf::EnumDescriptor* Transit_VehicleType_descriptor_ = NULL;
-
-}  // namespace
-
-
-void protobuf_AssignDesc_transit_2eproto() {
-  protobuf_AddDesc_transit_2eproto();
-  const ::google::protobuf::FileDescriptor* file =
-    ::google::protobuf::DescriptorPool::generated_pool()->FindFileByName(
-      "transit.proto");
-  GOOGLE_CHECK(file != NULL);
-  Transit_descriptor_ = file->message_type(0);
-  static const int Transit_offsets_[4] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Transit, stops_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Transit, stop_pairs_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Transit, routes_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Transit, shapes_),
-  };
-  Transit_reflection_ =
-    new ::google::protobuf::internal::GeneratedMessageReflection(
-      Transit_descriptor_,
-      Transit::default_instance_,
-      Transit_offsets_,
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Transit, _has_bits_[0]),
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Transit, _unknown_fields_),
-      -1,
-      ::google::protobuf::DescriptorPool::generated_pool(),
-      ::google::protobuf::MessageFactory::generated_factory(),
-      sizeof(Transit));
-  Transit_Stop_descriptor_ = Transit_descriptor_->nested_type(0);
-  static const int Transit_Stop_offsets_[8] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Transit_Stop, lon_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Transit_Stop, lat_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Transit_Stop, graphid_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Transit_Stop, name_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Transit_Stop, onestop_id_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Transit_Stop, osm_way_id_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Transit_Stop, timezone_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Transit_Stop, wheelchair_boarding_),
-  };
-  Transit_Stop_reflection_ =
-    new ::google::protobuf::internal::GeneratedMessageReflection(
-      Transit_Stop_descriptor_,
-      Transit_Stop::default_instance_,
-      Transit_Stop_offsets_,
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Transit_Stop, _has_bits_[0]),
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Transit_Stop, _unknown_fields_),
-      -1,
-      ::google::protobuf::DescriptorPool::generated_pool(),
-      ::google::protobuf::MessageFactory::generated_factory(),
-      sizeof(Transit_Stop));
-  Transit_StopPair_descriptor_ = Transit_descriptor_->nested_type(1);
-  static const int Transit_StopPair_offsets_[24] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Transit_StopPair, bikes_allowed_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Transit_StopPair, block_id_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Transit_StopPair, destination_arrival_time_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Transit_StopPair, destination_graphid_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Transit_StopPair, destination_onestop_id_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Transit_StopPair, operated_by_onestop_id_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Transit_StopPair, origin_departure_time_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Transit_StopPair, origin_graphid_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Transit_StopPair, origin_onestop_id_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Transit_StopPair, route_index_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Transit_StopPair, service_added_dates_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Transit_StopPair, service_days_of_week_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Transit_StopPair, service_end_date_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Transit_StopPair, service_except_dates_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Transit_StopPair, service_start_date_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Transit_StopPair, trip_headsign_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Transit_StopPair, trip_id_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Transit_StopPair, wheelchair_accessible_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Transit_StopPair, line_id_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Transit_StopPair, shape_id_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Transit_StopPair, origin_dist_traveled_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Transit_StopPair, destination_dist_traveled_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Transit_StopPair, frequency_end_time_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Transit_StopPair, frequency_headway_seconds_),
-  };
-  Transit_StopPair_reflection_ =
-    new ::google::protobuf::internal::GeneratedMessageReflection(
-      Transit_StopPair_descriptor_,
-      Transit_StopPair::default_instance_,
-      Transit_StopPair_offsets_,
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Transit_StopPair, _has_bits_[0]),
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Transit_StopPair, _unknown_fields_),
-      -1,
-      ::google::protobuf::DescriptorPool::generated_pool(),
-      ::google::protobuf::MessageFactory::generated_factory(),
-      sizeof(Transit_StopPair));
-  Transit_Route_descriptor_ = Transit_descriptor_->nested_type(2);
-  static const int Transit_Route_offsets_[10] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Transit_Route, name_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Transit_Route, onestop_id_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Transit_Route, operated_by_name_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Transit_Route, operated_by_onestop_id_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Transit_Route, operated_by_website_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Transit_Route, route_color_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Transit_Route, route_desc_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Transit_Route, route_long_name_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Transit_Route, route_text_color_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Transit_Route, vehicle_type_),
-  };
-  Transit_Route_reflection_ =
-    new ::google::protobuf::internal::GeneratedMessageReflection(
-      Transit_Route_descriptor_,
-      Transit_Route::default_instance_,
-      Transit_Route_offsets_,
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Transit_Route, _has_bits_[0]),
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Transit_Route, _unknown_fields_),
-      -1,
-      ::google::protobuf::DescriptorPool::generated_pool(),
-      ::google::protobuf::MessageFactory::generated_factory(),
-      sizeof(Transit_Route));
-  Transit_Shape_descriptor_ = Transit_descriptor_->nested_type(3);
-  static const int Transit_Shape_offsets_[2] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Transit_Shape, shape_id_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Transit_Shape, encoded_shape_),
-  };
-  Transit_Shape_reflection_ =
-    new ::google::protobuf::internal::GeneratedMessageReflection(
-      Transit_Shape_descriptor_,
-      Transit_Shape::default_instance_,
-      Transit_Shape_offsets_,
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Transit_Shape, _has_bits_[0]),
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Transit_Shape, _unknown_fields_),
-      -1,
-      ::google::protobuf::DescriptorPool::generated_pool(),
-      ::google::protobuf::MessageFactory::generated_factory(),
-      sizeof(Transit_Shape));
-  Transit_VehicleType_descriptor_ = Transit_descriptor_->enum_type(0);
-}
-
-namespace {
-
-GOOGLE_PROTOBUF_DECLARE_ONCE(protobuf_AssignDescriptors_once_);
-inline void protobuf_AssignDescriptorsOnce() {
-  ::google::protobuf::GoogleOnceInit(&protobuf_AssignDescriptors_once_,
-                 &protobuf_AssignDesc_transit_2eproto);
-}
-
-void protobuf_RegisterTypes(const ::std::string&) {
-  protobuf_AssignDescriptorsOnce();
-  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
-    Transit_descriptor_, &Transit::default_instance());
-  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
-    Transit_Stop_descriptor_, &Transit_Stop::default_instance());
-  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
-    Transit_StopPair_descriptor_, &Transit_StopPair::default_instance());
-  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
-    Transit_Route_descriptor_, &Transit_Route::default_instance());
-  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
-    Transit_Shape_descriptor_, &Transit_Shape::default_instance());
-}
-
-}  // namespace
-
 void protobuf_ShutdownFile_transit_2eproto() {
   delete Transit::default_instance_;
-  delete Transit_reflection_;
-  delete Transit_Stop::default_instance_;
-  delete Transit_Stop_reflection_;
+  delete Transit_Node::default_instance_;
   delete Transit_StopPair::default_instance_;
-  delete Transit_StopPair_reflection_;
   delete Transit_Route::default_instance_;
-  delete Transit_Route_reflection_;
   delete Transit_Shape::default_instance_;
-  delete Transit_Shape_reflection_;
 }
 
+#ifdef GOOGLE_PROTOBUF_NO_STATIC_INITIALIZER
+void protobuf_AddDesc_transit_2eproto_impl() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+#else
 void protobuf_AddDesc_transit_2eproto() {
   static bool already_here = false;
   if (already_here) return;
   already_here = true;
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
-  ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-    "\n\rtransit.proto\022\020valhalla.mjolnir\"\302\013\n\007Tr"
-    "ansit\022-\n\005stops\030\001 \003(\0132\036.valhalla.mjolnir."
-    "Transit.Stop\0226\n\nstop_pairs\030\002 \003(\0132\".valha"
-    "lla.mjolnir.Transit.StopPair\022/\n\006routes\030\003"
-    " \003(\0132\037.valhalla.mjolnir.Transit.Route\022/\n"
-    "\006shapes\030\004 \003(\0132\037.valhalla.mjolnir.Transit"
-    ".Shape\032\226\001\n\004Stop\022\013\n\003lon\030\001 \001(\002\022\013\n\003lat\030\002 \001("
-    "\002\022\017\n\007graphid\030\003 \001(\004\022\014\n\004name\030\004 \001(\t\022\022\n\nones"
-    "top_id\030\005 \001(\t\022\022\n\nosm_way_id\030\006 \001(\004\022\020\n\010time"
-    "zone\030\010 \001(\r\022\033\n\023wheelchair_boarding\030\t \001(\010\032"
-    "\222\005\n\010StopPair\022\025\n\rbikes_allowed\030\001 \001(\010\022\020\n\010b"
-    "lock_id\030\002 \001(\r\022 \n\030destination_arrival_tim"
-    "e\030\003 \001(\r\022\033\n\023destination_graphid\030\004 \001(\004\022\036\n\026"
-    "destination_onestop_id\030\005 \001(\t\022\036\n\026operated"
-    "_by_onestop_id\030\006 \001(\t\022\035\n\025origin_departure"
-    "_time\030\007 \001(\r\022\026\n\016origin_graphid\030\010 \001(\004\022\031\n\021o"
-    "rigin_onestop_id\030\t \001(\t\022\023\n\013route_index\030\n "
-    "\001(\r\022\033\n\023service_added_dates\030\013 \003(\r\022\034\n\024serv"
-    "ice_days_of_week\030\014 \003(\010\022\030\n\020service_end_da"
-    "te\030\r \001(\r\022\034\n\024service_except_dates\030\016 \003(\r\022\032"
-    "\n\022service_start_date\030\017 \001(\r\022\025\n\rtrip_heads"
-    "ign\030\020 \001(\t\022\017\n\007trip_id\030\021 \001(\r\022\035\n\025wheelchair"
-    "_accessible\030\022 \001(\010\022\017\n\007line_id\030\023 \001(\r\022\020\n\010sh"
-    "ape_id\030\024 \001(\r\022\034\n\024origin_dist_traveled\030\025 \001"
-    "(\002\022!\n\031destination_dist_traveled\030\026 \001(\002\022\032\n"
-    "\022frequency_end_time\030\027 \001(\r\022!\n\031frequency_h"
-    "eadway_seconds\030\030 \001(\r\032\231\002\n\005Route\022\014\n\004name\030\001"
-    " \001(\t\022\022\n\nonestop_id\030\002 \001(\t\022\030\n\020operated_by_"
-    "name\030\003 \001(\t\022\036\n\026operated_by_onestop_id\030\004 \001"
-    "(\t\022\033\n\023operated_by_website\030\005 \001(\t\022\023\n\013route"
-    "_color\030\006 \001(\r\022\022\n\nroute_desc\030\007 \001(\t\022\027\n\017rout"
-    "e_long_name\030\010 \001(\t\022\030\n\020route_text_color\030\t "
-    "\001(\r\022;\n\014vehicle_type\030\n \001(\0162%.valhalla.mjo"
-    "lnir.Transit.VehicleType\0320\n\005Shape\022\020\n\010sha"
-    "pe_id\030\001 \001(\r\022\025\n\rencoded_shape\030\002 \001(\014\"r\n\013Ve"
-    "hicleType\022\t\n\005kTram\020\000\022\n\n\006kMetro\020\001\022\t\n\005kRai"
-    "l\020\002\022\010\n\004kBus\020\003\022\n\n\006kFerry\020\004\022\r\n\tkCableCar\020\005"
-    "\022\014\n\010kGondola\020\006\022\016\n\nkFunicular\020\007", 1510);
-  ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
-    "transit.proto", &protobuf_RegisterTypes);
+#endif
   Transit::default_instance_ = new Transit();
-  Transit_Stop::default_instance_ = new Transit_Stop();
+  Transit_Node::default_instance_ = new Transit_Node();
   Transit_StopPair::default_instance_ = new Transit_StopPair();
   Transit_Route::default_instance_ = new Transit_Route();
   Transit_Shape::default_instance_ = new Transit_Shape();
   Transit::default_instance_->InitAsDefaultInstance();
-  Transit_Stop::default_instance_->InitAsDefaultInstance();
+  Transit_Node::default_instance_->InitAsDefaultInstance();
   Transit_StopPair::default_instance_->InitAsDefaultInstance();
   Transit_Route::default_instance_->InitAsDefaultInstance();
   Transit_Shape::default_instance_->InitAsDefaultInstance();
   ::google::protobuf::internal::OnShutdown(&protobuf_ShutdownFile_transit_2eproto);
 }
 
+#ifdef GOOGLE_PROTOBUF_NO_STATIC_INITIALIZER
+GOOGLE_PROTOBUF_DECLARE_ONCE(protobuf_AddDesc_transit_2eproto_once_);
+void protobuf_AddDesc_transit_2eproto() {
+  ::google::protobuf::::google::protobuf::GoogleOnceInit(&protobuf_AddDesc_transit_2eproto_once_,
+                 &protobuf_AddDesc_transit_2eproto_impl);
+}
+#else
 // Force AddDescriptors() to be called at static initialization time.
 struct StaticDescriptorInitializer_transit_2eproto {
   StaticDescriptorInitializer_transit_2eproto() {
     protobuf_AddDesc_transit_2eproto();
   }
 } static_descriptor_initializer_transit_2eproto_;
+#endif
 
 // ===================================================================
 
-const ::google::protobuf::EnumDescriptor* Transit_VehicleType_descriptor() {
-  protobuf_AssignDescriptorsOnce();
-  return Transit_VehicleType_descriptor_;
-}
 bool Transit_VehicleType_IsValid(int value) {
   switch(value) {
     case 0:
@@ -308,84 +95,100 @@ const Transit_VehicleType Transit::VehicleType_MAX;
 const int Transit::VehicleType_ARRAYSIZE;
 #endif  // _MSC_VER
 #ifndef _MSC_VER
-const int Transit_Stop::kLonFieldNumber;
-const int Transit_Stop::kLatFieldNumber;
-const int Transit_Stop::kGraphidFieldNumber;
-const int Transit_Stop::kNameFieldNumber;
-const int Transit_Stop::kOnestopIdFieldNumber;
-const int Transit_Stop::kOsmWayIdFieldNumber;
-const int Transit_Stop::kTimezoneFieldNumber;
-const int Transit_Stop::kWheelchairBoardingFieldNumber;
+const int Transit_Node::kLonFieldNumber;
+const int Transit_Node::kLatFieldNumber;
+const int Transit_Node::kTypeFieldNumber;
+const int Transit_Node::kGraphidFieldNumber;
+const int Transit_Node::kPrevTypeGraphidFieldNumber;
+const int Transit_Node::kNameFieldNumber;
+const int Transit_Node::kOnestopIdFieldNumber;
+const int Transit_Node::kOsmWayIdFieldNumber;
+const int Transit_Node::kTimezoneFieldNumber;
+const int Transit_Node::kWheelchairBoardingFieldNumber;
+const int Transit_Node::kGeneratedFieldNumber;
+const int Transit_Node::kTraversabilityFieldNumber;
 #endif  // !_MSC_VER
 
-Transit_Stop::Transit_Stop()
-  : ::google::protobuf::Message() {
+Transit_Node::Transit_Node()
+  : ::google::protobuf::MessageLite() {
   SharedCtor();
 }
 
-void Transit_Stop::InitAsDefaultInstance() {
+void Transit_Node::InitAsDefaultInstance() {
 }
 
-Transit_Stop::Transit_Stop(const Transit_Stop& from)
-  : ::google::protobuf::Message() {
+Transit_Node::Transit_Node(const Transit_Node& from)
+  : ::google::protobuf::MessageLite() {
   SharedCtor();
   MergeFrom(from);
 }
 
-void Transit_Stop::SharedCtor() {
+void Transit_Node::SharedCtor() {
   _cached_size_ = 0;
   lon_ = 0;
   lat_ = 0;
+  type_ = 0u;
   graphid_ = GOOGLE_ULONGLONG(0);
+  prev_type_graphid_ = GOOGLE_ULONGLONG(0);
   name_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   onestop_id_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   osm_way_id_ = GOOGLE_ULONGLONG(0);
-  timezone_ = 0u;
+  timezone_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   wheelchair_boarding_ = false;
+  generated_ = false;
+  traversability_ = 0u;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
-Transit_Stop::~Transit_Stop() {
+Transit_Node::~Transit_Node() {
   SharedDtor();
 }
 
-void Transit_Stop::SharedDtor() {
+void Transit_Node::SharedDtor() {
   if (name_ != &::google::protobuf::internal::kEmptyString) {
     delete name_;
   }
   if (onestop_id_ != &::google::protobuf::internal::kEmptyString) {
     delete onestop_id_;
   }
+  if (timezone_ != &::google::protobuf::internal::kEmptyString) {
+    delete timezone_;
+  }
+  #ifdef GOOGLE_PROTOBUF_NO_STATIC_INITIALIZER
+  if (this != &default_instance()) {
+  #else
   if (this != default_instance_) {
+  #endif
   }
 }
 
-void Transit_Stop::SetCachedSize(int size) const {
+void Transit_Node::SetCachedSize(int size) const {
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = size;
   GOOGLE_SAFE_CONCURRENT_WRITES_END();
 }
-const ::google::protobuf::Descriptor* Transit_Stop::descriptor() {
-  protobuf_AssignDescriptorsOnce();
-  return Transit_Stop_descriptor_;
-}
-
-const Transit_Stop& Transit_Stop::default_instance() {
+const Transit_Node& Transit_Node::default_instance() {
+#ifdef GOOGLE_PROTOBUF_NO_STATIC_INITIALIZER
+  protobuf_AddDesc_transit_2eproto();
+#else
   if (default_instance_ == NULL) protobuf_AddDesc_transit_2eproto();
+#endif
   return *default_instance_;
 }
 
-Transit_Stop* Transit_Stop::default_instance_ = NULL;
+Transit_Node* Transit_Node::default_instance_ = NULL;
 
-Transit_Stop* Transit_Stop::New() const {
-  return new Transit_Stop;
+Transit_Node* Transit_Node::New() const {
+  return new Transit_Node;
 }
 
-void Transit_Stop::Clear() {
+void Transit_Node::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     lon_ = 0;
     lat_ = 0;
+    type_ = 0u;
     graphid_ = GOOGLE_ULONGLONG(0);
+    prev_type_graphid_ = GOOGLE_ULONGLONG(0);
     if (has_name()) {
       if (name_ != &::google::protobuf::internal::kEmptyString) {
         name_->clear();
@@ -397,14 +200,21 @@ void Transit_Stop::Clear() {
       }
     }
     osm_way_id_ = GOOGLE_ULONGLONG(0);
-    timezone_ = 0u;
+  }
+  if (_has_bits_[8 / 32] & (0xffu << (8 % 32))) {
+    if (has_timezone()) {
+      if (timezone_ != &::google::protobuf::internal::kEmptyString) {
+        timezone_->clear();
+      }
+    }
     wheelchair_boarding_ = false;
+    generated_ = false;
+    traversability_ = 0u;
   }
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
-  mutable_unknown_fields()->Clear();
 }
 
-bool Transit_Stop::MergePartialFromCodedStream(
+bool Transit_Node::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!(EXPRESSION)) return false
   ::google::protobuf::uint32 tag;
@@ -437,12 +247,28 @@ bool Transit_Stop::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(24)) goto parse_graphid;
+        if (input->ExpectTag(24)) goto parse_type;
         break;
       }
 
-      // optional uint64 graphid = 3;
+      // optional uint32 type = 3;
       case 3: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_type:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
+                 input, &type_)));
+          set_has_type();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(32)) goto parse_graphid;
+        break;
+      }
+
+      // optional uint64 graphid = 4;
+      case 4: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
          parse_graphid:
@@ -453,46 +279,56 @@ bool Transit_Stop::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(34)) goto parse_name;
+        if (input->ExpectTag(40)) goto parse_prev_type_graphid;
         break;
       }
 
-      // optional string name = 4;
-      case 4: {
+      // optional uint64 prev_type_graphid = 5;
+      case 5: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_prev_type_graphid:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::uint64, ::google::protobuf::internal::WireFormatLite::TYPE_UINT64>(
+                 input, &prev_type_graphid_)));
+          set_has_prev_type_graphid();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(50)) goto parse_name;
+        break;
+      }
+
+      // optional string name = 6;
+      case 6: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
          parse_name:
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
                 input, this->mutable_name()));
-          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-            this->name().data(), this->name().length(),
-            ::google::protobuf::internal::WireFormat::PARSE);
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(42)) goto parse_onestop_id;
+        if (input->ExpectTag(58)) goto parse_onestop_id;
         break;
       }
 
-      // optional string onestop_id = 5;
-      case 5: {
+      // optional string onestop_id = 7;
+      case 7: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
          parse_onestop_id:
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
                 input, this->mutable_onestop_id()));
-          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-            this->onestop_id().data(), this->onestop_id().length(),
-            ::google::protobuf::internal::WireFormat::PARSE);
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(48)) goto parse_osm_way_id;
+        if (input->ExpectTag(64)) goto parse_osm_way_id;
         break;
       }
 
-      // optional uint64 osm_way_id = 6;
-      case 6: {
+      // optional uint64 osm_way_id = 8;
+      case 8: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
          parse_osm_way_id:
@@ -503,28 +339,26 @@ bool Transit_Stop::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(64)) goto parse_timezone;
+        if (input->ExpectTag(74)) goto parse_timezone;
         break;
       }
 
-      // optional uint32 timezone = 8;
-      case 8: {
+      // optional string timezone = 9;
+      case 9: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
          parse_timezone:
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
-                 input, &timezone_)));
-          set_has_timezone();
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_timezone()));
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(72)) goto parse_wheelchair_boarding;
+        if (input->ExpectTag(80)) goto parse_wheelchair_boarding;
         break;
       }
 
-      // optional bool wheelchair_boarding = 9;
-      case 9: {
+      // optional bool wheelchair_boarding = 10;
+      case 10: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
          parse_wheelchair_boarding:
@@ -532,6 +366,38 @@ bool Transit_Stop::MergePartialFromCodedStream(
                    bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
                  input, &wheelchair_boarding_)));
           set_has_wheelchair_boarding();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(88)) goto parse_generated;
+        break;
+      }
+
+      // optional bool generated = 11;
+      case 11: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_generated:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
+                 input, &generated_)));
+          set_has_generated();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(96)) goto parse_traversability;
+        break;
+      }
+
+      // optional uint32 traversability = 12;
+      case 12: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_traversability:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
+                 input, &traversability_)));
+          set_has_traversability();
         } else {
           goto handle_uninterpreted;
         }
@@ -545,8 +411,7 @@ bool Transit_Stop::MergePartialFromCodedStream(
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
           return true;
         }
-        DO_(::google::protobuf::internal::WireFormat::SkipField(
-              input, tag, mutable_unknown_fields()));
+        DO_(::google::protobuf::internal::WireFormatLite::SkipField(input, tag));
         break;
       }
     }
@@ -555,7 +420,7 @@ bool Transit_Stop::MergePartialFromCodedStream(
 #undef DO_
 }
 
-void Transit_Stop::SerializeWithCachedSizes(
+void Transit_Node::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // optional float lon = 1;
   if (has_lon()) {
@@ -567,110 +432,62 @@ void Transit_Stop::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteFloat(2, this->lat(), output);
   }
 
-  // optional uint64 graphid = 3;
+  // optional uint32 type = 3;
+  if (has_type()) {
+    ::google::protobuf::internal::WireFormatLite::WriteUInt32(3, this->type(), output);
+  }
+
+  // optional uint64 graphid = 4;
   if (has_graphid()) {
-    ::google::protobuf::internal::WireFormatLite::WriteUInt64(3, this->graphid(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteUInt64(4, this->graphid(), output);
   }
 
-  // optional string name = 4;
+  // optional uint64 prev_type_graphid = 5;
+  if (has_prev_type_graphid()) {
+    ::google::protobuf::internal::WireFormatLite::WriteUInt64(5, this->prev_type_graphid(), output);
+  }
+
+  // optional string name = 6;
   if (has_name()) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->name().data(), this->name().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE);
     ::google::protobuf::internal::WireFormatLite::WriteString(
-      4, this->name(), output);
+      6, this->name(), output);
   }
 
-  // optional string onestop_id = 5;
+  // optional string onestop_id = 7;
   if (has_onestop_id()) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->onestop_id().data(), this->onestop_id().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE);
     ::google::protobuf::internal::WireFormatLite::WriteString(
-      5, this->onestop_id(), output);
+      7, this->onestop_id(), output);
   }
 
-  // optional uint64 osm_way_id = 6;
+  // optional uint64 osm_way_id = 8;
   if (has_osm_way_id()) {
-    ::google::protobuf::internal::WireFormatLite::WriteUInt64(6, this->osm_way_id(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteUInt64(8, this->osm_way_id(), output);
   }
 
-  // optional uint32 timezone = 8;
+  // optional string timezone = 9;
   if (has_timezone()) {
-    ::google::protobuf::internal::WireFormatLite::WriteUInt32(8, this->timezone(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      9, this->timezone(), output);
   }
 
-  // optional bool wheelchair_boarding = 9;
+  // optional bool wheelchair_boarding = 10;
   if (has_wheelchair_boarding()) {
-    ::google::protobuf::internal::WireFormatLite::WriteBool(9, this->wheelchair_boarding(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteBool(10, this->wheelchair_boarding(), output);
   }
 
-  if (!unknown_fields().empty()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        unknown_fields(), output);
+  // optional bool generated = 11;
+  if (has_generated()) {
+    ::google::protobuf::internal::WireFormatLite::WriteBool(11, this->generated(), output);
   }
+
+  // optional uint32 traversability = 12;
+  if (has_traversability()) {
+    ::google::protobuf::internal::WireFormatLite::WriteUInt32(12, this->traversability(), output);
+  }
+
 }
 
-::google::protobuf::uint8* Transit_Stop::SerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
-  // optional float lon = 1;
-  if (has_lon()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteFloatToArray(1, this->lon(), target);
-  }
-
-  // optional float lat = 2;
-  if (has_lat()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteFloatToArray(2, this->lat(), target);
-  }
-
-  // optional uint64 graphid = 3;
-  if (has_graphid()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteUInt64ToArray(3, this->graphid(), target);
-  }
-
-  // optional string name = 4;
-  if (has_name()) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->name().data(), this->name().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE);
-    target =
-      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        4, this->name(), target);
-  }
-
-  // optional string onestop_id = 5;
-  if (has_onestop_id()) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->onestop_id().data(), this->onestop_id().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE);
-    target =
-      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        5, this->onestop_id(), target);
-  }
-
-  // optional uint64 osm_way_id = 6;
-  if (has_osm_way_id()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteUInt64ToArray(6, this->osm_way_id(), target);
-  }
-
-  // optional uint32 timezone = 8;
-  if (has_timezone()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(8, this->timezone(), target);
-  }
-
-  // optional bool wheelchair_boarding = 9;
-  if (has_wheelchair_boarding()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(9, this->wheelchair_boarding(), target);
-  }
-
-  if (!unknown_fields().empty()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        unknown_fields(), target);
-  }
-  return target;
-}
-
-int Transit_Stop::ByteSize() const {
+int Transit_Node::ByteSize() const {
   int total_size = 0;
 
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
@@ -684,51 +501,74 @@ int Transit_Stop::ByteSize() const {
       total_size += 1 + 4;
     }
 
-    // optional uint64 graphid = 3;
+    // optional uint32 type = 3;
+    if (has_type()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::UInt32Size(
+          this->type());
+    }
+
+    // optional uint64 graphid = 4;
     if (has_graphid()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::UInt64Size(
           this->graphid());
     }
 
-    // optional string name = 4;
+    // optional uint64 prev_type_graphid = 5;
+    if (has_prev_type_graphid()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::UInt64Size(
+          this->prev_type_graphid());
+    }
+
+    // optional string name = 6;
     if (has_name()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::StringSize(
           this->name());
     }
 
-    // optional string onestop_id = 5;
+    // optional string onestop_id = 7;
     if (has_onestop_id()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::StringSize(
           this->onestop_id());
     }
 
-    // optional uint64 osm_way_id = 6;
+    // optional uint64 osm_way_id = 8;
     if (has_osm_way_id()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::UInt64Size(
           this->osm_way_id());
     }
 
-    // optional uint32 timezone = 8;
+  }
+  if (_has_bits_[8 / 32] & (0xffu << (8 % 32))) {
+    // optional string timezone = 9;
     if (has_timezone()) {
       total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::UInt32Size(
+        ::google::protobuf::internal::WireFormatLite::StringSize(
           this->timezone());
     }
 
-    // optional bool wheelchair_boarding = 9;
+    // optional bool wheelchair_boarding = 10;
     if (has_wheelchair_boarding()) {
       total_size += 1 + 1;
     }
 
-  }
-  if (!unknown_fields().empty()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        unknown_fields());
+    // optional bool generated = 11;
+    if (has_generated()) {
+      total_size += 1 + 1;
+    }
+
+    // optional uint32 traversability = 12;
+    if (has_traversability()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::UInt32Size(
+          this->traversability());
+    }
+
   }
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = total_size;
@@ -736,19 +576,12 @@ int Transit_Stop::ByteSize() const {
   return total_size;
 }
 
-void Transit_Stop::MergeFrom(const ::google::protobuf::Message& from) {
-  GOOGLE_CHECK_NE(&from, this);
-  const Transit_Stop* source =
-    ::google::protobuf::internal::dynamic_cast_if_available<const Transit_Stop*>(
-      &from);
-  if (source == NULL) {
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
-  } else {
-    MergeFrom(*source);
-  }
+void Transit_Node::CheckTypeAndMergeFrom(
+    const ::google::protobuf::MessageLite& from) {
+  MergeFrom(*::google::protobuf::down_cast<const Transit_Node*>(&from));
 }
 
-void Transit_Stop::MergeFrom(const Transit_Stop& from) {
+void Transit_Node::MergeFrom(const Transit_Node& from) {
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (from.has_lon()) {
@@ -757,8 +590,14 @@ void Transit_Stop::MergeFrom(const Transit_Stop& from) {
     if (from.has_lat()) {
       set_lat(from.lat());
     }
+    if (from.has_type()) {
+      set_type(from.type());
+    }
     if (from.has_graphid()) {
       set_graphid(from.graphid());
+    }
+    if (from.has_prev_type_graphid()) {
+      set_prev_type_graphid(from.prev_type_graphid());
     }
     if (from.has_name()) {
       set_name(from.name());
@@ -769,55 +608,55 @@ void Transit_Stop::MergeFrom(const Transit_Stop& from) {
     if (from.has_osm_way_id()) {
       set_osm_way_id(from.osm_way_id());
     }
+  }
+  if (from._has_bits_[8 / 32] & (0xffu << (8 % 32))) {
     if (from.has_timezone()) {
       set_timezone(from.timezone());
     }
     if (from.has_wheelchair_boarding()) {
       set_wheelchair_boarding(from.wheelchair_boarding());
     }
+    if (from.has_generated()) {
+      set_generated(from.generated());
+    }
+    if (from.has_traversability()) {
+      set_traversability(from.traversability());
+    }
   }
-  mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
 
-void Transit_Stop::CopyFrom(const ::google::protobuf::Message& from) {
+void Transit_Node::CopyFrom(const Transit_Node& from) {
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-void Transit_Stop::CopyFrom(const Transit_Stop& from) {
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
-
-bool Transit_Stop::IsInitialized() const {
+bool Transit_Node::IsInitialized() const {
 
   return true;
 }
 
-void Transit_Stop::Swap(Transit_Stop* other) {
+void Transit_Node::Swap(Transit_Node* other) {
   if (other != this) {
     std::swap(lon_, other->lon_);
     std::swap(lat_, other->lat_);
+    std::swap(type_, other->type_);
     std::swap(graphid_, other->graphid_);
+    std::swap(prev_type_graphid_, other->prev_type_graphid_);
     std::swap(name_, other->name_);
     std::swap(onestop_id_, other->onestop_id_);
     std::swap(osm_way_id_, other->osm_way_id_);
     std::swap(timezone_, other->timezone_);
     std::swap(wheelchair_boarding_, other->wheelchair_boarding_);
+    std::swap(generated_, other->generated_);
+    std::swap(traversability_, other->traversability_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
-    _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);
   }
 }
 
-::google::protobuf::Metadata Transit_Stop::GetMetadata() const {
-  protobuf_AssignDescriptorsOnce();
-  ::google::protobuf::Metadata metadata;
-  metadata.descriptor = Transit_Stop_descriptor_;
-  metadata.reflection = Transit_Stop_reflection_;
-  return metadata;
+::std::string Transit_Node::GetTypeName() const {
+  return "valhalla.mjolnir.Transit.Node";
 }
 
 
@@ -842,7 +681,6 @@ const int Transit_StopPair::kServiceStartDateFieldNumber;
 const int Transit_StopPair::kTripHeadsignFieldNumber;
 const int Transit_StopPair::kTripIdFieldNumber;
 const int Transit_StopPair::kWheelchairAccessibleFieldNumber;
-const int Transit_StopPair::kLineIdFieldNumber;
 const int Transit_StopPair::kShapeIdFieldNumber;
 const int Transit_StopPair::kOriginDistTraveledFieldNumber;
 const int Transit_StopPair::kDestinationDistTraveledFieldNumber;
@@ -851,7 +689,7 @@ const int Transit_StopPair::kFrequencyHeadwaySecondsFieldNumber;
 #endif  // !_MSC_VER
 
 Transit_StopPair::Transit_StopPair()
-  : ::google::protobuf::Message() {
+  : ::google::protobuf::MessageLite() {
   SharedCtor();
 }
 
@@ -859,7 +697,7 @@ void Transit_StopPair::InitAsDefaultInstance() {
 }
 
 Transit_StopPair::Transit_StopPair(const Transit_StopPair& from)
-  : ::google::protobuf::Message() {
+  : ::google::protobuf::MessageLite() {
   SharedCtor();
   MergeFrom(from);
 }
@@ -881,7 +719,6 @@ void Transit_StopPair::SharedCtor() {
   trip_headsign_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   trip_id_ = 0u;
   wheelchair_accessible_ = false;
-  line_id_ = 0u;
   shape_id_ = 0u;
   origin_dist_traveled_ = 0;
   destination_dist_traveled_ = 0;
@@ -907,7 +744,11 @@ void Transit_StopPair::SharedDtor() {
   if (trip_headsign_ != &::google::protobuf::internal::kEmptyString) {
     delete trip_headsign_;
   }
+  #ifdef GOOGLE_PROTOBUF_NO_STATIC_INITIALIZER
+  if (this != &default_instance()) {
+  #else
   if (this != default_instance_) {
+  #endif
   }
 }
 
@@ -916,13 +757,12 @@ void Transit_StopPair::SetCachedSize(int size) const {
   _cached_size_ = size;
   GOOGLE_SAFE_CONCURRENT_WRITES_END();
 }
-const ::google::protobuf::Descriptor* Transit_StopPair::descriptor() {
-  protobuf_AssignDescriptorsOnce();
-  return Transit_StopPair_descriptor_;
-}
-
 const Transit_StopPair& Transit_StopPair::default_instance() {
+#ifdef GOOGLE_PROTOBUF_NO_STATIC_INITIALIZER
+  protobuf_AddDesc_transit_2eproto();
+#else
   if (default_instance_ == NULL) protobuf_AddDesc_transit_2eproto();
+#endif
   return *default_instance_;
 }
 
@@ -969,7 +809,6 @@ void Transit_StopPair::Clear() {
   if (_has_bits_[16 / 32] & (0xffu << (16 % 32))) {
     trip_id_ = 0u;
     wheelchair_accessible_ = false;
-    line_id_ = 0u;
     shape_id_ = 0u;
     origin_dist_traveled_ = 0;
     destination_dist_traveled_ = 0;
@@ -980,7 +819,6 @@ void Transit_StopPair::Clear() {
   service_days_of_week_.Clear();
   service_except_dates_.Clear();
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
-  mutable_unknown_fields()->Clear();
 }
 
 bool Transit_StopPair::MergePartialFromCodedStream(
@@ -1059,9 +897,6 @@ bool Transit_StopPair::MergePartialFromCodedStream(
          parse_destination_onestop_id:
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
                 input, this->mutable_destination_onestop_id()));
-          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-            this->destination_onestop_id().data(), this->destination_onestop_id().length(),
-            ::google::protobuf::internal::WireFormat::PARSE);
         } else {
           goto handle_uninterpreted;
         }
@@ -1076,9 +911,6 @@ bool Transit_StopPair::MergePartialFromCodedStream(
          parse_operated_by_onestop_id:
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
                 input, this->mutable_operated_by_onestop_id()));
-          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-            this->operated_by_onestop_id().data(), this->operated_by_onestop_id().length(),
-            ::google::protobuf::internal::WireFormat::PARSE);
         } else {
           goto handle_uninterpreted;
         }
@@ -1125,9 +957,6 @@ bool Transit_StopPair::MergePartialFromCodedStream(
          parse_origin_onestop_id:
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
                 input, this->mutable_origin_onestop_id()));
-          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-            this->origin_onestop_id().data(), this->origin_onestop_id().length(),
-            ::google::protobuf::internal::WireFormat::PARSE);
         } else {
           goto handle_uninterpreted;
         }
@@ -1256,9 +1085,6 @@ bool Transit_StopPair::MergePartialFromCodedStream(
          parse_trip_headsign:
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
                 input, this->mutable_trip_headsign()));
-          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-            this->trip_headsign().data(), this->trip_headsign().length(),
-            ::google::protobuf::internal::WireFormat::PARSE);
         } else {
           goto handle_uninterpreted;
         }
@@ -1291,22 +1117,6 @@ bool Transit_StopPair::MergePartialFromCodedStream(
                    bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
                  input, &wheelchair_accessible_)));
           set_has_wheelchair_accessible();
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(152)) goto parse_line_id;
-        break;
-      }
-
-      // optional uint32 line_id = 19;
-      case 19: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-         parse_line_id:
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
-                 input, &line_id_)));
-          set_has_line_id();
         } else {
           goto handle_uninterpreted;
         }
@@ -1400,8 +1210,7 @@ bool Transit_StopPair::MergePartialFromCodedStream(
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
           return true;
         }
-        DO_(::google::protobuf::internal::WireFormat::SkipField(
-              input, tag, mutable_unknown_fields()));
+        DO_(::google::protobuf::internal::WireFormatLite::SkipField(input, tag));
         break;
       }
     }
@@ -1434,18 +1243,12 @@ void Transit_StopPair::SerializeWithCachedSizes(
 
   // optional string destination_onestop_id = 5;
   if (has_destination_onestop_id()) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->destination_onestop_id().data(), this->destination_onestop_id().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE);
     ::google::protobuf::internal::WireFormatLite::WriteString(
       5, this->destination_onestop_id(), output);
   }
 
   // optional string operated_by_onestop_id = 6;
   if (has_operated_by_onestop_id()) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->operated_by_onestop_id().data(), this->operated_by_onestop_id().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE);
     ::google::protobuf::internal::WireFormatLite::WriteString(
       6, this->operated_by_onestop_id(), output);
   }
@@ -1462,9 +1265,6 @@ void Transit_StopPair::SerializeWithCachedSizes(
 
   // optional string origin_onestop_id = 9;
   if (has_origin_onestop_id()) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->origin_onestop_id().data(), this->origin_onestop_id().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE);
     ::google::protobuf::internal::WireFormatLite::WriteString(
       9, this->origin_onestop_id(), output);
   }
@@ -1504,9 +1304,6 @@ void Transit_StopPair::SerializeWithCachedSizes(
 
   // optional string trip_headsign = 16;
   if (has_trip_headsign()) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->trip_headsign().data(), this->trip_headsign().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE);
     ::google::protobuf::internal::WireFormatLite::WriteString(
       16, this->trip_headsign(), output);
   }
@@ -1519,11 +1316,6 @@ void Transit_StopPair::SerializeWithCachedSizes(
   // optional bool wheelchair_accessible = 18;
   if (has_wheelchair_accessible()) {
     ::google::protobuf::internal::WireFormatLite::WriteBool(18, this->wheelchair_accessible(), output);
-  }
-
-  // optional uint32 line_id = 19;
-  if (has_line_id()) {
-    ::google::protobuf::internal::WireFormatLite::WriteUInt32(19, this->line_id(), output);
   }
 
   // optional uint32 shape_id = 20;
@@ -1551,162 +1343,6 @@ void Transit_StopPair::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteUInt32(24, this->frequency_headway_seconds(), output);
   }
 
-  if (!unknown_fields().empty()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        unknown_fields(), output);
-  }
-}
-
-::google::protobuf::uint8* Transit_StopPair::SerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
-  // optional bool bikes_allowed = 1;
-  if (has_bikes_allowed()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(1, this->bikes_allowed(), target);
-  }
-
-  // optional uint32 block_id = 2;
-  if (has_block_id()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(2, this->block_id(), target);
-  }
-
-  // optional uint32 destination_arrival_time = 3;
-  if (has_destination_arrival_time()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(3, this->destination_arrival_time(), target);
-  }
-
-  // optional uint64 destination_graphid = 4;
-  if (has_destination_graphid()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteUInt64ToArray(4, this->destination_graphid(), target);
-  }
-
-  // optional string destination_onestop_id = 5;
-  if (has_destination_onestop_id()) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->destination_onestop_id().data(), this->destination_onestop_id().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE);
-    target =
-      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        5, this->destination_onestop_id(), target);
-  }
-
-  // optional string operated_by_onestop_id = 6;
-  if (has_operated_by_onestop_id()) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->operated_by_onestop_id().data(), this->operated_by_onestop_id().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE);
-    target =
-      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        6, this->operated_by_onestop_id(), target);
-  }
-
-  // optional uint32 origin_departure_time = 7;
-  if (has_origin_departure_time()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(7, this->origin_departure_time(), target);
-  }
-
-  // optional uint64 origin_graphid = 8;
-  if (has_origin_graphid()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteUInt64ToArray(8, this->origin_graphid(), target);
-  }
-
-  // optional string origin_onestop_id = 9;
-  if (has_origin_onestop_id()) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->origin_onestop_id().data(), this->origin_onestop_id().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE);
-    target =
-      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        9, this->origin_onestop_id(), target);
-  }
-
-  // optional uint32 route_index = 10;
-  if (has_route_index()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(10, this->route_index(), target);
-  }
-
-  // repeated uint32 service_added_dates = 11;
-  for (int i = 0; i < this->service_added_dates_size(); i++) {
-    target = ::google::protobuf::internal::WireFormatLite::
-      WriteUInt32ToArray(11, this->service_added_dates(i), target);
-  }
-
-  // repeated bool service_days_of_week = 12;
-  for (int i = 0; i < this->service_days_of_week_size(); i++) {
-    target = ::google::protobuf::internal::WireFormatLite::
-      WriteBoolToArray(12, this->service_days_of_week(i), target);
-  }
-
-  // optional uint32 service_end_date = 13;
-  if (has_service_end_date()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(13, this->service_end_date(), target);
-  }
-
-  // repeated uint32 service_except_dates = 14;
-  for (int i = 0; i < this->service_except_dates_size(); i++) {
-    target = ::google::protobuf::internal::WireFormatLite::
-      WriteUInt32ToArray(14, this->service_except_dates(i), target);
-  }
-
-  // optional uint32 service_start_date = 15;
-  if (has_service_start_date()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(15, this->service_start_date(), target);
-  }
-
-  // optional string trip_headsign = 16;
-  if (has_trip_headsign()) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->trip_headsign().data(), this->trip_headsign().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE);
-    target =
-      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        16, this->trip_headsign(), target);
-  }
-
-  // optional uint32 trip_id = 17;
-  if (has_trip_id()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(17, this->trip_id(), target);
-  }
-
-  // optional bool wheelchair_accessible = 18;
-  if (has_wheelchair_accessible()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(18, this->wheelchair_accessible(), target);
-  }
-
-  // optional uint32 line_id = 19;
-  if (has_line_id()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(19, this->line_id(), target);
-  }
-
-  // optional uint32 shape_id = 20;
-  if (has_shape_id()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(20, this->shape_id(), target);
-  }
-
-  // optional float origin_dist_traveled = 21;
-  if (has_origin_dist_traveled()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteFloatToArray(21, this->origin_dist_traveled(), target);
-  }
-
-  // optional float destination_dist_traveled = 22;
-  if (has_destination_dist_traveled()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteFloatToArray(22, this->destination_dist_traveled(), target);
-  }
-
-  // optional uint32 frequency_end_time = 23;
-  if (has_frequency_end_time()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(23, this->frequency_end_time(), target);
-  }
-
-  // optional uint32 frequency_headway_seconds = 24;
-  if (has_frequency_headway_seconds()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(24, this->frequency_headway_seconds(), target);
-  }
-
-  if (!unknown_fields().empty()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        unknown_fields(), target);
-  }
-  return target;
 }
 
 int Transit_StopPair::ByteSize() const {
@@ -1818,13 +1454,6 @@ int Transit_StopPair::ByteSize() const {
       total_size += 2 + 1;
     }
 
-    // optional uint32 line_id = 19;
-    if (has_line_id()) {
-      total_size += 2 +
-        ::google::protobuf::internal::WireFormatLite::UInt32Size(
-          this->line_id());
-    }
-
     // optional uint32 shape_id = 20;
     if (has_shape_id()) {
       total_size += 2 +
@@ -1884,27 +1513,15 @@ int Transit_StopPair::ByteSize() const {
     total_size += 1 * this->service_except_dates_size() + data_size;
   }
 
-  if (!unknown_fields().empty()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        unknown_fields());
-  }
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = total_size;
   GOOGLE_SAFE_CONCURRENT_WRITES_END();
   return total_size;
 }
 
-void Transit_StopPair::MergeFrom(const ::google::protobuf::Message& from) {
-  GOOGLE_CHECK_NE(&from, this);
-  const Transit_StopPair* source =
-    ::google::protobuf::internal::dynamic_cast_if_available<const Transit_StopPair*>(
-      &from);
-  if (source == NULL) {
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
-  } else {
-    MergeFrom(*source);
-  }
+void Transit_StopPair::CheckTypeAndMergeFrom(
+    const ::google::protobuf::MessageLite& from) {
+  MergeFrom(*::google::protobuf::down_cast<const Transit_StopPair*>(&from));
 }
 
 void Transit_StopPair::MergeFrom(const Transit_StopPair& from) {
@@ -1962,9 +1579,6 @@ void Transit_StopPair::MergeFrom(const Transit_StopPair& from) {
     if (from.has_wheelchair_accessible()) {
       set_wheelchair_accessible(from.wheelchair_accessible());
     }
-    if (from.has_line_id()) {
-      set_line_id(from.line_id());
-    }
     if (from.has_shape_id()) {
       set_shape_id(from.shape_id());
     }
@@ -1981,13 +1595,6 @@ void Transit_StopPair::MergeFrom(const Transit_StopPair& from) {
       set_frequency_headway_seconds(from.frequency_headway_seconds());
     }
   }
-  mutable_unknown_fields()->MergeFrom(from.unknown_fields());
-}
-
-void Transit_StopPair::CopyFrom(const ::google::protobuf::Message& from) {
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
 }
 
 void Transit_StopPair::CopyFrom(const Transit_StopPair& from) {
@@ -2021,24 +1628,18 @@ void Transit_StopPair::Swap(Transit_StopPair* other) {
     std::swap(trip_headsign_, other->trip_headsign_);
     std::swap(trip_id_, other->trip_id_);
     std::swap(wheelchair_accessible_, other->wheelchair_accessible_);
-    std::swap(line_id_, other->line_id_);
     std::swap(shape_id_, other->shape_id_);
     std::swap(origin_dist_traveled_, other->origin_dist_traveled_);
     std::swap(destination_dist_traveled_, other->destination_dist_traveled_);
     std::swap(frequency_end_time_, other->frequency_end_time_);
     std::swap(frequency_headway_seconds_, other->frequency_headway_seconds_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
-    _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);
   }
 }
 
-::google::protobuf::Metadata Transit_StopPair::GetMetadata() const {
-  protobuf_AssignDescriptorsOnce();
-  ::google::protobuf::Metadata metadata;
-  metadata.descriptor = Transit_StopPair_descriptor_;
-  metadata.reflection = Transit_StopPair_reflection_;
-  return metadata;
+::std::string Transit_StopPair::GetTypeName() const {
+  return "valhalla.mjolnir.Transit.StopPair";
 }
 
 
@@ -2058,7 +1659,7 @@ const int Transit_Route::kVehicleTypeFieldNumber;
 #endif  // !_MSC_VER
 
 Transit_Route::Transit_Route()
-  : ::google::protobuf::Message() {
+  : ::google::protobuf::MessageLite() {
   SharedCtor();
 }
 
@@ -2066,7 +1667,7 @@ void Transit_Route::InitAsDefaultInstance() {
 }
 
 Transit_Route::Transit_Route(const Transit_Route& from)
-  : ::google::protobuf::Message() {
+  : ::google::protobuf::MessageLite() {
   SharedCtor();
   MergeFrom(from);
 }
@@ -2112,7 +1713,11 @@ void Transit_Route::SharedDtor() {
   if (route_long_name_ != &::google::protobuf::internal::kEmptyString) {
     delete route_long_name_;
   }
+  #ifdef GOOGLE_PROTOBUF_NO_STATIC_INITIALIZER
+  if (this != &default_instance()) {
+  #else
   if (this != default_instance_) {
+  #endif
   }
 }
 
@@ -2121,13 +1726,12 @@ void Transit_Route::SetCachedSize(int size) const {
   _cached_size_ = size;
   GOOGLE_SAFE_CONCURRENT_WRITES_END();
 }
-const ::google::protobuf::Descriptor* Transit_Route::descriptor() {
-  protobuf_AssignDescriptorsOnce();
-  return Transit_Route_descriptor_;
-}
-
 const Transit_Route& Transit_Route::default_instance() {
+#ifdef GOOGLE_PROTOBUF_NO_STATIC_INITIALIZER
+  protobuf_AddDesc_transit_2eproto();
+#else
   if (default_instance_ == NULL) protobuf_AddDesc_transit_2eproto();
+#endif
   return *default_instance_;
 }
 
@@ -2181,7 +1785,6 @@ void Transit_Route::Clear() {
     vehicle_type_ = 0;
   }
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
-  mutable_unknown_fields()->Clear();
 }
 
 bool Transit_Route::MergePartialFromCodedStream(
@@ -2196,9 +1799,6 @@ bool Transit_Route::MergePartialFromCodedStream(
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
                 input, this->mutable_name()));
-          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-            this->name().data(), this->name().length(),
-            ::google::protobuf::internal::WireFormat::PARSE);
         } else {
           goto handle_uninterpreted;
         }
@@ -2213,9 +1813,6 @@ bool Transit_Route::MergePartialFromCodedStream(
          parse_onestop_id:
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
                 input, this->mutable_onestop_id()));
-          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-            this->onestop_id().data(), this->onestop_id().length(),
-            ::google::protobuf::internal::WireFormat::PARSE);
         } else {
           goto handle_uninterpreted;
         }
@@ -2230,9 +1827,6 @@ bool Transit_Route::MergePartialFromCodedStream(
          parse_operated_by_name:
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
                 input, this->mutable_operated_by_name()));
-          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-            this->operated_by_name().data(), this->operated_by_name().length(),
-            ::google::protobuf::internal::WireFormat::PARSE);
         } else {
           goto handle_uninterpreted;
         }
@@ -2247,9 +1841,6 @@ bool Transit_Route::MergePartialFromCodedStream(
          parse_operated_by_onestop_id:
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
                 input, this->mutable_operated_by_onestop_id()));
-          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-            this->operated_by_onestop_id().data(), this->operated_by_onestop_id().length(),
-            ::google::protobuf::internal::WireFormat::PARSE);
         } else {
           goto handle_uninterpreted;
         }
@@ -2264,9 +1855,6 @@ bool Transit_Route::MergePartialFromCodedStream(
          parse_operated_by_website:
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
                 input, this->mutable_operated_by_website()));
-          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-            this->operated_by_website().data(), this->operated_by_website().length(),
-            ::google::protobuf::internal::WireFormat::PARSE);
         } else {
           goto handle_uninterpreted;
         }
@@ -2297,9 +1885,6 @@ bool Transit_Route::MergePartialFromCodedStream(
          parse_route_desc:
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
                 input, this->mutable_route_desc()));
-          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-            this->route_desc().data(), this->route_desc().length(),
-            ::google::protobuf::internal::WireFormat::PARSE);
         } else {
           goto handle_uninterpreted;
         }
@@ -2314,9 +1899,6 @@ bool Transit_Route::MergePartialFromCodedStream(
          parse_route_long_name:
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
                 input, this->mutable_route_long_name()));
-          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-            this->route_long_name().data(), this->route_long_name().length(),
-            ::google::protobuf::internal::WireFormat::PARSE);
         } else {
           goto handle_uninterpreted;
         }
@@ -2351,8 +1933,6 @@ bool Transit_Route::MergePartialFromCodedStream(
                  input, &value)));
           if (::valhalla::mjolnir::Transit_VehicleType_IsValid(value)) {
             set_vehicle_type(static_cast< ::valhalla::mjolnir::Transit_VehicleType >(value));
-          } else {
-            mutable_unknown_fields()->AddVarint(10, value);
           }
         } else {
           goto handle_uninterpreted;
@@ -2367,8 +1947,7 @@ bool Transit_Route::MergePartialFromCodedStream(
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
           return true;
         }
-        DO_(::google::protobuf::internal::WireFormat::SkipField(
-              input, tag, mutable_unknown_fields()));
+        DO_(::google::protobuf::internal::WireFormatLite::SkipField(input, tag));
         break;
       }
     }
@@ -2381,45 +1960,30 @@ void Transit_Route::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // optional string name = 1;
   if (has_name()) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->name().data(), this->name().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE);
     ::google::protobuf::internal::WireFormatLite::WriteString(
       1, this->name(), output);
   }
 
   // optional string onestop_id = 2;
   if (has_onestop_id()) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->onestop_id().data(), this->onestop_id().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE);
     ::google::protobuf::internal::WireFormatLite::WriteString(
       2, this->onestop_id(), output);
   }
 
   // optional string operated_by_name = 3;
   if (has_operated_by_name()) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->operated_by_name().data(), this->operated_by_name().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE);
     ::google::protobuf::internal::WireFormatLite::WriteString(
       3, this->operated_by_name(), output);
   }
 
   // optional string operated_by_onestop_id = 4;
   if (has_operated_by_onestop_id()) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->operated_by_onestop_id().data(), this->operated_by_onestop_id().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE);
     ::google::protobuf::internal::WireFormatLite::WriteString(
       4, this->operated_by_onestop_id(), output);
   }
 
   // optional string operated_by_website = 5;
   if (has_operated_by_website()) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->operated_by_website().data(), this->operated_by_website().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE);
     ::google::protobuf::internal::WireFormatLite::WriteString(
       5, this->operated_by_website(), output);
   }
@@ -2431,18 +1995,12 @@ void Transit_Route::SerializeWithCachedSizes(
 
   // optional string route_desc = 7;
   if (has_route_desc()) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->route_desc().data(), this->route_desc().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE);
     ::google::protobuf::internal::WireFormatLite::WriteString(
       7, this->route_desc(), output);
   }
 
   // optional string route_long_name = 8;
   if (has_route_long_name()) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->route_long_name().data(), this->route_long_name().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE);
     ::google::protobuf::internal::WireFormatLite::WriteString(
       8, this->route_long_name(), output);
   }
@@ -2458,105 +2016,6 @@ void Transit_Route::SerializeWithCachedSizes(
       10, this->vehicle_type(), output);
   }
 
-  if (!unknown_fields().empty()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        unknown_fields(), output);
-  }
-}
-
-::google::protobuf::uint8* Transit_Route::SerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
-  // optional string name = 1;
-  if (has_name()) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->name().data(), this->name().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE);
-    target =
-      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        1, this->name(), target);
-  }
-
-  // optional string onestop_id = 2;
-  if (has_onestop_id()) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->onestop_id().data(), this->onestop_id().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE);
-    target =
-      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        2, this->onestop_id(), target);
-  }
-
-  // optional string operated_by_name = 3;
-  if (has_operated_by_name()) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->operated_by_name().data(), this->operated_by_name().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE);
-    target =
-      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        3, this->operated_by_name(), target);
-  }
-
-  // optional string operated_by_onestop_id = 4;
-  if (has_operated_by_onestop_id()) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->operated_by_onestop_id().data(), this->operated_by_onestop_id().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE);
-    target =
-      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        4, this->operated_by_onestop_id(), target);
-  }
-
-  // optional string operated_by_website = 5;
-  if (has_operated_by_website()) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->operated_by_website().data(), this->operated_by_website().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE);
-    target =
-      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        5, this->operated_by_website(), target);
-  }
-
-  // optional uint32 route_color = 6;
-  if (has_route_color()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(6, this->route_color(), target);
-  }
-
-  // optional string route_desc = 7;
-  if (has_route_desc()) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->route_desc().data(), this->route_desc().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE);
-    target =
-      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        7, this->route_desc(), target);
-  }
-
-  // optional string route_long_name = 8;
-  if (has_route_long_name()) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->route_long_name().data(), this->route_long_name().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE);
-    target =
-      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        8, this->route_long_name(), target);
-  }
-
-  // optional uint32 route_text_color = 9;
-  if (has_route_text_color()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(9, this->route_text_color(), target);
-  }
-
-  // optional .valhalla.mjolnir.Transit.VehicleType vehicle_type = 10;
-  if (has_vehicle_type()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
-      10, this->vehicle_type(), target);
-  }
-
-  if (!unknown_fields().empty()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        unknown_fields(), target);
-  }
-  return target;
 }
 
 int Transit_Route::ByteSize() const {
@@ -2635,27 +2094,15 @@ int Transit_Route::ByteSize() const {
     }
 
   }
-  if (!unknown_fields().empty()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        unknown_fields());
-  }
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = total_size;
   GOOGLE_SAFE_CONCURRENT_WRITES_END();
   return total_size;
 }
 
-void Transit_Route::MergeFrom(const ::google::protobuf::Message& from) {
-  GOOGLE_CHECK_NE(&from, this);
-  const Transit_Route* source =
-    ::google::protobuf::internal::dynamic_cast_if_available<const Transit_Route*>(
-      &from);
-  if (source == NULL) {
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
-  } else {
-    MergeFrom(*source);
-  }
+void Transit_Route::CheckTypeAndMergeFrom(
+    const ::google::protobuf::MessageLite& from) {
+  MergeFrom(*::google::protobuf::down_cast<const Transit_Route*>(&from));
 }
 
 void Transit_Route::MergeFrom(const Transit_Route& from) {
@@ -2694,13 +2141,6 @@ void Transit_Route::MergeFrom(const Transit_Route& from) {
       set_vehicle_type(from.vehicle_type());
     }
   }
-  mutable_unknown_fields()->MergeFrom(from.unknown_fields());
-}
-
-void Transit_Route::CopyFrom(const ::google::protobuf::Message& from) {
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
 }
 
 void Transit_Route::CopyFrom(const Transit_Route& from) {
@@ -2727,17 +2167,12 @@ void Transit_Route::Swap(Transit_Route* other) {
     std::swap(route_text_color_, other->route_text_color_);
     std::swap(vehicle_type_, other->vehicle_type_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
-    _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);
   }
 }
 
-::google::protobuf::Metadata Transit_Route::GetMetadata() const {
-  protobuf_AssignDescriptorsOnce();
-  ::google::protobuf::Metadata metadata;
-  metadata.descriptor = Transit_Route_descriptor_;
-  metadata.reflection = Transit_Route_reflection_;
-  return metadata;
+::std::string Transit_Route::GetTypeName() const {
+  return "valhalla.mjolnir.Transit.Route";
 }
 
 
@@ -2749,7 +2184,7 @@ const int Transit_Shape::kEncodedShapeFieldNumber;
 #endif  // !_MSC_VER
 
 Transit_Shape::Transit_Shape()
-  : ::google::protobuf::Message() {
+  : ::google::protobuf::MessageLite() {
   SharedCtor();
 }
 
@@ -2757,7 +2192,7 @@ void Transit_Shape::InitAsDefaultInstance() {
 }
 
 Transit_Shape::Transit_Shape(const Transit_Shape& from)
-  : ::google::protobuf::Message() {
+  : ::google::protobuf::MessageLite() {
   SharedCtor();
   MergeFrom(from);
 }
@@ -2777,7 +2212,11 @@ void Transit_Shape::SharedDtor() {
   if (encoded_shape_ != &::google::protobuf::internal::kEmptyString) {
     delete encoded_shape_;
   }
+  #ifdef GOOGLE_PROTOBUF_NO_STATIC_INITIALIZER
+  if (this != &default_instance()) {
+  #else
   if (this != default_instance_) {
+  #endif
   }
 }
 
@@ -2786,13 +2225,12 @@ void Transit_Shape::SetCachedSize(int size) const {
   _cached_size_ = size;
   GOOGLE_SAFE_CONCURRENT_WRITES_END();
 }
-const ::google::protobuf::Descriptor* Transit_Shape::descriptor() {
-  protobuf_AssignDescriptorsOnce();
-  return Transit_Shape_descriptor_;
-}
-
 const Transit_Shape& Transit_Shape::default_instance() {
+#ifdef GOOGLE_PROTOBUF_NO_STATIC_INITIALIZER
+  protobuf_AddDesc_transit_2eproto();
+#else
   if (default_instance_ == NULL) protobuf_AddDesc_transit_2eproto();
+#endif
   return *default_instance_;
 }
 
@@ -2812,7 +2250,6 @@ void Transit_Shape::Clear() {
     }
   }
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
-  mutable_unknown_fields()->Clear();
 }
 
 bool Transit_Shape::MergePartialFromCodedStream(
@@ -2856,8 +2293,7 @@ bool Transit_Shape::MergePartialFromCodedStream(
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
           return true;
         }
-        DO_(::google::protobuf::internal::WireFormat::SkipField(
-              input, tag, mutable_unknown_fields()));
+        DO_(::google::protobuf::internal::WireFormatLite::SkipField(input, tag));
         break;
       }
     }
@@ -2879,31 +2315,6 @@ void Transit_Shape::SerializeWithCachedSizes(
       2, this->encoded_shape(), output);
   }
 
-  if (!unknown_fields().empty()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        unknown_fields(), output);
-  }
-}
-
-::google::protobuf::uint8* Transit_Shape::SerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
-  // optional uint32 shape_id = 1;
-  if (has_shape_id()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(1, this->shape_id(), target);
-  }
-
-  // optional bytes encoded_shape = 2;
-  if (has_encoded_shape()) {
-    target =
-      ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
-        2, this->encoded_shape(), target);
-  }
-
-  if (!unknown_fields().empty()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        unknown_fields(), target);
-  }
-  return target;
 }
 
 int Transit_Shape::ByteSize() const {
@@ -2925,27 +2336,15 @@ int Transit_Shape::ByteSize() const {
     }
 
   }
-  if (!unknown_fields().empty()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        unknown_fields());
-  }
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = total_size;
   GOOGLE_SAFE_CONCURRENT_WRITES_END();
   return total_size;
 }
 
-void Transit_Shape::MergeFrom(const ::google::protobuf::Message& from) {
-  GOOGLE_CHECK_NE(&from, this);
-  const Transit_Shape* source =
-    ::google::protobuf::internal::dynamic_cast_if_available<const Transit_Shape*>(
-      &from);
-  if (source == NULL) {
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
-  } else {
-    MergeFrom(*source);
-  }
+void Transit_Shape::CheckTypeAndMergeFrom(
+    const ::google::protobuf::MessageLite& from) {
+  MergeFrom(*::google::protobuf::down_cast<const Transit_Shape*>(&from));
 }
 
 void Transit_Shape::MergeFrom(const Transit_Shape& from) {
@@ -2958,13 +2357,6 @@ void Transit_Shape::MergeFrom(const Transit_Shape& from) {
       set_encoded_shape(from.encoded_shape());
     }
   }
-  mutable_unknown_fields()->MergeFrom(from.unknown_fields());
-}
-
-void Transit_Shape::CopyFrom(const ::google::protobuf::Message& from) {
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
 }
 
 void Transit_Shape::CopyFrom(const Transit_Shape& from) {
@@ -2983,31 +2375,26 @@ void Transit_Shape::Swap(Transit_Shape* other) {
     std::swap(shape_id_, other->shape_id_);
     std::swap(encoded_shape_, other->encoded_shape_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
-    _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);
   }
 }
 
-::google::protobuf::Metadata Transit_Shape::GetMetadata() const {
-  protobuf_AssignDescriptorsOnce();
-  ::google::protobuf::Metadata metadata;
-  metadata.descriptor = Transit_Shape_descriptor_;
-  metadata.reflection = Transit_Shape_reflection_;
-  return metadata;
+::std::string Transit_Shape::GetTypeName() const {
+  return "valhalla.mjolnir.Transit.Shape";
 }
 
 
 // -------------------------------------------------------------------
 
 #ifndef _MSC_VER
-const int Transit::kStopsFieldNumber;
+const int Transit::kNodesFieldNumber;
 const int Transit::kStopPairsFieldNumber;
 const int Transit::kRoutesFieldNumber;
 const int Transit::kShapesFieldNumber;
 #endif  // !_MSC_VER
 
 Transit::Transit()
-  : ::google::protobuf::Message() {
+  : ::google::protobuf::MessageLite() {
   SharedCtor();
 }
 
@@ -3015,7 +2402,7 @@ void Transit::InitAsDefaultInstance() {
 }
 
 Transit::Transit(const Transit& from)
-  : ::google::protobuf::Message() {
+  : ::google::protobuf::MessageLite() {
   SharedCtor();
   MergeFrom(from);
 }
@@ -3030,7 +2417,11 @@ Transit::~Transit() {
 }
 
 void Transit::SharedDtor() {
+  #ifdef GOOGLE_PROTOBUF_NO_STATIC_INITIALIZER
+  if (this != &default_instance()) {
+  #else
   if (this != default_instance_) {
+  #endif
   }
 }
 
@@ -3039,13 +2430,12 @@ void Transit::SetCachedSize(int size) const {
   _cached_size_ = size;
   GOOGLE_SAFE_CONCURRENT_WRITES_END();
 }
-const ::google::protobuf::Descriptor* Transit::descriptor() {
-  protobuf_AssignDescriptorsOnce();
-  return Transit_descriptor_;
-}
-
 const Transit& Transit::default_instance() {
+#ifdef GOOGLE_PROTOBUF_NO_STATIC_INITIALIZER
+  protobuf_AddDesc_transit_2eproto();
+#else
   if (default_instance_ == NULL) protobuf_AddDesc_transit_2eproto();
+#endif
   return *default_instance_;
 }
 
@@ -3056,12 +2446,11 @@ Transit* Transit::New() const {
 }
 
 void Transit::Clear() {
-  stops_.Clear();
+  nodes_.Clear();
   stop_pairs_.Clear();
   routes_.Clear();
   shapes_.Clear();
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
-  mutable_unknown_fields()->Clear();
 }
 
 bool Transit::MergePartialFromCodedStream(
@@ -3070,17 +2459,17 @@ bool Transit::MergePartialFromCodedStream(
   ::google::protobuf::uint32 tag;
   while ((tag = input->ReadTag()) != 0) {
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // repeated .valhalla.mjolnir.Transit.Stop stops = 1;
+      // repeated .valhalla.mjolnir.Transit.Node nodes = 1;
       case 1: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
-         parse_stops:
+         parse_nodes:
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
-                input, add_stops()));
+                input, add_nodes()));
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(10)) goto parse_stops;
+        if (input->ExpectTag(10)) goto parse_nodes;
         if (input->ExpectTag(18)) goto parse_stop_pairs;
         break;
       }
@@ -3136,8 +2525,7 @@ bool Transit::MergePartialFromCodedStream(
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
           return true;
         }
-        DO_(::google::protobuf::internal::WireFormat::SkipField(
-              input, tag, mutable_unknown_fields()));
+        DO_(::google::protobuf::internal::WireFormatLite::SkipField(input, tag));
         break;
       }
     }
@@ -3148,82 +2536,41 @@ bool Transit::MergePartialFromCodedStream(
 
 void Transit::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // repeated .valhalla.mjolnir.Transit.Stop stops = 1;
-  for (int i = 0; i < this->stops_size(); i++) {
-    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      1, this->stops(i), output);
+  // repeated .valhalla.mjolnir.Transit.Node nodes = 1;
+  for (int i = 0; i < this->nodes_size(); i++) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessage(
+      1, this->nodes(i), output);
   }
 
   // repeated .valhalla.mjolnir.Transit.StopPair stop_pairs = 2;
   for (int i = 0; i < this->stop_pairs_size(); i++) {
-    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+    ::google::protobuf::internal::WireFormatLite::WriteMessage(
       2, this->stop_pairs(i), output);
   }
 
   // repeated .valhalla.mjolnir.Transit.Route routes = 3;
   for (int i = 0; i < this->routes_size(); i++) {
-    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+    ::google::protobuf::internal::WireFormatLite::WriteMessage(
       3, this->routes(i), output);
   }
 
   // repeated .valhalla.mjolnir.Transit.Shape shapes = 4;
   for (int i = 0; i < this->shapes_size(); i++) {
-    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+    ::google::protobuf::internal::WireFormatLite::WriteMessage(
       4, this->shapes(i), output);
   }
 
-  if (!unknown_fields().empty()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        unknown_fields(), output);
-  }
-}
-
-::google::protobuf::uint8* Transit::SerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
-  // repeated .valhalla.mjolnir.Transit.Stop stops = 1;
-  for (int i = 0; i < this->stops_size(); i++) {
-    target = ::google::protobuf::internal::WireFormatLite::
-      WriteMessageNoVirtualToArray(
-        1, this->stops(i), target);
-  }
-
-  // repeated .valhalla.mjolnir.Transit.StopPair stop_pairs = 2;
-  for (int i = 0; i < this->stop_pairs_size(); i++) {
-    target = ::google::protobuf::internal::WireFormatLite::
-      WriteMessageNoVirtualToArray(
-        2, this->stop_pairs(i), target);
-  }
-
-  // repeated .valhalla.mjolnir.Transit.Route routes = 3;
-  for (int i = 0; i < this->routes_size(); i++) {
-    target = ::google::protobuf::internal::WireFormatLite::
-      WriteMessageNoVirtualToArray(
-        3, this->routes(i), target);
-  }
-
-  // repeated .valhalla.mjolnir.Transit.Shape shapes = 4;
-  for (int i = 0; i < this->shapes_size(); i++) {
-    target = ::google::protobuf::internal::WireFormatLite::
-      WriteMessageNoVirtualToArray(
-        4, this->shapes(i), target);
-  }
-
-  if (!unknown_fields().empty()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        unknown_fields(), target);
-  }
-  return target;
 }
 
 int Transit::ByteSize() const {
   int total_size = 0;
 
-  // repeated .valhalla.mjolnir.Transit.Stop stops = 1;
-  total_size += 1 * this->stops_size();
-  for (int i = 0; i < this->stops_size(); i++) {
+  // repeated .valhalla.mjolnir.Transit.Node nodes = 1;
+  total_size += 1 * this->nodes_size();
+  for (int i = 0; i < this->nodes_size(); i++) {
     total_size +=
       ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
-        this->stops(i));
+        this->nodes(i));
   }
 
   // repeated .valhalla.mjolnir.Transit.StopPair stop_pairs = 2;
@@ -3250,42 +2597,23 @@ int Transit::ByteSize() const {
         this->shapes(i));
   }
 
-  if (!unknown_fields().empty()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        unknown_fields());
-  }
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = total_size;
   GOOGLE_SAFE_CONCURRENT_WRITES_END();
   return total_size;
 }
 
-void Transit::MergeFrom(const ::google::protobuf::Message& from) {
-  GOOGLE_CHECK_NE(&from, this);
-  const Transit* source =
-    ::google::protobuf::internal::dynamic_cast_if_available<const Transit*>(
-      &from);
-  if (source == NULL) {
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
-  } else {
-    MergeFrom(*source);
-  }
+void Transit::CheckTypeAndMergeFrom(
+    const ::google::protobuf::MessageLite& from) {
+  MergeFrom(*::google::protobuf::down_cast<const Transit*>(&from));
 }
 
 void Transit::MergeFrom(const Transit& from) {
   GOOGLE_CHECK_NE(&from, this);
-  stops_.MergeFrom(from.stops_);
+  nodes_.MergeFrom(from.nodes_);
   stop_pairs_.MergeFrom(from.stop_pairs_);
   routes_.MergeFrom(from.routes_);
   shapes_.MergeFrom(from.shapes_);
-  mutable_unknown_fields()->MergeFrom(from.unknown_fields());
-}
-
-void Transit::CopyFrom(const ::google::protobuf::Message& from) {
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
 }
 
 void Transit::CopyFrom(const Transit& from) {
@@ -3301,22 +2629,17 @@ bool Transit::IsInitialized() const {
 
 void Transit::Swap(Transit* other) {
   if (other != this) {
-    stops_.Swap(&other->stops_);
+    nodes_.Swap(&other->nodes_);
     stop_pairs_.Swap(&other->stop_pairs_);
     routes_.Swap(&other->routes_);
     shapes_.Swap(&other->shapes_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
-    _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);
   }
 }
 
-::google::protobuf::Metadata Transit::GetMetadata() const {
-  protobuf_AssignDescriptorsOnce();
-  ::google::protobuf::Metadata metadata;
-  metadata.descriptor = Transit_descriptor_;
-  metadata.reflection = Transit_reflection_;
-  return metadata;
+::std::string Transit::GetTypeName() const {
+  return "valhalla.mjolnir.Transit";
 }
 
 

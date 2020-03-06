@@ -1,79 +1,56 @@
 #include "sif/dynamiccost.h"
-#include "baldr/double_bucket_queue.h" // For kInvalidLabel
+#include "baldr/graphconstants.h"
 
 using namespace valhalla::baldr;
 
 namespace {
 
-using namespace valhalla::sif;
-
-// Check for complex restriction
-bool IsRestricted(const EdgeLabel& pred, const std::vector<EdgeLabel>& edge_labels,
-                  const std::vector<ComplexRestriction>& restrictions,
-                  const bool forward) {
-  // Lambda to get the next predecessor EdgeLabel (that is not a transition)
-  auto next_predecessor = [&edge_labels](const EdgeLabel* label) {
-    // Get the next predecessor - make sure it is valid. Continue to get
-    // the next predecessor if the edge is a transition edge.
-    const EdgeLabel* next_pred = (label->predecessor() == kInvalidLabel) ?
-                    label : &edge_labels[label->predecessor()];
-    while (next_pred->use() == Use::kTransitionUp &&
-           next_pred->predecessor() != kInvalidLabel) {
-      next_pred = &edge_labels[next_pred->predecessor()];
-    }
-    return next_pred;
+uint8_t SpeedMask_Parse(const boost::optional<const rapidjson::Value&>& speed_types) {
+  static const std::unordered_map<std::string, uint8_t> types{
+      {"freeflow", kFreeFlowMask},
+      {"constrained", kConstrainedFlowMask},
+      {"predicted", kPredictedFlowMask},
+      {"current", kCurrentFlowMask},
   };
 
-  // Get the first predecessor edge (that is not a transition)
-  const EdgeLabel* first_pred = &pred;
-  if (first_pred->use() == Use::kTransitionUp) {
-    first_pred = next_predecessor(first_pred);
-  }
+  if (!speed_types)
+    return kDefaultFlowMask;
 
-  // Iterate through the restrictions
-  for (const auto& cr : restrictions) {
-    // Walk the via list, break if the via edge Ids do not match the path
-    const EdgeLabel* next_pred = first_pred;
-    for (const auto& via_id : cr.GetVias()) {
-      if (via_id != next_pred->edgeid()) {
-        return false;
+  bool had_value = false;
+  uint8_t mask = 0;
+  if (speed_types->IsArray()) {
+    had_value = true;
+    for (const auto& speed_type : speed_types->GetArray()) {
+      if (speed_type.IsString()) {
+        auto i = types.find(speed_type.GetString());
+        if (i != types.cend()) {
+          mask |= i->second;
+        }
       }
-      next_pred = next_predecessor(next_pred);
-    }
-
-    // Check against the start/end of the complex restriction
-    if (( forward && next_pred->edgeid() == cr.from_id()) ||
-        (!forward && next_pred->edgeid() == cr.to_id())) {
-      return true;
     }
   }
-  return false;
+
+  return had_value ? mask : kDefaultFlowMask;
 }
 
-}
+} // namespace
 
-namespace valhalla{
+namespace valhalla {
 namespace sif {
 
-DynamicCost::DynamicCost(const boost::property_tree::ptree& pt,
-                         const TravelMode mode)
-    : allow_transit_connections_(false),
-      disable_destination_only_(false),
-      travel_mode_(mode) {
+DynamicCost::DynamicCost(const Options& options, const TravelMode mode)
+    : pass_(0), allow_transit_connections_(false), allow_destination_only_(true), travel_mode_(mode),
+      flow_mask_(kDefaultFlowMask) {
   // Parse property tree to get hierarchy limits
   // TODO - get the number of levels
-  uint32_t n_levels = sizeof(kDefaultMaxUpTransitions) /
-      sizeof(kDefaultMaxUpTransitions[0]);
+  uint32_t n_levels = sizeof(kDefaultMaxUpTransitions) / sizeof(kDefaultMaxUpTransitions[0]);
   for (uint32_t level = 0; level < n_levels; level++) {
-    hierarchy_limits_.emplace_back(HierarchyLimits(pt, level));
+    hierarchy_limits_.emplace_back(HierarchyLimits(level));
   }
 
-  // Parse property tree to get avoid edges
-  auto avoid_edges = pt.get_child_optional("avoid_edges");
-  if (avoid_edges) {
-    for (auto& edgeid : *avoid_edges) {
-      user_avoid_edges_.insert(GraphId(edgeid.second.get_value<uint64_t>()));
-    }
+  // Add avoid edges to internal set
+  for (auto& edge : options.avoid_edges()) {
+    user_avoid_edges_.insert({GraphId(edge.id()), edge.percent_along()});
   }
 }
 
@@ -87,14 +64,12 @@ bool DynamicCost::AllowMultiPass() const {
   return false;
 }
 
-// Get the cost to traverse the specified directed edge using a transit
-// departure (schedule based edge traversal). Cost includes
-// the time (seconds) to traverse the edge. Only transit cost models override
-// this method.
-Cost DynamicCost::EdgeCost(const baldr::DirectedEdge* edge,
-              const baldr::TransitDeparture* departure,
-              const uint32_t curr_time) const {
-  return { 0.0f, 0.0f };
+// We provide a convenience method for those algorithms which dont have time components or aren't
+// using them for the current route. Here we just call out to the derived classes costing function
+// with a time that tells the function that we aren't using time. This avoids having to worry about
+// default parameters and inheritance (which are a bad mix)
+Cost DynamicCost::EdgeCost(const baldr::DirectedEdge* edge, const baldr::GraphTile* tile) const {
+  return EdgeCost(edge, tile, kInvalidSecondsOfWeek);
 }
 
 // Returns the cost to make the transition from the predecessor edge.
@@ -103,54 +78,28 @@ Cost DynamicCost::EdgeCost(const baldr::DirectedEdge* edge,
 Cost DynamicCost::TransitionCost(const DirectedEdge* edge,
                                  const NodeInfo* node,
                                  const EdgeLabel& pred) const {
-  return { 0.0f, 0.0f };
+  return {0.0f, 0.0f};
 }
 
 // Returns the cost to make the transition from the predecessor edge
 // when using a reverse search (from destination towards the origin).
 // Defaults to 0. Costing models that wish to include edge transition
 // costs (i.e., intersection/turn costs) must override this method.
-Cost DynamicCost::TransitionCostReverse(
-    const uint32_t idx, const baldr::NodeInfo* node,
-    const baldr::DirectedEdge* opp_edge,
-    const baldr::DirectedEdge* opp_pred_edge) const {
-  return { 0.0f, 0.0f };
-}
-
-/**
- * Test if an edge should be restricted due to a complex restriction.
- */
-bool DynamicCost::Restricted(const DirectedEdge* edge,
-                             const EdgeLabel& pred,
-                             const std::vector<EdgeLabel>& edgelabels,
-                             const baldr::GraphTile*& tile,
-                             const baldr::GraphId& edgeid,
-                             const bool forward) const {
-  // If forward, check if the edge marks the end of a restriction, else check
-  // if the edge marks the start of a complex restriction.
-  bool has_restriction = (forward) ?
-      edge->end_restriction()   & access_mode() :
-      edge->start_restriction() & access_mode();
-  if (has_restriction) {
-    // Get complex restrictions. Return false if no restrictions are found
-    auto restrictions = tile->GetRestrictions(forward, edgeid, access_mode());
-    if (restrictions.size() == 0) {
-      return false;
-    }
-    return IsRestricted(pred, edgelabels, restrictions, forward);
-  } else {
-    return false;
-  }
+Cost DynamicCost::TransitionCostReverse(const uint32_t idx,
+                                        const baldr::NodeInfo* node,
+                                        const baldr::DirectedEdge* opp_edge,
+                                        const baldr::DirectedEdge* opp_pred_edge) const {
+  return {0.0f, 0.0f};
 }
 
 // Returns the transfer cost between 2 transit stops.
 Cost DynamicCost::TransferCost() const {
-  return { 0.0f, 0.0f };
+  return {0.0f, 0.0f};
 }
 
 // Returns the default transfer cost between 2 transit stops.
 Cost DynamicCost::DefaultTransferCost() const {
-  return { 0.0f, 0.0f };
+  return {0.0f, 0.0f};
 }
 
 // Get the general unit size that can be considered as equal for sorting
@@ -164,9 +113,9 @@ void DynamicCost::SetAllowTransitConnections(const bool allow) {
   allow_transit_connections_ = allow;
 }
 
-// Set to allow use of transit connections.
-void DynamicCost::DisableDestinationOnly() {
-  disable_destination_only_ = true;
+// Sets the flag indicating whether destination only edges are allowed.
+void DynamicCost::set_allow_destination_only(const bool allow) {
+  allow_destination_only_ = allow;
 }
 
 // Returns the maximum transfer distance between stops that you are willing
@@ -176,9 +125,9 @@ uint32_t DynamicCost::GetMaxTransferDistanceMM() {
   return 0;
 }
 
-// This method overrides the weight for this mode.  The higher the value
+// This method overrides the factor for this mode.  The lower the value
 // the more the mode is favored.
-float DynamicCost::GetModeWeight() {
+float DynamicCost::GetModeFactor() {
   return 1.0f;
 }
 
@@ -188,7 +137,6 @@ float DynamicCost::GetModeWeight() {
 // meters per segment (e.g. from origin to a transit stop or from the last
 // transit stop to the destination).
 void DynamicCost::UseMaxMultiModalDistance() {
-  ;
 }
 
 // Gets the hierarchy limits.
@@ -197,8 +145,7 @@ std::vector<HierarchyLimits>& DynamicCost::GetHierarchyLimits() {
 }
 
 // Relax hierarchy limits.
-void DynamicCost::RelaxHierarchyLimits(const float factor,
-                                       const float expansion_within_factor) {
+void DynamicCost::RelaxHierarchyLimits(const float factor, const float expansion_within_factor) {
   for (auto& hierarchy : hierarchy_limits_) {
     hierarchy.Relax(factor, expansion_within_factor);
   }
@@ -235,23 +182,26 @@ void DynamicCost::AddToExcludeList(const baldr::GraphTile*& tile) {
 }
 
 // Checks if we should exclude or not.
-bool DynamicCost::IsExcluded(const baldr::GraphTile*& tile,
-                             const baldr::DirectedEdge* edge) {
+bool DynamicCost::IsExcluded(const baldr::GraphTile*& tile, const baldr::DirectedEdge* edge) {
   return false;
 }
 
 // Checks if we should exclude or not.
-bool DynamicCost::IsExcluded(const baldr::GraphTile*& tile,
-                             const baldr::NodeInfo* node) {
+bool DynamicCost::IsExcluded(const baldr::GraphTile*& tile, const baldr::NodeInfo* node) {
   return false;
 }
 
 // Adds a list of edges (GraphIds) to the user specified avoid list.
-void DynamicCost::AddUserAvoidEdges(const std::vector<GraphId>& avoid_edges) {
-  for (auto edgeid : avoid_edges) {
-    user_avoid_edges_.insert(edgeid);
+void DynamicCost::AddUserAvoidEdges(const std::vector<AvoidEdge>& avoid_edges) {
+  for (auto edge : avoid_edges) {
+    user_avoid_edges_.insert({edge.id, edge.percent_along});
   }
 }
 
+void ParseCostOptions(const rapidjson::Value& value, CostingOptions* pbf_costing_options) {
+  auto speed_types = rapidjson::get_child_optional(value, "/speed_types");
+  pbf_costing_options->set_flow_mask(SpeedMask_Parse(speed_types));
 }
-}
+
+} // namespace sif
+} // namespace valhalla

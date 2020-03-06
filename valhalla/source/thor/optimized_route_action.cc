@@ -1,17 +1,12 @@
-#include <prime_server/prime_server.hpp>
+#include "thor/worker.h"
 
-using namespace prime_server;
-
-#include "midgard/logging.h"
 #include "midgard/constants.h"
-#include "baldr/json.h"
+#include "midgard/logging.h"
 #include "sif/autocost.h"
 #include "sif/bicyclecost.h"
 #include "sif/pedestriancost.h"
-
-#include "thor/service.h"
-#include "thor/optimizer.h"
 #include "thor/costmatrix.h"
+#include "thor/optimizer.h"
 
 using namespace valhalla;
 using namespace valhalla::midgard;
@@ -19,78 +14,57 @@ using namespace valhalla::baldr;
 using namespace valhalla::sif;
 using namespace valhalla::thor;
 
-namespace {
-
-  const headers_t::value_type CORS{"Access-Control-Allow-Origin", "*"};
-  const headers_t::value_type JSON_MIME{"Content-type", "application/json;charset=utf-8"};
-  const headers_t::value_type JS_MIME{"Content-type", "application/javascript;charset=utf-8"};
-
-}
-
 namespace valhalla {
-  namespace thor {
+namespace thor {
 
-  worker_t::result_t  thor_worker_t::optimized_route(const boost::property_tree::ptree& request, const std::string &request_str, const bool header_dnt) {
-    parse_locations(request);
-    auto costing = parse_costing(request);
+void thor_worker_t::optimized_route(Api& request) {
+  parse_locations(request);
+  parse_filter_attributes(request);
+  auto costing = parse_costing(request);
+  auto& options = *request.mutable_options();
 
-    if (!healthcheck)
-      valhalla::midgard::logging::Log("matrix_type::optimized_route", " [ANALYTICS] ");
-    worker_t::result_t result{true};
-    //get time for start of request
-    auto s = std::chrono::system_clock::now();
-
-    // Forward the original request
-    result.messages.emplace_back(std::move(request_str));
-
-    // Use CostMatrix to find costs from each location to every other location
-    CostMatrix costmatrix;
-    std::vector<thor::TimeDistance> td = costmatrix.SourceToTarget(correlated_s, correlated_t, reader, mode_costing, mode);
-
-    // Return an error if any locations are totally unreachable
-    std::vector<baldr::PathLocation> correlated =  (correlated_s.size() > correlated_t.size() ? correlated_s : correlated_t);
-
-    // Set time costs to send to Optimizer.
-    std::vector<float> time_costs;
-    bool reachable = true;
-    for(size_t i = 0; i < td.size(); ++i) {
-      // If any location is completely unreachable then we cant have a connected path
-      if(i % correlated.size() == 0) {
-        if(!reachable)
-          throw valhalla_exception_t{400, 441, " at index " + std::to_string(i / correlated.size())};
-        reachable = false;
-      }
-      reachable = reachable || td[i].time != kMaxCost;
-      // Keep the times for the reordering
-      time_costs.emplace_back(static_cast<float>(td[i].time));
-    }
-
-    Optimizer optimizer;
-    //returns the optimal order of the path_locations
-    auto order = optimizer.Solve(correlated.size(), time_costs);
-    std::vector<PathLocation> best_order;
-    for (size_t i = 0; i< order.size(); i++)
-      best_order.emplace_back(correlated[order[i]]);
-
-    auto trippaths = path_depart_at(best_order, costing, date_time_type, request_str);
-    size_t order_index = 0;
-    for (auto& trippath: trippaths) {
-      for (auto& location : *trippath.mutable_location())
-        location.set_original_index(order[order_index++]);
-      --order_index;
-      result.messages.emplace_back(trippath.SerializeAsString());
-    }
-    //get processing time for thor
-    auto e = std::chrono::system_clock::now();
-    std::chrono::duration<float, std::milli> elapsed_time = e - s;
-    //log request if greater than X (ms)
-    if (!healthcheck && !header_dnt && ((elapsed_time.count() / correlated_s.size()) || elapsed_time.count() / correlated_t.size()) > long_request) {
-      LOG_WARN("thor::optimized_route elapsed time (ms)::"+ std::to_string(elapsed_time.count()));
-      LOG_WARN("thor::optimized_route exceeded threshold::"+ request_str);
-      midgard::logging::Log("valhalla_thor_long_request_optimized", " [ANALYTICS] ");
-    }
-    return result;
+  if (!options.do_not_track()) {
+    valhalla::midgard::logging::Log("matrix_type::optimized_route", " [ANALYTICS] ");
   }
 
+  // Use CostMatrix to find costs from each location to every other location
+  CostMatrix costmatrix;
+  std::vector<thor::TimeDistance> td =
+      costmatrix.SourceToTarget(options.sources(), options.targets(), *reader, mode_costing, mode,
+                                max_matrix_distance.find(costing)->second);
+
+  // Return an error if any locations are totally unreachable
+  const auto& correlated =
+      (options.sources_size() > options.targets_size() ? options.sources() : options.targets());
+
+  // Set time costs to send to Optimizer.
+  std::vector<float> time_costs;
+  bool reachable = true;
+  for (size_t i = 0; i < td.size(); ++i) {
+    // If any location is completely unreachable then we cant have a connected path
+    if (i % correlated.size() == 0) {
+      if (!reachable) {
+        throw valhalla_exception_t{441, " at index " + std::to_string(i / correlated.size())};
+      };
+      reachable = false;
+    }
+    reachable = reachable || td[i].time != kMaxCost;
+    // Keep the times for the reordering
+    time_costs.emplace_back(static_cast<float>(td[i].time));
   }
+
+  Optimizer optimizer;
+  // returns the optimal order of the path_locations
+  auto optimal_order = optimizer.Solve(correlated.size(), time_costs);
+  // put the optimal order into the locations array
+  options.mutable_locations()->Clear();
+  for (size_t i = 0; i < optimal_order.size(); i++) {
+    options.mutable_locations()->Add()->CopyFrom(correlated.Get(optimal_order[i]));
+  }
+
+  // run the route
+  path_depart_at(request, costing);
 }
+
+} // namespace thor
+} // namespace valhalla

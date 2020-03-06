@@ -1,7 +1,9 @@
 #ifndef VALHALLA_BALDR_TURN_H_
 #define VALHALLA_BALDR_TURN_H_
 
+#include <cstdint>
 #include <stdint.h>
+#include <string>
 
 namespace valhalla {
 namespace baldr {
@@ -10,7 +12,7 @@ namespace baldr {
  * Defines the turn type based on turn degrees.
  */
 class Turn {
- public:
+public:
   enum class Type : uint8_t {
     kStraight = 0,
     kSlightRight = 1,
@@ -35,9 +37,16 @@ class Turn {
    */
   static Turn::Type GetType(uint32_t turn_degree);
 
+  /**
+   * Returns the turn type string.
+   *
+   * @param  turn_type  the specified turn type.
+   * @return the turn type string based on the specified turn type.
+   */
+  static std::string GetTypeString(Turn::Type turn_type);
 };
 
-}
-}
+} // namespace baldr
+} // namespace valhalla
 
-#endif  // VALHALLA_BALDR_TURN_H_
+#endif // VALHALLA_BALDR_TURN_H_
