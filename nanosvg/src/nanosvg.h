@@ -29,8 +29,10 @@
 #ifndef NANOSVG_H
 #define NANOSVG_H
 
+#ifndef NANOSVG_CPLUSPLUS
 #ifdef __cplusplus
 extern "C" {
+#endif
 #endif
 
 // NanoSVG is a simple stupid single-header-file SVG parse. The output of the parser is a list of cubic bezier shapes.
@@ -45,15 +47,15 @@ extern "C" {
 // NanoSVG can return the paths in few different units. For example if you want to render an image, you may choose
 // to get the paths in pixels, or if you are feeding the data into a CNC-cutter, you may want to use millimeters.
 //
-// The units passed to NanoVG should be one of: 'px', 'pt', 'pc' 'mm', 'cm', or 'in'.
+// The units passed to NanoSVG should be one of: 'px', 'pt', 'pc' 'mm', 'cm', or 'in'.
 // DPI (dots-per-inch) controls how the unit conversion is done.
 //
 // If you don't know or care about the units stuff, "px" and 96 should get you going.
 
 
 /* Example Usage:
-	// Load
-	NSVGImage* image;
+	// Load SVG
+	NSVGimage* image;
 	image = nsvgParseFromFile("test.svg", "px", 96);
 	printf("size: %f x %f\n", image->width, image->height);
 	// Use...
@@ -167,11 +169,16 @@ NSVGimage* nsvgParseFromFile(const char* filename, const char* units, float dpi)
 // Important note: changes the string.
 NSVGimage* nsvgParse(char* input, const char* units, float dpi);
 
-// Deletes list of paths.
+// Duplicates a path.
+NSVGpath* nsvgDuplicatePath(NSVGpath* p);
+
+// Deletes an image.
 void nsvgDelete(NSVGimage* image);
 
+#ifndef NANOSVG_CPLUSPLUS
 #ifdef __cplusplus
 }
+#endif
 #endif
 
 #endif // NANOSVG_H
@@ -194,6 +201,7 @@ void nsvgDelete(NSVGimage* image);
 
 #define NSVG_NOTUSED(v) do { (void)(1 ? (void)0 : ( (void)(v) ) ); } while(0)
 #define NSVG_RGB(r, g, b) (((unsigned int)r) | ((unsigned int)g << 8) | ((unsigned int)b << 16))
+#define NSVG_RGBA(r, g, b, a) (((unsigned int)r) | ((unsigned int)g << 8) | ((unsigned int)b << 16) | ((unsigned int)a << 24))
 
 #ifdef _MSC_VER
 	#pragma warning (disable: 4996) // Switch off security warnings
@@ -1095,7 +1103,7 @@ static double nsvg__atof(const char* s)
 	// Parse integer part
 	if (nsvg__isdigit(*cur)) {
 		// Parse digit sequence
-		intPart = (double)strtoll(cur, &end, 10);
+		intPart = strtoll(cur, &end, 10);
 		if (cur != end) {
 			res = (double)intPart;
 			hasIntPart = 1;
@@ -1123,7 +1131,7 @@ static double nsvg__atof(const char* s)
 
 	// Parse optional exponent
 	if (*cur == 'e' || *cur == 'E') {
-		int expPart = 0;
+		long expPart = 0;
 		cur++; // skip 'E'
 		expPart = strtol(cur, &end, 10); // Parse digit sequence with sign
 		if (cur != end) {
@@ -1161,7 +1169,7 @@ static const char* nsvg__parseNumber(const char* s, char* it, const int size)
 		}
 	}
 	// exponent
-	if (*s == 'e' || *s == 'E') {
+	if ((*s == 'e' || *s == 'E') && (s[1] != 'm' && s[1] != 'x')) {
 		if (i < last) it[i++] = *s;
 		s++;
 		if (*s == '-' || *s == '+') {
@@ -1226,6 +1234,19 @@ static unsigned int nsvg__parseColorRGB(const char* str)
 		return NSVG_RGB((r*255)/100,(g*255)/100,(b*255)/100);
 	} else {
 		return NSVG_RGB(r,g,b);
+	}
+}
+
+static unsigned int nsvg__parseColorRGBA(const char* str)
+{
+	int r = -1, g = -1, b = -1;
+	float a = -1;
+	char s1[32]="", s2[32]="", s3[32]="";
+	sscanf(str + 5, "%d%[%%, \t]%d%[%%, \t]%d%[%%, \t]%f", &r, s1, &g, s2, &b, s3, &a);
+	if (strchr(s1, '%')) {
+		return NSVG_RGBA((r*255)/100,(g*255)/100,(b*255)/100,(a*255)/100);
+	} else {
+		return NSVG_RGBA(r,g,b,(a*255));
 	}
 }
 
@@ -1410,13 +1431,14 @@ static unsigned int nsvg__parseColor(const char* str)
 		return nsvg__parseColorHex(str);
 	else if (len >= 4 && str[0] == 'r' && str[1] == 'g' && str[2] == 'b' && str[3] == '(')
 		return nsvg__parseColorRGB(str);
+	else if (len >= 5 && str[0] == 'r' && str[1] == 'g' && str[2] == 'b' && str[3] == 'a' && str[4] == '(')
+		return nsvg__parseColorRGBA(str);
 	return nsvg__parseColorName(str);
 }
 
 static float nsvg__parseOpacity(const char* str)
 {
-	float val = 0;
-	sscanf(str, "%f", &val);
+	float val = nsvg__atof(str);
 	if (val < 0.0f) val = 0.0f;
 	if (val > 1.0f) val = 1.0f;
 	return val;
@@ -1424,8 +1446,7 @@ static float nsvg__parseOpacity(const char* str)
 
 static float nsvg__parseMiterLimit(const char* str)
 {
-	float val = 0;
-	sscanf(str, "%f", &val);
+	float val = nsvg__atof(str);
 	if (val < 0.0f) val = 0.0f;
 	return val;
 }
@@ -1456,9 +1477,9 @@ static int nsvg__parseUnits(const char* units)
 static NSVGcoordinate nsvg__parseCoordinateRaw(const char* str)
 {
 	NSVGcoordinate coord = {0, NSVG_UNITS_USER};
-	char units[32]="";
-	sscanf(str, "%f%31s", &coord.value, units);
-	coord.units = nsvg__parseUnits(units);
+	char buf[64];
+	coord.units = nsvg__parseUnits(nsvg__parseNumber(str, buf, 64));
+	coord.value = nsvg__atof(buf);
 	return coord;
 }
 
@@ -1650,7 +1671,7 @@ static char nsvg__parseLineJoin(const char* str)
 	else if (strcmp(str, "bevel") == 0)
 		return NSVG_JOIN_BEVEL;
 	// TODO: handle inherit.
-	return NSVG_CAP_BUTT;
+	return NSVG_JOIN_MITER;
 }
 
 static char nsvg__parseFillRule(const char* str)
@@ -1729,6 +1750,13 @@ static int nsvg__parseAttr(NSVGparser* p, const char* name, const char* value)
 		} else {
 			attr->hasFill = 1;
 			attr->fillColor = nsvg__parseColor(value);
+			// if the fillColor has an alpha value then use it to
+			// set the fillOpacity
+			if (attr->fillColor & 0xFF000000) {
+				attr->fillOpacity = ((attr->fillColor >> 24) & 0xFF) / 255.0;
+				// remove the alpha value from the color
+				attr->fillColor &= 0x00FFFFFF;
+			}
 		}
 	} else if (strcmp(name, "opacity") == 0) {
 		attr->opacity = nsvg__parseOpacity(value);
@@ -1743,7 +1771,14 @@ static int nsvg__parseAttr(NSVGparser* p, const char* name, const char* value)
 		} else {
 			attr->hasStroke = 1;
 			attr->strokeColor = nsvg__parseColor(value);
-		}
+			// if the strokeColor has an alpha value then use it to
+			// set the strokeOpacity
+			if (attr->strokeColor & 0xFF000000) {
+				attr->strokeOpacity = ((attr->strokeColor >> 24) & 0xFF) / 255.0;
+				// remove the alpha value from the color
+				attr->strokeColor &= 0x00FFFFFF;
+			}
+		}		
 	} else if (strcmp(name, "stroke-width") == 0) {
 		attr->strokeWidth = nsvg__parseCoordinate(p, value, 0.0f, nsvg__actualLength(p));
 	} else if (strcmp(name, "stroke-dasharray") == 0) {
@@ -2494,11 +2529,26 @@ static void nsvg__parseSVG(NSVGparser* p, const char** attr)
 	for (i = 0; attr[i]; i += 2) {
 		if (!nsvg__parseAttr(p, attr[i], attr[i + 1])) {
 			if (strcmp(attr[i], "width") == 0) {
-				p->image->width = nsvg__parseCoordinate(p, attr[i + 1], 0.0f, 1.0f);
+				p->image->width = nsvg__parseCoordinate(p, attr[i + 1], 0.0f, 0.0f);
 			} else if (strcmp(attr[i], "height") == 0) {
-				p->image->height = nsvg__parseCoordinate(p, attr[i + 1], 0.0f, 1.0f);
+				p->image->height = nsvg__parseCoordinate(p, attr[i + 1], 0.0f, 0.0f);
 			} else if (strcmp(attr[i], "viewBox") == 0) {
-				sscanf(attr[i + 1], "%f%*[%%, \t]%f%*[%%, \t]%f%*[%%, \t]%f", &p->viewMinx, &p->viewMiny, &p->viewWidth, &p->viewHeight);
+				const char *s = attr[i + 1];
+				char buf[64];
+				s = nsvg__parseNumber(s, buf, 64);
+				p->viewMinx = nsvg__atof(buf);
+				while (*s && (nsvg__isspace(*s) || *s == '%' || *s == ',')) s++;
+				if (!*s) return;
+				s = nsvg__parseNumber(s, buf, 64);
+				p->viewMiny = nsvg__atof(buf);
+				while (*s && (nsvg__isspace(*s) || *s == '%' || *s == ',')) s++;
+				if (!*s) return;
+				s = nsvg__parseNumber(s, buf, 64);
+				p->viewWidth = nsvg__atof(buf);
+				while (*s && (nsvg__isspace(*s) || *s == '%' || *s == ',')) s++;
+				if (!*s) return;
+				s = nsvg__parseNumber(s, buf, 64);
+				p->viewHeight = nsvg__atof(buf);
 			} else if (strcmp(attr[i], "preserveAspectRatio") == 0) {
 				if (strstr(attr[i + 1], "none") != 0) {
 					// No uniform scaling
@@ -2904,6 +2954,36 @@ error:
 	if (data) free(data);
 	if (image) nsvgDelete(image);
 	return NULL;
+}
+
+NSVGpath* nsvgDuplicatePath(NSVGpath* p)
+{
+    NSVGpath* res = NULL;
+
+    if (p == NULL)
+        return NULL;
+
+    res = (NSVGpath*)malloc(sizeof(NSVGpath));
+    if (res == NULL) goto error;
+    memset(res, 0, sizeof(NSVGpath));
+
+    res->pts = (float*)malloc(p->npts*2*sizeof(float));
+    if (res->pts == NULL) goto error;
+    memcpy(res->pts, p->pts, p->npts * sizeof(float) * 2);
+    res->npts = p->npts;
+
+    memcpy(res->bounds, p->bounds, sizeof(p->bounds));
+
+    res->closed = p->closed;
+
+    return res;
+
+error:
+    if (res != NULL) {
+        free(res->pts);
+        free(res);
+    }
+    return NULL;
 }
 
 void nsvgDelete(NSVGimage* image)
