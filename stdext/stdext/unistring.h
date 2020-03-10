@@ -11,6 +11,25 @@
 
 namespace unistring {
     namespace detail {
+        inline std::uint32_t to_normalized(std::uint32_t c) {
+            const unsigned char table[] =
+                "AAAAAAACEEEEIIII"
+                "DNOOOOO\xd7\xd8UUUUYI\xdf"
+                "aaaaaaaceeeeiiii\xf0nooooo\xf7\xf8uuuuy\xfey"
+                "AaAaAaCcCcCcCcDd"
+                "DdEeEeEeEeEeGgGg"
+                "GgGgHhHhIiIiIiIi"
+                "IiJjJjKkkLlLlLlL"
+                "lLlNnNnNnnNnOoOo"
+                "OoOoRrRrRrSsSsSs"
+                "SsTtTtTtUuUuUuUu"
+                "UuUuWwYyYZzZzZzF";        
+            if (c >= 0xc0 && c < sizeof(table) + 0xc0) {
+                return table[c - 0xc0];
+            }
+            return c;
+        }
+
         inline std::uint32_t to_lower(std::uint32_t c) {
             static const std::initializer_list<std::pair<std::uint16_t, std::uint16_t>> table = {
                 { 0x0041, 0x0061 }, { 0x0042, 0x0062 }, { 0x0043, 0x0063 }, { 0x0044, 0x0064 },
@@ -549,6 +568,12 @@ namespace unistring {
         }
         wstr.insert(wstr.end(), unistr.begin(), unistr.end());
         return wstr;
+    }
+
+    inline unistring to_normalized(const unistring& str) {
+        unistring result = str;
+        std::transform(result.begin(), result.end(), result.begin(), detail::to_normalized);
+        return result;
     }
 
     inline unistring to_upper(const unistring& str) {
