@@ -13,19 +13,17 @@ namespace unistring {
     namespace detail {
         inline std::uint32_t to_normalized(std::uint32_t c) {
             const unsigned char table[] =
-                "AAAAAAACEEEEIIII"
-                "DNOOOOO\xd7\xd8UUUUYI\xdf"
-                "aaaaaaaceeeeiiii\xf0nooooo\xf7\xf8uuuuy\xfey"
-                "AaAaAaCcCcCcCcDd"
-                "DdEeEeEeEeEeGgGg"
-                "GgGgHhHhIiIiIiIi"
-                "IiJjJjKkkLlLlLlL"
-                "lLlNnNnNnnNnOoOo"
-                "OoOoRrRrRrSsSsSs"
-                "SsTtTtTtUuUuUuUu"
-                "UuUuWwYyYZzZzZzF";        
-            if (c >= 0xc0 && c < sizeof(table) + 0xc0) {
-                return table[c - 0xc0];
+                "AAAAAAACEEEEIIIIDNOOOOO..UUUUYI."
+                "aaaaaaaceeeeiiii.nooooo..uuuuy.y"
+                "AaAaAaCcCcCcCcDdDdEeEeEeEeEeGgGg"
+                "GgGgHhHhIiIiIiIiIiJjJjKkkLlLlLlL"
+                "lLlNnNnNnnNnOoOoOoOoRrRrRrSsSsSs"
+                "SsTtTtTtUuUuUuUuUuUuWwYyYZzZzZzF";
+            if (c >= 0xc0 && c < 0xc0 + sizeof(table)) {
+                unsigned char cc = table[c - 0xc0];
+                if (cc != '.') {
+                    return cc;
+                }
             }
             return c;
         }
