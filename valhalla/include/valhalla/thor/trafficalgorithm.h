@@ -1,11 +1,12 @@
 #ifndef VALHALLA_THOR_TRAFFICALGORITHM_H_
 #define VALHALLA_THOR_TRAFFICALGORITHM_H_
 
-#include <vector>
+#include <cstdint>
 #include <map>
+#include <memory>
 #include <unordered_map>
 #include <utility>
-#include <memory>
+#include <vector>
 
 #include <valhalla/thor/astar.h>
 
@@ -20,17 +21,15 @@ namespace thor {
  */
 class TrafficAlgorithm : public AStarPathAlgorithm {
 public:
-
   /**
    * Constructor.
    */
   TrafficAlgorithm();
 
-   /**
-    * Destructor
-    */
-   virtual ~TrafficAlgorithm();
-
+  /**
+   * Destructor
+   */
+  virtual ~TrafficAlgorithm();
 
   /**
    * Form path between and origin and destination location using
@@ -38,16 +37,17 @@ public:
    * @param  origin  Origin location
    * @param  dest    Destination location
    * @param  graphreader  Graph reader for accessing routing graph.
-   * @param  costing  An array of costing methods, one per TravelMode.
+   * @param  mode_costing  An array of costing methods, one per TravelMode.
    * @param  mode     Travel mode from the origin.
    * @return  Returns the path edges (and elapsed time/modes at end of
    *          each edge).
    */
-  std::vector<PathInfo> GetBestPath(baldr::PathLocation& origin,
-           baldr::PathLocation& dest, baldr::GraphReader& graphreader,
-           const std::shared_ptr<sif::DynamicCost>* mode_costing,
-           const sif::TravelMode mode);
-
+  std::multimap<float, std::vector<PathInfo>>
+  GetBestPath(valhalla::Location& origin,
+              valhalla::Location& dest,
+              baldr::GraphReader& graphreader,
+              const std::shared_ptr<sif::DynamicCost>* mode_costing,
+              const sif::TravelMode mode);
 
 protected:
   // Map of real-time speeds
@@ -58,11 +58,10 @@ protected:
    * Get address of the real-time speed table for the specified tile.
    * Loads the speeds if they are not yet loaded.
    */
-  std::vector<uint8_t>& GetRealTimeSpeeds(const baldr::GraphId& graphid,
-                                          baldr::GraphReader& graphreader);
+  std::vector<uint8_t>& GetRealTimeSpeeds(const uint32_t tileid, baldr::GraphReader& graphreader);
 };
 
-}
-}
+} // namespace thor
+} // namespace valhalla
 
-#endif  // VALHALLA_THOR_TRAFFICALGORITHM_H_
+#endif // VALHALLA_THOR_TRAFFICALGORITHM_H_

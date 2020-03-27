@@ -1,7 +1,9 @@
 #include "baldr/merge.h"
 #include "baldr/graphreader.h"
+#include "baldr/tilehierarchy.h"
 
 #include <boost/range/adaptor/map.hpp>
+#include <utility>
 
 namespace bra = boost::adaptors;
 
@@ -11,9 +13,9 @@ namespace merge {
 
 namespace {
 
-uint64_t count_tiles_in_levels(GraphReader &reader) {
+uint64_t count_tiles_in_levels(GraphReader& reader) {
   uint64_t tile_count = 0;
-  for (auto level : reader.GetTileHierarchy().levels() | bra::map_values) {
+  for (auto level : TileHierarchy::levels() | bra::map_values) {
     tile_count += level.tiles.ncolumns() * level.tiles.nrows();
   }
   return tile_count;
@@ -34,19 +36,21 @@ namespace iter {
 // which isn't directly obtainable from the DirectedEdge structure.
 struct edges {
   struct const_iterator {
-    const DirectedEdge *ptr;
+    const DirectedEdge* ptr;
     GraphId id;
 
-    const_iterator() : ptr(nullptr), id(0) {}
-    const_iterator(const DirectedEdge *p, GraphId i) : ptr(p), id(i) {}
+    const_iterator() : ptr(nullptr), id(0) {
+    }
+    const_iterator(const DirectedEdge* p, GraphId i) : ptr(p), id(i) {
+    }
 
     const_iterator operator+(uint64_t i) const {
       return const_iterator(ptr + i, id + i);
     }
 
-    const_iterator &operator++() {
+    const_iterator& operator++() {
       ++ptr;
-      id++;
+      ++id;
       return *this;
     }
 
@@ -56,27 +60,28 @@ struct edges {
       return ret;
     }
 
-    std::pair<const DirectedEdge *const, GraphId> operator*() const {
-      return std::pair<const DirectedEdge *const, GraphId>(ptr, GraphId(id));
+    std::pair<const DirectedEdge* const, GraphId> operator*() const {
+      return std::pair<const DirectedEdge* const, GraphId>(ptr, GraphId(id));
     }
 
-    bool operator!=(const const_iterator &other) const {
+    bool operator!=(const const_iterator& other) const {
       return (ptr != other.ptr) || (id != other.id);
     }
   };
 
-  edges(GraphReader &reader, GraphId node_id) {
-    auto *tile = reader.GetGraphTile(node_id);
-    auto *node_info = tile->node(node_id);
-
+  edges(const GraphTile* tile, GraphId node_id) {
+    auto* node_info = tile->node(node_id);
     auto edge_idx = node_info->edge_index();
-    m_begin = const_iterator(tile->directededge(edge_idx),
-                             node_id.Tile_Base() + uint64_t(edge_idx));
+    m_begin = const_iterator(tile->directededge(edge_idx), node_id.Tile_Base() + uint64_t(edge_idx));
     m_end = m_begin + node_info->edge_count();
   }
 
-  const_iterator begin() const { return m_begin; }
-  const_iterator end()   const { return m_end; }
+  const_iterator begin() const {
+    return m_begin;
+  }
+  const_iterator end() const {
+    return m_end;
+  }
 
 private:
   const_iterator m_begin, m_end;
@@ -88,16 +93,14 @@ private:
 
 namespace detail {
 
-edge_collapser::edge_collapser(GraphReader &reader, edge_tracker &tracker,
-                               std::function<bool(const DirectedEdge *)> edge_merge_pred,
-                               std::function<bool(const DirectedEdge *)> edge_allowed_pred,
-                               std::function<void(const path &)> func)
-  : m_reader(reader)
-  , m_tracker(tracker)
-  , m_edge_merge_predicate(edge_merge_pred)
-  , m_edge_allowed_predicate(edge_allowed_pred)
-  , m_func(func)
-{}
+edge_collapser::edge_collapser(GraphReader& reader,
+                               edge_tracker& tracker,
+                               std::function<bool(const DirectedEdge*)> edge_merge_pred,
+                               std::function<bool(const DirectedEdge*)> edge_allowed_pred,
+                               std::function<void(const path&)> func)
+    : m_reader(reader), m_tracker(tracker), m_edge_merge_predicate(std::move(edge_merge_pred)),
+      m_edge_allowed_predicate(std::move(edge_allowed_pred)), m_func(std::move(func)) {
+}
 
 // returns the pair of nodes reachable from the given @node_id where they
 // are the only two nodes reachable based on the predicate methods.
@@ -105,7 +108,12 @@ std::pair<GraphId, GraphId> edge_collapser::nodes_reachable_from(GraphId node_id
   static const std::pair<GraphId, GraphId> none;
   GraphId first, second;
 
-  for (const auto &edge : iter::edges(m_reader, node_id)) {
+  // Get the tile of the node, return none if the tile is not found
+  auto* tile = m_reader.GetGraphTile(node_id);
+  if (tile == nullptr) {
+    return none;
+  }
+  for (const auto& edge : iter::edges(tile, node_id)) {
     // Check if this edge excludes merging at this node
     if (!m_edge_merge_predicate(edge.first)) {
       return none;
@@ -161,20 +169,21 @@ GraphId edge_collapser::next_node_id(GraphId last_node_id, GraphId node_id) {
   }
 }
 
+// Get the edge Id between 2 nodes. Will return an invalid edge Id if there
+// is no "allowed" edge between the 2 nodes.
 GraphId edge_collapser::edge_between(GraphId cur, GraphId next) {
-  GraphId edge_id;
-  for (const auto &edge : iter::edges(m_reader, cur)) {
-    // Skip edges that are not allowed
-    if (!m_edge_allowed_predicate(edge.first)) {
-      continue;
-    }
-    if (edge.first->endnode() == next) {
-      edge_id = edge.second;
-      break;
+  // Get the tile of the current node, return none if the tile is not found
+  const GraphTile* tile = m_reader.GetGraphTile(cur);
+  if (tile == nullptr) {
+    return {};
+  }
+  for (const auto& edge : iter::edges(tile, cur)) {
+    // Return the edge Id if endnode matches and the edge is allowed
+    if (edge.first->endnode() == next && m_edge_allowed_predicate(edge.first)) {
+      return edge.second;
     }
   }
-  assert(bool(edge_id));
-  return edge_id;
+  return {};
 }
 
 // explore starts walking the graph from a single node, building a forward and
@@ -188,32 +197,47 @@ void edge_collapser::explore(GraphId node_id) {
     return;
   }
 
-  // if either edge has been marked, then don't explore down either of them.
-  if (m_tracker.get(edge_between(node_id, nodes.first)) ||
-      m_tracker.get(edge_between(node_id, nodes.second))) {
+  // if either edge has been marked or is invalid (was not allowed in the
+  // edge between method) then don't explore down either of them.
+  GraphId e1 = edge_between(node_id, nodes.first);
+  if (!e1.Is_Valid() || m_tracker.get(e1)) {
+    return;
+  }
+  GraphId e2 = edge_between(node_id, nodes.second);
+  if (!e2.Is_Valid() || m_tracker.get(e2)) {
     return;
   }
 
+  // Construct forward path and reverse path. If a loop is detected on the
+  // first explore method do not call the second as it will created overlapping
+  // edges.
   path forward(node_id), reverse(node_id);
-
-  explore(node_id, nodes.first,  forward, reverse);
-  explore(node_id, nodes.second, reverse, forward);
-
+  bool loop = explore(node_id, nodes.first, forward, reverse);
+  if (!loop) {
+    explore(node_id, nodes.second, reverse, forward);
+  }
   m_func(forward);
   m_func(reverse);
 }
 
 // walk in a single direction, using the "direction" given by two nodes to
-// select which edge is considered to be "forward".
-void edge_collapser::explore(GraphId prev, GraphId cur, path &forward, path &reverse) {
+// select which edge is considered to be "forward". Returns true if a loop
+// is found, otherwise returns false.
+bool edge_collapser::explore(GraphId prev, GraphId cur, path& forward, path& reverse) {
   const auto original_node_id = prev;
 
   GraphId maybe_next;
   do {
     auto e1 = edge_between(prev, cur);
+    if (!e1.Is_Valid()) {
+      return false;
+    }
     forward.push_back(segment(prev, e1, cur));
     m_tracker.set(e1);
     auto e2 = edge_between(cur, prev);
+    if (!e2.Is_Valid()) {
+      return false;
+    }
     reverse.push_front(segment(cur, e2, prev));
     m_tracker.set(e2);
 
@@ -222,45 +246,37 @@ void edge_collapser::explore(GraphId prev, GraphId cur, path &forward, path &rev
       prev = cur;
       cur = maybe_next;
       if (cur == original_node_id) {
-        // circular!
-        break;
+        // Loop is detected - add last edge and return true to indicate a loop
+        auto e1 = edge_between(prev, cur);
+        if (!e1.Is_Valid()) {
+          return false;
+        }
+        forward.push_back(segment(prev, e1, cur));
+        m_tracker.set(e1);
+        auto e2 = edge_between(cur, prev);
+        if (!e2.Is_Valid()) {
+          return false;
+        }
+        reverse.push_front(segment(cur, e2, prev));
+        m_tracker.set(e2);
+        return true;
       }
     }
   } while (maybe_next);
-}
-
-// utility function to make a path out of a single edge. this is called once all
-// the collapsible paths have been found and single edges are all that's left.
-path make_single_edge_path(GraphReader &reader, GraphId edge_id) {
-  auto *edge = reader.GetGraphTile(edge_id)->directededge(edge_id);
-  auto node_id = edge->endnode();
-  auto opp_edge_idx = edge->opp_index();
-  auto edge_idx = reader.GetGraphTile(node_id)->node(node_id)->edge_index() + opp_edge_idx;
-  GraphId opp_edge_id(node_id.tileid(), node_id.level(), edge_idx);
-  auto *opp_edge = reader.GetGraphTile(opp_edge_id)->directededge(opp_edge_id);
-  auto start_node_id = opp_edge->endnode();
-
-  path p(segment(start_node_id, edge_id, node_id));
-  return p;
+  return false;
 }
 
 } // namespace detail
 
 segment::segment(GraphId start, GraphId edge, GraphId end)
-  : m_start(start)
-  , m_edge(edge)
-  , m_end(end)
-{}
+    : m_start(start), m_edge(edge), m_end(end) {
+}
 
-path::path(segment s)
-  : m_start(s.start())
-  , m_end(s.end()) {
+path::path(segment s) : m_start(s.start()), m_end(s.end()) {
   m_edges.push_back(s.edge());
 }
 
-path::path(GraphId node_id)
-  : m_start(node_id)
-  , m_end(node_id) {
+path::path(GraphId node_id) : m_start(node_id), m_end(node_id) {
 }
 
 void path::push_back(segment s) {
@@ -275,6 +291,6 @@ void path::push_front(segment s) {
   m_edges.push_front(s.edge());
 }
 
-}
-}
-}
+} // namespace merge
+} // namespace baldr
+} // namespace valhalla

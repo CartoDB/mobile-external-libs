@@ -1,12 +1,14 @@
 #ifndef VALHALLA_MIDGARD_POLYLINE2_H_
 #define VALHALLA_MIDGARD_POLYLINE2_H_
 
-#include <valhalla/midgard/point2.h>
-#include <valhalla/midgard/pointll.h>
+#include <cstdint>
 #include <valhalla/midgard/aabb2.h>
 #include <valhalla/midgard/linesegment2.h>
+#include <valhalla/midgard/point2.h>
+#include <valhalla/midgard/pointll.h>
 
 #include <tuple>
+#include <unordered_set>
 
 namespace valhalla {
 namespace midgard {
@@ -15,16 +17,15 @@ namespace midgard {
  * 2-D polyline. This is a template class that works with Point2
  * (Euclidean x,y) or PointLL (latitude,longitude).
  */
-template <class coord_t>
-class Polyline2 {
- public:
+template <class coord_t> class Polyline2 {
+public:
   Polyline2();
 
   /**
    * Constructor given a list of points.
    * @param  pts  List of points.
    */
-  Polyline2(std::vector<coord_t>& pts);
+  Polyline2(const std::vector<coord_t>& pts);
 
   /**
    * Gets the list of points.
@@ -52,16 +53,15 @@ class Polyline2 {
    * @param   pts  Polyline vertices.
    * @return  Returns the length of the polyline.
    */
-  template <class container_t>
-  static float Length(const container_t& pts);
+  template <class container_t> static float Length(const container_t& pts);
 
   /**
-   * Finds the closest point to the supplied polyline as well as the distance
-   * squared to that point and the index of the segment where the closest
+   * Finds the closest point to the supplied point as well as the distance
+   * to that point and the index of the segment where the closest
    * point lies.
-   * @param   pts     List of points on the polyline.
+   * @param   pt     point to find distance from
    * @return  tuple of <Closest point along the polyline,
-   *                    Distance squared (meters) of the closest point,
+   *                    Distance in meters of the closest point,
    *                    Index of the segment of the polyline which contains
    *                      the closest point >
    */
@@ -69,33 +69,36 @@ class Polyline2 {
 
   /**
    * Generalize this polyline.
-   * @param  t   Generalization tolerance.
-   * @return  Returns the number of points in the generalized polyline.
+   * @param   t         Generalization tolerance.
+   * @param   indices   List of indices of points not to generalize
+   * @return  returns the number of points in the generalized polyline.
    */
-  uint32_t Generalize(const float t);
+  uint32_t Generalize(const float t, const std::unordered_set<size_t>& indices = {});
 
   /**
    * Get a generalized polyline from this polyline. This polyline remains
    * unchanged.
-   * @param  t   Generalization tolerance.
-   * @return   Returns the generalized polyline.
+   * @param    t   Generalization tolerance.
+   * @param    indices   List of indices of points not to generalize
+   * @return   returns the generalized polyline.
    */
-  Polyline2 GeneralizedPolyline(const float t);
+  Polyline2 GeneralizedPolyline(const float t, const std::unordered_set<size_t>& indices = {});
 
   /**
    * Generalize the given list of points
    *
    * @param polyline    the list of points
    * @param epsilon     the tolerance used in removing points
-   *
+   * @param  indices    list of indices of points not to generalize
    */
   template <class container_t>
-  static void Generalize(container_t& polyline, float epsilon);
+  static void
+  Generalize(container_t& polyline, float epsilon, const std::unordered_set<size_t>& indices = {});
 
   /**
    * Clip this polyline to the specified bounding box.
    * @param box  Bounding box to clip this polyline to.
-   * @return  Returns the number of vertices in hte clipped polygon.
+   * @return  Returns the number of vertices in the clipped polygon.
    */
   uint32_t Clip(const AABB2<coord_t>& box);
 
@@ -106,12 +109,19 @@ class Polyline2 {
    */
   Polyline2 ClippedPolyline(const AABB2<coord_t>& box);
 
+  /**
+   * Checks if the polylines are equal
+   * @param   other  the other polyline to check against this one
+   * @return         true if they are equal false otherwise
+   */
+  bool operator==(const Polyline2<coord_t>& other) const;
+
 protected:
   // Polyline points
   std::vector<coord_t> pts_;
 };
 
-}
-}
+} // namespace midgard
+} // namespace valhalla
 
-#endif  // VALHALLA_MIDGARD_POLYLINE2_H_
+#endif // VALHALLA_MIDGARD_POLYLINE2_H_

@@ -1,10 +1,10 @@
-#include "config.h"
 #include "odin/transitrouteinfo.h"
 #include "odin/util.h"
 
 namespace valhalla {
 namespace odin {
 
+#ifdef LOGGING_LEVEL_TRACE
 std::string TransitRouteInfo::ToParameterString() const {
   const std::string delim = ", ";
   std::string str;
@@ -49,6 +49,7 @@ std::string TransitRouteInfo::ToParameterString() const {
 
   return str;
 }
+#endif
 
-}
-}
+} // namespace odin
+} // namespace valhalla

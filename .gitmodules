@@ -2,3 +2,11 @@
 	path = boost
 	url = https://github.com/boostorg/boost.git
 	branch = master
+[submodule "angle-uwp"]
+	path = angle-uwp
+	url = https://github.com/nutiteq/angle-uwp.git
+	branch = master
+[submodule "angle-metal"]
+	path = angle-metal
+	url = https://github.com/nutiteq/angle-metal.git
+	branch = master

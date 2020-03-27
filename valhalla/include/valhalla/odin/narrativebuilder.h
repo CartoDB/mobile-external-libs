@@ -1,15 +1,16 @@
 #ifndef VALHALLA_ODIN_NARRATIVEBUILDER_H_
 #define VALHALLA_ODIN_NARRATIVEBUILDER_H_
 
+#include <cstdint>
 #include <vector>
 
 #include <valhalla/baldr/verbal_text_formatter.h>
 
-#include <valhalla/proto/trippath.pb.h>
-#include <valhalla/proto/directions_options.pb.h>
 #include <valhalla/odin/enhancedtrippath.h>
-#include <valhalla/odin/narrative_dictionary.h>
 #include <valhalla/odin/maneuver.h>
+#include <valhalla/odin/narrative_dictionary.h>
+#include <valhalla/proto/options.pb.h>
+#include <valhalla/proto/trip.pb.h>
 
 namespace valhalla {
 namespace odin {
@@ -22,10 +23,9 @@ constexpr uint32_t kVerbalPostElementMaxCount = 2;
 const std::string kVerbalDelim = ", ";
 
 class NarrativeBuilder {
- public:
-
-  NarrativeBuilder(const DirectionsOptions& directions_options,
-                   const EnhancedTripPath* trip_path,
+public:
+  NarrativeBuilder(const Options& options,
+                   const EnhancedTripLeg* trip_path,
                    const NarrativeDictionary& dictionary);
 
   virtual ~NarrativeBuilder() = default;
@@ -36,17 +36,14 @@ class NarrativeBuilder {
   NarrativeBuilder(const NarrativeBuilder&) = default;
   NarrativeBuilder& operator=(const NarrativeBuilder&) = default;
 
-  void Build(const DirectionsOptions& directions_options,
-             const EnhancedTripPath* etp, std::list<Maneuver>& maneuvers);
+  void Build(const Options& options, const EnhancedTripLeg* etp, std::list<Maneuver>& maneuvers);
 
- protected:
-
+protected:
   /////////////////////////////////////////////////////////////////////////////
   std::string FormStartInstruction(Maneuver& maneuver);
 
   std::string FormVerbalStartInstruction(Maneuver& maneuver,
-                                         uint32_t element_max_count =
-                                             kVerbalPreElementMaxCount,
+                                         uint32_t element_max_count = kVerbalPreElementMaxCount,
                                          const std::string& delim = kVerbalDelim);
 
   /////////////////////////////////////////////////////////////////////////////
@@ -57,57 +54,47 @@ class NarrativeBuilder {
   std::string FormVerbalDestinationInstruction(Maneuver& maneuver);
 
   /////////////////////////////////////////////////////////////////////////////
-  std::string FormBecomesInstruction(Maneuver& maneuver,
-                                     Maneuver* prev_maneuver);
+  std::string FormBecomesInstruction(Maneuver& maneuver, Maneuver* prev_maneuver);
 
   std::string FormVerbalBecomesInstruction(Maneuver& maneuver,
                                            Maneuver* prev_maneuver,
-                                           uint32_t element_max_count =
-                                               kVerbalPreElementMaxCount,
+                                           uint32_t element_max_count = kVerbalPreElementMaxCount,
                                            const std::string& delim = kVerbalDelim);
 
   /////////////////////////////////////////////////////////////////////////////
   std::string FormContinueInstruction(Maneuver& maneuver);
 
-  std::string FormVerbalAlertContinueInstruction(
-      Maneuver& maneuver, uint32_t element_max_count =
-          kVerbalAlertElementMaxCount,
-      const std::string& delim = kVerbalDelim);
+  std::string
+  FormVerbalAlertContinueInstruction(Maneuver& maneuver,
+                                     uint32_t element_max_count = kVerbalAlertElementMaxCount,
+                                     const std::string& delim = kVerbalDelim);
 
   std::string FormVerbalContinueInstruction(Maneuver& maneuver,
-                                            DirectionsOptions_Units units,
-                                            uint32_t element_max_count =
-                                                kVerbalPreElementMaxCount,
+                                            Options_Units units,
+                                            uint32_t element_max_count = kVerbalPreElementMaxCount,
                                             const std::string& delim = kVerbalDelim);
 
   /////////////////////////////////////////////////////////////////////////////
-  std::string FormTurnInstruction(Maneuver& maneuver, Maneuver* prev_maneuver);
+  std::string FormTurnInstruction(Maneuver& maneuver);
 
   std::string FormVerbalAlertTurnInstruction(Maneuver& maneuver,
-                                             Maneuver* prev_maneuver,
-                                             uint32_t element_max_count =
-                                                 kVerbalAlertElementMaxCount,
+                                             uint32_t element_max_count = kVerbalAlertElementMaxCount,
                                              const std::string& delim = kVerbalDelim);
 
   std::string FormVerbalTurnInstruction(Maneuver& maneuver,
-                                        Maneuver* prev_maneuver,
-                                        uint32_t element_max_count =
-                                            kVerbalPreElementMaxCount,
+                                        uint32_t element_max_count = kVerbalPreElementMaxCount,
                                         const std::string& delim = kVerbalDelim);
 
   /////////////////////////////////////////////////////////////////////////////
-  std::string FormUturnInstruction(Maneuver& maneuver, Maneuver* prev_maneuver);
+  std::string FormUturnInstruction(Maneuver& maneuver);
 
-  std::string FormVerbalAlertUturnInstruction(Maneuver& maneuver,
-                                              Maneuver* prev_maneuver,
-                                              uint32_t element_max_count =
-                                                  kVerbalAlertElementMaxCount,
-                                              const std::string& delim = kVerbalDelim);
+  std::string
+  FormVerbalAlertUturnInstruction(Maneuver& maneuver,
+                                  uint32_t element_max_count = kVerbalAlertElementMaxCount,
+                                  const std::string& delim = kVerbalDelim);
 
   std::string FormVerbalUturnInstruction(Maneuver& maneuver,
-                                         Maneuver* prev_maneuver,
-                                         uint32_t element_max_count =
-                                             kVerbalPreElementMaxCount,
+                                         uint32_t element_max_count = kVerbalPreElementMaxCount,
                                          const std::string& delim = kVerbalDelim);
 
   std::string FormVerbalUturnInstruction(uint8_t phrase_id,
@@ -117,45 +104,40 @@ class NarrativeBuilder {
 
   /////////////////////////////////////////////////////////////////////////////
   std::string FormRampStraightInstruction(Maneuver& maneuver,
-                                          bool limit_by_consecutive_count =
-                                              kLimitByConseuctiveCount,
-                                          uint32_t element_max_count =
-                                              kElementMaxCount);
+                                          bool limit_by_consecutive_count = kLimitByConseuctiveCount,
+                                          uint32_t element_max_count = kElementMaxCount);
 
-  std::string FormVerbalAlertRampStraightInstruction(
-      Maneuver& maneuver, bool limit_by_consecutive_count =
-          kLimitByConseuctiveCount,
-      uint32_t element_max_count = kVerbalAlertElementMaxCount,
-      const std::string& delim = kVerbalDelim);
+  std::string
+  FormVerbalAlertRampStraightInstruction(Maneuver& maneuver,
+                                         bool limit_by_consecutive_count = kLimitByConseuctiveCount,
+                                         uint32_t element_max_count = kVerbalAlertElementMaxCount,
+                                         const std::string& delim = kVerbalDelim);
 
-  std::string FormVerbalRampStraightInstruction(
-      Maneuver& maneuver, bool limit_by_consecutive_count =
-          kLimitByConseuctiveCount,
-      uint32_t element_max_count = kVerbalPreElementMaxCount,
-      const std::string& delim = kVerbalDelim);
+  std::string
+  FormVerbalRampStraightInstruction(Maneuver& maneuver,
+                                    bool limit_by_consecutive_count = kLimitByConseuctiveCount,
+                                    uint32_t element_max_count = kVerbalPreElementMaxCount,
+                                    const std::string& delim = kVerbalDelim);
 
-  std::string FormVerbalRampStraightInstruction(
-      uint8_t phrase_id, const std::string& exit_branch_sign,
-      const std::string& exit_toward_sign, const std::string& exit_name_sign);
+  std::string FormVerbalRampStraightInstruction(uint8_t phrase_id,
+                                                const std::string& exit_branch_sign,
+                                                const std::string& exit_toward_sign,
+                                                const std::string& exit_name_sign);
 
   /////////////////////////////////////////////////////////////////////////////
-  std::string FormRampInstruction(
-      Maneuver& maneuver, bool limit_by_consecutive_count =
-          kLimitByConseuctiveCount,
-      uint32_t element_max_count = kElementMaxCount);
+  std::string FormRampInstruction(Maneuver& maneuver,
+                                  bool limit_by_consecutive_count = kLimitByConseuctiveCount,
+                                  uint32_t element_max_count = kElementMaxCount);
 
-  std::string FormVerbalAlertRampInstruction(Maneuver& maneuver,
-                                             bool limit_by_consecutive_count =
-                                                 kLimitByConseuctiveCount,
-                                             uint32_t element_max_count =
-                                                 kVerbalAlertElementMaxCount,
-                                             const std::string& delim = kVerbalDelim);
+  std::string
+  FormVerbalAlertRampInstruction(Maneuver& maneuver,
+                                 bool limit_by_consecutive_count = kLimitByConseuctiveCount,
+                                 uint32_t element_max_count = kVerbalAlertElementMaxCount,
+                                 const std::string& delim = kVerbalDelim);
 
   std::string FormVerbalRampInstruction(Maneuver& maneuver,
-                                        bool limit_by_consecutive_count =
-                                            kLimitByConseuctiveCount,
-                                        uint32_t element_max_count =
-                                            kVerbalPreElementMaxCount,
+                                        bool limit_by_consecutive_count = kLimitByConseuctiveCount,
+                                        uint32_t element_max_count = kVerbalPreElementMaxCount,
                                         const std::string& delim = kVerbalDelim);
 
   std::string FormVerbalRampInstruction(uint8_t phrase_id,
@@ -165,23 +147,19 @@ class NarrativeBuilder {
                                         const std::string& exit_name_sign);
 
   /////////////////////////////////////////////////////////////////////////////
-  std::string FormExitInstruction(
-      Maneuver& maneuver, bool limit_by_consecutive_count =
-          kLimitByConseuctiveCount,
-      uint32_t element_max_count = kElementMaxCount);
+  std::string FormExitInstruction(Maneuver& maneuver,
+                                  bool limit_by_consecutive_count = kLimitByConseuctiveCount,
+                                  uint32_t element_max_count = kElementMaxCount);
 
-  std::string FormVerbalAlertExitInstruction(Maneuver& maneuver,
-                                             bool limit_by_consecutive_count =
-                                                 kLimitByConseuctiveCount,
-                                             uint32_t element_max_count =
-                                                 kVerbalAlertElementMaxCount,
-                                             const std::string& delim = kVerbalDelim);
+  std::string
+  FormVerbalAlertExitInstruction(Maneuver& maneuver,
+                                 bool limit_by_consecutive_count = kLimitByConseuctiveCount,
+                                 uint32_t element_max_count = kVerbalAlertElementMaxCount,
+                                 const std::string& delim = kVerbalDelim);
 
   std::string FormVerbalExitInstruction(Maneuver& maneuver,
-                                        bool limit_by_consecutive_count =
-                                            kLimitByConseuctiveCount,
-                                        uint32_t element_max_count =
-                                            kVerbalPreElementMaxCount,
+                                        bool limit_by_consecutive_count = kLimitByConseuctiveCount,
+                                        uint32_t element_max_count = kVerbalPreElementMaxCount,
                                         const std::string& delim = kVerbalDelim);
 
   std::string FormVerbalExitInstruction(uint8_t phrase_id,
@@ -192,23 +170,19 @@ class NarrativeBuilder {
                                         const std::string& exit_name_sign);
 
   /////////////////////////////////////////////////////////////////////////////
-  std::string FormKeepInstruction(
-      Maneuver& maneuver, bool limit_by_consecutive_count =
-          kLimitByConseuctiveCount,
-      uint32_t element_max_count = kElementMaxCount);
+  std::string FormKeepInstruction(Maneuver& maneuver,
+                                  bool limit_by_consecutive_count = kLimitByConseuctiveCount,
+                                  uint32_t element_max_count = kElementMaxCount);
 
-  std::string FormVerbalAlertKeepInstruction(Maneuver& maneuver,
-                                             bool limit_by_consecutive_count =
-                                                 kLimitByConseuctiveCount,
-                                             uint32_t element_max_count =
-                                                 kVerbalAlertElementMaxCount,
-                                             const std::string& delim = kVerbalDelim);
+  std::string
+  FormVerbalAlertKeepInstruction(Maneuver& maneuver,
+                                 bool limit_by_consecutive_count = kLimitByConseuctiveCount,
+                                 uint32_t element_max_count = kVerbalAlertElementMaxCount,
+                                 const std::string& delim = kVerbalDelim);
 
   std::string FormVerbalKeepInstruction(Maneuver& maneuver,
-                                        bool limit_by_consecutive_count =
-                                            kLimitByConseuctiveCount,
-                                        uint32_t element_max_count =
-                                            kVerbalPreElementMaxCount,
+                                        bool limit_by_consecutive_count = kLimitByConseuctiveCount,
+                                        uint32_t element_max_count = kVerbalPreElementMaxCount,
                                         const std::string& delim = kVerbalDelim);
 
   std::string FormVerbalKeepInstruction(uint8_t phrase_id,
@@ -219,87 +193,82 @@ class NarrativeBuilder {
 
   /////////////////////////////////////////////////////////////////////////////
   std::string FormKeepToStayOnInstruction(Maneuver& maneuver,
-                                          bool limit_by_consecutive_count =
-                                              kLimitByConseuctiveCount,
-                                          uint32_t element_max_count =
-                                              kElementMaxCount);
+                                          bool limit_by_consecutive_count = kLimitByConseuctiveCount,
+                                          uint32_t element_max_count = kElementMaxCount);
 
-  std::string FormVerbalAlertKeepToStayOnInstruction(
-      Maneuver& maneuver, bool limit_by_consecutive_count =
-          kLimitByConseuctiveCount,
-      uint32_t element_max_count = kVerbalAlertElementMaxCount,
-      const std::string& delim = kVerbalDelim);
+  std::string
+  FormVerbalAlertKeepToStayOnInstruction(Maneuver& maneuver,
+                                         bool limit_by_consecutive_count = kLimitByConseuctiveCount,
+                                         uint32_t element_max_count = kVerbalAlertElementMaxCount,
+                                         const std::string& delim = kVerbalDelim);
 
-  std::string FormVerbalKeepToStayOnInstruction(
-      Maneuver& maneuver, bool limit_by_consecutive_count =
-          kLimitByConseuctiveCount,
-      uint32_t element_max_count = kVerbalPreElementMaxCount,
-      const std::string& delim = kVerbalDelim);
+  std::string
+  FormVerbalKeepToStayOnInstruction(Maneuver& maneuver,
+                                    bool limit_by_consecutive_count = kLimitByConseuctiveCount,
+                                    uint32_t element_max_count = kVerbalPreElementMaxCount,
+                                    const std::string& delim = kVerbalDelim);
 
-  std::string FormVerbalKeepToStayOnInstruction(
-      uint8_t phrase_id, const std::string& relative_dir,
-      const std::string& street_name, const std::string& exit_number_sign = "",
-      const std::string& exit_toward_sign = "");
+  std::string FormVerbalKeepToStayOnInstruction(uint8_t phrase_id,
+                                                const std::string& relative_dir,
+                                                const std::string& street_name,
+                                                const std::string& exit_number_sign = "",
+                                                const std::string& exit_toward_sign = "");
 
   /////////////////////////////////////////////////////////////////////////////
   std::string FormMergeInstruction(Maneuver& maneuver);
 
-  std::string FormVerbalAlertMergeInstruction(Maneuver& maneuver,
-                                              uint32_t element_max_count =
-                                                  kVerbalAlertElementMaxCount,
-                                              const std::string& delim = kVerbalDelim);
+  std::string
+  FormVerbalAlertMergeInstruction(Maneuver& maneuver,
+                                  uint32_t element_max_count = kVerbalAlertElementMaxCount,
+                                  const std::string& delim = kVerbalDelim);
 
   std::string FormVerbalMergeInstruction(Maneuver& maneuver,
-                                         uint32_t element_max_count =
-                                             kVerbalPreElementMaxCount,
+                                         uint32_t element_max_count = kVerbalPreElementMaxCount,
                                          const std::string& delim = kVerbalDelim);
 
   /////////////////////////////////////////////////////////////////////////////
   std::string FormEnterRoundaboutInstruction(Maneuver& maneuver);
 
-  std::string FormVerbalAlertEnterRoundaboutInstruction(
-      Maneuver& maneuver, uint32_t element_max_count =
-          kVerbalAlertElementMaxCount,
-      const std::string& delim = kVerbalDelim);
+  std::string
+  FormVerbalAlertEnterRoundaboutInstruction(Maneuver& maneuver,
+                                            uint32_t element_max_count = kVerbalAlertElementMaxCount,
+                                            const std::string& delim = kVerbalDelim);
 
-  std::string FormVerbalEnterRoundaboutInstruction(
-      Maneuver& maneuver,
-      uint32_t element_max_count = kVerbalPreElementMaxCount,
-      const std::string& delim = kVerbalDelim);
+  std::string
+  FormVerbalEnterRoundaboutInstruction(Maneuver& maneuver,
+                                       uint32_t element_max_count = kVerbalPreElementMaxCount,
+                                       const std::string& delim = kVerbalDelim);
 
   /////////////////////////////////////////////////////////////////////////////
   std::string FormExitRoundaboutInstruction(Maneuver& maneuver);
 
-  std::string FormVerbalExitRoundaboutInstruction(Maneuver& maneuver,
-                                                  uint32_t element_max_count =
-                                                      kVerbalPreElementMaxCount,
-                                                  const std::string& delim =
-                                                      kVerbalDelim);
+  std::string
+  FormVerbalExitRoundaboutInstruction(Maneuver& maneuver,
+                                      uint32_t element_max_count = kVerbalPreElementMaxCount,
+                                      const std::string& delim = kVerbalDelim);
 
   /////////////////////////////////////////////////////////////////////////////
   std::string FormEnterFerryInstruction(Maneuver& maneuver);
 
-  std::string FormVerbalAlertEnterFerryInstruction(
-      Maneuver& maneuver, uint32_t element_max_count =
-          kVerbalAlertElementMaxCount,
-      const std::string& delim = kVerbalDelim);
+  std::string
+  FormVerbalAlertEnterFerryInstruction(Maneuver& maneuver,
+                                       uint32_t element_max_count = kVerbalAlertElementMaxCount,
+                                       const std::string& delim = kVerbalDelim);
 
   std::string FormVerbalEnterFerryInstruction(Maneuver& maneuver,
-                                              uint32_t element_max_count =
-                                                  kVerbalPreElementMaxCount,
+                                              uint32_t element_max_count = kVerbalPreElementMaxCount,
                                               const std::string& delim = kVerbalDelim);
 
   /////////////////////////////////////////////////////////////////////////////
   std::string FormExitFerryInstruction(Maneuver& maneuver);
 
-  std::string FormVerbalAlertExitFerryInstruction(
-      Maneuver& maneuver, uint32_t element_max_count =
-          kVerbalAlertElementMaxCount,
-      const std::string& delim = kVerbalDelim);
+  std::string
+  FormVerbalAlertExitFerryInstruction(Maneuver& maneuver,
+                                      uint32_t element_max_count = kVerbalAlertElementMaxCount,
+                                      const std::string& delim = kVerbalDelim);
 
   std::string FormVerbalExitFerryInstruction(Maneuver& maneuver,
-                                             uint32_t element_max_count =
-                                                 kVerbalPreElementMaxCount,
+                                             uint32_t element_max_count = kVerbalPreElementMaxCount,
                                              const std::string& delim = kVerbalDelim);
 
   /////////////////////////////////////////////////////////////////////////////
@@ -310,14 +279,12 @@ class NarrativeBuilder {
   /////////////////////////////////////////////////////////////////////////////
   std::string FormTransitConnectionTransferInstruction(Maneuver& maneuver);
 
-  std::string FormVerbalTransitConnectionTransferInstruction(
-      Maneuver& maneuver);
+  std::string FormVerbalTransitConnectionTransferInstruction(Maneuver& maneuver);
 
   /////////////////////////////////////////////////////////////////////////////
   std::string FormTransitConnectionDestinationInstruction(Maneuver& maneuver);
 
-  std::string FormVerbalTransitConnectionDestinationInstruction(
-      Maneuver& maneuver);
+  std::string FormVerbalTransitConnectionDestinationInstruction(Maneuver& maneuver);
 
   /////////////////////////////////////////////////////////////////////////////
   std::string FormDepartInstruction(Maneuver& maneuver);
@@ -345,8 +312,7 @@ class NarrativeBuilder {
   std::string FormVerbalTransitTransferInstruction(Maneuver& maneuver);
 
   /////////////////////////////////////////////////////////////////////////////
-  std::string FormPostTransitConnectionDestinationInstruction(
-      Maneuver& maneuver);
+  std::string FormPostTransitConnectionDestinationInstruction(Maneuver& maneuver);
 
   std::string FormVerbalPostTransitConnectionDestinationInstruction(
       Maneuver& maneuver,
@@ -354,10 +320,11 @@ class NarrativeBuilder {
       const std::string& delim = kVerbalDelim);
 
   /////////////////////////////////////////////////////////////////////////////
-  std::string FormVerbalPostTransitionInstruction(
-      Maneuver& maneuver, bool include_street_names = false,
-      uint32_t element_max_count = kVerbalPostElementMaxCount,
-      const std::string& delim = kVerbalDelim);
+  std::string
+  FormVerbalPostTransitionInstruction(Maneuver& maneuver,
+                                      bool include_street_names = false,
+                                      uint32_t element_max_count = kVerbalPostElementMaxCount,
+                                      const std::string& delim = kVerbalDelim);
 
   std::string FormVerbalPostTransitionTransitInstruction(Maneuver& maneuver);
 
@@ -367,14 +334,14 @@ class NarrativeBuilder {
    * stop count and language rules.
    *
    * @param stop_count Specified stop count of transit line.
-   * @param transit_stop_count_labels Map of stop count labels.
+   * @param transit_platform_count_labels Map of stop count labels.
    *
-   * @return the transit stop count label based on the value of the specified
+   * @return the transit platform count label based on the value of the specified
    * stop count and language rules.
    */
-  std::string FormTransitStopCountLabel(
+  std::string FormTransitPlatformCountLabel(
       size_t stop_count,
-      const std::unordered_map<std::string, std::string>& transit_stop_count_labels);
+      const std::unordered_map<std::string, std::string>& transit_platform_count_labels);
 
   /**
    * Returns the plural category based on the value of the specified
@@ -386,7 +353,6 @@ class NarrativeBuilder {
    * count and the language rules.
    */
   virtual std::string GetPluralCategory(size_t count);
-
 
   /////////////////////////////////////////////////////////////////////////////
   /**
@@ -407,8 +373,7 @@ class NarrativeBuilder {
    *
    * @return the metric length string of the specified length value.
    */
-  std::string FormMetricLength(float kilometers,
-                               const std::vector<std::string>& metric_lengths);
+  std::string FormMetricLength(float kilometers, const std::vector<std::string>& metric_lengths);
 
   /**
    * Returns the US customary length string of the specified miles value.
@@ -418,20 +383,17 @@ class NarrativeBuilder {
    * @return the US customary length string of the specified length value.
    */
   std::string FormUsCustomaryLength(float miles,
-      const std::vector<std::string>& us_customary_lengths);
+                                    const std::vector<std::string>& us_customary_lengths);
 
   /////////////////////////////////////////////////////////////////////////////
-  std::string FormRelativeTwoDirection(
-      TripDirections_Maneuver_Type type,
-      const std::vector<std::string>& relative_directions);
+  std::string FormRelativeTwoDirection(DirectionsLeg_Maneuver_Type type,
+                                       const std::vector<std::string>& relative_directions);
 
-  std::string FormRelativeThreeDirection(
-      TripDirections_Maneuver_Type type,
-      const std::vector<std::string>& relative_directions);
+  std::string FormRelativeThreeDirection(DirectionsLeg_Maneuver_Type type,
+                                         const std::vector<std::string>& relative_directions);
 
-  std::string FormRelativeTurnDirection(
-      TripDirections_Maneuver_Type type,
-      const std::vector<std::string>& relative_directions);
+  std::string FormRelativeTurnDirection(DirectionsLeg_Maneuver_Type type,
+                                        const std::vector<std::string>& relative_directions);
 
   /////////////////////////////////////////////////////////////////////////////
   /**
@@ -445,9 +407,8 @@ class NarrativeBuilder {
    *
    * @return the transit name.
    */
-  std::string FormTransitName(
-      const Maneuver& maneuver,
-      const std::vector<std::string>& empty_transit_name_labels);
+  std::string FormTransitName(const Maneuver& maneuver,
+                              const std::vector<std::string>& empty_transit_name_labels);
 
   /////////////////////////////////////////////////////////////////////////////
   // TODO make virtual
@@ -479,12 +440,13 @@ class NarrativeBuilder {
    *
    * @return the street names string for the specified street name list.
    */
-  std::string FormStreetNames(
-      const Maneuver& maneuver, const StreetNames& street_names,
-      const std::vector<std::string>* empty_street_name_labels = nullptr,
-      bool enhance_empty_street_names = false, uint32_t max_count = 0,
-      const std::string& delim = "/", const VerbalTextFormatter* verbal_formatter =
-          nullptr);
+  std::string FormStreetNames(const Maneuver& maneuver,
+                              const StreetNames& street_names,
+                              const std::vector<std::string>* empty_street_name_labels = nullptr,
+                              bool enhance_empty_street_names = false,
+                              uint32_t max_count = 0,
+                              const std::string& delim = "/",
+                              const VerbalTextFormatter* verbal_formatter = nullptr);
 
   /**
    * Returns the street names string for the specified street name list.
@@ -505,9 +467,9 @@ class NarrativeBuilder {
    * @return the street names string for the specified street name list.
    */
   std::string FormStreetNames(const StreetNames& street_names,
-                              uint32_t max_count = 0, const std::string& delim = "/",
-                              const VerbalTextFormatter* verbal_formatter =
-                                  nullptr);
+                              uint32_t max_count = 0,
+                              const std::string& delim = "/",
+                              const VerbalTextFormatter* verbal_formatter = nullptr);
 
   /////////////////////////////////////////////////////////////////////////////
   /**
@@ -545,28 +507,27 @@ class NarrativeBuilder {
   /**
    * Combines a simple preposition and a definite article for certain languages.
    */
-  virtual void FormArticulatedPrepositions(std::string& instruction) {}
+  virtual void FormArticulatedPrepositions(std::string& instruction) {
+  }
 
   /////////////////////////////////////////////////////////////////////////////
-  const DirectionsOptions& directions_options_;
-  const EnhancedTripPath* trip_path_;
+  const Options& options_;
+  const EnhancedTripLeg* trip_path_;
   const NarrativeDictionary& dictionary_;
   bool articulated_preposition_enabled_;
-
 };
 
 ///////////////////////////////////////////////////////////////////////////////
 class NarrativeBuilder_csCZ : public NarrativeBuilder {
 
- public:
-    NarrativeBuilder_csCZ(const DirectionsOptions& directions_options,
-        const EnhancedTripPath* trip_path,
-        const NarrativeDictionary& dictionary) :
-        NarrativeBuilder(directions_options, trip_path, dictionary) {
-    }
+public:
+  NarrativeBuilder_csCZ(const Options& options,
+                        const EnhancedTripLeg* trip_path,
+                        const NarrativeDictionary& dictionary)
+      : NarrativeBuilder(options, trip_path, dictionary) {
+  }
 
- protected:
-
+protected:
   /**
    * Returns the plural category based on the value of the specified
    * count and the language rules.
@@ -577,21 +538,19 @@ class NarrativeBuilder_csCZ : public NarrativeBuilder {
    * count and the language rules.
    */
   std::string GetPluralCategory(size_t count) override;
-
 };
 
 ///////////////////////////////////////////////////////////////////////////////
 class NarrativeBuilder_hiIN : public NarrativeBuilder {
 
- public:
-    NarrativeBuilder_hiIN(const DirectionsOptions& directions_options,
-        const EnhancedTripPath* trip_path,
-        const NarrativeDictionary& dictionary) :
-        NarrativeBuilder(directions_options, trip_path, dictionary) {
-    }
+public:
+  NarrativeBuilder_hiIN(const Options& options,
+                        const EnhancedTripLeg* trip_path,
+                        const NarrativeDictionary& dictionary)
+      : NarrativeBuilder(options, trip_path, dictionary) {
+  }
 
- protected:
-
+protected:
   /**
    * Returns the plural category based on the value of the specified
    * count and the language rules.
@@ -602,34 +561,54 @@ class NarrativeBuilder_hiIN : public NarrativeBuilder {
    * count and the language rules.
    */
   std::string GetPluralCategory(size_t count) override;
-
 };
 
 ///////////////////////////////////////////////////////////////////////////////
 class NarrativeBuilder_itIT : public NarrativeBuilder {
 
- public:
-    NarrativeBuilder_itIT(const DirectionsOptions& directions_options,
-        const EnhancedTripPath* trip_path,
-        const NarrativeDictionary& dictionary) :
-        NarrativeBuilder(directions_options, trip_path, dictionary) {
-      // Enable articulated prepositions for Itailian
-      articulated_preposition_enabled_ = true;
-    }
+public:
+  NarrativeBuilder_itIT(const Options& options,
+                        const EnhancedTripLeg* trip_path,
+                        const NarrativeDictionary& dictionary)
+      : NarrativeBuilder(options, trip_path, dictionary) {
+    // Enable articulated prepositions for Itailian
+    articulated_preposition_enabled_ = true;
+  }
 
- protected:
-
+protected:
   /**
    * Combines a simple preposition and a definite article for certain languages.
    */
   void FormArticulatedPrepositions(std::string& instruction) override;
 
- private:
+private:
   static const std::unordered_map<std::string, std::string> articulated_prepositions_;
-
 };
 
-}
-}
+///////////////////////////////////////////////////////////////////////////////
+class NarrativeBuilder_ruRU : public NarrativeBuilder {
 
-#endif  // VALHALLA_ODIN_NARRATIVEBUILDER_H_
+public:
+  NarrativeBuilder_ruRU(const Options& options,
+                        const EnhancedTripLeg* trip_path,
+                        const NarrativeDictionary& dictionary)
+      : NarrativeBuilder(options, trip_path, dictionary) {
+  }
+
+protected:
+  /**
+   * Returns the plural category based on the value of the specified
+   * count and the language rules.
+   *
+   * @param count Specified value to determine plural category.
+   *
+   * @return the plural category based on the value of the specified
+   * count and the language rules.
+   */
+  std::string GetPluralCategory(size_t count) override;
+};
+
+} // namespace odin
+} // namespace valhalla
+
+#endif // VALHALLA_ODIN_NARRATIVEBUILDER_H_
