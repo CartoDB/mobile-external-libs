@@ -227,6 +227,30 @@ get_download_folder()
 #    endif // WINRT
 #  else // !_WIN32
 
+#if TARGET_OS_IPHONE
+#include <CoreFoundation/CoreFoundation.h>
+
+static std::string
+get_current_timezone()
+{
+    CFTimeZoneRef tzRef = CFTimeZoneCopySystem();
+    CFStringRef tzNameRef = CFTimeZoneGetName(tzRef);
+    CFIndex bufferSize = CFStringGetLength(tzNameRef) + 1;
+    char buffer[bufferSize];
+    
+    if (CFStringGetCString(tzNameRef, buffer, bufferSize, kCFStringEncodingUTF8))
+    {
+        CFRelease(tzRef);
+        return std::string(buffer);
+    }
+    
+    CFRelease(tzRef);
+    
+    return "";
+}
+
+#endif
+
 #    if !defined(INSTALL) || HAS_REMOTE_API
 /*
 static
@@ -3833,7 +3857,7 @@ tzdb::current_zone() const
     // we switch to system API, calling functions in
     // CoreFoundation framework.
 #if TARGET_OS_IPHONE
-        std::string result = date::iOSUtils::get_current_timezone();
+        std::string result = get_current_timezone();
         if (!result.empty())
             return locate_zone(result);
 #endif
