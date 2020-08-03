@@ -41,12 +41,12 @@ extern "C" {
 
 #if defined(_MSC_VER) && _MSC_VER > 1310 && \
     (defined(_M_X64) || defined(_M_IX86))
-//#define WEBP_MSC_SSE2  // Visual C++ SSE2 targets
+#define WEBP_MSC_SSE2  // Visual C++ SSE2 targets
 #endif
 
 #if defined(_MSC_VER) && _MSC_VER >= 1500 && \
     (defined(_M_X64) || defined(_M_IX86))
-//#define WEBP_MSC_SSE41  // Visual C++ SSE4.1 targets
+#define WEBP_MSC_SSE41  // Visual C++ SSE4.1 targets
 #endif
 
 // WEBP_HAVE_* are used to indicate the presence of the instruction set in dsp
@@ -54,15 +54,15 @@ extern "C" {
 // Files containing intrinsics will need to be built targeting the instruction
 // set so should succeed on one of the earlier tests.
 #if defined(__SSE2__) || defined(WEBP_MSC_SSE2) || defined(WEBP_HAVE_SSE2)
-//#define WEBP_USE_SSE2
+#define WEBP_USE_SSE2
 #endif
 
 #if defined(__SSE4_1__) || defined(WEBP_MSC_SSE41) || defined(WEBP_HAVE_SSE41)
-//#define WEBP_USE_SSE41
+#define WEBP_USE_SSE41
 #endif
 
 #if defined(__AVX2__) || defined(WEBP_HAVE_AVX2)
-//#define WEBP_USE_AVX2
+#define WEBP_USE_AVX2
 #endif
 
 #if defined(__ANDROID__) && defined(__ARM_ARCH_7A__)
@@ -73,21 +73,21 @@ extern "C" {
 // inline assembly would need to be modified for use with Native Client.
 #if (defined(__ARM_NEON__) || defined(WEBP_ANDROID_NEON) || \
      defined(__aarch64__)) && !defined(__native_client__)
-//#define WEBP_USE_NEON
+#define WEBP_USE_NEON
 #endif
 
 #if defined(_MSC_VER) && _MSC_VER >= 1700 && defined(_M_ARM)
-//#define WEBP_USE_NEON
-//#define WEBP_USE_INTRINSICS
+#define WEBP_USE_NEON
+#define WEBP_USE_INTRINSICS
 #endif
 
 #if defined(__mips__) && !defined(__mips64) && \
     defined(__mips_isa_rev) && (__mips_isa_rev >= 1) && (__mips_isa_rev < 6)
 //#define WEBP_USE_MIPS32
 #if (__mips_isa_rev >= 2)
-//#define WEBP_USE_MIPS32_R2
+#define WEBP_USE_MIPS32_R2
 #if defined(__mips_dspr2) || (__mips_dsp_rev >= 2)
-//#define WEBP_USE_MIPS_DSP_R2
+#define WEBP_USE_MIPS_DSP_R2
 #endif
 #endif
 #endif
