@@ -80,7 +80,7 @@ namespace cglib
     }
 
     template <typename T, typename Traits>
-        bool intersect_triangle(const vec3<T, Traits> & p0, const vec3<T, Traits> & p1, const vec3<T, Traits> & p2, const ray<T, 3, Traits> & r, T * t_ptr = nullptr)
+        bool intersect_triangle(const vec3<T, Traits> & p0, const vec3<T, Traits> & p1, const vec3<T, Traits> & p2, const ray<T, 3, Traits> & r, T * t_ptr = nullptr, vec2<T, Traits> * uv_ptr = nullptr)
     {
         vec3<T, Traits> u = p1 - p0;
         vec3<T, Traits> v = p2 - p0;
@@ -115,6 +115,8 @@ namespace cglib
 
         if (t_ptr)
             *t_ptr = t;
+        if (uv_ptr)
+            *uv_ptr = vec2<T, Traits>(s0, s1);
         return true;
     }
 
