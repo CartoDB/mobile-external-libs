@@ -35,8 +35,6 @@
 #   developer team.
 
 
-cmake_minimum_required(VERSION 2.6)
-
 project(freetype)
 
 set(VERSION_MAJOR "2")

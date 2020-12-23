@@ -1,7 +1,5 @@
 project(pugixml)
 
-cmake_minimum_required(VERSION 2.6)
-
 option(BUILD_SHARED_LIBS "Build shared instead of static library" OFF)
 option(BUILD_TESTS "Build tests" OFF)
 set(BUILD_DEFINES "" CACHE STRING "Build defines")
