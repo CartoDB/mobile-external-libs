@@ -1707,12 +1707,14 @@ make_zoned(TimeZonePtr z)
     return zoned_time<std::chrono::seconds, TimeZonePtr>(std::move(z));
 }
 
+#if !defined(_MSC_VER)
 inline
 zoned_seconds
 make_zoned(const std::string& name)
 {
     return zoned_seconds(name);
 }
+#endif
 
 template <class Duration, class TimeZonePtr
 #if !defined(_MSC_VER) || (_MSC_VER > 1900)
