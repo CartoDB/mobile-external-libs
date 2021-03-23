@@ -11,7 +11,7 @@
 #include <time.h>
 
 NAMESPACE_BEGIN(CryptoPP)
-USING_NAMESPACE(std)
+//USING_NAMESPACE(std)
 
 /// DER Length
 size_t DERLengthEncode(BufferedTransformation &bt, lword length)

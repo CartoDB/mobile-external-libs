@@ -10,7 +10,7 @@
 
 #if CRYPTOPP_GCC_DIAGNOSTIC_AVAILABLE
 # pragma GCC diagnostic ignored "-Wunused"
-# pragma GCC diagnostic ignored "-Wunused-but-set-variable"
+//# pragma GCC diagnostic ignored "-Wunused-but-set-variable"
 #endif
 
 #ifndef CRYPTOPP_IMPORTS
