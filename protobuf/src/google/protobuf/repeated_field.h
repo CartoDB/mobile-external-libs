@@ -1174,19 +1174,17 @@ namespace internal {
 // This code based on net/proto/proto-array-internal.h by Jeffrey Yasskin
 // (jyasskin@google.com).
 template<typename Element>
-class RepeatedPtrIterator
-    : public std::iterator<
-          std::random_access_iterator_tag, Element> {
+class RepeatedPtrIterator {
  public:
-  typedef RepeatedPtrIterator<Element> iterator;
-  typedef std::iterator<
-          std::random_access_iterator_tag, Element> superclass;
+  using iterator = RepeatedPtrIterator<Element>;
+  using iterator_category = std::random_access_iterator_tag;
+  using value_type = typename std::remove_const<Element>::type;
+  using difference_type = std::ptrdiff_t;
+  using pointer = Element*;
+  using reference = Element&;
 
   // Let the compiler know that these are type names, so we don't have to
   // write "typename" in front of them everywhere.
-  typedef typename superclass::reference reference;
-  typedef typename superclass::pointer pointer;
-  typedef typename superclass::difference_type difference_type;
 
   RepeatedPtrIterator() : it_(NULL) {}
   explicit RepeatedPtrIterator(void* const* it) : it_(it) {}
@@ -1266,18 +1264,14 @@ class RepeatedPtrIterator
 // referenced by the iterator.  It should either be "void *" for a mutable
 // iterator, or "const void *" for a constant iterator.
 template<typename Element, typename VoidPtr>
-class RepeatedPtrOverPtrsIterator
-    : public std::iterator<std::random_access_iterator_tag, Element*> {
+class RepeatedPtrOverPtrsIterator {
  public:
-  typedef RepeatedPtrOverPtrsIterator<Element, VoidPtr> iterator;
-  typedef std::iterator<
-          std::random_access_iterator_tag, Element*> superclass;
-
-  // Let the compiler know that these are type names, so we don't have to
-  // write "typename" in front of them everywhere.
-  typedef typename superclass::reference reference;
-  typedef typename superclass::pointer pointer;
-  typedef typename superclass::difference_type difference_type;
+  using iterator = RepeatedPtrOverPtrsIterator<Element, VoidPtr>;
+  using iterator_category = std::random_access_iterator_tag;
+  using value_type = typename std::remove_const<Element>::type;
+  using difference_type = std::ptrdiff_t;
+  using pointer = Element*;
+  using reference = Element&;
 
   RepeatedPtrOverPtrsIterator() : it_(NULL) {}
   explicit RepeatedPtrOverPtrsIterator(VoidPtr* it) : it_(it) {}
