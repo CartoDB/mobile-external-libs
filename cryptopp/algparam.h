@@ -401,7 +401,11 @@ public:
 	virtual ~AlgorithmParametersBase() CRYPTOPP_THROW
 	{
 #ifdef CRYPTOPP_UNCAUGHT_EXCEPTION_AVAILABLE
+#if __cplusplus >= 201703L
+		if (!std::uncaught_exceptions())
+#else
 		if (!std::uncaught_exception())
+#endif
 #else
 		try
 #endif
