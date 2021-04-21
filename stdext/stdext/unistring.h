@@ -272,7 +272,7 @@ namespace unistring {
             if (c > 0xffff) {
                 return c;
             }
-            auto it = std::upper_bound(table.begin(), table.end(), std::pair<std::uint16_t, std::uint16_t>(static_cast<std::uint16_t>(c), 0U));
+            auto it = std::upper_bound(table.begin(), table.end(), std::make_pair(static_cast<std::uint16_t>(c), static_cast<std::uint16_t>(0)));
             if (it == table.end()) {
                 return c;
             }
@@ -523,7 +523,7 @@ namespace unistring {
             if (c > 0xffff) {
                 return c;
             }
-            auto it = std::upper_bound(table.begin(), table.end(), std::pair<std::uint16_t, std::uint16_t>(static_cast<std::uint16_t>(c), 0U));
+            auto it = std::upper_bound(table.begin(), table.end(), std::make_pair(static_cast<std::uint16_t>(c), static_cast<std::uint16_t>(0)));
             if (it == table.end()) {
                 return c;
             }

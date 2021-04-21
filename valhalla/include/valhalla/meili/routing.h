@@ -164,7 +164,8 @@ public:
       // If edgelabel is not null, append it to the label set otherwise append
       // a dummy. In both cases add the label to the priority queue, set its
       // predecessor to kInvalidLabel, and initialize costs to 0.
-      const uint32_t idx = labels_.size();
+      //CARTOHACK
+      const uint32_t idx = static_cast<uint32_t>(labels_.size());
       dest_status_.emplace(dest, idx);
       labels_.emplace_back(edgelabel ? *edgelabel : Label());
       labels_.back().InitAsOrigin(mode, dest, {});
@@ -181,7 +182,8 @@ public:
       // If edgelabel is not null, append it to the label set otherwise append
       // a dummy. In both cases add the label to the priority queue and set its
       // predecessor to kInvalidLabel
-      const uint32_t idx = labels_.size();
+      //CARTOHACK
+      const uint32_t idx = static_cast<uint32_t>(labels_.size());
       node_status_.emplace(nodeid, idx);
       labels_.emplace_back(edgelabel ? *edgelabel : Label());
       labels_.back().InitAsOrigin(mode, kInvalidDestination, nodeid);

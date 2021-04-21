@@ -11,8 +11,6 @@ namespace zlib {
 
     template <typename T>
     inline bool inflate_raw(const void* in_data, std::size_t in_size, const void* dict, std::size_t dict_size, std::vector<T>& out) {
-        const unsigned char* in = reinterpret_cast<const unsigned char*>(in_data);
-
         out.reserve(in_size);
 
         std::vector<unsigned char> buf(16384);
@@ -50,8 +48,6 @@ namespace zlib {
 
     template <typename T>
     inline bool inflate_zlib(const void* in_data, std::size_t in_size, const void* dict, std::size_t dict_size, std::vector<T>& out) {
-        const unsigned char* in = reinterpret_cast<const unsigned char*>(in_data);
-
         out.reserve(in_size);
 
         std::vector<unsigned char> buf(16384);

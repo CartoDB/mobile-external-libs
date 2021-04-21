@@ -1,18 +1,20 @@
 project(sqlite)
 
-set(libsqlite_include_dirs
-        ${CMAKE_CURRENT_SOURCE_DIR}
-)
+file(GLOB sqlite_SRC_FILES "*.c")
 
-set(libsqlite_include_dirs ${libsqlite_include_dirs} PARENT_SCOPE)
+set(sqlite_FLAGS "")
+if(WIN32)
+  set(sqlite_FLAGS "${sqlite_FLAGS}" "-DSQLITE_OS_WINRT" "-DSQLITE_OMIT_WAL")
+endif()
 
-set(SOURCES ./sqlite3.h ./sqlite3.c)
-
-file(GLOB sqlite_SRC_FILES ${SOURCES})
+set(sqlite_INCLUDE_DIRS "${PROJECT_SOURCE_DIR}" PARENT_SCOPE)
 
 if(SINGLE_LIBRARY)
-add_library(sqlite INTERFACE)
-set(sqlite_SRC_FILES ${sqlite_SRC_FILES} PARENT_SCOPE)
+  set(sqlite_SRC_FILES ${sqlite_SRC_FILES} PARENT_SCOPE)
+  set(sqlite_FLAGS ${sqlite_FLAGS} PARENT_SCOPE)
+  add_library(sqlite INTERFACE)
 else()
-add_library(sqlite OBJECT ${SOURCES})
+  add_compile_options(${sqlite_FLAGS})
+  include_directories("${PROJECT_SOURCE_DIR}")
+  add_library(sqlite OBJECT ${sqlite_SRC_FILES})
 endif()

@@ -1,13 +1,20 @@
 project(harfbuzz)
 
-set(CMAKE_BINARY_DIR "${CMAKE_SOURCE_DIR}/build")
+file(GLOB harfbuzz_SRC_FILES "harfbuzz/src/hb*.cc")
 
-file(GLOB harfbuzz_SRC_FILES "src/hb*.cc")
-list(REMOVE_ITEM harfbuzz_SRC_FILES "${CMAKE_CURRENT_SOURCE_DIR}/src/hb-uniscribe.cc" "${CMAKE_CURRENT_SOURCE_DIR}/src/hb-coretext.cc" "${CMAKE_CURRENT_SOURCE_DIR}/src/hb-directwrite.cc" "${CMAKE_CURRENT_SOURCE_DIR}/src/hb-icu.cc" "${CMAKE_CURRENT_SOURCE_DIR}/src/hb-glib.cc" "${CMAKE_CURRENT_SOURCE_DIR}/src/hb-gobject-enums.cc" "${CMAKE_CURRENT_SOURCE_DIR}/src/hb-gobject-structs.cc" "${CMAKE_CURRENT_SOURCE_DIR}/src/hb-graphite2.cc")
+set(harfbuzz_FLAGS "-DHAVE_FREETYPE" "-DHB_NO_MT" "-DHB_NDEBUG" "-DHB_NO_ATEXIT" "-DHB_NO_BUFFER_MESSAGE" "-DHB_NO_BUFFER_SERIALIZE" "-DHB_NO_ERRNO" "-DHB_NO_GETENV" "-DHB_NO_SETLOCALE")
+if(WIN32)
+  set(harfbuzz_FLAGS "${harfbuzz_FLAGS}" "/wd4065" "/wd4244" "/wd4267" "/wd4996")
+endif()
+
+set(harfbuzz_INCLUDE_DIRS "${PROJECT_SOURCE_DIR}/harfbuzz/src" PARENT_SCOPE)
 
 if(SINGLE_LIBRARY)
-add_library(harfbuzz INTERFACE)
-set(harfbuzz_SRC_FILES ${harfbuzz_SRC_FILES} PARENT_SCOPE)
+  set(harfbuzz_SRC_FILES ${harfbuzz_SRC_FILES} PARENT_SCOPE)
+  set(harfbuzz_FLAGS ${harfbuzz_FLAGS} PARENT_SCOPE)
+  add_library(harfbuzz INTERFACE)
 else()
-add_library(harfbuzz OBJECT ${harfbuzz_SRC_FILES})
+  add_compile_options(${harfbuzz_FLAGS})
+  include_directories("${PROJECT_SOURCE_DIR}/harfbuzz/src" "${PROJECT_SOURCE_DIR}/../freetype/config" "${PROJECT_SOURCE_DIR}/../freetype/freetype/include")
+  add_library(harfbuzz OBJECT ${harfbuzz_SRC_FILES})
 endif()

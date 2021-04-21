@@ -1,18 +1,13 @@
 project(pugixml)
 
-set(libpugixml_include_dirs
-        ${CMAKE_CURRENT_SOURCE_DIR}/src
-)
+file(GLOB pugixml_SRC_FILES "pugixml/src/*.cpp")
 
-set(libpugixml_include_dirs ${libpugixml_include_dirs} PARENT_SCOPE)
-
-set(SOURCES ./src/pugixml.hpp ./src/pugiconfig.hpp ./src/pugixml.cpp)
-
-file(GLOB pugixml_SRC_FILES ${SOURCES})
+set(pugixml_INCLUDE_DIRS "${PROJECT_SOURCE_DIR}/pugixml/src" PARENT_SCOPE)
 
 if(SINGLE_LIBRARY)
-add_library(pugixml INTERFACE)
-set(pugixml_SRC_FILES ${pugixml_SRC_FILES} PARENT_SCOPE)
+  set(pugixml_SRC_FILES ${pugixml_SRC_FILES} PARENT_SCOPE)
+  add_library(pugixml INTERFACE)
 else()
-add_library(pugixml OBJECT ${SOURCES})
+  include_directories("${PROJECT_SOURCE_DIR}/pugixml/src")
+  add_library(pugixml OBJECT ${pugixml_SRC_FILES})
 endif()

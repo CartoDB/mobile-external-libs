@@ -1,16 +1,13 @@
 project(miniz)
 
-set(CMAKE_BINARY_DIR "${CMAKE_SOURCE_DIR}/build")
+file(GLOB miniz_SRC_FILES "miniz/miniz.c" "miniz/miniz_zip.c" "miniz/miniz_tinfl.c")
 
-if(ANDROID OR IOS)
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fno-strict-aliasing")
-endif()
-
-file(GLOB miniz_SRC_FILES "miniz.c")
+set(miniz_INCLUDE_DIRS "${PROJECT_SOURCE_DIR}/config" "${PROJECT_SOURCE_DIR}/miniz" PARENT_SCOPE)
 
 if(SINGLE_LIBRARY)
-add_library(miniz INTERFACE)
-set(miniz_SRC_FILES ${miniz_SRC_FILES} PARENT_SCOPE)
+  set(miniz_SRC_FILES ${miniz_SRC_FILES} PARENT_SCOPE)
+  add_library(miniz INTERFACE)
 else()
-add_library(miniz OBJECT ${miniz_SRC_FILES})
+  include_directories("${PROJECT_SOURCE_DIR}/config" "${PROJECT_SOURCE_DIR}/miniz")
+  add_library(miniz OBJECT ${miniz_SRC_FILES})
 endif()

@@ -1,14 +1,13 @@
 project(pvrt)
 
-set(CMAKE_BINARY_DIR "${CMAKE_SOURCE_DIR}/build")
-
 file(GLOB pvrt_SRC_FILES "*.cpp")
 
-include_directories("${PROJECT_SOURCE_DIR}/include")
+set(pvrt_INCLUDE_DIRS "${PROJECT_SOURCE_DIR}" PARENT_SCOPE)
 
 if(SINGLE_LIBRARY)
-add_library(pvrt INTERFACE)
-set(pvrt_SRC_FILES ${pvrt_SRC_FILES} PARENT_SCOPE)
+  set(pvrt_SRC_FILES ${pvrt_SRC_FILES} PARENT_SCOPE)
+  add_library(pvrt INTERFACE)
 else()
-add_library(pvrt OBJECT ${pvrt_SRC_FILES})
+  include_directories("${PROJECT_SOURCE_DIR}")
+  add_library(pvrt OBJECT ${pvrt_SRC_FILES})
 endif()

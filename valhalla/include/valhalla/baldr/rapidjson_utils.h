@@ -17,8 +17,8 @@
   if (!(x))                                                                                          \
   throw std::logic_error(RAPIDJSON_STRINGIFY(x))
 // CARTOHACK
-#undef RAPIDJSON_HAS_CXX11_NOEXCEPT
-#define RAPIDJSON_HAS_CXX11_NOEXCEPT 0
+#undef RAPIDJSON_NOEXCEPT
+#define RAPIDJSON_NOEXCEPT
 
 #include <rapidjson/document.h>
 #include <rapidjson/error/en.h>

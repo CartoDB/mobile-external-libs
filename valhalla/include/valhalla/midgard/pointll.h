@@ -159,7 +159,8 @@ public:
    * @param  dist  Distance in meters from start to find heading to.
    */
   static float HeadingAlongPolyline(const std::vector<PointLL>& pts, const float dist) {
-    return HeadingAlongPolyline(pts, dist, 0, pts.size() - 1);
+    //CARTOHACK
+    return HeadingAlongPolyline(pts, dist, 0, static_cast<uint32_t>(pts.size() - 1));
   }
 
   /**
@@ -184,7 +185,8 @@ public:
    *               used to find the heading to the end point.
    */
   static float HeadingAtEndOfPolyline(const std::vector<PointLL>& pts, const float dist) {
-    return HeadingAtEndOfPolyline(pts, dist, 0, pts.size() - 1);
+    //CARTOHACK
+    return HeadingAtEndOfPolyline(pts, dist, 0, static_cast<uint32_t>(pts.size() - 1));
   }
 
   /**

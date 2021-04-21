@@ -1,14 +1,20 @@
-project(libtess2)
+project(tess2)
 
-set(CMAKE_BINARY_DIR "${CMAKE_SOURCE_DIR}/build")
+file(GLOB tess2_SRC_FILES "source/*.c")
 
-file(GLOB libtess2_SRC_FILES "source/*.c")
+set(tess2_FLAGS "")
+if(WIN32)
+  set(tess2_FLAGS "${tess2_FLAGS}" "/wd4267")
+endif()
 
-include_directories("${PROJECT_SOURCE_DIR}/include")
+set(tess2_INCLUDE_DIRS "${PROJECT_SOURCE_DIR}/include" PARENT_SCOPE)
 
 if(SINGLE_LIBRARY)
-add_library(libtess2 INTERFACE)
-set(libtess2_SRC_FILES ${libtess2_SRC_FILES} PARENT_SCOPE)
+  set(tess2_SRC_FILES ${tess2_SRC_FILES} PARENT_SCOPE)
+  set(tess2_FLAGS ${tess2_FLAGS} PARENT_SCOPE)
+  add_library(tess2 INTERFACE)
 else()
-add_library(libtess2 OBJECT ${libtess2_SRC_FILES})
+  add_compile_options(${tess2_FLAGS})
+  include_directories("${PROJECT_SOURCE_DIR}/include")
+  add_library(tess2 OBJECT ${tess2_SRC_FILES})
 endif()

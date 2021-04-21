@@ -260,7 +260,7 @@ namespace sqlite3pp
 
     int statement::prepare_impl(char const* stmt)
     {
-        return sqlite3_prepare_v2(db_.db_, stmt, strlen(stmt), &stmt_, &tail_);
+        return sqlite3_prepare_v2(db_.db_, stmt, static_cast<int>(strlen(stmt)), &stmt_, &tail_);
     }
 
     void statement::finish()
@@ -340,7 +340,7 @@ namespace sqlite3pp
 
     statement& statement::bind(int idx, char const* value, bool fstatic)
     {
-        THROW_ERR(sqlite3_bind_text(stmt_, idx, value, strlen(value), fstatic ? SQLITE_STATIC : SQLITE_TRANSIENT));
+        THROW_ERR(sqlite3_bind_text(stmt_, idx, value, static_cast<int>(strlen(value)), fstatic ? SQLITE_STATIC : SQLITE_TRANSIENT));
         return *this;
     }
 
