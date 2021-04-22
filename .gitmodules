@@ -4,7 +4,7 @@
 	branch = master
 [submodule "rapidjson"]
 	path = rapidjson
-	url = https://github.com/Tencent/rapidjson.git
+	url = https://github.com/nutiteq/rapidjson.git
 	branch = master
 [submodule "angle-uwp"]
 	path = angle-uwp
@@ -14,43 +14,40 @@
 	path = angle-metal
 	url = https://github.com/nutiteq/angle-metal.git
 	branch = master
-[submodule "cryptopp"]
-	path = cryptopp/cryptopp
-	url = https://github.com/nutiteq/cryptopp.git
-	branch = master
-[submodule "brotli"]
-	path = brotli/brotli
-	url = https://github.com/google/brotli
-	branch = v1.0.9
-[submodule "miniz"]
-	path = miniz/miniz
-	url = https://github.com/richgel999/miniz.git
-	branch = 2.1.0
-[submodule "freetype"]
-	path = freetype/freetype
-	url = https://gitlab.freedesktop.org/freetype/freetype
-	branch = VER-2-10-4
 [submodule "harfbuzz"]
 	path = harfbuzz/harfbuzz
-	url = https://github.com/harfbuzz/harfbuzz.git
-	branch = 2.8.0
-[submodule "libjpeg"]
-	path = libjpeg/libjpeg
-	url = https://github.com/libjpeg-turbo/libjpeg-turbo.git
-	branch = 2.0.6
-[submodule "libpng"]
-	path = libpng/libpng
-	url = https://github.com/glennrp/libpng.git
-	branch = 1.6.37
-[submodule "libwebp"]
-	path = libwebp/libwebp
-	url = https://github.com/webmproject/libwebp.git
-	branch = v1.2.0
-[submodule "zlib"]
+	url = https://github.com/nutiteq/harfbuzz.git
+	branch = master
+[submodule "brotli/brotli"]
+	path = brotli/brotli
+	url = https://github.com/nutiteq/brotli.git
+	branch = master
+[submodule "zlib/zlib"]
 	path = zlib/zlib
-	url = https://github.com/madler/zlib.git
-	branch = v1.2.11
-[submodule "pugixml"]
+	url = https://github.com/nutiteq/zlib.git
+	branch = master
+[submodule "pugixml/pugixml"]
 	path = pugixml/pugixml
-	url = https://github.com/zeux/pugixml.git
-	branch = v1.11.4
+	url = https://github.com/nutiteq/pugixml.git
+	branch = master
+[submodule "miniz/miniz"]
+	path = miniz/miniz
+	url = https://github.com/nutiteq/miniz.git
+[submodule "libwebp/libwebp"]
+	path = libwebp/libwebp
+	url = https://github.com/nutiteq/libwebp.git
+[submodule "libjpeg/libjpeg"]
+	path = libjpeg/libjpeg
+	url = https://github.com/nutiteq/libjpeg-turbo.git
+[submodule "libpng/libpng"]
+	path = libpng/libpng
+	url = https://github.com/nutiteq/libpng.git
+[submodule "freetype/freetype"]
+	path = freetype/freetype
+	url = https://github.com/mtehver/freetype.git
+[submodule "cryptopp/cryptopp"]
+	path = cryptopp/cryptopp
+	url = https://github.com/nutiteq/cryptopp.git
+[submodule "harfbuzz/harfbuzz"]
+	path = harfbuzz/harfbuzz
+	url = https://github.com/nutiteq/harfbuzz.git

@@ -35,6 +35,7 @@ file(GLOB freetype_SRC_FILES
   freetype/src/pshinter/pshinter.c
   freetype/src/psnames/psnames.c
   freetype/src/raster/raster.c
+  freetype/src/sdf/sdf.c
   freetype/src/sfnt/sfnt.c
   freetype/src/smooth/smooth.c
   freetype/src/truetype/truetype.c

@@ -1,6 +1,6 @@
-project(jpeg)
+project(libjpeg)
 
-file(GLOB jpeg_SRC_FILES
+file(GLOB libjpeg_SRC_FILES
   libjpeg/jcapimin.c libjpeg/jcapistd.c libjpeg/jccoefct.c libjpeg/jccolor.c libjpeg/jcdctmgr.c libjpeg/jchuff.c
   libjpeg/jcicc.c libjpeg/jcinit.c libjpeg/jcmainct.c libjpeg/jcmarker.c libjpeg/jcmaster.c libjpeg/jcomapi.c libjpeg/jcparam.c
   libjpeg/jcphuff.c libjpeg/jcprepct.c libjpeg/jcsample.c libjpeg/jctrans.c libjpeg/jdapimin.c libjpeg/jdapistd.c libjpeg/jdatadst.c
@@ -11,16 +11,16 @@ file(GLOB jpeg_SRC_FILES
   libjpeg/jaricom.c libjpeg/jcarith.c libjpeg/jdarith.c libjpeg/jsimd_none.c
 )
 
-set(jpeg_FLAGS "-DNO_GETENV")
+set(libjpeg_FLAGS "-DNO_GETENV")
 
-set(jpeg_INCLUDE_DIRS "${PROJECT_SOURCE_DIR}/config" "${PROJECT_SOURCE_DIR}/libjpeg" PARENT_SCOPE)
+set(libjpeg_INCLUDE_DIRS "${PROJECT_SOURCE_DIR}/config" "${PROJECT_SOURCE_DIR}/libjpeg" PARENT_SCOPE)
 
 if(SINGLE_LIBRARY)
-  set(jpeg_SRC_FILES ${jpeg_SRC_FILES} PARENT_SCOPE)
-  set(jpeg_FLAGS ${jpeg_FLAGS} PARENT_SCOPE)
-  add_library(jpeg INTERFACE)
+  set(libjpeg_SRC_FILES ${libjpeg_SRC_FILES} PARENT_SCOPE)
+  set(libjpeg_FLAGS ${libjpeg_FLAGS} PARENT_SCOPE)
+  add_library(libjpeg INTERFACE)
 else()
-  add_compile_options(${jpeg_FLAGS})
+  add_compile_options(${libjpeg_FLAGS})
   include_directories("${PROJECT_SOURCE_DIR}/config" "${PROJECT_SOURCE_DIR}/libjpeg")
-  add_library(jpeg OBJECT ${jpeg_SRC_FILES})
+  add_library(libjpeg OBJECT ${libjpeg_SRC_FILES})
 endif()
