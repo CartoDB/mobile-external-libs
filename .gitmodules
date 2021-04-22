@@ -14,10 +14,6 @@
 	path = angle-metal
 	url = https://github.com/nutiteq/angle-metal.git
 	branch = master
-[submodule "harfbuzz"]
-	path = harfbuzz/harfbuzz
-	url = https://github.com/nutiteq/harfbuzz.git
-	branch = master
 [submodule "brotli/brotli"]
 	path = brotli/brotli
 	url = https://github.com/nutiteq/brotli.git
