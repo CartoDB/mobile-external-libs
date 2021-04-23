@@ -7,7 +7,7 @@ list(REMOVE_ITEM valhalla_SRC_FILES "${PROJECT_SOURCE_DIR}/source/tyr/actor.cc")
 
 set(valhalla_FLAGS "-DBOOST_SPIRIT_THREADSAFE" "-DBOOST_NO_CXX11_SCOPED_ENUMS" "-DRAPIDJSON_HAS_CXX11_RVALUE_REFS=1" "-DRAPIDJSON_HAS_STDSTRING=1" "-DRAPIDJSON_ENDIAN=RAPIDJSON_LITTLEENDIAN")
 if(WIN32)
-  set(valhalla_FLAGS "${valhalla_FLAGS}" "/wd4018" "/wd4101" "/wd4267" "/wd4305" "/wd4804" "/wd4805")
+  set(valhalla_FLAGS ${valhalla_FLAGS} "/wd4018" "/wd4101" "/wd4267" "/wd4305" "/wd4804" "/wd4805")
 endif()
 
 set(valhalla_INCLUDE_DIRS "${PROJECT_SOURCE_DIR}/include" "${PROJECT_SOURCE_DIR}/include/valhalla" PARENT_SCOPE)

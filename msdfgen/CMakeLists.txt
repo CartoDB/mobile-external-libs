@@ -4,7 +4,7 @@ file(GLOB msdfgen_SRC_FILES "core/*.cpp")
 
 set(msdfgen_FLAGS "")
 if(WIN32)
-  set(msdfgen_FLAGS "${msdfgen_FLAGS}" "/wd4267")
+  set(msdfgen_FLAGS ${msdfgen_FLAGS} "/wd4267")
 endif()
 
 set(msdfgen_INCLUDE_DIRS "${PROJECT_SOURCE_DIR}" PARENT_SCOPE)

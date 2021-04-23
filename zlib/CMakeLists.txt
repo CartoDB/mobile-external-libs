@@ -4,7 +4,7 @@ file(GLOB zlib_SRC_FILES "zlib/*.c")
 
 set(zlib_FLAGS "")
 if(WIN32)
-  set(zlib_FLAGS "${zlib_FLAGS}" "/wd4267")
+  set(zlib_FLAGS ${zlib_FLAGS} "/wd4267")
 endif()
 
 set(zlib_INCLUDE_DIRS "${PROJECT_SOURCE_DIR}/config" "${PROJECT_SOURCE_DIR}/zlib" PARENT_SCOPE)

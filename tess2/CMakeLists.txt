@@ -4,7 +4,7 @@ file(GLOB tess2_SRC_FILES "source/*.c")
 
 set(tess2_FLAGS "")
 if(WIN32)
-  set(tess2_FLAGS "${tess2_FLAGS}" "/wd4267")
+  set(tess2_FLAGS ${tess2_FLAGS} "/wd4267")
 endif()
 
 set(tess2_INCLUDE_DIRS "${PROJECT_SOURCE_DIR}/include" PARENT_SCOPE)

@@ -15,6 +15,11 @@
 #ifndef PNGLCONF_H
 #define PNGLCONF_H
 /* options */
+#define PNG_ARM_NEON_OPT 0
+#define PNG_MIPS_MSA_OPT 0
+#define PNG_POWERPC_VSX_OPT 0
+#define PNG_INTEL_SSE_OPT 0
+
 #define PNG_16BIT_SUPPORTED
 #define PNG_ALIGNED_MEMORY_SUPPORTED
 /*#undef PNG_ARM_NEON_API_SUPPORTED*/

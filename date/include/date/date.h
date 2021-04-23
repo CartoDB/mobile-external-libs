@@ -1027,7 +1027,7 @@ public:
     ~save_ostream()
     {
         if ((this->flags_ & std::ios::unitbuf) &&
-#if __cplusplus >= 201703
+#if __cplusplus >= 201703 && !defined(__APPLE__)
                 std::uncaught_exceptions() == 0 &&
 #else
                 !std::uncaught_exception() &&

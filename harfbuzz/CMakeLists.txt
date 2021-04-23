@@ -4,7 +4,7 @@ file(GLOB harfbuzz_SRC_FILES "harfbuzz/src/hb*.cc")
 
 set(harfbuzz_FLAGS "-DHAVE_FREETYPE" "-DHB_NO_MT" "-DHB_NDEBUG" "-DHB_NO_ATEXIT" "-DHB_NO_BUFFER_MESSAGE" "-DHB_NO_BUFFER_SERIALIZE" "-DHB_NO_ERRNO" "-DHB_NO_GETENV" "-DHB_NO_SETLOCALE")
 if(WIN32)
-  set(harfbuzz_FLAGS "${harfbuzz_FLAGS}" "/wd4065" "/wd4244" "/wd4267" "/wd4996")
+  set(harfbuzz_FLAGS ${harfbuzz_FLAGS} "/wd4065" "/wd4244" "/wd4267" "/wd4996")
 endif()
 
 set(harfbuzz_INCLUDE_DIRS "${PROJECT_SOURCE_DIR}/harfbuzz/src" PARENT_SCOPE)

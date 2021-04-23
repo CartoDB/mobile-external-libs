@@ -37,7 +37,7 @@ file(GLOB protobuf_SRC_FILES
 
 set(protobuf_FLAGS "")
 if(WIN32)
-  set(protobuf_FLAGS "${protobuf_FLAGS}" "/wd4018" "/wd4267")
+  set(protobuf_FLAGS ${protobuf_FLAGS} "/wd4018" "/wd4267")
 endif()
 
 set(protobuf_INCLUDE_DIRS "${PROJECT_SOURCE_DIR}/_config" "${PROJECT_SOURCE_DIR}/src" PARENT_SCOPE)
