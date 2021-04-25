@@ -40,7 +40,8 @@
 	url = https://github.com/nutiteq/libpng.git
 [submodule "freetype/freetype"]
 	path = freetype/freetype
-	url = https://github.com/mtehver/freetype.git
+	url = https://github.com/nutiteq/freetype.git
+	branch = fast-sdf
 [submodule "cryptopp/cryptopp"]
 	path = cryptopp/cryptopp
 	url = https://github.com/nutiteq/cryptopp.git
