@@ -48,3 +48,10 @@
 [submodule "harfbuzz/harfbuzz"]
 	path = harfbuzz/harfbuzz
 	url = https://github.com/nutiteq/harfbuzz.git
+[submodule "protobuf/protobuf"]
+	path = protobuf/protobuf
+	url = https://github.com/nutiteq/protobuf.git
+[submodule "valhalla/valhalla"]
+	path = valhalla/valhalla
+	url = https://github.com/nutiteq/valhalla.git
+	branch = mbtiles-support

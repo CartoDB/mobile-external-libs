@@ -1,46 +1,64 @@
 project(protobuf)
 
 file(GLOB protobuf_SRC_FILES
-  src/google/protobuf/descriptor.cc
-  src/google/protobuf/descriptor_database.cc
-  src/google/protobuf/descriptor.pb.cc
-  src/google/protobuf/dynamic_message.cc
-  src/google/protobuf/extension_set.cc
-  src/google/protobuf/extension_set_heavy.cc
-  src/google/protobuf/generated_message_reflection.cc
-  src/google/protobuf/generated_message_util.cc
-  src/google/protobuf/message.cc
-  src/google/protobuf/message_lite.cc
-  src/google/protobuf/reflection_ops.cc
-  src/google/protobuf/repeated_field.cc
-  src/google/protobuf/service.cc
-  src/google/protobuf/text_format.cc
-  src/google/protobuf/unknown_field_set.cc
-  src/google/protobuf/wire_format.cc
-  src/google/protobuf/wire_format_lite.cc
+  protobuf/src/google/protobuf/any.cc
+  protobuf/src/google/protobuf/any_lite.cc
+  protobuf/src/google/protobuf/arena.cc
+  protobuf/src/google/protobuf/arenastring.cc
+  protobuf/src/google/protobuf/descriptor.cc
+  protobuf/src/google/protobuf/descriptor_database.cc
+  protobuf/src/google/protobuf/descriptor.pb.cc
+  protobuf/src/google/protobuf/dynamic_message.cc
+  protobuf/src/google/protobuf/implicit_weak_message.cc
+  protobuf/src/google/protobuf/extension_set.cc
+  protobuf/src/google/protobuf/extension_set_heavy.cc
+  protobuf/src/google/protobuf/generated_message_reflection.cc
+  protobuf/src/google/protobuf/generated_message_util.cc
+  protobuf/src/google/protobuf/generated_enum_util.cc
+  protobuf/src/google/protobuf/message.cc
+  protobuf/src/google/protobuf/message_lite.cc
+  protobuf/src/google/protobuf/reflection_ops.cc
+  protobuf/src/google/protobuf/repeated_field.cc
+  protobuf/src/google/protobuf/service.cc
+  protobuf/src/google/protobuf/parse_context.cc
+  protobuf/src/google/protobuf/text_format.cc
+  protobuf/src/google/protobuf/unknown_field_set.cc
+  protobuf/src/google/protobuf/wire_format.cc
+  protobuf/src/google/protobuf/wire_format_lite.cc
+  protobuf/src/google/protobuf/status.cc
+  protobuf/src/google/protobuf/map.cc
+  protobuf/src/google/protobuf/map_field.cc
+  protobuf/src/google/protobuf/text_format.cc
 
-  src/google/protobuf/io/coded_stream.cc
-  src/google/protobuf/io/zero_copy_stream_impl.cc
-  src/google/protobuf/io/tokenizer.cc
-  src/google/protobuf/io/zero_copy_stream_impl_lite.cc
-  src/google/protobuf/io/gzip_stream.cc
-  src/google/protobuf/io/printer.cc
-  src/google/protobuf/io/zero_copy_stream.cc
+  protobuf/src/google/protobuf/io/coded_stream.cc
+  protobuf/src/google/protobuf/io/zero_copy_stream_impl.cc
+  protobuf/src/google/protobuf/io/tokenizer.cc
+  protobuf/src/google/protobuf/io/zero_copy_stream_impl_lite.cc
+  protobuf/src/google/protobuf/io/gzip_stream.cc
+  protobuf/src/google/protobuf/io/printer.cc
+  protobuf/src/google/protobuf/io/zero_copy_stream.cc
+  protobuf/src/google/protobuf/io/strtod.cc
+  protobuf/src/google/protobuf/io/io_win32.cc
 
-  src/google/protobuf/stubs/common.cc
-  src/google/protobuf/stubs/once.cc
-  src/google/protobuf/stubs/strutil.cc
-  src/google/protobuf/stubs/stringprintf.cc
-  src/google/protobuf/stubs/structurally_valid.cc
-  src/google/protobuf/stubs/substitute.cc
+  protobuf/src/google/protobuf/stubs/common.cc
+  protobuf/src/google/protobuf/stubs/once.cc
+  protobuf/src/google/protobuf/stubs/strutil.cc
+  protobuf/src/google/protobuf/stubs/stringprintf.cc
+  protobuf/src/google/protobuf/stubs/structurally_valid.cc
+  protobuf/src/google/protobuf/stubs/substitute.cc
+  protobuf/src/google/protobuf/stubs/int128.cc
+  protobuf/src/google/protobuf/stubs/status.cc
+  protobuf/src/google/protobuf/stubs/stringpiece.cc
 )
 
 set(protobuf_FLAGS "")
 if(WIN32)
-  set(protobuf_FLAGS ${protobuf_FLAGS} "/wd4018" "/wd4267")
+  set(protobuf_FLAGS ${protobuf_FLAGS} "-D_SILENCE_CXX17_ITERATOR_BASE_CLASS_DEPRECATION_WARNING" "/wd4018" "/wd4065" "/wd4506" "/wd4267")
+else()
+  set(protobuf_FLAGS ${protobuf_FLAGS} "-DHAVE_PTHREAD")
 endif()
 
-set(protobuf_INCLUDE_DIRS "${PROJECT_SOURCE_DIR}/_config" "${PROJECT_SOURCE_DIR}/src" PARENT_SCOPE)
+set(protobuf_INCLUDE_DIRS "${PROJECT_SOURCE_DIR}/protobuf/src" PARENT_SCOPE)
 
 if(SINGLE_LIBRARY)
   set(protobuf_SRC_FILES ${protobuf_SRC_FILES} PARENT_SCOPE)
@@ -48,6 +66,6 @@ if(SINGLE_LIBRARY)
   add_library(protobuf INTERFACE)
 else()
   add_compile_options(${protobuf_FLAGS})
-  include_directories("${PROJECT_SOURCE_DIR}/_config" "${PROJECT_SOURCE_DIR}/src")
+  include_directories("${PROJECT_SOURCE_DIR}/protobuf/src")
   add_library(protobuf OBJECT ${protobuf_SRC_FILES})
 endif()
