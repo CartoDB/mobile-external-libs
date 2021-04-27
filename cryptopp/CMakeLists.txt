@@ -4,9 +4,7 @@ file(GLOB cryptopp_SRC_FILES "cryptopp/*.cpp")
 list(FILTER cryptopp_SRC_FILES EXCLUDE REGEX ".*(zlib|gzip|lsh[0-9]*|test[0-9]*|bench[0-9]*|validat[0-9]*)[.]cpp")
 
 set(cryptopp_FLAGS "-DNO_OS_DEPENDENCE" "-DCRYPTOPP_DISABLE_ASM" "-DCRYPTOPP_DISABLE_SSE2" "-DCRYPTOPP_DISABLE_SSSE3" "-DCRYPTOPP_DISABLE_SSE4" "-DCRYPTOPP_DISABLE_AVX" "-DCRYPTOPP_DISABLE_AVX2" "-DCRYPTOPP_DISABLE_ARM_NEON" "-DCRYPTOPP_DISABLE_ARM_ASIMD")
-if(IOS)
-  set(cryptopp_FLAGS ${cryptopp_FLAGS} "-DCRYPTOPP_NO_CXX17")
-elseif(WIN32)
+if(WIN32)
   set(cryptopp_FLAGS ${cryptopp_FLAGS} "/wd4242" "/wd4244")
 endif()
 
