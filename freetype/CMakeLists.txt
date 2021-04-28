@@ -47,6 +47,8 @@ file(GLOB freetype_SRC_FILES
 set(freetype_FLAGS "-DFT2_BUILD_LIBRARY")
 if(WIN32)
   set(freetype_FLAGS ${freetype_FLAGS} "/wd4244" "/wd4267" "/wd4312" "/wd4996")
+elseif(ANDROID OR IOS)
+  set(freetype_FLAGS ${freetype_FLAGS} "-Wno-narrowing")
 endif()
 
 set(freetype_INCLUDE_DIRS "${PROJECT_SOURCE_DIR}/config" "${PROJECT_SOURCE_DIR}/freetype/include" PARENT_SCOPE)
