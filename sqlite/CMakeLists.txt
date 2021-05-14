@@ -5,6 +5,8 @@ file(GLOB sqlite_SRC_FILES "*.c")
 set(sqlite_FLAGS "")
 if(WIN32)
   set(sqlite_FLAGS ${sqlite_FLAGS} "-DSQLITE_OS_WINRT" "-DSQLITE_OMIT_WAL")
+elseif(ANDROID OR IOS)
+  set(sqlite_FLAGS ${sqlite_FLAGS} "-Wno-implicit-int-float-conversion")
 endif()
 
 set(sqlite_INCLUDE_DIRS "${PROJECT_SOURCE_DIR}" PARENT_SCOPE)

@@ -9,7 +9,7 @@ set(valhalla_FLAGS "-DBOOST_SPIRIT_THREADSAFE" "-DBOOST_NO_CXX11_SCOPED_ENUMS" "
 if(WIN32)
   set(valhalla_FLAGS ${valhalla_FLAGS} "-D_SILENCE_CXX17_ITERATOR_BASE_CLASS_DEPRECATION_WARNING" "/wd4018" "/wd4101" "/wd4267" "/wd4305" "/wd4334" "/wd4804" "/wd4805")
 elseif(ANDROID OR IOS)
-  set(valhalla_FLAGS ${valhalla_FLAGS} "-Wno-narrowing")
+  set(valhalla_FLAGS ${valhalla_FLAGS} "-Wno-narrowing" "-Wno-shorten-64-to-32")
 endif()
 
 set(valhalla_INCLUDE_DIRS "${PROJECT_SOURCE_DIR}/config" "${PROJECT_SOURCE_DIR}/proto" "${PROJECT_SOURCE_DIR}/proto/valhalla" "${PROJECT_SOURCE_DIR}/valhalla" "${PROJECT_SOURCE_DIR}/valhalla/valhalla" PARENT_SCOPE)
