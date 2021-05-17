@@ -2,9 +2,9 @@ project(sqlite)
 
 file(GLOB sqlite_SRC_FILES "*.c")
 
-set(sqlite_FLAGS "")
+set(sqlite_FLAGS "-DSQLITE_OMIT_DEPRECATED" "-DSQLITE_OMIT_WAL" "-DSQLITE_OMIT_COMPILEOPTION_DIAGS" "-DSQLITE_OMIT_EXPLAIN" "-DSQLITE_OMIT_LOAD_EXTENSION" "-DSQLITE_OMIT_SHARED_CACHE")
 if(WIN32)
-  set(sqlite_FLAGS ${sqlite_FLAGS} "-DSQLITE_OS_WINRT" "-DSQLITE_OMIT_WAL")
+  set(sqlite_FLAGS ${sqlite_FLAGS} "-DSQLITE_OS_WINRT")
 elseif(ANDROID OR IOS)
   set(sqlite_FLAGS ${sqlite_FLAGS} "-Wno-implicit-int-float-conversion")
 endif()
