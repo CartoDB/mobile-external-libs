@@ -72,11 +72,6 @@ namespace sqlite3pp
 
     } // namespace
 
-    int enable_shared_cache(bool fenable)
-    {
-        return sqlite3_enable_shared_cache(fenable);
-    }
-
     database::database(char const* dbname):
         db_(nullptr)
     {
@@ -370,14 +365,14 @@ namespace sqlite3pp
         return *this;
     }
 
-	statement& statement::bind(char const* name, uint32_t value)
-	{
-		const int idx = sqlite3_bind_parameter_index(stmt_, name);
-		assert(idx);
-		bind(idx, value);
-		return *this;
-	}
-	
+    statement& statement::bind(char const* name, uint32_t value)
+    {
+        const int idx = sqlite3_bind_parameter_index(stmt_, name);
+        assert(idx);
+        bind(idx, value);
+        return *this;
+    }
+
     statement& statement::bind(char const* name, double value)
     {
         const int idx = sqlite3_bind_parameter_index(stmt_, name);
@@ -477,31 +472,6 @@ namespace sqlite3pp
             rc = SQLITE_OK;
         return rc;
     }
-
-    int command::execute_all()
-    {
-        int rc = eexecute();
-        if (rc != SQLITE_OK) return rc;
-
-        char const* sql = tail_;
-
-        while (strlen(sql) > 0) { // sqlite3_complete() is broken.
-            sqlite3_stmt* old_stmt = stmt_;
-
-            if ((rc = prepare_impl(sql)) != SQLITE_OK) return rc;
-
-            if ((rc = sqlite3_transfer_bindings(old_stmt, stmt_)) != SQLITE_OK) return rc;
-
-            finish_impl(old_stmt);
-
-            if ((rc = eexecute()) != SQLITE_OK) return rc;
-
-            sql = tail_;
-        }
-
-        return rc;
-    }
-
 
     query::rows::getstream::getstream(rows* rws, int idx):
         rws_(rws)
@@ -721,6 +691,5 @@ namespace sqlite3pp
     database_error::database_error(database& db) : std::runtime_error(sqlite3_errmsg(db.db_))
     {
     }
-
 
 }

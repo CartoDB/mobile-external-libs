@@ -165,11 +165,6 @@ namespace sqlite3pp
       return sqlite3_aggregate_context(ctx_, size);
     }
 
-    int context::aggregate_count()
-    {
-      return sqlite3_aggregate_count(ctx_);
-    }
-
     function::function(database& db) : db_(db.db_)
     {
     }

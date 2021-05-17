@@ -41,8 +41,6 @@ namespace sqlite3pp
     }
 
 
-    int enable_shared_cache(bool fenable);
-
     class database
     {
         friend class statement;
@@ -200,7 +198,6 @@ namespace sqlite3pp
         /// @throws database_error if execute fails
         void execute();
         int eexecute();
-        int execute_all();
     };
 
     class query : public statement

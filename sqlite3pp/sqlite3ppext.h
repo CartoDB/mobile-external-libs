@@ -58,7 +58,6 @@ namespace sqlite3pp
       void result_error(char const* msg);
 
       void* aggregate_data(int size);
-      int aggregate_count();
 
      private:
       int get(int idx, int) const;
