@@ -48,7 +48,7 @@ set(freetype_FLAGS "-DFT2_BUILD_LIBRARY")
 if(WIN32)
   set(freetype_FLAGS ${freetype_FLAGS} "/fp:fast" "/wd4244" "/wd4267" "/wd4312" "/wd4996")
 elseif(ANDROID OR IOS)
-  set(freetype_FLAGS ${freetype_FLAGS} "-ffast-math" "-Wno-narrowing")
+  set(freetype_FLAGS ${freetype_FLAGS} "-ffast-math" "-Wno-narrowing" "-Wno-shorten-64-to-32")
 endif()
 
 set(freetype_INCLUDE_DIRS "${PROJECT_SOURCE_DIR}/config" "${PROJECT_SOURCE_DIR}/freetype/include" PARENT_SCOPE)
