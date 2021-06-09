@@ -39,8 +39,7 @@ namespace protobuf {
 
 	class encoded_message {
 	public:
-		std::uint64_t value;
-		std::uint32_t tag;
+		enum field_type { varint_type = 0, fixed64_type = 1, length_type = 2, fixed32_type = 5 };
 
 		inline encoded_message();
 
@@ -49,7 +48,7 @@ namespace protobuf {
 		inline bool empty() const;
 		inline const std::string & data() const;
 
-		inline void write_tag(std::uint32_t tag);
+		inline void write_tag(std::uint32_t tag, field_type field);
 		inline void write_message(const encoded_message & msg);
 		inline void write_string(const std::string & str);
 		inline void write_bytes(const void * data, std::size_t size);
@@ -93,9 +92,9 @@ namespace protobuf {
 		return message_;
 	}
 
-	inline void encoded_message::write_tag(std::uint32_t tag)
+	inline void encoded_message::write_tag(std::uint32_t tag, field_type field)
 	{
-		write_varint64(static_cast<std::uint64_t>(tag) << 3);
+		write_varint64((static_cast<std::uint64_t>(tag) << 3) | static_cast<std::uint64_t>(field));
 	}
 
 	inline void encoded_message::write_message(const encoded_message & msg)

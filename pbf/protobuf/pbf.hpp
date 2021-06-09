@@ -155,7 +155,7 @@ namespace protobuf {
 	{
 		size = static_cast<std::size_t>(read_varint64());
 		skip_bytes(size);
-                return data_ - size;
+		return data_ - size;
 	}
 
 	inline std::int32_t message::read_int32()
