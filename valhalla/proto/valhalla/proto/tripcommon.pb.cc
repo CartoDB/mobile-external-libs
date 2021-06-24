@@ -44,7 +44,7 @@ constexpr Location_PathEdge::Location_PathEdge(
   ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
   : names_()
   , ll_(nullptr)
-  , graph_id_(PROTOBUF_ULONGLONG(0))
+  , graph_id_(uint64_t{0u})
   , percent_along_(0)
   , distance_(0)
   , side_of_street_(0)
@@ -105,7 +105,7 @@ constexpr Location::Location(
   , side_of_street_(0)
 
   , heading_tolerance_(0u)
-  , way_id_(PROTOBUF_ULONGLONG(0))
+  , way_id_(uint64_t{0u})
   , node_snap_tolerance_(0u)
   , minimum_reachability_(0u)
   , radius_(0u)
@@ -684,10 +684,13 @@ class LatLng::_Internal {
   }
 };
 
-LatLng::LatLng(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::MessageLite(arena) {
+LatLng::LatLng(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::MessageLite(arena, is_message_owned) {
   SharedCtor();
-  RegisterArenaDtor(arena);
+  if (!is_message_owned) {
+    RegisterArenaDtor(arena);
+  }
   // @@protoc_insertion_point(arena_constructor:valhalla.LatLng)
 }
 LatLng::LatLng(const LatLng& from)
@@ -700,7 +703,7 @@ LatLng::LatLng(const LatLng& from)
   // @@protoc_insertion_point(copy_constructor:valhalla.LatLng)
 }
 
-void LatLng::SharedCtor() {
+inline void LatLng::SharedCtor() {
 ::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
     reinterpret_cast<char*>(&lat_) - reinterpret_cast<char*>(this)),
     0, static_cast<size_t>(reinterpret_cast<char*>(&lng_) -
@@ -709,12 +712,13 @@ void LatLng::SharedCtor() {
 
 LatLng::~LatLng() {
   // @@protoc_insertion_point(destructor:valhalla.LatLng)
+  if (GetArenaForAllocation() != nullptr) return;
   SharedDtor();
   _internal_metadata_.Delete<std::string>();
 }
 
-void LatLng::SharedDtor() {
-  GOOGLE_DCHECK(GetArena() == nullptr);
+inline void LatLng::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
 }
 
 void LatLng::ArenaDtor(void* object) {
@@ -749,7 +753,6 @@ const char* LatLng::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::int
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
-    CHK_(ptr);
     switch (tag >> 3) {
       // optional double lat = 1;
       case 1:
@@ -769,7 +772,8 @@ const char* LatLng::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::int
         continue;
       default: {
       handle_unusual:
-        if ((tag & 7) == 4 || tag == 0) {
+        if ((tag == 0) || ((tag & 7) == 4)) {
+          CHK_(ptr);
           ctx->SetLastTag(tag);
           goto success;
         }
@@ -855,7 +859,6 @@ void LatLng::CheckTypeAndMergeFrom(
 void LatLng::MergeFrom(const LatLng& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:valhalla.LatLng)
   GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom<std::string>(from._internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -869,6 +872,7 @@ void LatLng::MergeFrom(const LatLng& from) {
     }
     _has_bits_[0] |= cached_has_bits;
   }
+  _internal_metadata_.MergeFrom<std::string>(from._internal_metadata_);
 }
 
 void LatLng::CopyFrom(const LatLng& from) {
@@ -884,7 +888,7 @@ bool LatLng::IsInitialized() const {
 
 void LatLng::InternalSwap(LatLng* other) {
   using std::swap;
-  _internal_metadata_.Swap<std::string>(&other->_internal_metadata_);
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(_has_bits_[0], other->_has_bits_[0]);
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
       PROTOBUF_FIELD_OFFSET(LatLng, lng_)
@@ -922,10 +926,13 @@ const ::valhalla::LatLng&
 BoundingBox::_Internal::max_ll(const BoundingBox* msg) {
   return *msg->max_ll_;
 }
-BoundingBox::BoundingBox(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::MessageLite(arena) {
+BoundingBox::BoundingBox(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::MessageLite(arena, is_message_owned) {
   SharedCtor();
-  RegisterArenaDtor(arena);
+  if (!is_message_owned) {
+    RegisterArenaDtor(arena);
+  }
   // @@protoc_insertion_point(arena_constructor:valhalla.BoundingBox)
 }
 BoundingBox::BoundingBox(const BoundingBox& from)
@@ -945,7 +952,7 @@ BoundingBox::BoundingBox(const BoundingBox& from)
   // @@protoc_insertion_point(copy_constructor:valhalla.BoundingBox)
 }
 
-void BoundingBox::SharedCtor() {
+inline void BoundingBox::SharedCtor() {
 ::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
     reinterpret_cast<char*>(&min_ll_) - reinterpret_cast<char*>(this)),
     0, static_cast<size_t>(reinterpret_cast<char*>(&max_ll_) -
@@ -954,12 +961,13 @@ void BoundingBox::SharedCtor() {
 
 BoundingBox::~BoundingBox() {
   // @@protoc_insertion_point(destructor:valhalla.BoundingBox)
+  if (GetArenaForAllocation() != nullptr) return;
   SharedDtor();
   _internal_metadata_.Delete<std::string>();
 }
 
-void BoundingBox::SharedDtor() {
-  GOOGLE_DCHECK(GetArena() == nullptr);
+inline void BoundingBox::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
   if (this != internal_default_instance()) delete min_ll_;
   if (this != internal_default_instance()) delete max_ll_;
 }
@@ -1001,7 +1009,6 @@ const char* BoundingBox::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
-    CHK_(ptr);
     switch (tag >> 3) {
       // optional .valhalla.LatLng min_ll = 1;
       case 1:
@@ -1019,7 +1026,8 @@ const char* BoundingBox::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID
         continue;
       default: {
       handle_unusual:
-        if ((tag & 7) == 4 || tag == 0) {
+        if ((tag == 0) || ((tag & 7) == 4)) {
+          CHK_(ptr);
           ctx->SetLastTag(tag);
           goto success;
         }
@@ -1113,7 +1121,6 @@ void BoundingBox::CheckTypeAndMergeFrom(
 void BoundingBox::MergeFrom(const BoundingBox& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:valhalla.BoundingBox)
   GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom<std::string>(from._internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -1126,6 +1133,7 @@ void BoundingBox::MergeFrom(const BoundingBox& from) {
       _internal_mutable_max_ll()->::valhalla::LatLng::MergeFrom(from._internal_max_ll());
     }
   }
+  _internal_metadata_.MergeFrom<std::string>(from._internal_metadata_);
 }
 
 void BoundingBox::CopyFrom(const BoundingBox& from) {
@@ -1141,7 +1149,7 @@ bool BoundingBox::IsInitialized() const {
 
 void BoundingBox::InternalSwap(BoundingBox* other) {
   using std::swap;
-  _internal_metadata_.Swap<std::string>(&other->_internal_metadata_);
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(_has_bits_[0], other->_has_bits_[0]);
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
       PROTOBUF_FIELD_OFFSET(BoundingBox, max_ll_)
@@ -1198,11 +1206,14 @@ const ::valhalla::LatLng&
 Location_PathEdge::_Internal::ll(const Location_PathEdge* msg) {
   return *msg->ll_;
 }
-Location_PathEdge::Location_PathEdge(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::MessageLite(arena),
+Location_PathEdge::Location_PathEdge(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::MessageLite(arena, is_message_owned),
   names_(arena) {
   SharedCtor();
-  RegisterArenaDtor(arena);
+  if (!is_message_owned) {
+    RegisterArenaDtor(arena);
+  }
   // @@protoc_insertion_point(arena_constructor:valhalla.Location.PathEdge)
 }
 Location_PathEdge::Location_PathEdge(const Location_PathEdge& from)
@@ -1221,7 +1232,7 @@ Location_PathEdge::Location_PathEdge(const Location_PathEdge& from)
   // @@protoc_insertion_point(copy_constructor:valhalla.Location.PathEdge)
 }
 
-void Location_PathEdge::SharedCtor() {
+inline void Location_PathEdge::SharedCtor() {
 ::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
     reinterpret_cast<char*>(&ll_) - reinterpret_cast<char*>(this)),
     0, static_cast<size_t>(reinterpret_cast<char*>(&inbound_reach_) -
@@ -1230,12 +1241,13 @@ void Location_PathEdge::SharedCtor() {
 
 Location_PathEdge::~Location_PathEdge() {
   // @@protoc_insertion_point(destructor:valhalla.Location.PathEdge)
+  if (GetArenaForAllocation() != nullptr) return;
   SharedDtor();
   _internal_metadata_.Delete<std::string>();
 }
 
-void Location_PathEdge::SharedDtor() {
-  GOOGLE_DCHECK(GetArena() == nullptr);
+inline void Location_PathEdge::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
   if (this != internal_default_instance()) delete ll_;
 }
 
@@ -1281,7 +1293,6 @@ const char* Location_PathEdge::_InternalParse(const char* ptr, ::PROTOBUF_NAMESP
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
-    CHK_(ptr);
     switch (tag >> 3) {
       // optional uint64 graph_id = 1;
       case 1:
@@ -1381,7 +1392,8 @@ const char* Location_PathEdge::_InternalParse(const char* ptr, ::PROTOBUF_NAMESP
         continue;
       default: {
       handle_unusual:
-        if ((tag & 7) == 4 || tag == 0) {
+        if ((tag == 0) || ((tag & 7) == 4)) {
+          CHK_(ptr);
           ctx->SetLastTag(tag);
           goto success;
         }
@@ -1585,7 +1597,6 @@ void Location_PathEdge::CheckTypeAndMergeFrom(
 void Location_PathEdge::MergeFrom(const Location_PathEdge& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:valhalla.Location.PathEdge)
   GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom<std::string>(from._internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -1627,6 +1638,7 @@ void Location_PathEdge::MergeFrom(const Location_PathEdge& from) {
     }
     _has_bits_[0] |= cached_has_bits;
   }
+  _internal_metadata_.MergeFrom<std::string>(from._internal_metadata_);
 }
 
 void Location_PathEdge::CopyFrom(const Location_PathEdge& from) {
@@ -1642,7 +1654,7 @@ bool Location_PathEdge::IsInitialized() const {
 
 void Location_PathEdge::InternalSwap(Location_PathEdge* other) {
   using std::swap;
-  _internal_metadata_.Swap<std::string>(&other->_internal_metadata_);
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(_has_bits_[0], other->_has_bits_[0]);
   names_.InternalSwap(&other->names_);
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
@@ -1683,10 +1695,13 @@ class Location_SearchFilter::_Internal {
   }
 };
 
-Location_SearchFilter::Location_SearchFilter(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::MessageLite(arena) {
+Location_SearchFilter::Location_SearchFilter(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::MessageLite(arena, is_message_owned) {
   SharedCtor();
-  RegisterArenaDtor(arena);
+  if (!is_message_owned) {
+    RegisterArenaDtor(arena);
+  }
   // @@protoc_insertion_point(arena_constructor:valhalla.Location.SearchFilter)
 }
 Location_SearchFilter::Location_SearchFilter(const Location_SearchFilter& from)
@@ -1699,7 +1714,7 @@ Location_SearchFilter::Location_SearchFilter(const Location_SearchFilter& from)
   // @@protoc_insertion_point(copy_constructor:valhalla.Location.SearchFilter)
 }
 
-void Location_SearchFilter::SharedCtor() {
+inline void Location_SearchFilter::SharedCtor() {
 ::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
     reinterpret_cast<char*>(&max_road_class_) - reinterpret_cast<char*>(this)),
     0, static_cast<size_t>(reinterpret_cast<char*>(&exclude_ramp_) -
@@ -1710,12 +1725,13 @@ exclude_closures_ = true;
 
 Location_SearchFilter::~Location_SearchFilter() {
   // @@protoc_insertion_point(destructor:valhalla.Location.SearchFilter)
+  if (GetArenaForAllocation() != nullptr) return;
   SharedDtor();
   _internal_metadata_.Delete<std::string>();
 }
 
-void Location_SearchFilter::SharedDtor() {
-  GOOGLE_DCHECK(GetArena() == nullptr);
+inline void Location_SearchFilter::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
 }
 
 void Location_SearchFilter::ArenaDtor(void* object) {
@@ -1752,7 +1768,6 @@ const char* Location_SearchFilter::_InternalParse(const char* ptr, ::PROTOBUF_NA
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
-    CHK_(ptr);
     switch (tag >> 3) {
       // optional .valhalla.RoadClass min_road_class = 1 [default = kServiceOther];
       case 1:
@@ -1812,7 +1827,8 @@ const char* Location_SearchFilter::_InternalParse(const char* ptr, ::PROTOBUF_NA
         continue;
       default: {
       handle_unusual:
-        if ((tag & 7) == 4 || tag == 0) {
+        if ((tag == 0) || ((tag & 7) == 4)) {
+          CHK_(ptr);
           ctx->SetLastTag(tag);
           goto success;
         }
@@ -1946,7 +1962,6 @@ void Location_SearchFilter::CheckTypeAndMergeFrom(
 void Location_SearchFilter::MergeFrom(const Location_SearchFilter& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:valhalla.Location.SearchFilter)
   GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom<std::string>(from._internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -1972,6 +1987,7 @@ void Location_SearchFilter::MergeFrom(const Location_SearchFilter& from) {
     }
     _has_bits_[0] |= cached_has_bits;
   }
+  _internal_metadata_.MergeFrom<std::string>(from._internal_metadata_);
 }
 
 void Location_SearchFilter::CopyFrom(const Location_SearchFilter& from) {
@@ -1987,7 +2003,7 @@ bool Location_SearchFilter::IsInitialized() const {
 
 void Location_SearchFilter::InternalSwap(Location_SearchFilter* other) {
   using std::swap;
-  _internal_metadata_.Swap<std::string>(&other->_internal_metadata_);
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(_has_bits_[0], other->_has_bits_[0]);
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
       PROTOBUF_FIELD_OFFSET(Location_SearchFilter, exclude_ramp_)
@@ -2124,12 +2140,15 @@ const ::valhalla::Location_SearchFilter&
 Location::_Internal::search_filter(const Location* msg) {
   return *msg->search_filter_;
 }
-Location::Location(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::MessageLite(arena),
+Location::Location(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::MessageLite(arena, is_message_owned),
   path_edges_(arena),
   filtered_edges_(arena) {
   SharedCtor();
-  RegisterArenaDtor(arena);
+  if (!is_message_owned) {
+    RegisterArenaDtor(arena);
+  }
   // @@protoc_insertion_point(arena_constructor:valhalla.Location)
 }
 Location::Location(const Location& from)
@@ -2141,47 +2160,47 @@ Location::Location(const Location& from)
   name_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (from._internal_has_name()) {
     name_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_name(), 
-      GetArena());
+      GetArenaForAllocation());
   }
   street_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (from._internal_has_street()) {
     street_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_street(), 
-      GetArena());
+      GetArenaForAllocation());
   }
   city_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (from._internal_has_city()) {
     city_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_city(), 
-      GetArena());
+      GetArenaForAllocation());
   }
   state_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (from._internal_has_state()) {
     state_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_state(), 
-      GetArena());
+      GetArenaForAllocation());
   }
   postal_code_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (from._internal_has_postal_code()) {
     postal_code_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_postal_code(), 
-      GetArena());
+      GetArenaForAllocation());
   }
   country_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (from._internal_has_country()) {
     country_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_country(), 
-      GetArena());
+      GetArenaForAllocation());
   }
   phone_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (from._internal_has_phone()) {
     phone_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_phone(), 
-      GetArena());
+      GetArenaForAllocation());
   }
   url_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (from._internal_has_url()) {
     url_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_url(), 
-      GetArena());
+      GetArenaForAllocation());
   }
   date_time_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (from._internal_has_date_time()) {
     date_time_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_date_time(), 
-      GetArena());
+      GetArenaForAllocation());
   }
   if (from._internal_has_ll()) {
     ll_ = new ::valhalla::LatLng(*from.ll_);
@@ -2209,7 +2228,7 @@ Location::Location(const Location& from)
   // @@protoc_insertion_point(copy_constructor:valhalla.Location)
 }
 
-void Location::SharedCtor() {
+inline void Location::SharedCtor() {
 name_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 street_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 city_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
@@ -2229,12 +2248,13 @@ time_ = -1;
 
 Location::~Location() {
   // @@protoc_insertion_point(destructor:valhalla.Location)
+  if (GetArenaForAllocation() != nullptr) return;
   SharedDtor();
   _internal_metadata_.Delete<std::string>();
 }
 
-void Location::SharedDtor() {
-  GOOGLE_DCHECK(GetArena() == nullptr);
+inline void Location::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
   name_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   street_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   city_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
@@ -2343,7 +2363,6 @@ const char* Location::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::i
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
-    CHK_(ptr);
     switch (tag >> 3) {
       // optional .valhalla.LatLng ll = 1;
       case 1:
@@ -2627,7 +2646,8 @@ const char* Location::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::i
         continue;
       default: {
       handle_unusual:
-        if ((tag & 7) == 4 || tag == 0) {
+        if ((tag == 0) || ((tag & 7) == 4)) {
+          CHK_(ptr);
           ctx->SetLastTag(tag);
           goto success;
         }
@@ -3134,7 +3154,6 @@ void Location::CheckTypeAndMergeFrom(
 void Location::MergeFrom(const Location& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:valhalla.Location)
   GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom<std::string>(from._internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -3245,6 +3264,7 @@ void Location::MergeFrom(const Location& from) {
     }
     _has_bits_[0] |= cached_has_bits;
   }
+  _internal_metadata_.MergeFrom<std::string>(from._internal_metadata_);
 }
 
 void Location::CopyFrom(const Location& from) {
@@ -3260,19 +3280,55 @@ bool Location::IsInitialized() const {
 
 void Location::InternalSwap(Location* other) {
   using std::swap;
-  _internal_metadata_.Swap<std::string>(&other->_internal_metadata_);
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(_has_bits_[0], other->_has_bits_[0]);
   path_edges_.InternalSwap(&other->path_edges_);
   filtered_edges_.InternalSwap(&other->filtered_edges_);
-  name_.Swap(&other->name_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-  street_.Swap(&other->street_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-  city_.Swap(&other->city_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-  state_.Swap(&other->state_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-  postal_code_.Swap(&other->postal_code_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-  country_.Swap(&other->country_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-  phone_.Swap(&other->phone_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-  url_.Swap(&other->url_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-  date_time_.Swap(&other->date_time_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+      &name_, GetArenaForAllocation(),
+      &other->name_, other->GetArenaForAllocation()
+  );
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+      &street_, GetArenaForAllocation(),
+      &other->street_, other->GetArenaForAllocation()
+  );
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+      &city_, GetArenaForAllocation(),
+      &other->city_, other->GetArenaForAllocation()
+  );
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+      &state_, GetArenaForAllocation(),
+      &other->state_, other->GetArenaForAllocation()
+  );
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+      &postal_code_, GetArenaForAllocation(),
+      &other->postal_code_, other->GetArenaForAllocation()
+  );
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+      &country_, GetArenaForAllocation(),
+      &other->country_, other->GetArenaForAllocation()
+  );
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+      &phone_, GetArenaForAllocation(),
+      &other->phone_, other->GetArenaForAllocation()
+  );
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+      &url_, GetArenaForAllocation(),
+      &other->url_, other->GetArenaForAllocation()
+  );
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+      &date_time_, GetArenaForAllocation(),
+      &other->date_time_, other->GetArenaForAllocation()
+  );
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
       PROTOBUF_FIELD_OFFSET(Location, street_side_max_distance_)
       + sizeof(Location::street_side_max_distance_)
@@ -3309,10 +3365,13 @@ const ::valhalla::LatLng&
 TransitEgressInfo::_Internal::ll(const TransitEgressInfo* msg) {
   return *msg->ll_;
 }
-TransitEgressInfo::TransitEgressInfo(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::MessageLite(arena) {
+TransitEgressInfo::TransitEgressInfo(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::MessageLite(arena, is_message_owned) {
   SharedCtor();
-  RegisterArenaDtor(arena);
+  if (!is_message_owned) {
+    RegisterArenaDtor(arena);
+  }
   // @@protoc_insertion_point(arena_constructor:valhalla.TransitEgressInfo)
 }
 TransitEgressInfo::TransitEgressInfo(const TransitEgressInfo& from)
@@ -3322,12 +3381,12 @@ TransitEgressInfo::TransitEgressInfo(const TransitEgressInfo& from)
   onestop_id_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (from._internal_has_onestop_id()) {
     onestop_id_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_onestop_id(), 
-      GetArena());
+      GetArenaForAllocation());
   }
   name_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (from._internal_has_name()) {
     name_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_name(), 
-      GetArena());
+      GetArenaForAllocation());
   }
   if (from._internal_has_ll()) {
     ll_ = new ::valhalla::LatLng(*from.ll_);
@@ -3337,7 +3396,7 @@ TransitEgressInfo::TransitEgressInfo(const TransitEgressInfo& from)
   // @@protoc_insertion_point(copy_constructor:valhalla.TransitEgressInfo)
 }
 
-void TransitEgressInfo::SharedCtor() {
+inline void TransitEgressInfo::SharedCtor() {
 onestop_id_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 name_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 ll_ = nullptr;
@@ -3345,12 +3404,13 @@ ll_ = nullptr;
 
 TransitEgressInfo::~TransitEgressInfo() {
   // @@protoc_insertion_point(destructor:valhalla.TransitEgressInfo)
+  if (GetArenaForAllocation() != nullptr) return;
   SharedDtor();
   _internal_metadata_.Delete<std::string>();
 }
 
-void TransitEgressInfo::SharedDtor() {
-  GOOGLE_DCHECK(GetArena() == nullptr);
+inline void TransitEgressInfo::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
   onestop_id_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   name_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (this != internal_default_instance()) delete ll_;
@@ -3395,7 +3455,6 @@ const char* TransitEgressInfo::_InternalParse(const char* ptr, ::PROTOBUF_NAMESP
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
-    CHK_(ptr);
     switch (tag >> 3) {
       // optional string onestop_id = 1;
       case 1:
@@ -3422,7 +3481,8 @@ const char* TransitEgressInfo::_InternalParse(const char* ptr, ::PROTOBUF_NAMESP
         continue;
       default: {
       handle_unusual:
-        if ((tag & 7) == 4 || tag == 0) {
+        if ((tag == 0) || ((tag & 7) == 4)) {
+          CHK_(ptr);
           ctx->SetLastTag(tag);
           goto success;
         }
@@ -3527,7 +3587,6 @@ void TransitEgressInfo::CheckTypeAndMergeFrom(
 void TransitEgressInfo::MergeFrom(const TransitEgressInfo& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:valhalla.TransitEgressInfo)
   GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom<std::string>(from._internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -3543,6 +3602,7 @@ void TransitEgressInfo::MergeFrom(const TransitEgressInfo& from) {
       _internal_mutable_ll()->::valhalla::LatLng::MergeFrom(from._internal_ll());
     }
   }
+  _internal_metadata_.MergeFrom<std::string>(from._internal_metadata_);
 }
 
 void TransitEgressInfo::CopyFrom(const TransitEgressInfo& from) {
@@ -3558,10 +3618,18 @@ bool TransitEgressInfo::IsInitialized() const {
 
 void TransitEgressInfo::InternalSwap(TransitEgressInfo* other) {
   using std::swap;
-  _internal_metadata_.Swap<std::string>(&other->_internal_metadata_);
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(_has_bits_[0], other->_has_bits_[0]);
-  onestop_id_.Swap(&other->onestop_id_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-  name_.Swap(&other->name_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+      &onestop_id_, GetArenaForAllocation(),
+      &other->onestop_id_, other->GetArenaForAllocation()
+  );
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+      &name_, GetArenaForAllocation(),
+      &other->name_, other->GetArenaForAllocation()
+  );
   swap(ll_, other->ll_);
 }
 
@@ -3591,10 +3659,13 @@ const ::valhalla::LatLng&
 TransitStationInfo::_Internal::ll(const TransitStationInfo* msg) {
   return *msg->ll_;
 }
-TransitStationInfo::TransitStationInfo(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::MessageLite(arena) {
+TransitStationInfo::TransitStationInfo(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::MessageLite(arena, is_message_owned) {
   SharedCtor();
-  RegisterArenaDtor(arena);
+  if (!is_message_owned) {
+    RegisterArenaDtor(arena);
+  }
   // @@protoc_insertion_point(arena_constructor:valhalla.TransitStationInfo)
 }
 TransitStationInfo::TransitStationInfo(const TransitStationInfo& from)
@@ -3604,12 +3675,12 @@ TransitStationInfo::TransitStationInfo(const TransitStationInfo& from)
   onestop_id_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (from._internal_has_onestop_id()) {
     onestop_id_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_onestop_id(), 
-      GetArena());
+      GetArenaForAllocation());
   }
   name_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (from._internal_has_name()) {
     name_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_name(), 
-      GetArena());
+      GetArenaForAllocation());
   }
   if (from._internal_has_ll()) {
     ll_ = new ::valhalla::LatLng(*from.ll_);
@@ -3619,7 +3690,7 @@ TransitStationInfo::TransitStationInfo(const TransitStationInfo& from)
   // @@protoc_insertion_point(copy_constructor:valhalla.TransitStationInfo)
 }
 
-void TransitStationInfo::SharedCtor() {
+inline void TransitStationInfo::SharedCtor() {
 onestop_id_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 name_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 ll_ = nullptr;
@@ -3627,12 +3698,13 @@ ll_ = nullptr;
 
 TransitStationInfo::~TransitStationInfo() {
   // @@protoc_insertion_point(destructor:valhalla.TransitStationInfo)
+  if (GetArenaForAllocation() != nullptr) return;
   SharedDtor();
   _internal_metadata_.Delete<std::string>();
 }
 
-void TransitStationInfo::SharedDtor() {
-  GOOGLE_DCHECK(GetArena() == nullptr);
+inline void TransitStationInfo::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
   onestop_id_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   name_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (this != internal_default_instance()) delete ll_;
@@ -3677,7 +3749,6 @@ const char* TransitStationInfo::_InternalParse(const char* ptr, ::PROTOBUF_NAMES
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
-    CHK_(ptr);
     switch (tag >> 3) {
       // optional string onestop_id = 1;
       case 1:
@@ -3704,7 +3775,8 @@ const char* TransitStationInfo::_InternalParse(const char* ptr, ::PROTOBUF_NAMES
         continue;
       default: {
       handle_unusual:
-        if ((tag & 7) == 4 || tag == 0) {
+        if ((tag == 0) || ((tag & 7) == 4)) {
+          CHK_(ptr);
           ctx->SetLastTag(tag);
           goto success;
         }
@@ -3809,7 +3881,6 @@ void TransitStationInfo::CheckTypeAndMergeFrom(
 void TransitStationInfo::MergeFrom(const TransitStationInfo& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:valhalla.TransitStationInfo)
   GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom<std::string>(from._internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -3825,6 +3896,7 @@ void TransitStationInfo::MergeFrom(const TransitStationInfo& from) {
       _internal_mutable_ll()->::valhalla::LatLng::MergeFrom(from._internal_ll());
     }
   }
+  _internal_metadata_.MergeFrom<std::string>(from._internal_metadata_);
 }
 
 void TransitStationInfo::CopyFrom(const TransitStationInfo& from) {
@@ -3840,10 +3912,18 @@ bool TransitStationInfo::IsInitialized() const {
 
 void TransitStationInfo::InternalSwap(TransitStationInfo* other) {
   using std::swap;
-  _internal_metadata_.Swap<std::string>(&other->_internal_metadata_);
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(_has_bits_[0], other->_has_bits_[0]);
-  onestop_id_.Swap(&other->onestop_id_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-  name_.Swap(&other->name_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+      &onestop_id_, GetArenaForAllocation(),
+      &other->onestop_id_, other->GetArenaForAllocation()
+  );
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+      &name_, GetArenaForAllocation(),
+      &other->name_, other->GetArenaForAllocation()
+  );
   swap(ll_, other->ll_);
 }
 
@@ -3891,10 +3971,13 @@ const ::valhalla::LatLng&
 TransitPlatformInfo::_Internal::ll(const TransitPlatformInfo* msg) {
   return *msg->ll_;
 }
-TransitPlatformInfo::TransitPlatformInfo(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::MessageLite(arena) {
+TransitPlatformInfo::TransitPlatformInfo(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::MessageLite(arena, is_message_owned) {
   SharedCtor();
-  RegisterArenaDtor(arena);
+  if (!is_message_owned) {
+    RegisterArenaDtor(arena);
+  }
   // @@protoc_insertion_point(arena_constructor:valhalla.TransitPlatformInfo)
 }
 TransitPlatformInfo::TransitPlatformInfo(const TransitPlatformInfo& from)
@@ -3904,32 +3987,32 @@ TransitPlatformInfo::TransitPlatformInfo(const TransitPlatformInfo& from)
   onestop_id_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (from._internal_has_onestop_id()) {
     onestop_id_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_onestop_id(), 
-      GetArena());
+      GetArenaForAllocation());
   }
   name_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (from._internal_has_name()) {
     name_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_name(), 
-      GetArena());
+      GetArenaForAllocation());
   }
   arrival_date_time_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (from._internal_has_arrival_date_time()) {
     arrival_date_time_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_arrival_date_time(), 
-      GetArena());
+      GetArenaForAllocation());
   }
   departure_date_time_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (from._internal_has_departure_date_time()) {
     departure_date_time_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_departure_date_time(), 
-      GetArena());
+      GetArenaForAllocation());
   }
   station_onestop_id_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (from._internal_has_station_onestop_id()) {
     station_onestop_id_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_station_onestop_id(), 
-      GetArena());
+      GetArenaForAllocation());
   }
   station_name_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (from._internal_has_station_name()) {
     station_name_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_station_name(), 
-      GetArena());
+      GetArenaForAllocation());
   }
   if (from._internal_has_ll()) {
     ll_ = new ::valhalla::LatLng(*from.ll_);
@@ -3942,7 +4025,7 @@ TransitPlatformInfo::TransitPlatformInfo(const TransitPlatformInfo& from)
   // @@protoc_insertion_point(copy_constructor:valhalla.TransitPlatformInfo)
 }
 
-void TransitPlatformInfo::SharedCtor() {
+inline void TransitPlatformInfo::SharedCtor() {
 onestop_id_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 name_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 arrival_date_time_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
@@ -3957,12 +4040,13 @@ station_name_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStrin
 
 TransitPlatformInfo::~TransitPlatformInfo() {
   // @@protoc_insertion_point(destructor:valhalla.TransitPlatformInfo)
+  if (GetArenaForAllocation() != nullptr) return;
   SharedDtor();
   _internal_metadata_.Delete<std::string>();
 }
 
-void TransitPlatformInfo::SharedDtor() {
-  GOOGLE_DCHECK(GetArena() == nullptr);
+inline void TransitPlatformInfo::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
   onestop_id_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   name_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   arrival_date_time_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
@@ -4025,7 +4109,6 @@ const char* TransitPlatformInfo::_InternalParse(const char* ptr, ::PROTOBUF_NAME
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
-    CHK_(ptr);
     switch (tag >> 3) {
       // optional .valhalla.TransitPlatformInfo.Type type = 1;
       case 1:
@@ -4104,7 +4187,8 @@ const char* TransitPlatformInfo::_InternalParse(const char* ptr, ::PROTOBUF_NAME
         continue;
       default: {
       handle_unusual:
-        if ((tag & 7) == 4 || tag == 0) {
+        if ((tag == 0) || ((tag & 7) == 4)) {
+          CHK_(ptr);
           ctx->SetLastTag(tag);
           goto success;
         }
@@ -4285,7 +4369,6 @@ void TransitPlatformInfo::CheckTypeAndMergeFrom(
 void TransitPlatformInfo::MergeFrom(const TransitPlatformInfo& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:valhalla.TransitPlatformInfo)
   GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom<std::string>(from._internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -4320,6 +4403,7 @@ void TransitPlatformInfo::MergeFrom(const TransitPlatformInfo& from) {
   if (cached_has_bits & 0x00000100u) {
     _internal_set_assumed_schedule(from._internal_assumed_schedule());
   }
+  _internal_metadata_.MergeFrom<std::string>(from._internal_metadata_);
 }
 
 void TransitPlatformInfo::CopyFrom(const TransitPlatformInfo& from) {
@@ -4335,14 +4419,38 @@ bool TransitPlatformInfo::IsInitialized() const {
 
 void TransitPlatformInfo::InternalSwap(TransitPlatformInfo* other) {
   using std::swap;
-  _internal_metadata_.Swap<std::string>(&other->_internal_metadata_);
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(_has_bits_[0], other->_has_bits_[0]);
-  onestop_id_.Swap(&other->onestop_id_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-  name_.Swap(&other->name_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-  arrival_date_time_.Swap(&other->arrival_date_time_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-  departure_date_time_.Swap(&other->departure_date_time_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-  station_onestop_id_.Swap(&other->station_onestop_id_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-  station_name_.Swap(&other->station_name_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+      &onestop_id_, GetArenaForAllocation(),
+      &other->onestop_id_, other->GetArenaForAllocation()
+  );
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+      &name_, GetArenaForAllocation(),
+      &other->name_, other->GetArenaForAllocation()
+  );
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+      &arrival_date_time_, GetArenaForAllocation(),
+      &other->arrival_date_time_, other->GetArenaForAllocation()
+  );
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+      &departure_date_time_, GetArenaForAllocation(),
+      &other->departure_date_time_, other->GetArenaForAllocation()
+  );
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+      &station_onestop_id_, GetArenaForAllocation(),
+      &other->station_onestop_id_, other->GetArenaForAllocation()
+  );
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+      &station_name_, GetArenaForAllocation(),
+      &other->station_name_, other->GetArenaForAllocation()
+  );
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
       PROTOBUF_FIELD_OFFSET(TransitPlatformInfo, assumed_schedule_)
       + sizeof(TransitPlatformInfo::assumed_schedule_)
@@ -4369,10 +4477,13 @@ class StreetName::_Internal {
   }
 };
 
-StreetName::StreetName(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::MessageLite(arena) {
+StreetName::StreetName(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::MessageLite(arena, is_message_owned) {
   SharedCtor();
-  RegisterArenaDtor(arena);
+  if (!is_message_owned) {
+    RegisterArenaDtor(arena);
+  }
   // @@protoc_insertion_point(arena_constructor:valhalla.StreetName)
 }
 StreetName::StreetName(const StreetName& from)
@@ -4382,25 +4493,26 @@ StreetName::StreetName(const StreetName& from)
   value_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (from._internal_has_value()) {
     value_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_value(), 
-      GetArena());
+      GetArenaForAllocation());
   }
   is_route_number_ = from.is_route_number_;
   // @@protoc_insertion_point(copy_constructor:valhalla.StreetName)
 }
 
-void StreetName::SharedCtor() {
+inline void StreetName::SharedCtor() {
 value_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 is_route_number_ = false;
 }
 
 StreetName::~StreetName() {
   // @@protoc_insertion_point(destructor:valhalla.StreetName)
+  if (GetArenaForAllocation() != nullptr) return;
   SharedDtor();
   _internal_metadata_.Delete<std::string>();
 }
 
-void StreetName::SharedDtor() {
-  GOOGLE_DCHECK(GetArena() == nullptr);
+inline void StreetName::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
   value_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 }
 
@@ -4435,7 +4547,6 @@ const char* StreetName::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID:
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
-    CHK_(ptr);
     switch (tag >> 3) {
       // optional string value = 1;
       case 1:
@@ -4455,7 +4566,8 @@ const char* StreetName::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID:
         continue;
       default: {
       handle_unusual:
-        if ((tag & 7) == 4 || tag == 0) {
+        if ((tag == 0) || ((tag & 7) == 4)) {
+          CHK_(ptr);
           ctx->SetLastTag(tag);
           goto success;
         }
@@ -4543,7 +4655,6 @@ void StreetName::CheckTypeAndMergeFrom(
 void StreetName::MergeFrom(const StreetName& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:valhalla.StreetName)
   GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom<std::string>(from._internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -4557,6 +4668,7 @@ void StreetName::MergeFrom(const StreetName& from) {
     }
     _has_bits_[0] |= cached_has_bits;
   }
+  _internal_metadata_.MergeFrom<std::string>(from._internal_metadata_);
 }
 
 void StreetName::CopyFrom(const StreetName& from) {
@@ -4572,9 +4684,13 @@ bool StreetName::IsInitialized() const {
 
 void StreetName::InternalSwap(StreetName* other) {
   using std::swap;
-  _internal_metadata_.Swap<std::string>(&other->_internal_metadata_);
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(_has_bits_[0], other->_has_bits_[0]);
-  value_.Swap(&other->value_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+      &value_, GetArenaForAllocation(),
+      &other->value_, other->GetArenaForAllocation()
+  );
   swap(is_route_number_, other->is_route_number_);
 }
 
@@ -4599,10 +4715,13 @@ class TurnLane::_Internal {
   }
 };
 
-TurnLane::TurnLane(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::MessageLite(arena) {
+TurnLane::TurnLane(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::MessageLite(arena, is_message_owned) {
   SharedCtor();
-  RegisterArenaDtor(arena);
+  if (!is_message_owned) {
+    RegisterArenaDtor(arena);
+  }
   // @@protoc_insertion_point(arena_constructor:valhalla.TurnLane)
 }
 TurnLane::TurnLane(const TurnLane& from)
@@ -4615,7 +4734,7 @@ TurnLane::TurnLane(const TurnLane& from)
   // @@protoc_insertion_point(copy_constructor:valhalla.TurnLane)
 }
 
-void TurnLane::SharedCtor() {
+inline void TurnLane::SharedCtor() {
 ::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
     reinterpret_cast<char*>(&directions_mask_) - reinterpret_cast<char*>(this)),
     0, static_cast<size_t>(reinterpret_cast<char*>(&active_direction_) -
@@ -4624,12 +4743,13 @@ void TurnLane::SharedCtor() {
 
 TurnLane::~TurnLane() {
   // @@protoc_insertion_point(destructor:valhalla.TurnLane)
+  if (GetArenaForAllocation() != nullptr) return;
   SharedDtor();
   _internal_metadata_.Delete<std::string>();
 }
 
-void TurnLane::SharedDtor() {
-  GOOGLE_DCHECK(GetArena() == nullptr);
+inline void TurnLane::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
 }
 
 void TurnLane::ArenaDtor(void* object) {
@@ -4664,7 +4784,6 @@ const char* TurnLane::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::i
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
-    CHK_(ptr);
     switch (tag >> 3) {
       // optional uint32 directions_mask = 1;
       case 1:
@@ -4696,7 +4815,8 @@ const char* TurnLane::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::i
         continue;
       default: {
       handle_unusual:
-        if ((tag & 7) == 4 || tag == 0) {
+        if ((tag == 0) || ((tag & 7) == 4)) {
+          CHK_(ptr);
           ctx->SetLastTag(tag);
           goto success;
         }
@@ -4799,7 +4919,6 @@ void TurnLane::CheckTypeAndMergeFrom(
 void TurnLane::MergeFrom(const TurnLane& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:valhalla.TurnLane)
   GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom<std::string>(from._internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -4816,6 +4935,7 @@ void TurnLane::MergeFrom(const TurnLane& from) {
     }
     _has_bits_[0] |= cached_has_bits;
   }
+  _internal_metadata_.MergeFrom<std::string>(from._internal_metadata_);
 }
 
 void TurnLane::CopyFrom(const TurnLane& from) {
@@ -4831,7 +4951,7 @@ bool TurnLane::IsInitialized() const {
 
 void TurnLane::InternalSwap(TurnLane* other) {
   using std::swap;
-  _internal_metadata_.Swap<std::string>(&other->_internal_metadata_);
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(_has_bits_[0], other->_has_bits_[0]);
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
       PROTOBUF_FIELD_OFFSET(TurnLane, active_direction_)
@@ -4859,10 +4979,13 @@ class TaggedName::_Internal {
   }
 };
 
-TaggedName::TaggedName(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::MessageLite(arena) {
+TaggedName::TaggedName(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::MessageLite(arena, is_message_owned) {
   SharedCtor();
-  RegisterArenaDtor(arena);
+  if (!is_message_owned) {
+    RegisterArenaDtor(arena);
+  }
   // @@protoc_insertion_point(arena_constructor:valhalla.TaggedName)
 }
 TaggedName::TaggedName(const TaggedName& from)
@@ -4872,25 +4995,26 @@ TaggedName::TaggedName(const TaggedName& from)
   value_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (from._internal_has_value()) {
     value_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_value(), 
-      GetArena());
+      GetArenaForAllocation());
   }
   type_ = from.type_;
   // @@protoc_insertion_point(copy_constructor:valhalla.TaggedName)
 }
 
-void TaggedName::SharedCtor() {
+inline void TaggedName::SharedCtor() {
 value_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 type_ = 1;
 }
 
 TaggedName::~TaggedName() {
   // @@protoc_insertion_point(destructor:valhalla.TaggedName)
+  if (GetArenaForAllocation() != nullptr) return;
   SharedDtor();
   _internal_metadata_.Delete<std::string>();
 }
 
-void TaggedName::SharedDtor() {
-  GOOGLE_DCHECK(GetArena() == nullptr);
+inline void TaggedName::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
   value_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 }
 
@@ -4927,7 +5051,6 @@ const char* TaggedName::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID:
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
-    CHK_(ptr);
     switch (tag >> 3) {
       // optional string value = 1;
       case 1:
@@ -4951,7 +5074,8 @@ const char* TaggedName::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID:
         continue;
       default: {
       handle_unusual:
-        if ((tag & 7) == 4 || tag == 0) {
+        if ((tag == 0) || ((tag & 7) == 4)) {
+          CHK_(ptr);
           ctx->SetLastTag(tag);
           goto success;
         }
@@ -5041,7 +5165,6 @@ void TaggedName::CheckTypeAndMergeFrom(
 void TaggedName::MergeFrom(const TaggedName& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:valhalla.TaggedName)
   GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom<std::string>(from._internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -5055,6 +5178,7 @@ void TaggedName::MergeFrom(const TaggedName& from) {
     }
     _has_bits_[0] |= cached_has_bits;
   }
+  _internal_metadata_.MergeFrom<std::string>(from._internal_metadata_);
 }
 
 void TaggedName::CopyFrom(const TaggedName& from) {
@@ -5070,9 +5194,13 @@ bool TaggedName::IsInitialized() const {
 
 void TaggedName::InternalSwap(TaggedName* other) {
   using std::swap;
-  _internal_metadata_.Swap<std::string>(&other->_internal_metadata_);
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(_has_bits_[0], other->_has_bits_[0]);
-  value_.Swap(&other->value_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+      &value_, GetArenaForAllocation(),
+      &other->value_, other->GetArenaForAllocation()
+  );
   swap(type_, other->type_);
 }
 

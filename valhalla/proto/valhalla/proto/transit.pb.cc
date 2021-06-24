@@ -22,9 +22,9 @@ constexpr Transit_Node::Transit_Node(
   , timezone_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
   , lon_(0)
   , lat_(0)
-  , graphid_(PROTOBUF_ULONGLONG(0))
-  , prev_type_graphid_(PROTOBUF_ULONGLONG(0))
-  , osm_way_id_(PROTOBUF_ULONGLONG(0))
+  , graphid_(uint64_t{0u})
+  , prev_type_graphid_(uint64_t{0u})
+  , osm_way_id_(uint64_t{0u})
   , type_(0u)
   , wheelchair_boarding_(false)
   , generated_(false)
@@ -49,8 +49,8 @@ constexpr Transit_StopPair::Transit_StopPair(
   , trip_headsign_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
   , block_id_(0u)
   , destination_arrival_time_(0u)
-  , destination_graphid_(PROTOBUF_ULONGLONG(0))
-  , origin_graphid_(PROTOBUF_ULONGLONG(0))
+  , destination_graphid_(uint64_t{0u})
+  , origin_graphid_(uint64_t{0u})
   , origin_departure_time_(0u)
   , bikes_allowed_(false)
   , wheelchair_accessible_(false)
@@ -258,10 +258,13 @@ class Transit_Node::_Internal {
   }
 };
 
-Transit_Node::Transit_Node(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::MessageLite(arena) {
+Transit_Node::Transit_Node(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::MessageLite(arena, is_message_owned) {
   SharedCtor();
-  RegisterArenaDtor(arena);
+  if (!is_message_owned) {
+    RegisterArenaDtor(arena);
+  }
   // @@protoc_insertion_point(arena_constructor:valhalla.mjolnir.Transit.Node)
 }
 Transit_Node::Transit_Node(const Transit_Node& from)
@@ -271,17 +274,17 @@ Transit_Node::Transit_Node(const Transit_Node& from)
   name_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (from._internal_has_name()) {
     name_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_name(), 
-      GetArena());
+      GetArenaForAllocation());
   }
   onestop_id_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (from._internal_has_onestop_id()) {
     onestop_id_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_onestop_id(), 
-      GetArena());
+      GetArenaForAllocation());
   }
   timezone_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (from._internal_has_timezone()) {
     timezone_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_timezone(), 
-      GetArena());
+      GetArenaForAllocation());
   }
   ::memcpy(&lon_, &from.lon_,
     static_cast<size_t>(reinterpret_cast<char*>(&traversability_) -
@@ -289,7 +292,7 @@ Transit_Node::Transit_Node(const Transit_Node& from)
   // @@protoc_insertion_point(copy_constructor:valhalla.mjolnir.Transit.Node)
 }
 
-void Transit_Node::SharedCtor() {
+inline void Transit_Node::SharedCtor() {
 name_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 onestop_id_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 timezone_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
@@ -301,12 +304,13 @@ timezone_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlr
 
 Transit_Node::~Transit_Node() {
   // @@protoc_insertion_point(destructor:valhalla.mjolnir.Transit.Node)
+  if (GetArenaForAllocation() != nullptr) return;
   SharedDtor();
   _internal_metadata_.Delete<std::string>();
 }
 
-void Transit_Node::SharedDtor() {
-  GOOGLE_DCHECK(GetArena() == nullptr);
+inline void Transit_Node::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
   name_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   onestop_id_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   timezone_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
@@ -360,7 +364,6 @@ const char* Transit_Node::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_I
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
-    CHK_(ptr);
     switch (tag >> 3) {
       // optional float lon = 1;
       case 1:
@@ -460,7 +463,8 @@ const char* Transit_Node::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_I
         continue;
       default: {
       handle_unusual:
-        if ((tag & 7) == 4 || tag == 0) {
+        if ((tag == 0) || ((tag & 7) == 4)) {
+          CHK_(ptr);
           ctx->SetLastTag(tag);
           goto success;
         }
@@ -674,7 +678,6 @@ void Transit_Node::CheckTypeAndMergeFrom(
 void Transit_Node::MergeFrom(const Transit_Node& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:valhalla.mjolnir.Transit.Node)
   GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom<std::string>(from._internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -721,6 +724,7 @@ void Transit_Node::MergeFrom(const Transit_Node& from) {
     }
     _has_bits_[0] |= cached_has_bits;
   }
+  _internal_metadata_.MergeFrom<std::string>(from._internal_metadata_);
 }
 
 void Transit_Node::CopyFrom(const Transit_Node& from) {
@@ -736,11 +740,23 @@ bool Transit_Node::IsInitialized() const {
 
 void Transit_Node::InternalSwap(Transit_Node* other) {
   using std::swap;
-  _internal_metadata_.Swap<std::string>(&other->_internal_metadata_);
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(_has_bits_[0], other->_has_bits_[0]);
-  name_.Swap(&other->name_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-  onestop_id_.Swap(&other->onestop_id_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-  timezone_.Swap(&other->timezone_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+      &name_, GetArenaForAllocation(),
+      &other->name_, other->GetArenaForAllocation()
+  );
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+      &onestop_id_, GetArenaForAllocation(),
+      &other->onestop_id_, other->GetArenaForAllocation()
+  );
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+      &timezone_, GetArenaForAllocation(),
+      &other->timezone_, other->GetArenaForAllocation()
+  );
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
       PROTOBUF_FIELD_OFFSET(Transit_Node, traversability_)
       + sizeof(Transit_Node::traversability_)
@@ -821,13 +837,16 @@ class Transit_StopPair::_Internal {
   }
 };
 
-Transit_StopPair::Transit_StopPair(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::MessageLite(arena),
+Transit_StopPair::Transit_StopPair(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::MessageLite(arena, is_message_owned),
   service_added_dates_(arena),
   service_days_of_week_(arena),
   service_except_dates_(arena) {
   SharedCtor();
-  RegisterArenaDtor(arena);
+  if (!is_message_owned) {
+    RegisterArenaDtor(arena);
+  }
   // @@protoc_insertion_point(arena_constructor:valhalla.mjolnir.Transit.StopPair)
 }
 Transit_StopPair::Transit_StopPair(const Transit_StopPair& from)
@@ -840,22 +859,22 @@ Transit_StopPair::Transit_StopPair(const Transit_StopPair& from)
   destination_onestop_id_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (from._internal_has_destination_onestop_id()) {
     destination_onestop_id_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_destination_onestop_id(), 
-      GetArena());
+      GetArenaForAllocation());
   }
   operated_by_onestop_id_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (from._internal_has_operated_by_onestop_id()) {
     operated_by_onestop_id_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_operated_by_onestop_id(), 
-      GetArena());
+      GetArenaForAllocation());
   }
   origin_onestop_id_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (from._internal_has_origin_onestop_id()) {
     origin_onestop_id_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_origin_onestop_id(), 
-      GetArena());
+      GetArenaForAllocation());
   }
   trip_headsign_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (from._internal_has_trip_headsign()) {
     trip_headsign_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_trip_headsign(), 
-      GetArena());
+      GetArenaForAllocation());
   }
   ::memcpy(&block_id_, &from.block_id_,
     static_cast<size_t>(reinterpret_cast<char*>(&frequency_headway_seconds_) -
@@ -863,7 +882,7 @@ Transit_StopPair::Transit_StopPair(const Transit_StopPair& from)
   // @@protoc_insertion_point(copy_constructor:valhalla.mjolnir.Transit.StopPair)
 }
 
-void Transit_StopPair::SharedCtor() {
+inline void Transit_StopPair::SharedCtor() {
 destination_onestop_id_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 operated_by_onestop_id_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 origin_onestop_id_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
@@ -876,12 +895,13 @@ trip_headsign_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStri
 
 Transit_StopPair::~Transit_StopPair() {
   // @@protoc_insertion_point(destructor:valhalla.mjolnir.Transit.StopPair)
+  if (GetArenaForAllocation() != nullptr) return;
   SharedDtor();
   _internal_metadata_.Delete<std::string>();
 }
 
-void Transit_StopPair::SharedDtor() {
-  GOOGLE_DCHECK(GetArena() == nullptr);
+inline void Transit_StopPair::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
   destination_onestop_id_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   operated_by_onestop_id_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   origin_onestop_id_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
@@ -947,7 +967,6 @@ const char* Transit_StopPair::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPA
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
-    CHK_(ptr);
     switch (tag >> 3) {
       // optional bool bikes_allowed = 1;
       case 1:
@@ -1156,7 +1175,8 @@ const char* Transit_StopPair::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPA
         continue;
       default: {
       handle_unusual:
-        if ((tag & 7) == 4 || tag == 0) {
+        if ((tag == 0) || ((tag & 7) == 4)) {
+          CHK_(ptr);
           ctx->SetLastTag(tag);
           goto success;
         }
@@ -1521,7 +1541,6 @@ void Transit_StopPair::CheckTypeAndMergeFrom(
 void Transit_StopPair::MergeFrom(const Transit_StopPair& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:valhalla.mjolnir.Transit.StopPair)
   GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom<std::string>(from._internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -1598,6 +1617,7 @@ void Transit_StopPair::MergeFrom(const Transit_StopPair& from) {
     }
     _has_bits_[0] |= cached_has_bits;
   }
+  _internal_metadata_.MergeFrom<std::string>(from._internal_metadata_);
 }
 
 void Transit_StopPair::CopyFrom(const Transit_StopPair& from) {
@@ -1613,15 +1633,31 @@ bool Transit_StopPair::IsInitialized() const {
 
 void Transit_StopPair::InternalSwap(Transit_StopPair* other) {
   using std::swap;
-  _internal_metadata_.Swap<std::string>(&other->_internal_metadata_);
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(_has_bits_[0], other->_has_bits_[0]);
   service_added_dates_.InternalSwap(&other->service_added_dates_);
   service_days_of_week_.InternalSwap(&other->service_days_of_week_);
   service_except_dates_.InternalSwap(&other->service_except_dates_);
-  destination_onestop_id_.Swap(&other->destination_onestop_id_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-  operated_by_onestop_id_.Swap(&other->operated_by_onestop_id_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-  origin_onestop_id_.Swap(&other->origin_onestop_id_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-  trip_headsign_.Swap(&other->trip_headsign_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+      &destination_onestop_id_, GetArenaForAllocation(),
+      &other->destination_onestop_id_, other->GetArenaForAllocation()
+  );
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+      &operated_by_onestop_id_, GetArenaForAllocation(),
+      &other->operated_by_onestop_id_, other->GetArenaForAllocation()
+  );
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+      &origin_onestop_id_, GetArenaForAllocation(),
+      &other->origin_onestop_id_, other->GetArenaForAllocation()
+  );
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+      &trip_headsign_, GetArenaForAllocation(),
+      &other->trip_headsign_, other->GetArenaForAllocation()
+  );
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
       PROTOBUF_FIELD_OFFSET(Transit_StopPair, frequency_headway_seconds_)
       + sizeof(Transit_StopPair::frequency_headway_seconds_)
@@ -1672,10 +1708,13 @@ class Transit_Route::_Internal {
   }
 };
 
-Transit_Route::Transit_Route(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::MessageLite(arena) {
+Transit_Route::Transit_Route(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::MessageLite(arena, is_message_owned) {
   SharedCtor();
-  RegisterArenaDtor(arena);
+  if (!is_message_owned) {
+    RegisterArenaDtor(arena);
+  }
   // @@protoc_insertion_point(arena_constructor:valhalla.mjolnir.Transit.Route)
 }
 Transit_Route::Transit_Route(const Transit_Route& from)
@@ -1685,37 +1724,37 @@ Transit_Route::Transit_Route(const Transit_Route& from)
   name_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (from._internal_has_name()) {
     name_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_name(), 
-      GetArena());
+      GetArenaForAllocation());
   }
   onestop_id_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (from._internal_has_onestop_id()) {
     onestop_id_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_onestop_id(), 
-      GetArena());
+      GetArenaForAllocation());
   }
   operated_by_name_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (from._internal_has_operated_by_name()) {
     operated_by_name_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_operated_by_name(), 
-      GetArena());
+      GetArenaForAllocation());
   }
   operated_by_onestop_id_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (from._internal_has_operated_by_onestop_id()) {
     operated_by_onestop_id_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_operated_by_onestop_id(), 
-      GetArena());
+      GetArenaForAllocation());
   }
   operated_by_website_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (from._internal_has_operated_by_website()) {
     operated_by_website_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_operated_by_website(), 
-      GetArena());
+      GetArenaForAllocation());
   }
   route_desc_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (from._internal_has_route_desc()) {
     route_desc_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_route_desc(), 
-      GetArena());
+      GetArenaForAllocation());
   }
   route_long_name_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (from._internal_has_route_long_name()) {
     route_long_name_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_route_long_name(), 
-      GetArena());
+      GetArenaForAllocation());
   }
   ::memcpy(&route_color_, &from.route_color_,
     static_cast<size_t>(reinterpret_cast<char*>(&vehicle_type_) -
@@ -1723,7 +1762,7 @@ Transit_Route::Transit_Route(const Transit_Route& from)
   // @@protoc_insertion_point(copy_constructor:valhalla.mjolnir.Transit.Route)
 }
 
-void Transit_Route::SharedCtor() {
+inline void Transit_Route::SharedCtor() {
 name_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 onestop_id_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 operated_by_name_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
@@ -1739,12 +1778,13 @@ route_long_name_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptySt
 
 Transit_Route::~Transit_Route() {
   // @@protoc_insertion_point(destructor:valhalla.mjolnir.Transit.Route)
+  if (GetArenaForAllocation() != nullptr) return;
   SharedDtor();
   _internal_metadata_.Delete<std::string>();
 }
 
-void Transit_Route::SharedDtor() {
-  GOOGLE_DCHECK(GetArena() == nullptr);
+inline void Transit_Route::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
   name_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   onestop_id_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   operated_by_name_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
@@ -1810,7 +1850,6 @@ const char* Transit_Route::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
-    CHK_(ptr);
     switch (tag >> 3) {
       // optional string name = 1;
       case 1:
@@ -1898,7 +1937,8 @@ const char* Transit_Route::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_
         continue;
       default: {
       handle_unusual:
-        if ((tag & 7) == 4 || tag == 0) {
+        if ((tag == 0) || ((tag & 7) == 4)) {
+          CHK_(ptr);
           ctx->SetLastTag(tag);
           goto success;
         }
@@ -2094,7 +2134,6 @@ void Transit_Route::CheckTypeAndMergeFrom(
 void Transit_Route::MergeFrom(const Transit_Route& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:valhalla.mjolnir.Transit.Route)
   GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom<std::string>(from._internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -2135,6 +2174,7 @@ void Transit_Route::MergeFrom(const Transit_Route& from) {
     }
     _has_bits_[0] |= cached_has_bits;
   }
+  _internal_metadata_.MergeFrom<std::string>(from._internal_metadata_);
 }
 
 void Transit_Route::CopyFrom(const Transit_Route& from) {
@@ -2150,15 +2190,43 @@ bool Transit_Route::IsInitialized() const {
 
 void Transit_Route::InternalSwap(Transit_Route* other) {
   using std::swap;
-  _internal_metadata_.Swap<std::string>(&other->_internal_metadata_);
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(_has_bits_[0], other->_has_bits_[0]);
-  name_.Swap(&other->name_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-  onestop_id_.Swap(&other->onestop_id_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-  operated_by_name_.Swap(&other->operated_by_name_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-  operated_by_onestop_id_.Swap(&other->operated_by_onestop_id_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-  operated_by_website_.Swap(&other->operated_by_website_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-  route_desc_.Swap(&other->route_desc_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-  route_long_name_.Swap(&other->route_long_name_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+      &name_, GetArenaForAllocation(),
+      &other->name_, other->GetArenaForAllocation()
+  );
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+      &onestop_id_, GetArenaForAllocation(),
+      &other->onestop_id_, other->GetArenaForAllocation()
+  );
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+      &operated_by_name_, GetArenaForAllocation(),
+      &other->operated_by_name_, other->GetArenaForAllocation()
+  );
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+      &operated_by_onestop_id_, GetArenaForAllocation(),
+      &other->operated_by_onestop_id_, other->GetArenaForAllocation()
+  );
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+      &operated_by_website_, GetArenaForAllocation(),
+      &other->operated_by_website_, other->GetArenaForAllocation()
+  );
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+      &route_desc_, GetArenaForAllocation(),
+      &other->route_desc_, other->GetArenaForAllocation()
+  );
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+      &route_long_name_, GetArenaForAllocation(),
+      &other->route_long_name_, other->GetArenaForAllocation()
+  );
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
       PROTOBUF_FIELD_OFFSET(Transit_Route, vehicle_type_)
       + sizeof(Transit_Route::vehicle_type_)
@@ -2185,10 +2253,13 @@ class Transit_Shape::_Internal {
   }
 };
 
-Transit_Shape::Transit_Shape(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::MessageLite(arena) {
+Transit_Shape::Transit_Shape(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::MessageLite(arena, is_message_owned) {
   SharedCtor();
-  RegisterArenaDtor(arena);
+  if (!is_message_owned) {
+    RegisterArenaDtor(arena);
+  }
   // @@protoc_insertion_point(arena_constructor:valhalla.mjolnir.Transit.Shape)
 }
 Transit_Shape::Transit_Shape(const Transit_Shape& from)
@@ -2198,25 +2269,26 @@ Transit_Shape::Transit_Shape(const Transit_Shape& from)
   encoded_shape_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (from._internal_has_encoded_shape()) {
     encoded_shape_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_encoded_shape(), 
-      GetArena());
+      GetArenaForAllocation());
   }
   shape_id_ = from.shape_id_;
   // @@protoc_insertion_point(copy_constructor:valhalla.mjolnir.Transit.Shape)
 }
 
-void Transit_Shape::SharedCtor() {
+inline void Transit_Shape::SharedCtor() {
 encoded_shape_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 shape_id_ = 0u;
 }
 
 Transit_Shape::~Transit_Shape() {
   // @@protoc_insertion_point(destructor:valhalla.mjolnir.Transit.Shape)
+  if (GetArenaForAllocation() != nullptr) return;
   SharedDtor();
   _internal_metadata_.Delete<std::string>();
 }
 
-void Transit_Shape::SharedDtor() {
-  GOOGLE_DCHECK(GetArena() == nullptr);
+inline void Transit_Shape::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
   encoded_shape_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 }
 
@@ -2251,7 +2323,6 @@ const char* Transit_Shape::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
-    CHK_(ptr);
     switch (tag >> 3) {
       // optional uint32 shape_id = 1;
       case 1:
@@ -2271,7 +2342,8 @@ const char* Transit_Shape::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_
         continue;
       default: {
       handle_unusual:
-        if ((tag & 7) == 4 || tag == 0) {
+        if ((tag == 0) || ((tag & 7) == 4)) {
+          CHK_(ptr);
           ctx->SetLastTag(tag);
           goto success;
         }
@@ -2361,7 +2433,6 @@ void Transit_Shape::CheckTypeAndMergeFrom(
 void Transit_Shape::MergeFrom(const Transit_Shape& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:valhalla.mjolnir.Transit.Shape)
   GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom<std::string>(from._internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -2375,6 +2446,7 @@ void Transit_Shape::MergeFrom(const Transit_Shape& from) {
     }
     _has_bits_[0] |= cached_has_bits;
   }
+  _internal_metadata_.MergeFrom<std::string>(from._internal_metadata_);
 }
 
 void Transit_Shape::CopyFrom(const Transit_Shape& from) {
@@ -2390,9 +2462,13 @@ bool Transit_Shape::IsInitialized() const {
 
 void Transit_Shape::InternalSwap(Transit_Shape* other) {
   using std::swap;
-  _internal_metadata_.Swap<std::string>(&other->_internal_metadata_);
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(_has_bits_[0], other->_has_bits_[0]);
-  encoded_shape_.Swap(&other->encoded_shape_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+      &encoded_shape_, GetArenaForAllocation(),
+      &other->encoded_shape_, other->GetArenaForAllocation()
+  );
   swap(shape_id_, other->shape_id_);
 }
 
@@ -2407,14 +2483,17 @@ class Transit::_Internal {
  public:
 };
 
-Transit::Transit(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::MessageLite(arena),
+Transit::Transit(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::MessageLite(arena, is_message_owned),
   nodes_(arena),
   stop_pairs_(arena),
   routes_(arena),
   shapes_(arena) {
   SharedCtor();
-  RegisterArenaDtor(arena);
+  if (!is_message_owned) {
+    RegisterArenaDtor(arena);
+  }
   // @@protoc_insertion_point(arena_constructor:valhalla.mjolnir.Transit)
 }
 Transit::Transit(const Transit& from)
@@ -2427,17 +2506,18 @@ Transit::Transit(const Transit& from)
   // @@protoc_insertion_point(copy_constructor:valhalla.mjolnir.Transit)
 }
 
-void Transit::SharedCtor() {
+inline void Transit::SharedCtor() {
 }
 
 Transit::~Transit() {
   // @@protoc_insertion_point(destructor:valhalla.mjolnir.Transit)
+  if (GetArenaForAllocation() != nullptr) return;
   SharedDtor();
   _internal_metadata_.Delete<std::string>();
 }
 
-void Transit::SharedDtor() {
-  GOOGLE_DCHECK(GetArena() == nullptr);
+inline void Transit::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
 }
 
 void Transit::ArenaDtor(void* object) {
@@ -2468,7 +2548,6 @@ const char* Transit::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::in
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
-    CHK_(ptr);
     switch (tag >> 3) {
       // repeated .valhalla.mjolnir.Transit.Node nodes = 1;
       case 1:
@@ -2520,7 +2599,8 @@ const char* Transit::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::in
         continue;
       default: {
       handle_unusual:
-        if ((tag & 7) == 4 || tag == 0) {
+        if ((tag == 0) || ((tag & 7) == 4)) {
+          CHK_(ptr);
           ctx->SetLastTag(tag);
           goto success;
         }
@@ -2639,7 +2719,6 @@ void Transit::CheckTypeAndMergeFrom(
 void Transit::MergeFrom(const Transit& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:valhalla.mjolnir.Transit)
   GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom<std::string>(from._internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -2647,6 +2726,7 @@ void Transit::MergeFrom(const Transit& from) {
   stop_pairs_.MergeFrom(from.stop_pairs_);
   routes_.MergeFrom(from.routes_);
   shapes_.MergeFrom(from.shapes_);
+  _internal_metadata_.MergeFrom<std::string>(from._internal_metadata_);
 }
 
 void Transit::CopyFrom(const Transit& from) {
@@ -2662,7 +2742,7 @@ bool Transit::IsInitialized() const {
 
 void Transit::InternalSwap(Transit* other) {
   using std::swap;
-  _internal_metadata_.Swap<std::string>(&other->_internal_metadata_);
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   nodes_.InternalSwap(&other->nodes_);
   stop_pairs_.InternalSwap(&other->stop_pairs_);
   routes_.InternalSwap(&other->routes_);

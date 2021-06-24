@@ -87,10 +87,13 @@ void Api::clear_info() {
   if (info_ != nullptr) info_->Clear();
   _has_bits_[0] &= ~0x00000008u;
 }
-Api::Api(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::MessageLite(arena) {
+Api::Api(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::MessageLite(arena, is_message_owned) {
   SharedCtor();
-  RegisterArenaDtor(arena);
+  if (!is_message_owned) {
+    RegisterArenaDtor(arena);
+  }
   // @@protoc_insertion_point(arena_constructor:valhalla.Api)
 }
 Api::Api(const Api& from)
@@ -120,7 +123,7 @@ Api::Api(const Api& from)
   // @@protoc_insertion_point(copy_constructor:valhalla.Api)
 }
 
-void Api::SharedCtor() {
+inline void Api::SharedCtor() {
 ::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
     reinterpret_cast<char*>(&options_) - reinterpret_cast<char*>(this)),
     0, static_cast<size_t>(reinterpret_cast<char*>(&info_) -
@@ -129,12 +132,13 @@ void Api::SharedCtor() {
 
 Api::~Api() {
   // @@protoc_insertion_point(destructor:valhalla.Api)
+  if (GetArenaForAllocation() != nullptr) return;
   SharedDtor();
   _internal_metadata_.Delete<std::string>();
 }
 
-void Api::SharedDtor() {
-  GOOGLE_DCHECK(GetArena() == nullptr);
+inline void Api::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
   if (this != internal_default_instance()) delete options_;
   if (this != internal_default_instance()) delete trip_;
   if (this != internal_default_instance()) delete directions_;
@@ -186,7 +190,6 @@ const char* Api::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::intern
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
-    CHK_(ptr);
     switch (tag >> 3) {
       // optional .valhalla.Options options = 1;
       case 1:
@@ -218,7 +221,8 @@ const char* Api::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::intern
         continue;
       default: {
       handle_unusual:
-        if ((tag & 7) == 4 || tag == 0) {
+        if ((tag == 0) || ((tag & 7) == 4)) {
+          CHK_(ptr);
           ctx->SetLastTag(tag);
           goto success;
         }
@@ -342,7 +346,6 @@ void Api::CheckTypeAndMergeFrom(
 void Api::MergeFrom(const Api& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:valhalla.Api)
   GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom<std::string>(from._internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -361,6 +364,7 @@ void Api::MergeFrom(const Api& from) {
       _internal_mutable_info()->::valhalla::Info::MergeFrom(from._internal_info());
     }
   }
+  _internal_metadata_.MergeFrom<std::string>(from._internal_metadata_);
 }
 
 void Api::CopyFrom(const Api& from) {
@@ -376,7 +380,7 @@ bool Api::IsInitialized() const {
 
 void Api::InternalSwap(Api* other) {
   using std::swap;
-  _internal_metadata_.Swap<std::string>(&other->_internal_metadata_);
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(_has_bits_[0], other->_has_bits_[0]);
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
       PROTOBUF_FIELD_OFFSET(Api, info_)

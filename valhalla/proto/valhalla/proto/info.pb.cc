@@ -55,10 +55,13 @@ class Statistic::_Internal {
   }
 };
 
-Statistic::Statistic(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::MessageLite(arena) {
+Statistic::Statistic(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::MessageLite(arena, is_message_owned) {
   SharedCtor();
-  RegisterArenaDtor(arena);
+  if (!is_message_owned) {
+    RegisterArenaDtor(arena);
+  }
   // @@protoc_insertion_point(arena_constructor:valhalla.Statistic)
 }
 Statistic::Statistic(const Statistic& from)
@@ -68,25 +71,26 @@ Statistic::Statistic(const Statistic& from)
   name_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (from._internal_has_name()) {
     name_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_name(), 
-      GetArena());
+      GetArenaForAllocation());
   }
   value_ = from.value_;
   // @@protoc_insertion_point(copy_constructor:valhalla.Statistic)
 }
 
-void Statistic::SharedCtor() {
+inline void Statistic::SharedCtor() {
 name_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 value_ = 0;
 }
 
 Statistic::~Statistic() {
   // @@protoc_insertion_point(destructor:valhalla.Statistic)
+  if (GetArenaForAllocation() != nullptr) return;
   SharedDtor();
   _internal_metadata_.Delete<std::string>();
 }
 
-void Statistic::SharedDtor() {
-  GOOGLE_DCHECK(GetArena() == nullptr);
+inline void Statistic::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
   name_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 }
 
@@ -121,7 +125,6 @@ const char* Statistic::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
-    CHK_(ptr);
     switch (tag >> 3) {
       // optional string name = 1;
       case 1:
@@ -141,7 +144,8 @@ const char* Statistic::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::
         continue;
       default: {
       handle_unusual:
-        if ((tag & 7) == 4 || tag == 0) {
+        if ((tag == 0) || ((tag & 7) == 4)) {
+          CHK_(ptr);
           ctx->SetLastTag(tag);
           goto success;
         }
@@ -229,7 +233,6 @@ void Statistic::CheckTypeAndMergeFrom(
 void Statistic::MergeFrom(const Statistic& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:valhalla.Statistic)
   GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom<std::string>(from._internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -243,6 +246,7 @@ void Statistic::MergeFrom(const Statistic& from) {
     }
     _has_bits_[0] |= cached_has_bits;
   }
+  _internal_metadata_.MergeFrom<std::string>(from._internal_metadata_);
 }
 
 void Statistic::CopyFrom(const Statistic& from) {
@@ -258,9 +262,13 @@ bool Statistic::IsInitialized() const {
 
 void Statistic::InternalSwap(Statistic* other) {
   using std::swap;
-  _internal_metadata_.Swap<std::string>(&other->_internal_metadata_);
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(_has_bits_[0], other->_has_bits_[0]);
-  name_.Swap(&other->name_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+      &name_, GetArenaForAllocation(),
+      &other->name_, other->GetArenaForAllocation()
+  );
   swap(value_, other->value_);
 }
 
@@ -275,11 +283,14 @@ class Info::_Internal {
  public:
 };
 
-Info::Info(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::MessageLite(arena),
+Info::Info(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::MessageLite(arena, is_message_owned),
   statistics_(arena) {
   SharedCtor();
-  RegisterArenaDtor(arena);
+  if (!is_message_owned) {
+    RegisterArenaDtor(arena);
+  }
   // @@protoc_insertion_point(arena_constructor:valhalla.Info)
 }
 Info::Info(const Info& from)
@@ -289,17 +300,18 @@ Info::Info(const Info& from)
   // @@protoc_insertion_point(copy_constructor:valhalla.Info)
 }
 
-void Info::SharedCtor() {
+inline void Info::SharedCtor() {
 }
 
 Info::~Info() {
   // @@protoc_insertion_point(destructor:valhalla.Info)
+  if (GetArenaForAllocation() != nullptr) return;
   SharedDtor();
   _internal_metadata_.Delete<std::string>();
 }
 
-void Info::SharedDtor() {
-  GOOGLE_DCHECK(GetArena() == nullptr);
+inline void Info::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
 }
 
 void Info::ArenaDtor(void* object) {
@@ -327,7 +339,6 @@ const char* Info::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::inter
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
-    CHK_(ptr);
     switch (tag >> 3) {
       // repeated .valhalla.Statistic statistics = 1;
       case 1:
@@ -343,7 +354,8 @@ const char* Info::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::inter
         continue;
       default: {
       handle_unusual:
-        if ((tag & 7) == 4 || tag == 0) {
+        if ((tag == 0) || ((tag & 7) == 4)) {
+          CHK_(ptr);
           ctx->SetLastTag(tag);
           goto success;
         }
@@ -417,11 +429,11 @@ void Info::CheckTypeAndMergeFrom(
 void Info::MergeFrom(const Info& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:valhalla.Info)
   GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom<std::string>(from._internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   statistics_.MergeFrom(from.statistics_);
+  _internal_metadata_.MergeFrom<std::string>(from._internal_metadata_);
 }
 
 void Info::CopyFrom(const Info& from) {
@@ -437,7 +449,7 @@ bool Info::IsInitialized() const {
 
 void Info::InternalSwap(Info* other) {
   using std::swap;
-  _internal_metadata_.Swap<std::string>(&other->_internal_metadata_);
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   statistics_.InternalSwap(&other->statistics_);
 }
 
