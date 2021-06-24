@@ -51,6 +51,7 @@
 [submodule "protobuf/protobuf"]
 	path = protobuf/protobuf
 	url = https://github.com/nutiteq/protobuf.git
+	branch = nutiteq-fixes
 [submodule "valhalla/valhalla"]
 	path = valhalla/valhalla
 	url = https://github.com/nutiteq/valhalla.git
