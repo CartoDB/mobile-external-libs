@@ -1,0 +1,25 @@
+project(botan)
+
+if(WIN32)
+  file(GLOB botan_SRC_FILES "botan/botan_all_msvc.cpp")
+else()
+  file(GLOB botan_SRC_FILES "botan/botan_all_clang.cpp")
+endif()
+
+if(WIN32)
+  set(botan_FLAGS "-DBOTAN_BUILD_COMPILER_IS_MSVC" "/wd4250")
+else()
+  set(botan_FLAGS "-DBOTAN_BUILD_COMPILER_IS_CLANG")
+endif()
+
+set(botan_INCLUDE_DIRS "${PROJECT_SOURCE_DIR}" PARENT_SCOPE)
+
+if(SINGLE_LIBRARY)
+  set(botan_SRC_FILES ${botan_SRC_FILES} PARENT_SCOPE)
+  set(botan_FLAGS ${botan_FLAGS} PARENT_SCOPE)
+  add_library(botan INTERFACE)
+else()
+  add_compile_options(${botan_FLAGS})
+  include_directories("${PROJECT_SOURCE_DIR}")
+  add_library(botan OBJECT ${botan_SRC_FILES})
+endif()
