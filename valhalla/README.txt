@@ -1,7 +1,7 @@
 Hacked version of Valhalla routing engine
 -----------------------------------------
 
-Current version is based on Valhalla 3.0.9 release. Protobuf files are compiled using protoc 2.5.0.
+Current version is based on Valhalla 3.1.1 release. Protobuf files are compiled using protoc 3.17.3.
 
 
 Changed files
