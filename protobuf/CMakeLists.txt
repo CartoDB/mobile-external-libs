@@ -1,54 +1,36 @@
 project(protobuf)
 
 file(GLOB protobuf_SRC_FILES
-  protobuf/src/google/protobuf/any.cc
   protobuf/src/google/protobuf/any_lite.cc
   protobuf/src/google/protobuf/arena.cc
   protobuf/src/google/protobuf/arenastring.cc
-  protobuf/src/google/protobuf/descriptor.cc
-  protobuf/src/google/protobuf/descriptor_database.cc
-  protobuf/src/google/protobuf/descriptor.pb.cc
-  protobuf/src/google/protobuf/dynamic_message.cc
-  protobuf/src/google/protobuf/implicit_weak_message.cc
   protobuf/src/google/protobuf/extension_set.cc
-  protobuf/src/google/protobuf/extension_set_heavy.cc
-  protobuf/src/google/protobuf/generated_message_reflection.cc
-  protobuf/src/google/protobuf/generated_message_util.cc
+  protobuf/src/google/protobuf/field_access_listener.cc
   protobuf/src/google/protobuf/generated_enum_util.cc
-  protobuf/src/google/protobuf/message.cc
-  protobuf/src/google/protobuf/message_lite.cc
-  protobuf/src/google/protobuf/reflection_ops.cc
-  protobuf/src/google/protobuf/repeated_field.cc
-  protobuf/src/google/protobuf/service.cc
-  protobuf/src/google/protobuf/parse_context.cc
-  protobuf/src/google/protobuf/text_format.cc
-  protobuf/src/google/protobuf/unknown_field_set.cc
-  protobuf/src/google/protobuf/wire_format.cc
-  protobuf/src/google/protobuf/wire_format_lite.cc
-  protobuf/src/google/protobuf/status.cc
-  protobuf/src/google/protobuf/map.cc
-  protobuf/src/google/protobuf/map_field.cc
-  protobuf/src/google/protobuf/text_format.cc
-
+  protobuf/src/google/protobuf/generated_message_table_driven_lite.cc
+  protobuf/src/google/protobuf/generated_message_util.cc
+  protobuf/src/google/protobuf/implicit_weak_message.cc
   protobuf/src/google/protobuf/io/coded_stream.cc
-  protobuf/src/google/protobuf/io/zero_copy_stream_impl.cc
-  protobuf/src/google/protobuf/io/tokenizer.cc
-  protobuf/src/google/protobuf/io/zero_copy_stream_impl_lite.cc
-  protobuf/src/google/protobuf/io/gzip_stream.cc
-  protobuf/src/google/protobuf/io/printer.cc
-  protobuf/src/google/protobuf/io/zero_copy_stream.cc
-  protobuf/src/google/protobuf/io/strtod.cc
   protobuf/src/google/protobuf/io/io_win32.cc
-
+  protobuf/src/google/protobuf/io/strtod.cc
+  protobuf/src/google/protobuf/io/zero_copy_stream.cc
+  protobuf/src/google/protobuf/io/zero_copy_stream_impl.cc
+  protobuf/src/google/protobuf/io/zero_copy_stream_impl_lite.cc
+  protobuf/src/google/protobuf/map.cc
+  protobuf/src/google/protobuf/message_lite.cc
+  protobuf/src/google/protobuf/parse_context.cc
+  protobuf/src/google/protobuf/repeated_field.cc
+  protobuf/src/google/protobuf/stubs/bytestream.cc
   protobuf/src/google/protobuf/stubs/common.cc
-  protobuf/src/google/protobuf/stubs/once.cc
-  protobuf/src/google/protobuf/stubs/strutil.cc
-  protobuf/src/google/protobuf/stubs/stringprintf.cc
-  protobuf/src/google/protobuf/stubs/structurally_valid.cc
-  protobuf/src/google/protobuf/stubs/substitute.cc
   protobuf/src/google/protobuf/stubs/int128.cc
   protobuf/src/google/protobuf/stubs/status.cc
+  protobuf/src/google/protobuf/stubs/statusor.cc
   protobuf/src/google/protobuf/stubs/stringpiece.cc
+  protobuf/src/google/protobuf/stubs/stringprintf.cc
+  protobuf/src/google/protobuf/stubs/structurally_valid.cc
+  protobuf/src/google/protobuf/stubs/strutil.cc
+  protobuf/src/google/protobuf/stubs/time.cc
+  protobuf/src/google/protobuf/wire_format_lite.cc
 )
 
 set(protobuf_FLAGS "")
