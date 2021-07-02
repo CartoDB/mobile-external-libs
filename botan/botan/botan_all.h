@@ -28,6 +28,11 @@
 #include <utility>
 #include <vector>
 
+#if defined(_MSC_VER)
+#pragma warning(push)
+#pragma warning(disable : 4250)
+#endif
+
 /*
 * Build configuration for Botan 2.18.1
 *
@@ -12213,5 +12218,9 @@ BOTAN_PUBLIC_API(2,0) Public_Key* copy_key(const Public_Key& key);
 }
 
 }
+
+#if defined(_MSC_VER)
+#pragma warning(pop)
+#endif
 
 #endif // BOTAN_AMALGAMATION_H_

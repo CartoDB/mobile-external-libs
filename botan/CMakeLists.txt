@@ -7,7 +7,7 @@ else()
 endif()
 
 if(WIN32)
-  set(botan_FLAGS "-DBOTAN_BUILD_COMPILER_IS_MSVC" "/wd4250")
+  set(botan_FLAGS "-DBOTAN_BUILD_COMPILER_IS_MSVC")
 else()
   set(botan_FLAGS "-DBOTAN_BUILD_COMPILER_IS_CLANG")
 endif()
