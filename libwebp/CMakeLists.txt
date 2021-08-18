@@ -2,7 +2,7 @@ project(libwebp)
 
 file(GLOB libwebp_SRC_FILES "libwebp/src/*/*.c")
 
-set(libwebp_FLAGS "-DWEBP_EXTERN=extern" "-DWEBP_DISABLE_STATS")
+set(libwebp_FLAGS "-DWEBP_EXTERN=extern" "-DWEBP_DISABLE_STATS" "-DWEBP_REDUCE_SIZE")
 
 set(libwebp_INCLUDE_DIRS "${PROJECT_SOURCE_DIR}/libwebp" "${PROJECT_SOURCE_DIR}/libwebp/src" PARENT_SCOPE)
 
