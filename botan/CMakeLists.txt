@@ -9,7 +9,7 @@ endif()
 if(WIN32)
   set(botan_FLAGS "-DBOTAN_BUILD_COMPILER_IS_MSVC" "/wd4267")
 else()
-  set(botan_FLAGS "-DBOTAN_BUILD_COMPILER_IS_CLANG")
+  set(botan_FLAGS "-DBOTAN_BUILD_COMPILER_IS_CLANG" "-Wno-shorten-64-to-32")
 endif()
 
 set(botan_INCLUDE_DIRS "${PROJECT_SOURCE_DIR}" PARENT_SCOPE)
