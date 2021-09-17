@@ -276,7 +276,7 @@ Transit_Fetch_Stop::Transit_Fetch_Stop(const Transit_Fetch_Stop& from)
   // @@protoc_insertion_point(copy_constructor:valhalla.mjolnir.Transit_Fetch.Stop)
 }
 
-inline void Transit_Fetch_Stop::SharedCtor() {
+void Transit_Fetch_Stop::SharedCtor() {
 name_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 onestop_id_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 timezone_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
@@ -350,7 +350,8 @@ const char* Transit_Fetch_Stop::_InternalParse(const char* ptr, ::PROTOBUF_NAMES
           _Internal::set_has_lon(&has_bits);
           lon_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
           ptr += sizeof(float);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional float lat = 2;
       case 2:
@@ -358,7 +359,8 @@ const char* Transit_Fetch_Stop::_InternalParse(const char* ptr, ::PROTOBUF_NAMES
           _Internal::set_has_lat(&has_bits);
           lat_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
           ptr += sizeof(float);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional uint64 graphid = 3;
       case 3:
@@ -366,7 +368,8 @@ const char* Transit_Fetch_Stop::_InternalParse(const char* ptr, ::PROTOBUF_NAMES
           _Internal::set_has_graphid(&has_bits);
           graphid_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional string name = 4;
       case 4:
@@ -374,7 +377,8 @@ const char* Transit_Fetch_Stop::_InternalParse(const char* ptr, ::PROTOBUF_NAMES
           auto str = _internal_mutable_name();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional string onestop_id = 5;
       case 5:
@@ -382,7 +386,8 @@ const char* Transit_Fetch_Stop::_InternalParse(const char* ptr, ::PROTOBUF_NAMES
           auto str = _internal_mutable_onestop_id();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional uint64 osm_way_id = 6;
       case 6:
@@ -390,7 +395,8 @@ const char* Transit_Fetch_Stop::_InternalParse(const char* ptr, ::PROTOBUF_NAMES
           _Internal::set_has_osm_way_id(&has_bits);
           osm_way_id_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional string timezone = 8;
       case 8:
@@ -398,7 +404,8 @@ const char* Transit_Fetch_Stop::_InternalParse(const char* ptr, ::PROTOBUF_NAMES
           auto str = _internal_mutable_timezone();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional bool wheelchair_boarding = 9;
       case 9:
@@ -406,29 +413,30 @@ const char* Transit_Fetch_Stop::_InternalParse(const char* ptr, ::PROTOBUF_NAMES
           _Internal::set_has_wheelchair_boarding(&has_bits);
           wheelchair_boarding_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
-      default: {
-      handle_unusual:
-        if ((tag == 0) || ((tag & 7) == 4)) {
-          CHK_(ptr);
-          ctx->SetLastTag(tag);
-          goto success;
-        }
-        ptr = UnknownFieldParse(tag,
-            _internal_metadata_.mutable_unknown_fields<std::string>(),
-            ptr, ctx);
-        CHK_(ptr != nullptr);
-        continue;
-      }
+      default:
+        goto handle_unusual;
     }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<std::string>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
   }  // while
-success:
+message_done:
   _has_bits_.Or(has_bits);
   return ptr;
 failure:
   ptr = nullptr;
-  goto success;
+  goto message_done;
 #undef CHK_
 }
 
@@ -538,16 +546,12 @@ size_t Transit_Fetch_Stop::ByteSizeLong() const {
 
     // optional uint64 graphid = 3;
     if (cached_has_bits & 0x00000020u) {
-      total_size += 1 +
-        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt64Size(
-          this->_internal_graphid());
+      total_size += ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt64SizePlusOne(this->_internal_graphid());
     }
 
     // optional uint64 osm_way_id = 6;
     if (cached_has_bits & 0x00000040u) {
-      total_size += 1 +
-        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt64Size(
-          this->_internal_osm_way_id());
+      total_size += ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt64SizePlusOne(this->_internal_osm_way_id());
     }
 
     // optional bool wheelchair_boarding = 9;
@@ -620,22 +624,24 @@ bool Transit_Fetch_Stop::IsInitialized() const {
 
 void Transit_Fetch_Stop::InternalSwap(Transit_Fetch_Stop* other) {
   using std::swap;
+  auto* lhs_arena = GetArenaForAllocation();
+  auto* rhs_arena = other->GetArenaForAllocation();
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(_has_bits_[0], other->_has_bits_[0]);
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
       &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
-      &name_, GetArenaForAllocation(),
-      &other->name_, other->GetArenaForAllocation()
+      &name_, lhs_arena,
+      &other->name_, rhs_arena
   );
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
       &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
-      &onestop_id_, GetArenaForAllocation(),
-      &other->onestop_id_, other->GetArenaForAllocation()
+      &onestop_id_, lhs_arena,
+      &other->onestop_id_, rhs_arena
   );
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
       &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
-      &timezone_, GetArenaForAllocation(),
-      &other->timezone_, other->GetArenaForAllocation()
+      &timezone_, lhs_arena,
+      &other->timezone_, rhs_arena
   );
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
       PROTOBUF_FIELD_OFFSET(Transit_Fetch_Stop, wheelchair_boarding_)
@@ -762,7 +768,7 @@ Transit_Fetch_StopPair::Transit_Fetch_StopPair(const Transit_Fetch_StopPair& fro
   // @@protoc_insertion_point(copy_constructor:valhalla.mjolnir.Transit_Fetch.StopPair)
 }
 
-inline void Transit_Fetch_StopPair::SharedCtor() {
+void Transit_Fetch_StopPair::SharedCtor() {
 destination_onestop_id_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 operated_by_onestop_id_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 origin_onestop_id_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
@@ -854,7 +860,8 @@ const char* Transit_Fetch_StopPair::_InternalParse(const char* ptr, ::PROTOBUF_N
           _Internal::set_has_bikes_allowed(&has_bits);
           bikes_allowed_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional uint32 block_id = 2;
       case 2:
@@ -862,7 +869,8 @@ const char* Transit_Fetch_StopPair::_InternalParse(const char* ptr, ::PROTOBUF_N
           _Internal::set_has_block_id(&has_bits);
           block_id_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional uint32 destination_arrival_time = 3;
       case 3:
@@ -870,7 +878,8 @@ const char* Transit_Fetch_StopPair::_InternalParse(const char* ptr, ::PROTOBUF_N
           _Internal::set_has_destination_arrival_time(&has_bits);
           destination_arrival_time_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional uint64 destination_graphid = 4;
       case 4:
@@ -878,7 +887,8 @@ const char* Transit_Fetch_StopPair::_InternalParse(const char* ptr, ::PROTOBUF_N
           _Internal::set_has_destination_graphid(&has_bits);
           destination_graphid_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional string destination_onestop_id = 5;
       case 5:
@@ -886,7 +896,8 @@ const char* Transit_Fetch_StopPair::_InternalParse(const char* ptr, ::PROTOBUF_N
           auto str = _internal_mutable_destination_onestop_id();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional string operated_by_onestop_id = 6;
       case 6:
@@ -894,7 +905,8 @@ const char* Transit_Fetch_StopPair::_InternalParse(const char* ptr, ::PROTOBUF_N
           auto str = _internal_mutable_operated_by_onestop_id();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional uint32 origin_departure_time = 7;
       case 7:
@@ -902,7 +914,8 @@ const char* Transit_Fetch_StopPair::_InternalParse(const char* ptr, ::PROTOBUF_N
           _Internal::set_has_origin_departure_time(&has_bits);
           origin_departure_time_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional uint64 origin_graphid = 8;
       case 8:
@@ -910,7 +923,8 @@ const char* Transit_Fetch_StopPair::_InternalParse(const char* ptr, ::PROTOBUF_N
           _Internal::set_has_origin_graphid(&has_bits);
           origin_graphid_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional string origin_onestop_id = 9;
       case 9:
@@ -918,7 +932,8 @@ const char* Transit_Fetch_StopPair::_InternalParse(const char* ptr, ::PROTOBUF_N
           auto str = _internal_mutable_origin_onestop_id();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional uint32 route_index = 10;
       case 10:
@@ -926,7 +941,8 @@ const char* Transit_Fetch_StopPair::_InternalParse(const char* ptr, ::PROTOBUF_N
           _Internal::set_has_route_index(&has_bits);
           route_index_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // repeated uint32 service_added_dates = 11;
       case 11:
@@ -941,7 +957,8 @@ const char* Transit_Fetch_StopPair::_InternalParse(const char* ptr, ::PROTOBUF_N
         } else if (static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 90) {
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::PackedUInt32Parser(_internal_mutable_service_added_dates(), ptr, ctx);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // repeated bool service_days_of_week = 12;
       case 12:
@@ -956,7 +973,8 @@ const char* Transit_Fetch_StopPair::_InternalParse(const char* ptr, ::PROTOBUF_N
         } else if (static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 98) {
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::PackedBoolParser(_internal_mutable_service_days_of_week(), ptr, ctx);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional uint32 service_end_date = 13;
       case 13:
@@ -964,7 +982,8 @@ const char* Transit_Fetch_StopPair::_InternalParse(const char* ptr, ::PROTOBUF_N
           _Internal::set_has_service_end_date(&has_bits);
           service_end_date_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // repeated uint32 service_except_dates = 14;
       case 14:
@@ -979,7 +998,8 @@ const char* Transit_Fetch_StopPair::_InternalParse(const char* ptr, ::PROTOBUF_N
         } else if (static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 114) {
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::PackedUInt32Parser(_internal_mutable_service_except_dates(), ptr, ctx);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional uint32 service_start_date = 15;
       case 15:
@@ -987,7 +1007,8 @@ const char* Transit_Fetch_StopPair::_InternalParse(const char* ptr, ::PROTOBUF_N
           _Internal::set_has_service_start_date(&has_bits);
           service_start_date_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional string trip_headsign = 16;
       case 16:
@@ -995,7 +1016,8 @@ const char* Transit_Fetch_StopPair::_InternalParse(const char* ptr, ::PROTOBUF_N
           auto str = _internal_mutable_trip_headsign();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional uint32 trip_id = 17;
       case 17:
@@ -1003,7 +1025,8 @@ const char* Transit_Fetch_StopPair::_InternalParse(const char* ptr, ::PROTOBUF_N
           _Internal::set_has_trip_id(&has_bits);
           trip_id_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional bool wheelchair_accessible = 18;
       case 18:
@@ -1011,7 +1034,8 @@ const char* Transit_Fetch_StopPair::_InternalParse(const char* ptr, ::PROTOBUF_N
           _Internal::set_has_wheelchair_accessible(&has_bits);
           wheelchair_accessible_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional uint32 shape_id = 20;
       case 20:
@@ -1019,7 +1043,8 @@ const char* Transit_Fetch_StopPair::_InternalParse(const char* ptr, ::PROTOBUF_N
           _Internal::set_has_shape_id(&has_bits);
           shape_id_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional float origin_dist_traveled = 21;
       case 21:
@@ -1027,7 +1052,8 @@ const char* Transit_Fetch_StopPair::_InternalParse(const char* ptr, ::PROTOBUF_N
           _Internal::set_has_origin_dist_traveled(&has_bits);
           origin_dist_traveled_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
           ptr += sizeof(float);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional float destination_dist_traveled = 22;
       case 22:
@@ -1035,7 +1061,8 @@ const char* Transit_Fetch_StopPair::_InternalParse(const char* ptr, ::PROTOBUF_N
           _Internal::set_has_destination_dist_traveled(&has_bits);
           destination_dist_traveled_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
           ptr += sizeof(float);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional uint32 frequency_end_time = 23;
       case 23:
@@ -1043,7 +1070,8 @@ const char* Transit_Fetch_StopPair::_InternalParse(const char* ptr, ::PROTOBUF_N
           _Internal::set_has_frequency_end_time(&has_bits);
           frequency_end_time_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional uint32 frequency_headway_seconds = 24;
       case 24:
@@ -1051,29 +1079,30 @@ const char* Transit_Fetch_StopPair::_InternalParse(const char* ptr, ::PROTOBUF_N
           _Internal::set_has_frequency_headway_seconds(&has_bits);
           frequency_headway_seconds_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
-      default: {
-      handle_unusual:
-        if ((tag == 0) || ((tag & 7) == 4)) {
-          CHK_(ptr);
-          ctx->SetLastTag(tag);
-          goto success;
-        }
-        ptr = UnknownFieldParse(tag,
-            _internal_metadata_.mutable_unknown_fields<std::string>(),
-            ptr, ctx);
-        CHK_(ptr != nullptr);
-        continue;
-      }
+      default:
+        goto handle_unusual;
     }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<std::string>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
   }  // while
-success:
+message_done:
   _has_bits_.Or(has_bits);
   return ptr;
 failure:
   ptr = nullptr;
-  goto success;
+  goto message_done;
 #undef CHK_
 }
 
@@ -1297,39 +1326,29 @@ size_t Transit_Fetch_StopPair::ByteSizeLong() const {
 
     // optional uint32 block_id = 2;
     if (cached_has_bits & 0x00000010u) {
-      total_size += 1 +
-        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32Size(
-          this->_internal_block_id());
+      total_size += ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32SizePlusOne(this->_internal_block_id());
     }
 
     // optional uint32 destination_arrival_time = 3;
     if (cached_has_bits & 0x00000020u) {
-      total_size += 1 +
-        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32Size(
-          this->_internal_destination_arrival_time());
+      total_size += ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32SizePlusOne(this->_internal_destination_arrival_time());
     }
 
     // optional uint64 destination_graphid = 4;
     if (cached_has_bits & 0x00000040u) {
-      total_size += 1 +
-        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt64Size(
-          this->_internal_destination_graphid());
+      total_size += ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt64SizePlusOne(this->_internal_destination_graphid());
     }
 
     // optional uint64 origin_graphid = 8;
     if (cached_has_bits & 0x00000080u) {
-      total_size += 1 +
-        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt64Size(
-          this->_internal_origin_graphid());
+      total_size += ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt64SizePlusOne(this->_internal_origin_graphid());
     }
 
   }
   if (cached_has_bits & 0x0000ff00u) {
     // optional uint32 origin_departure_time = 7;
     if (cached_has_bits & 0x00000100u) {
-      total_size += 1 +
-        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32Size(
-          this->_internal_origin_departure_time());
+      total_size += ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32SizePlusOne(this->_internal_origin_departure_time());
     }
 
     // optional bool bikes_allowed = 1;
@@ -1344,23 +1363,17 @@ size_t Transit_Fetch_StopPair::ByteSizeLong() const {
 
     // optional uint32 route_index = 10;
     if (cached_has_bits & 0x00000800u) {
-      total_size += 1 +
-        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32Size(
-          this->_internal_route_index());
+      total_size += ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32SizePlusOne(this->_internal_route_index());
     }
 
     // optional uint32 service_end_date = 13;
     if (cached_has_bits & 0x00001000u) {
-      total_size += 1 +
-        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32Size(
-          this->_internal_service_end_date());
+      total_size += ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32SizePlusOne(this->_internal_service_end_date());
     }
 
     // optional uint32 service_start_date = 15;
     if (cached_has_bits & 0x00002000u) {
-      total_size += 1 +
-        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32Size(
-          this->_internal_service_start_date());
+      total_size += ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32SizePlusOne(this->_internal_service_start_date());
     }
 
     // optional uint32 trip_id = 17;
@@ -1513,6 +1526,8 @@ bool Transit_Fetch_StopPair::IsInitialized() const {
 
 void Transit_Fetch_StopPair::InternalSwap(Transit_Fetch_StopPair* other) {
   using std::swap;
+  auto* lhs_arena = GetArenaForAllocation();
+  auto* rhs_arena = other->GetArenaForAllocation();
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(_has_bits_[0], other->_has_bits_[0]);
   service_added_dates_.InternalSwap(&other->service_added_dates_);
@@ -1520,23 +1535,23 @@ void Transit_Fetch_StopPair::InternalSwap(Transit_Fetch_StopPair* other) {
   service_except_dates_.InternalSwap(&other->service_except_dates_);
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
       &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
-      &destination_onestop_id_, GetArenaForAllocation(),
-      &other->destination_onestop_id_, other->GetArenaForAllocation()
+      &destination_onestop_id_, lhs_arena,
+      &other->destination_onestop_id_, rhs_arena
   );
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
       &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
-      &operated_by_onestop_id_, GetArenaForAllocation(),
-      &other->operated_by_onestop_id_, other->GetArenaForAllocation()
+      &operated_by_onestop_id_, lhs_arena,
+      &other->operated_by_onestop_id_, rhs_arena
   );
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
       &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
-      &origin_onestop_id_, GetArenaForAllocation(),
-      &other->origin_onestop_id_, other->GetArenaForAllocation()
+      &origin_onestop_id_, lhs_arena,
+      &other->origin_onestop_id_, rhs_arena
   );
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
       &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
-      &trip_headsign_, GetArenaForAllocation(),
-      &other->trip_headsign_, other->GetArenaForAllocation()
+      &trip_headsign_, lhs_arena,
+      &other->trip_headsign_, rhs_arena
   );
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
       PROTOBUF_FIELD_OFFSET(Transit_Fetch_StopPair, frequency_headway_seconds_)
@@ -1642,7 +1657,7 @@ Transit_Fetch_Route::Transit_Fetch_Route(const Transit_Fetch_Route& from)
   // @@protoc_insertion_point(copy_constructor:valhalla.mjolnir.Transit_Fetch.Route)
 }
 
-inline void Transit_Fetch_Route::SharedCtor() {
+void Transit_Fetch_Route::SharedCtor() {
 name_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 onestop_id_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 operated_by_name_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
@@ -1737,7 +1752,8 @@ const char* Transit_Fetch_Route::_InternalParse(const char* ptr, ::PROTOBUF_NAME
           auto str = _internal_mutable_name();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional string onestop_id = 2;
       case 2:
@@ -1745,7 +1761,8 @@ const char* Transit_Fetch_Route::_InternalParse(const char* ptr, ::PROTOBUF_NAME
           auto str = _internal_mutable_onestop_id();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional string operated_by_name = 3;
       case 3:
@@ -1753,7 +1770,8 @@ const char* Transit_Fetch_Route::_InternalParse(const char* ptr, ::PROTOBUF_NAME
           auto str = _internal_mutable_operated_by_name();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional string operated_by_onestop_id = 4;
       case 4:
@@ -1761,7 +1779,8 @@ const char* Transit_Fetch_Route::_InternalParse(const char* ptr, ::PROTOBUF_NAME
           auto str = _internal_mutable_operated_by_onestop_id();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional string operated_by_website = 5;
       case 5:
@@ -1769,7 +1788,8 @@ const char* Transit_Fetch_Route::_InternalParse(const char* ptr, ::PROTOBUF_NAME
           auto str = _internal_mutable_operated_by_website();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional uint32 route_color = 6;
       case 6:
@@ -1777,7 +1797,8 @@ const char* Transit_Fetch_Route::_InternalParse(const char* ptr, ::PROTOBUF_NAME
           _Internal::set_has_route_color(&has_bits);
           route_color_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional string route_desc = 7;
       case 7:
@@ -1785,7 +1806,8 @@ const char* Transit_Fetch_Route::_InternalParse(const char* ptr, ::PROTOBUF_NAME
           auto str = _internal_mutable_route_desc();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional string route_long_name = 8;
       case 8:
@@ -1793,7 +1815,8 @@ const char* Transit_Fetch_Route::_InternalParse(const char* ptr, ::PROTOBUF_NAME
           auto str = _internal_mutable_route_long_name();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional uint32 route_text_color = 9;
       case 9:
@@ -1801,7 +1824,8 @@ const char* Transit_Fetch_Route::_InternalParse(const char* ptr, ::PROTOBUF_NAME
           _Internal::set_has_route_text_color(&has_bits);
           route_text_color_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional .valhalla.mjolnir.Transit_Fetch.VehicleType vehicle_type = 10;
       case 10:
@@ -1813,29 +1837,30 @@ const char* Transit_Fetch_Route::_InternalParse(const char* ptr, ::PROTOBUF_NAME
           } else {
             ::PROTOBUF_NAMESPACE_ID::internal::WriteVarint(10, val, mutable_unknown_fields());
           }
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
-      default: {
-      handle_unusual:
-        if ((tag == 0) || ((tag & 7) == 4)) {
-          CHK_(ptr);
-          ctx->SetLastTag(tag);
-          goto success;
-        }
-        ptr = UnknownFieldParse(tag,
-            _internal_metadata_.mutable_unknown_fields<std::string>(),
-            ptr, ctx);
-        CHK_(ptr != nullptr);
-        continue;
-      }
+      default:
+        goto handle_unusual;
     }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<std::string>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
   }  // while
-success:
+message_done:
   _has_bits_.Or(has_bits);
   return ptr;
 failure:
   ptr = nullptr;
-  goto success;
+  goto message_done;
 #undef CHK_
 }
 
@@ -1976,18 +2001,14 @@ size_t Transit_Fetch_Route::ByteSizeLong() const {
 
     // optional uint32 route_color = 6;
     if (cached_has_bits & 0x00000080u) {
-      total_size += 1 +
-        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32Size(
-          this->_internal_route_color());
+      total_size += ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32SizePlusOne(this->_internal_route_color());
     }
 
   }
   if (cached_has_bits & 0x00000300u) {
     // optional uint32 route_text_color = 9;
     if (cached_has_bits & 0x00000100u) {
-      total_size += 1 +
-        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32Size(
-          this->_internal_route_text_color());
+      total_size += ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32SizePlusOne(this->_internal_route_text_color());
     }
 
     // optional .valhalla.mjolnir.Transit_Fetch.VehicleType vehicle_type = 10;
@@ -2070,42 +2091,44 @@ bool Transit_Fetch_Route::IsInitialized() const {
 
 void Transit_Fetch_Route::InternalSwap(Transit_Fetch_Route* other) {
   using std::swap;
+  auto* lhs_arena = GetArenaForAllocation();
+  auto* rhs_arena = other->GetArenaForAllocation();
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(_has_bits_[0], other->_has_bits_[0]);
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
       &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
-      &name_, GetArenaForAllocation(),
-      &other->name_, other->GetArenaForAllocation()
+      &name_, lhs_arena,
+      &other->name_, rhs_arena
   );
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
       &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
-      &onestop_id_, GetArenaForAllocation(),
-      &other->onestop_id_, other->GetArenaForAllocation()
+      &onestop_id_, lhs_arena,
+      &other->onestop_id_, rhs_arena
   );
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
       &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
-      &operated_by_name_, GetArenaForAllocation(),
-      &other->operated_by_name_, other->GetArenaForAllocation()
+      &operated_by_name_, lhs_arena,
+      &other->operated_by_name_, rhs_arena
   );
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
       &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
-      &operated_by_onestop_id_, GetArenaForAllocation(),
-      &other->operated_by_onestop_id_, other->GetArenaForAllocation()
+      &operated_by_onestop_id_, lhs_arena,
+      &other->operated_by_onestop_id_, rhs_arena
   );
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
       &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
-      &operated_by_website_, GetArenaForAllocation(),
-      &other->operated_by_website_, other->GetArenaForAllocation()
+      &operated_by_website_, lhs_arena,
+      &other->operated_by_website_, rhs_arena
   );
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
       &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
-      &route_desc_, GetArenaForAllocation(),
-      &other->route_desc_, other->GetArenaForAllocation()
+      &route_desc_, lhs_arena,
+      &other->route_desc_, rhs_arena
   );
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
       &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
-      &route_long_name_, GetArenaForAllocation(),
-      &other->route_long_name_, other->GetArenaForAllocation()
+      &route_long_name_, lhs_arena,
+      &other->route_long_name_, rhs_arena
   );
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
       PROTOBUF_FIELD_OFFSET(Transit_Fetch_Route, vehicle_type_)
@@ -2155,7 +2178,7 @@ Transit_Fetch_Shape::Transit_Fetch_Shape(const Transit_Fetch_Shape& from)
   // @@protoc_insertion_point(copy_constructor:valhalla.mjolnir.Transit_Fetch.Shape)
 }
 
-inline void Transit_Fetch_Shape::SharedCtor() {
+void Transit_Fetch_Shape::SharedCtor() {
 encoded_shape_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 shape_id_ = 0u;
 }
@@ -2210,7 +2233,8 @@ const char* Transit_Fetch_Shape::_InternalParse(const char* ptr, ::PROTOBUF_NAME
           _Internal::set_has_shape_id(&has_bits);
           shape_id_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional bytes encoded_shape = 2;
       case 2:
@@ -2218,29 +2242,30 @@ const char* Transit_Fetch_Shape::_InternalParse(const char* ptr, ::PROTOBUF_NAME
           auto str = _internal_mutable_encoded_shape();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
-      default: {
-      handle_unusual:
-        if ((tag == 0) || ((tag & 7) == 4)) {
-          CHK_(ptr);
-          ctx->SetLastTag(tag);
-          goto success;
-        }
-        ptr = UnknownFieldParse(tag,
-            _internal_metadata_.mutable_unknown_fields<std::string>(),
-            ptr, ctx);
-        CHK_(ptr != nullptr);
-        continue;
-      }
+      default:
+        goto handle_unusual;
     }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<std::string>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
   }  // while
-success:
+message_done:
   _has_bits_.Or(has_bits);
   return ptr;
 failure:
   ptr = nullptr;
-  goto success;
+  goto message_done;
 #undef CHK_
 }
 
@@ -2290,9 +2315,7 @@ size_t Transit_Fetch_Shape::ByteSizeLong() const {
 
     // optional uint32 shape_id = 1;
     if (cached_has_bits & 0x00000002u) {
-      total_size += 1 +
-        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32Size(
-          this->_internal_shape_id());
+      total_size += ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32SizePlusOne(this->_internal_shape_id());
     }
 
   }
@@ -2342,12 +2365,14 @@ bool Transit_Fetch_Shape::IsInitialized() const {
 
 void Transit_Fetch_Shape::InternalSwap(Transit_Fetch_Shape* other) {
   using std::swap;
+  auto* lhs_arena = GetArenaForAllocation();
+  auto* rhs_arena = other->GetArenaForAllocation();
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(_has_bits_[0], other->_has_bits_[0]);
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
       &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
-      &encoded_shape_, GetArenaForAllocation(),
-      &other->encoded_shape_, other->GetArenaForAllocation()
+      &encoded_shape_, lhs_arena,
+      &other->encoded_shape_, rhs_arena
   );
   swap(shape_id_, other->shape_id_);
 }
@@ -2386,7 +2411,7 @@ Transit_Fetch::Transit_Fetch(const Transit_Fetch& from)
   // @@protoc_insertion_point(copy_constructor:valhalla.mjolnir.Transit_Fetch)
 }
 
-inline void Transit_Fetch::SharedCtor() {
+void Transit_Fetch::SharedCtor() {
 }
 
 Transit_Fetch::~Transit_Fetch() {
@@ -2439,7 +2464,8 @@ const char* Transit_Fetch::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_
             CHK_(ptr);
             if (!ctx->DataAvailable(ptr)) break;
           } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<10>(ptr));
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // repeated .valhalla.mjolnir.Transit_Fetch.StopPair stop_pairs = 2;
       case 2:
@@ -2451,7 +2477,8 @@ const char* Transit_Fetch::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_
             CHK_(ptr);
             if (!ctx->DataAvailable(ptr)) break;
           } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<18>(ptr));
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // repeated .valhalla.mjolnir.Transit_Fetch.Route routes = 3;
       case 3:
@@ -2463,7 +2490,8 @@ const char* Transit_Fetch::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_
             CHK_(ptr);
             if (!ctx->DataAvailable(ptr)) break;
           } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<26>(ptr));
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // repeated .valhalla.mjolnir.Transit_Fetch.Shape shapes = 4;
       case 4:
@@ -2475,28 +2503,29 @@ const char* Transit_Fetch::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_
             CHK_(ptr);
             if (!ctx->DataAvailable(ptr)) break;
           } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<34>(ptr));
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
-      default: {
-      handle_unusual:
-        if ((tag == 0) || ((tag & 7) == 4)) {
-          CHK_(ptr);
-          ctx->SetLastTag(tag);
-          goto success;
-        }
-        ptr = UnknownFieldParse(tag,
-            _internal_metadata_.mutable_unknown_fields<std::string>(),
-            ptr, ctx);
-        CHK_(ptr != nullptr);
-        continue;
-      }
+      default:
+        goto handle_unusual;
     }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<std::string>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
   }  // while
-success:
+message_done:
   return ptr;
 failure:
   ptr = nullptr;
-  goto success;
+  goto message_done;
 #undef CHK_
 }
 

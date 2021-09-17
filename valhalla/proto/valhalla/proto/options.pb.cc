@@ -858,7 +858,7 @@ Contour::Contour(const Contour& from)
   // @@protoc_insertion_point(copy_constructor:valhalla.Contour)
 }
 
-inline void Contour::SharedCtor() {
+void Contour::SharedCtor() {
 color_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 ::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
     reinterpret_cast<char*>(&time_) - reinterpret_cast<char*>(this)),
@@ -920,7 +920,8 @@ const char* Contour::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::in
           _Internal::set_has_time(&has_bits);
           time_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
           ptr += sizeof(float);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional string color = 2;
       case 2:
@@ -928,7 +929,8 @@ const char* Contour::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::in
           auto str = _internal_mutable_color();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional float distance = 3;
       case 3:
@@ -936,29 +938,30 @@ const char* Contour::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::in
           _Internal::set_has_distance(&has_bits);
           distance_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
           ptr += sizeof(float);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
-      default: {
-      handle_unusual:
-        if ((tag == 0) || ((tag & 7) == 4)) {
-          CHK_(ptr);
-          ctx->SetLastTag(tag);
-          goto success;
-        }
-        ptr = UnknownFieldParse(tag,
-            _internal_metadata_.mutable_unknown_fields<std::string>(),
-            ptr, ctx);
-        CHK_(ptr != nullptr);
-        continue;
-      }
+      default:
+        goto handle_unusual;
     }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<std::string>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
   }  // while
-success:
+message_done:
   _has_bits_.Or(has_bits);
   return ptr;
 failure:
   ptr = nullptr;
-  goto success;
+  goto message_done;
 #undef CHK_
 }
 
@@ -1072,12 +1075,14 @@ bool Contour::IsInitialized() const {
 
 void Contour::InternalSwap(Contour* other) {
   using std::swap;
+  auto* lhs_arena = GetArenaForAllocation();
+  auto* rhs_arena = other->GetArenaForAllocation();
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(_has_bits_[0], other->_has_bits_[0]);
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
       &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
-      &color_, GetArenaForAllocation(),
-      &other->color_, other->GetArenaForAllocation()
+      &color_, lhs_arena,
+      &other->color_, rhs_arena
   );
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
       PROTOBUF_FIELD_OFFSET(Contour, distance_)
@@ -1124,7 +1129,7 @@ AvoidEdge::AvoidEdge(const AvoidEdge& from)
   // @@protoc_insertion_point(copy_constructor:valhalla.AvoidEdge)
 }
 
-inline void AvoidEdge::SharedCtor() {
+void AvoidEdge::SharedCtor() {
 ::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
     reinterpret_cast<char*>(&id_) - reinterpret_cast<char*>(this)),
     0, static_cast<size_t>(reinterpret_cast<char*>(&percent_along_) -
@@ -1181,7 +1186,8 @@ const char* AvoidEdge::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::
           _Internal::set_has_id(&has_bits);
           id_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional float percent_along = 2;
       case 2:
@@ -1189,29 +1195,30 @@ const char* AvoidEdge::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::
           _Internal::set_has_percent_along(&has_bits);
           percent_along_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
           ptr += sizeof(float);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
-      default: {
-      handle_unusual:
-        if ((tag == 0) || ((tag & 7) == 4)) {
-          CHK_(ptr);
-          ctx->SetLastTag(tag);
-          goto success;
-        }
-        ptr = UnknownFieldParse(tag,
-            _internal_metadata_.mutable_unknown_fields<std::string>(),
-            ptr, ctx);
-        CHK_(ptr != nullptr);
-        continue;
-      }
+      default:
+        goto handle_unusual;
     }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<std::string>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
   }  // while
-success:
+message_done:
   _has_bits_.Or(has_bits);
   return ptr;
 failure:
   ptr = nullptr;
-  goto success;
+  goto message_done;
 #undef CHK_
 }
 
@@ -1254,9 +1261,7 @@ size_t AvoidEdge::ByteSizeLong() const {
   if (cached_has_bits & 0x00000003u) {
     // optional uint64 id = 1;
     if (cached_has_bits & 0x00000001u) {
-      total_size += 1 +
-        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt64Size(
-          this->_internal_id());
+      total_size += ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt64SizePlusOne(this->_internal_id());
     }
 
     // optional float percent_along = 2;
@@ -1580,7 +1585,7 @@ CostingOptions::CostingOptions(const CostingOptions& from)
   // @@protoc_insertion_point(copy_constructor:valhalla.CostingOptions)
 }
 
-inline void CostingOptions::SharedCtor() {
+void CostingOptions::SharedCtor() {
 transport_type_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 name_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 ::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
@@ -1696,7 +1701,8 @@ const char* CostingOptions::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE
           _Internal::set_has_maneuver_penalty(&_has_bits_);
           maneuver_penalty_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
           ptr += sizeof(float);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional float destination_only_penalty = 2;
       case 2:
@@ -1704,7 +1710,8 @@ const char* CostingOptions::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE
           _Internal::set_has_destination_only_penalty(&_has_bits_);
           destination_only_penalty_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
           ptr += sizeof(float);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional float gate_cost = 3;
       case 3:
@@ -1712,7 +1719,8 @@ const char* CostingOptions::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE
           _Internal::set_has_gate_cost(&_has_bits_);
           gate_cost_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
           ptr += sizeof(float);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional float gate_penalty = 4;
       case 4:
@@ -1720,7 +1728,8 @@ const char* CostingOptions::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE
           _Internal::set_has_gate_penalty(&_has_bits_);
           gate_penalty_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
           ptr += sizeof(float);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional float toll_booth_cost = 5;
       case 5:
@@ -1728,7 +1737,8 @@ const char* CostingOptions::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE
           _Internal::set_has_toll_booth_cost(&_has_bits_);
           toll_booth_cost_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
           ptr += sizeof(float);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional float toll_booth_penalty = 6;
       case 6:
@@ -1736,7 +1746,8 @@ const char* CostingOptions::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE
           _Internal::set_has_toll_booth_penalty(&_has_bits_);
           toll_booth_penalty_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
           ptr += sizeof(float);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional float alley_penalty = 7;
       case 7:
@@ -1744,7 +1755,8 @@ const char* CostingOptions::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE
           _Internal::set_has_alley_penalty(&_has_bits_);
           alley_penalty_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
           ptr += sizeof(float);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional float country_crossing_cost = 8;
       case 8:
@@ -1752,7 +1764,8 @@ const char* CostingOptions::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE
           _Internal::set_has_country_crossing_cost(&_has_bits_);
           country_crossing_cost_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
           ptr += sizeof(float);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional float country_crossing_penalty = 9;
       case 9:
@@ -1760,7 +1773,8 @@ const char* CostingOptions::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE
           _Internal::set_has_country_crossing_penalty(&_has_bits_);
           country_crossing_penalty_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
           ptr += sizeof(float);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional float ferry_cost = 10;
       case 10:
@@ -1768,7 +1782,8 @@ const char* CostingOptions::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE
           _Internal::set_has_ferry_cost(&_has_bits_);
           ferry_cost_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
           ptr += sizeof(float);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional float avoid_bad_surfaces = 11;
       case 11:
@@ -1776,7 +1791,8 @@ const char* CostingOptions::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE
           _Internal::set_has_avoid_bad_surfaces(&_has_bits_);
           avoid_bad_surfaces_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
           ptr += sizeof(float);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional float use_ferry = 12;
       case 12:
@@ -1784,7 +1800,8 @@ const char* CostingOptions::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE
           _Internal::set_has_use_ferry(&_has_bits_);
           use_ferry_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
           ptr += sizeof(float);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional float use_highways = 13;
       case 13:
@@ -1792,7 +1809,8 @@ const char* CostingOptions::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE
           _Internal::set_has_use_highways(&_has_bits_);
           use_highways_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
           ptr += sizeof(float);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional float use_tolls = 14;
       case 14:
@@ -1800,7 +1818,8 @@ const char* CostingOptions::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE
           _Internal::set_has_use_tolls(&_has_bits_);
           use_tolls_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
           ptr += sizeof(float);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional float use_roads = 15;
       case 15:
@@ -1808,7 +1827,8 @@ const char* CostingOptions::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE
           _Internal::set_has_use_roads(&_has_bits_);
           use_roads_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
           ptr += sizeof(float);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional uint32 max_distance = 16;
       case 16:
@@ -1816,7 +1836,8 @@ const char* CostingOptions::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE
           _Internal::set_has_max_distance(&_has_bits_);
           max_distance_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional float walking_speed = 17;
       case 17:
@@ -1824,7 +1845,8 @@ const char* CostingOptions::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE
           _Internal::set_has_walking_speed(&_has_bits_);
           walking_speed_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
           ptr += sizeof(float);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional float step_penalty = 18;
       case 18:
@@ -1832,7 +1854,8 @@ const char* CostingOptions::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE
           _Internal::set_has_step_penalty(&_has_bits_);
           step_penalty_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
           ptr += sizeof(float);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional uint32 max_grade = 19;
       case 19:
@@ -1840,7 +1863,8 @@ const char* CostingOptions::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE
           _Internal::set_has_max_grade(&_has_bits_);
           max_grade_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional uint32 max_hiking_difficulty = 20;
       case 20:
@@ -1848,7 +1872,8 @@ const char* CostingOptions::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE
           _Internal::set_has_max_hiking_difficulty(&_has_bits_);
           max_hiking_difficulty_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional float mode_factor = 21;
       case 21:
@@ -1856,7 +1881,8 @@ const char* CostingOptions::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE
           _Internal::set_has_mode_factor(&_has_bits_);
           mode_factor_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
           ptr += sizeof(float);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional float walkway_factor = 22;
       case 22:
@@ -1864,7 +1890,8 @@ const char* CostingOptions::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE
           _Internal::set_has_walkway_factor(&_has_bits_);
           walkway_factor_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
           ptr += sizeof(float);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional float sidewalk_factor = 23;
       case 23:
@@ -1872,7 +1899,8 @@ const char* CostingOptions::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE
           _Internal::set_has_sidewalk_factor(&_has_bits_);
           sidewalk_factor_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
           ptr += sizeof(float);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional float alley_factor = 24;
       case 24:
@@ -1880,7 +1908,8 @@ const char* CostingOptions::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE
           _Internal::set_has_alley_factor(&_has_bits_);
           alley_factor_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
           ptr += sizeof(float);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional float driveway_factor = 25;
       case 25:
@@ -1888,7 +1917,8 @@ const char* CostingOptions::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE
           _Internal::set_has_driveway_factor(&_has_bits_);
           driveway_factor_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
           ptr += sizeof(float);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional float driveway_penalty = 26;
       case 26:
@@ -1896,7 +1926,8 @@ const char* CostingOptions::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE
           _Internal::set_has_driveway_penalty(&_has_bits_);
           driveway_penalty_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
           ptr += sizeof(float);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional uint32 transit_start_end_max_distance = 27;
       case 27:
@@ -1904,7 +1935,8 @@ const char* CostingOptions::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE
           _Internal::set_has_transit_start_end_max_distance(&_has_bits_);
           transit_start_end_max_distance_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional uint32 transit_transfer_max_distance = 28;
       case 28:
@@ -1912,7 +1944,8 @@ const char* CostingOptions::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE
           _Internal::set_has_transit_transfer_max_distance(&_has_bits_);
           transit_transfer_max_distance_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional string transport_type = 29;
       case 29:
@@ -1920,7 +1953,8 @@ const char* CostingOptions::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE
           auto str = _internal_mutable_transport_type();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional float top_speed = 30;
       case 30:
@@ -1928,7 +1962,8 @@ const char* CostingOptions::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE
           _Internal::set_has_top_speed(&_has_bits_);
           top_speed_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
           ptr += sizeof(float);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional float use_hills = 31;
       case 31:
@@ -1936,7 +1971,8 @@ const char* CostingOptions::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE
           _Internal::set_has_use_hills(&_has_bits_);
           use_hills_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
           ptr += sizeof(float);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional float use_primary = 32;
       case 32:
@@ -1944,7 +1980,8 @@ const char* CostingOptions::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE
           _Internal::set_has_use_primary(&_has_bits_);
           use_primary_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
           ptr += sizeof(float);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional float use_trails = 33;
       case 33:
@@ -1952,7 +1989,8 @@ const char* CostingOptions::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE
           _Internal::set_has_use_trails(&_has_bits_);
           use_trails_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
           ptr += sizeof(float);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional float low_class_penalty = 34;
       case 34:
@@ -1960,7 +1998,8 @@ const char* CostingOptions::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE
           _Internal::set_has_low_class_penalty(&_has_bits_);
           low_class_penalty_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
           ptr += sizeof(float);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional bool hazmat = 35;
       case 35:
@@ -1968,7 +2007,8 @@ const char* CostingOptions::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE
           _Internal::set_has_hazmat(&_has_bits_);
           hazmat_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional float weight = 36;
       case 36:
@@ -1976,7 +2016,8 @@ const char* CostingOptions::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE
           _Internal::set_has_weight(&_has_bits_);
           weight_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
           ptr += sizeof(float);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional float axle_load = 37;
       case 37:
@@ -1984,7 +2025,8 @@ const char* CostingOptions::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE
           _Internal::set_has_axle_load(&_has_bits_);
           axle_load_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
           ptr += sizeof(float);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional float height = 38;
       case 38:
@@ -1992,7 +2034,8 @@ const char* CostingOptions::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE
           _Internal::set_has_height(&_has_bits_);
           height_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
           ptr += sizeof(float);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional float width = 39;
       case 39:
@@ -2000,7 +2043,8 @@ const char* CostingOptions::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE
           _Internal::set_has_width(&_has_bits_);
           width_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
           ptr += sizeof(float);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional float length = 40;
       case 40:
@@ -2008,7 +2052,8 @@ const char* CostingOptions::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE
           _Internal::set_has_length(&_has_bits_);
           length_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
           ptr += sizeof(float);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional float cycling_speed = 41;
       case 41:
@@ -2016,7 +2061,8 @@ const char* CostingOptions::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE
           _Internal::set_has_cycling_speed(&_has_bits_);
           cycling_speed_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
           ptr += sizeof(float);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional bool wheelchair = 42;
       case 42:
@@ -2024,7 +2070,8 @@ const char* CostingOptions::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE
           _Internal::set_has_wheelchair(&_has_bits_);
           wheelchair_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional bool bicycle = 43;
       case 43:
@@ -2032,7 +2079,8 @@ const char* CostingOptions::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE
           _Internal::set_has_bicycle(&_has_bits_);
           bicycle_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional float use_bus = 44;
       case 44:
@@ -2040,7 +2088,8 @@ const char* CostingOptions::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE
           _Internal::set_has_use_bus(&_has_bits_);
           use_bus_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
           ptr += sizeof(float);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional float use_rail = 45;
       case 45:
@@ -2048,7 +2097,8 @@ const char* CostingOptions::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE
           _Internal::set_has_use_rail(&_has_bits_);
           use_rail_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
           ptr += sizeof(float);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional float use_transfers = 46;
       case 46:
@@ -2056,7 +2106,8 @@ const char* CostingOptions::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE
           _Internal::set_has_use_transfers(&_has_bits_);
           use_transfers_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
           ptr += sizeof(float);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional float transfer_cost = 47;
       case 47:
@@ -2064,7 +2115,8 @@ const char* CostingOptions::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE
           _Internal::set_has_transfer_cost(&_has_bits_);
           transfer_cost_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
           ptr += sizeof(float);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional float transfer_penalty = 48;
       case 48:
@@ -2072,7 +2124,8 @@ const char* CostingOptions::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE
           _Internal::set_has_transfer_penalty(&_has_bits_);
           transfer_penalty_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
           ptr += sizeof(float);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional .valhalla.FilterAction filter_stop_action = 49;
       case 49:
@@ -2084,7 +2137,8 @@ const char* CostingOptions::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE
           } else {
             ::PROTOBUF_NAMESPACE_ID::internal::WriteVarint(49, val, mutable_unknown_fields());
           }
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // repeated string filter_stop_ids = 50;
       case 50:
@@ -2097,7 +2151,8 @@ const char* CostingOptions::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE
             CHK_(ptr);
             if (!ctx->DataAvailable(ptr)) break;
           } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<402>(ptr));
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional .valhalla.FilterAction filter_operator_action = 51;
       case 51:
@@ -2109,7 +2164,8 @@ const char* CostingOptions::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE
           } else {
             ::PROTOBUF_NAMESPACE_ID::internal::WriteVarint(51, val, mutable_unknown_fields());
           }
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // repeated string filter_operator_ids = 52;
       case 52:
@@ -2122,7 +2178,8 @@ const char* CostingOptions::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE
             CHK_(ptr);
             if (!ctx->DataAvailable(ptr)) break;
           } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<418>(ptr));
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional .valhalla.FilterAction filter_route_action = 53;
       case 53:
@@ -2134,7 +2191,8 @@ const char* CostingOptions::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE
           } else {
             ::PROTOBUF_NAMESPACE_ID::internal::WriteVarint(53, val, mutable_unknown_fields());
           }
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // repeated string filter_route_ids = 54;
       case 54:
@@ -2147,7 +2205,8 @@ const char* CostingOptions::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE
             CHK_(ptr);
             if (!ctx->DataAvailable(ptr)) break;
           } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<434>(ptr));
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional uint32 flow_mask = 55;
       case 55:
@@ -2155,7 +2214,8 @@ const char* CostingOptions::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE
           _Internal::set_has_flow_mask(&_has_bits_);
           flow_mask_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional float bike_share_cost = 56;
       case 56:
@@ -2163,7 +2223,8 @@ const char* CostingOptions::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE
           _Internal::set_has_bike_share_cost(&_has_bits_);
           bike_share_cost_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
           ptr += sizeof(float);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional float bike_share_penalty = 57;
       case 57:
@@ -2171,7 +2232,8 @@ const char* CostingOptions::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE
           _Internal::set_has_bike_share_penalty(&_has_bits_);
           bike_share_penalty_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
           ptr += sizeof(float);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional float rail_ferry_cost = 58;
       case 58:
@@ -2179,7 +2241,8 @@ const char* CostingOptions::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE
           _Internal::set_has_rail_ferry_cost(&_has_bits_);
           rail_ferry_cost_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
           ptr += sizeof(float);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional float use_rail_ferry = 59;
       case 59:
@@ -2187,7 +2250,8 @@ const char* CostingOptions::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE
           _Internal::set_has_use_rail_ferry(&_has_bits_);
           use_rail_ferry_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
           ptr += sizeof(float);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional bool ignore_restrictions = 60;
       case 60:
@@ -2195,7 +2259,8 @@ const char* CostingOptions::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE
           _Internal::set_has_ignore_restrictions(&_has_bits_);
           ignore_restrictions_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional bool ignore_oneways = 61;
       case 61:
@@ -2203,7 +2268,8 @@ const char* CostingOptions::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE
           _Internal::set_has_ignore_oneways(&_has_bits_);
           ignore_oneways_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional bool ignore_access = 62;
       case 62:
@@ -2211,7 +2277,8 @@ const char* CostingOptions::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE
           _Internal::set_has_ignore_access(&_has_bits_);
           ignore_access_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional bool ignore_closures = 63;
       case 63:
@@ -2219,7 +2286,8 @@ const char* CostingOptions::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE
           _Internal::set_has_ignore_closures(&_has_bits_);
           ignore_closures_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional bool shortest = 64;
       case 64:
@@ -2227,7 +2295,8 @@ const char* CostingOptions::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE
           _Internal::set_has_shortest(&_has_bits_);
           shortest_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional float service_penalty = 65;
       case 65:
@@ -2235,7 +2304,8 @@ const char* CostingOptions::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE
           _Internal::set_has_service_penalty(&_has_bits_);
           service_penalty_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
           ptr += sizeof(float);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional float use_tracks = 66;
       case 66:
@@ -2243,7 +2313,8 @@ const char* CostingOptions::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE
           _Internal::set_has_use_tracks(&_has_bits_);
           use_tracks_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
           ptr += sizeof(float);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional float use_distance = 67;
       case 67:
@@ -2251,7 +2322,8 @@ const char* CostingOptions::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE
           _Internal::set_has_use_distance(&_has_bits_);
           use_distance_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
           ptr += sizeof(float);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional float use_living_streets = 68;
       case 68:
@@ -2259,7 +2331,8 @@ const char* CostingOptions::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE
           _Internal::set_has_use_living_streets(&_has_bits_);
           use_living_streets_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
           ptr += sizeof(float);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional float service_factor = 69;
       case 69:
@@ -2267,7 +2340,8 @@ const char* CostingOptions::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE
           _Internal::set_has_service_factor(&_has_bits_);
           service_factor_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
           ptr += sizeof(float);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional float closure_factor = 70;
       case 70:
@@ -2275,7 +2349,8 @@ const char* CostingOptions::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE
           _Internal::set_has_closure_factor(&_has_bits_);
           closure_factor_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
           ptr += sizeof(float);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional .valhalla.Costing costing = 90;
       case 90:
@@ -2287,7 +2362,8 @@ const char* CostingOptions::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE
           } else {
             ::PROTOBUF_NAMESPACE_ID::internal::WriteVarint(90, val, mutable_unknown_fields());
           }
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional string name = 91;
       case 91:
@@ -2295,7 +2371,8 @@ const char* CostingOptions::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE
           auto str = _internal_mutable_name();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // repeated .valhalla.AvoidEdge avoid_edges = 92;
       case 92:
@@ -2307,7 +2384,8 @@ const char* CostingOptions::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE
             CHK_(ptr);
             if (!ctx->DataAvailable(ptr)) break;
           } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<738>(ptr));
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional bool filter_closures = 93 [default = true];
       case 93:
@@ -2315,28 +2393,29 @@ const char* CostingOptions::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE
           _Internal::set_has_filter_closures(&_has_bits_);
           filter_closures_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
-      default: {
-      handle_unusual:
-        if ((tag == 0) || ((tag & 7) == 4)) {
-          CHK_(ptr);
-          ctx->SetLastTag(tag);
-          goto success;
-        }
-        ptr = UnknownFieldParse(tag,
-            _internal_metadata_.mutable_unknown_fields<std::string>(),
-            ptr, ctx);
-        CHK_(ptr != nullptr);
-        continue;
-      }
+      default:
+        goto handle_unusual;
     }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<std::string>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
   }  // while
-success:
+message_done:
   return ptr;
 failure:
   ptr = nullptr;
-  goto success;
+  goto message_done;
 #undef CHK_
 }
 
@@ -3519,6 +3598,8 @@ bool CostingOptions::IsInitialized() const {
 
 void CostingOptions::InternalSwap(CostingOptions* other) {
   using std::swap;
+  auto* lhs_arena = GetArenaForAllocation();
+  auto* rhs_arena = other->GetArenaForAllocation();
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(_has_bits_[0], other->_has_bits_[0]);
   swap(_has_bits_[1], other->_has_bits_[1]);
@@ -3529,13 +3610,13 @@ void CostingOptions::InternalSwap(CostingOptions* other) {
   avoid_edges_.InternalSwap(&other->avoid_edges_);
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
       &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
-      &transport_type_, GetArenaForAllocation(),
-      &other->transport_type_, other->GetArenaForAllocation()
+      &transport_type_, lhs_arena,
+      &other->transport_type_, rhs_arena
   );
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
       &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
-      &name_, GetArenaForAllocation(),
-      &other->name_, other->GetArenaForAllocation()
+      &name_, lhs_arena,
+      &other->name_, rhs_arena
   );
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
       PROTOBUF_FIELD_OFFSET(CostingOptions, costing_)
@@ -3577,7 +3658,7 @@ Options_Ring::Options_Ring(const Options_Ring& from)
   // @@protoc_insertion_point(copy_constructor:valhalla.Options.Ring)
 }
 
-inline void Options_Ring::SharedCtor() {
+void Options_Ring::SharedCtor() {
 }
 
 Options_Ring::~Options_Ring() {
@@ -3627,28 +3708,29 @@ const char* Options_Ring::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_I
             CHK_(ptr);
             if (!ctx->DataAvailable(ptr)) break;
           } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<10>(ptr));
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
-      default: {
-      handle_unusual:
-        if ((tag == 0) || ((tag & 7) == 4)) {
-          CHK_(ptr);
-          ctx->SetLastTag(tag);
-          goto success;
-        }
-        ptr = UnknownFieldParse(tag,
-            _internal_metadata_.mutable_unknown_fields<std::string>(),
-            ptr, ctx);
-        CHK_(ptr != nullptr);
-        continue;
-      }
+      default:
+        goto handle_unusual;
     }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<std::string>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
   }  // while
-success:
+message_done:
   return ptr;
 failure:
   ptr = nullptr;
-  goto success;
+  goto message_done;
 #undef CHK_
 }
 
@@ -3929,7 +4011,7 @@ Options::Options(const Options& from)
   // @@protoc_insertion_point(copy_constructor:valhalla.Options)
 }
 
-inline void Options::SharedCtor() {
+void Options::SharedCtor() {
 language_.UnsafeSetDefault(nullptr);
 id_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 jsonp_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
@@ -4059,7 +4141,8 @@ const char* Options::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::in
           } else {
             ::PROTOBUF_NAMESPACE_ID::internal::WriteVarint(1, val, mutable_unknown_fields());
           }
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional string language = 2 [default = "en-US"];
       case 2:
@@ -4067,7 +4150,8 @@ const char* Options::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::in
           auto str = _internal_mutable_language();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional .valhalla.DirectionsType directions_type = 3 [default = instructions];
       case 3:
@@ -4079,7 +4163,8 @@ const char* Options::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::in
           } else {
             ::PROTOBUF_NAMESPACE_ID::internal::WriteVarint(3, val, mutable_unknown_fields());
           }
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional .valhalla.Options.Format format = 4 [default = json];
       case 4:
@@ -4091,7 +4176,8 @@ const char* Options::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::in
           } else {
             ::PROTOBUF_NAMESPACE_ID::internal::WriteVarint(4, val, mutable_unknown_fields());
           }
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional string id = 5;
       case 5:
@@ -4099,7 +4185,8 @@ const char* Options::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::in
           auto str = _internal_mutable_id();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional string jsonp = 6;
       case 6:
@@ -4107,7 +4194,8 @@ const char* Options::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::in
           auto str = _internal_mutable_jsonp();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional string encoded_polyline = 7;
       case 7:
@@ -4115,7 +4203,8 @@ const char* Options::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::in
           auto str = _internal_mutable_encoded_polyline();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional .valhalla.Options.Action action = 8;
       case 8:
@@ -4127,7 +4216,8 @@ const char* Options::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::in
           } else {
             ::PROTOBUF_NAMESPACE_ID::internal::WriteVarint(8, val, mutable_unknown_fields());
           }
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional bool do_not_track = 9 [default = false];
       case 9:
@@ -4135,7 +4225,8 @@ const char* Options::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::in
           _Internal::set_has_do_not_track(&_has_bits_);
           do_not_track_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional bool range = 10 [default = false];
       case 10:
@@ -4143,7 +4234,8 @@ const char* Options::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::in
           _Internal::set_has_range(&_has_bits_);
           range_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional bool verbose = 11 [default = false];
       case 11:
@@ -4151,7 +4243,8 @@ const char* Options::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::in
           _Internal::set_has_verbose(&_has_bits_);
           verbose_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional .valhalla.Costing costing = 12;
       case 12:
@@ -4163,7 +4256,8 @@ const char* Options::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::in
           } else {
             ::PROTOBUF_NAMESPACE_ID::internal::WriteVarint(12, val, mutable_unknown_fields());
           }
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // repeated .valhalla.CostingOptions costing_options = 13;
       case 13:
@@ -4175,7 +4269,8 @@ const char* Options::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::in
             CHK_(ptr);
             if (!ctx->DataAvailable(ptr)) break;
           } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<106>(ptr));
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // repeated .valhalla.Location locations = 14;
       case 14:
@@ -4187,7 +4282,8 @@ const char* Options::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::in
             CHK_(ptr);
             if (!ctx->DataAvailable(ptr)) break;
           } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<114>(ptr));
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // repeated .valhalla.Location avoid_locations = 15;
       case 15:
@@ -4199,7 +4295,8 @@ const char* Options::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::in
             CHK_(ptr);
             if (!ctx->DataAvailable(ptr)) break;
           } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<122>(ptr));
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // repeated .valhalla.Location sources = 16;
       case 16:
@@ -4211,7 +4308,8 @@ const char* Options::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::in
             CHK_(ptr);
             if (!ctx->DataAvailable(ptr)) break;
           } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<130>(ptr));
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // repeated .valhalla.Location targets = 17;
       case 17:
@@ -4223,7 +4321,8 @@ const char* Options::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::in
             CHK_(ptr);
             if (!ctx->DataAvailable(ptr)) break;
           } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<138>(ptr));
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional .valhalla.Options.DateTimeType date_time_type = 18;
       case 18:
@@ -4235,7 +4334,8 @@ const char* Options::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::in
           } else {
             ::PROTOBUF_NAMESPACE_ID::internal::WriteVarint(18, val, mutable_unknown_fields());
           }
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional string date_time = 19;
       case 19:
@@ -4243,7 +4343,8 @@ const char* Options::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::in
           auto str = _internal_mutable_date_time();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // repeated .valhalla.Location shape = 20;
       case 20:
@@ -4255,7 +4356,8 @@ const char* Options::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::in
             CHK_(ptr);
             if (!ctx->DataAvailable(ptr)) break;
           } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<162>(ptr));
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional double resample_distance = 21;
       case 21:
@@ -4263,7 +4365,8 @@ const char* Options::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::in
           _Internal::set_has_resample_distance(&_has_bits_);
           resample_distance_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<double>(ptr);
           ptr += sizeof(double);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // repeated .valhalla.Contour contours = 22;
       case 22:
@@ -4275,7 +4378,8 @@ const char* Options::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::in
             CHK_(ptr);
             if (!ctx->DataAvailable(ptr)) break;
           } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<178>(ptr));
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional bool polygons = 23;
       case 23:
@@ -4283,7 +4387,8 @@ const char* Options::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::in
           _Internal::set_has_polygons(&_has_bits_);
           polygons_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional float denoise = 24 [default = 1];
       case 24:
@@ -4291,7 +4396,8 @@ const char* Options::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::in
           _Internal::set_has_denoise(&_has_bits_);
           denoise_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
           ptr += sizeof(float);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional float generalize = 25;
       case 25:
@@ -4299,7 +4405,8 @@ const char* Options::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::in
           _Internal::set_has_generalize(&_has_bits_);
           generalize_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
           ptr += sizeof(float);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional bool show_locations = 26;
       case 26:
@@ -4307,7 +4414,8 @@ const char* Options::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::in
           _Internal::set_has_show_locations(&_has_bits_);
           show_locations_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // repeated .valhalla.Location trace = 27;
       case 27:
@@ -4319,7 +4427,8 @@ const char* Options::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::in
             CHK_(ptr);
             if (!ctx->DataAvailable(ptr)) break;
           } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<218>(ptr));
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional .valhalla.ShapeMatch shape_match = 28 [default = walk_or_snap];
       case 28:
@@ -4331,7 +4440,8 @@ const char* Options::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::in
           } else {
             ::PROTOBUF_NAMESPACE_ID::internal::WriteVarint(28, val, mutable_unknown_fields());
           }
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional uint32 best_paths = 29 [default = 1];
       case 29:
@@ -4339,7 +4449,8 @@ const char* Options::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::in
           _Internal::set_has_best_paths(&_has_bits_);
           best_paths_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional float gps_accuracy = 30;
       case 30:
@@ -4347,7 +4458,8 @@ const char* Options::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::in
           _Internal::set_has_gps_accuracy(&_has_bits_);
           gps_accuracy_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
           ptr += sizeof(float);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional float search_radius = 31;
       case 31:
@@ -4355,7 +4467,8 @@ const char* Options::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::in
           _Internal::set_has_search_radius(&_has_bits_);
           search_radius_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
           ptr += sizeof(float);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional float turn_penalty_factor = 32;
       case 32:
@@ -4363,7 +4476,8 @@ const char* Options::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::in
           _Internal::set_has_turn_penalty_factor(&_has_bits_);
           turn_penalty_factor_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
           ptr += sizeof(float);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional .valhalla.FilterAction filter_action = 33;
       case 33:
@@ -4375,7 +4489,8 @@ const char* Options::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::in
           } else {
             ::PROTOBUF_NAMESPACE_ID::internal::WriteVarint(33, val, mutable_unknown_fields());
           }
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // repeated string filter_attributes = 34;
       case 34:
@@ -4388,7 +4503,8 @@ const char* Options::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::in
             CHK_(ptr);
             if (!ctx->DataAvailable(ptr)) break;
           } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<274>(ptr));
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional float breakage_distance = 36;
       case 36:
@@ -4396,7 +4512,8 @@ const char* Options::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::in
           _Internal::set_has_breakage_distance(&_has_bits_);
           breakage_distance_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
           ptr += sizeof(float);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional bool use_timestamps = 37 [default = false];
       case 37:
@@ -4404,7 +4521,8 @@ const char* Options::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::in
           _Internal::set_has_use_timestamps(&_has_bits_);
           use_timestamps_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional .valhalla.ShapeFormat shape_format = 38 [default = polyline6];
       case 38:
@@ -4416,7 +4534,8 @@ const char* Options::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::in
           } else {
             ::PROTOBUF_NAMESPACE_ID::internal::WriteVarint(38, val, mutable_unknown_fields());
           }
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional uint32 alternates = 39;
       case 39:
@@ -4424,7 +4543,8 @@ const char* Options::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::in
           _Internal::set_has_alternates(&_has_bits_);
           alternates_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional float interpolation_distance = 40;
       case 40:
@@ -4432,7 +4552,8 @@ const char* Options::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::in
           _Internal::set_has_interpolation_distance(&_has_bits_);
           interpolation_distance_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
           ptr += sizeof(float);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional bool guidance_views = 41;
       case 41:
@@ -4440,7 +4561,8 @@ const char* Options::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::in
           _Internal::set_has_guidance_views(&_has_bits_);
           guidance_views_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional uint32 height_precision = 43 [default = 0];
       case 43:
@@ -4448,7 +4570,8 @@ const char* Options::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::in
           _Internal::set_has_height_precision(&_has_bits_);
           height_precision_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional bool roundabout_exits = 44 [default = true];
       case 44:
@@ -4456,7 +4579,8 @@ const char* Options::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::in
           _Internal::set_has_roundabout_exits(&_has_bits_);
           roundabout_exits_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // optional bool linear_references = 45;
       case 45:
@@ -4464,7 +4588,8 @@ const char* Options::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::in
           _Internal::set_has_linear_references(&_has_bits_);
           linear_references_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // repeated .valhalla.CostingOptions recostings = 46;
       case 46:
@@ -4476,7 +4601,8 @@ const char* Options::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::in
             CHK_(ptr);
             if (!ctx->DataAvailable(ptr)) break;
           } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<370>(ptr));
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // repeated .valhalla.Options.Ring avoid_polygons = 47;
       case 47:
@@ -4488,28 +4614,29 @@ const char* Options::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::in
             CHK_(ptr);
             if (!ctx->DataAvailable(ptr)) break;
           } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<378>(ptr));
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
-      default: {
-      handle_unusual:
-        if ((tag == 0) || ((tag & 7) == 4)) {
-          CHK_(ptr);
-          ctx->SetLastTag(tag);
-          goto success;
-        }
-        ptr = UnknownFieldParse(tag,
-            _internal_metadata_.mutable_unknown_fields<std::string>(),
-            ptr, ctx);
-        CHK_(ptr != nullptr);
-        continue;
-      }
+      default:
+        goto handle_unusual;
     }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<std::string>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
   }  // while
-success:
+message_done:
   return ptr;
 failure:
   ptr = nullptr;
-  goto success;
+  goto message_done;
 #undef CHK_
 }
 
@@ -5290,6 +5417,8 @@ bool Options::IsInitialized() const {
 
 void Options::InternalSwap(Options* other) {
   using std::swap;
+  auto* lhs_arena = GetArenaForAllocation();
+  auto* rhs_arena = other->GetArenaForAllocation();
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(_has_bits_[0], other->_has_bits_[0]);
   swap(_has_bits_[1], other->_has_bits_[1]);
@@ -5306,28 +5435,28 @@ void Options::InternalSwap(Options* other) {
   avoid_polygons_.InternalSwap(&other->avoid_polygons_);
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
       nullptr,
-      &language_, GetArenaForAllocation(),
-      &other->language_, other->GetArenaForAllocation()
+      &language_, lhs_arena,
+      &other->language_, rhs_arena
   );
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
       &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
-      &id_, GetArenaForAllocation(),
-      &other->id_, other->GetArenaForAllocation()
+      &id_, lhs_arena,
+      &other->id_, rhs_arena
   );
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
       &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
-      &jsonp_, GetArenaForAllocation(),
-      &other->jsonp_, other->GetArenaForAllocation()
+      &jsonp_, lhs_arena,
+      &other->jsonp_, rhs_arena
   );
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
       &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
-      &encoded_polyline_, GetArenaForAllocation(),
-      &other->encoded_polyline_, other->GetArenaForAllocation()
+      &encoded_polyline_, lhs_arena,
+      &other->encoded_polyline_, rhs_arena
   );
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
       &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
-      &date_time_, GetArenaForAllocation(),
-      &other->date_time_, other->GetArenaForAllocation()
+      &date_time_, lhs_arena,
+      &other->date_time_, rhs_arena
   );
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
       PROTOBUF_FIELD_OFFSET(Options, height_precision_)

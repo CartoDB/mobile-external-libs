@@ -5,7 +5,6 @@ file(GLOB protobuf_SRC_FILES
   protobuf/src/google/protobuf/arena.cc
   protobuf/src/google/protobuf/arenastring.cc
   protobuf/src/google/protobuf/extension_set.cc
-  protobuf/src/google/protobuf/field_access_listener.cc
   protobuf/src/google/protobuf/generated_enum_util.cc
   protobuf/src/google/protobuf/generated_message_table_driven_lite.cc
   protobuf/src/google/protobuf/generated_message_util.cc
