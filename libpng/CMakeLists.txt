@@ -7,6 +7,11 @@ file(GLOB libpng_SRC_FILES
   libpng/pngwrite.c libpng/pngwio.c libpng/pngwtran.c libpng/pngwutil.c
 )
 
+set(libpng_FLAGS "")
+if(ANDROID OR APPLE)
+  set(libpng_FLAGS ${libpng_FLAGS} "-Wno-discard-qual")
+endif()
+
 set(libpng_INCLUDE_DIRS "${PROJECT_SOURCE_DIR}/config" "${PROJECT_SOURCE_DIR}/libpng" PARENT_SCOPE)
 
 if(SINGLE_LIBRARY)

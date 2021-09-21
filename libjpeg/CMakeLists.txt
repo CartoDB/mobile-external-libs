@@ -12,6 +12,9 @@ file(GLOB libjpeg_SRC_FILES
 )
 
 set(libjpeg_FLAGS "-DNO_GETENV")
+if(ANDROID OR APPLE)
+  set(libjpeg_FLAGS ${libjpeg_FLAGS} "-Wno-conversion")
+endif()
 
 set(libjpeg_INCLUDE_DIRS "${PROJECT_SOURCE_DIR}/config" "${PROJECT_SOURCE_DIR}/libjpeg" PARENT_SCOPE)
 

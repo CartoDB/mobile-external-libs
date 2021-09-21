@@ -34,9 +34,9 @@ file(GLOB protobuf_SRC_FILES
 
 set(protobuf_FLAGS "")
 if(WIN32)
-  set(protobuf_FLAGS ${protobuf_FLAGS} "-D_SILENCE_CXX17_ITERATOR_BASE_CLASS_DEPRECATION_WARNING" "/wd4018" "/wd4065" "/wd4506" "/wd4267")
+  set(protobuf_FLAGS ${protobuf_FLAGS} "/wd4018" "/wd4065" "/wd4506" "/wd4267")
 elseif(ANDROID OR APPLE)
-  set(protobuf_FLAGS ${protobuf_FLAGS} "-DHAVE_PTHREAD" "-Wno-narrowing")
+  set(protobuf_FLAGS ${protobuf_FLAGS} "-DHAVE_PTHREAD" "-Wno-narrowing" "-Wno-conversion")
 endif()
 
 set(protobuf_INCLUDE_DIRS "${PROJECT_SOURCE_DIR}/protobuf/src" PARENT_SCOPE)
