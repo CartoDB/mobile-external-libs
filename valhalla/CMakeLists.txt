@@ -6,11 +6,11 @@ list(REMOVE_ITEM valhalla_SRC_FILES "${PROJECT_SOURCE_DIR}/valhalla/src/meili/va
 list(REMOVE_ITEM valhalla_SRC_FILES "${PROJECT_SOURCE_DIR}/valhalla/src/thor/formlocalpath.cc" "${PROJECT_SOURCE_DIR}/valhalla/src/thor/expandfromnode.cc")
 list(REMOVE_ITEM valhalla_SRC_FILES "${PROJECT_SOURCE_DIR}/valhalla/src/tyr/actor.cc")
 
-set(valhalla_FLAGS "-DBOOST_SPIRIT_THREADSAFE" "-DBOOST_NO_CXX11_SCOPED_ENUMS" "-DRAPIDJSON_HAS_CXX11_RVALUE_REFS=1" "-DRAPIDJSON_HAS_STDSTRING=1" "-DRAPIDJSON_ENDIAN=RAPIDJSON_LITTLEENDIAN")
+set(valhalla_FLAGS "-DRAPIDJSON_HAS_STDSTRING=1")
 if(WIN32)
-  set(valhalla_FLAGS ${valhalla_FLAGS} "-D_SILENCE_CXX17_ITERATOR_BASE_CLASS_DEPRECATION_WARNING" "/wd4018" "/wd4101" "/wd4267" "/wd4305" "/wd4334" "/wd4804" "/wd4805")
+  set(valhalla_FLAGS ${valhalla_FLAGS} "/wd4018" "/wd4101" "/wd4267" "/wd4305" "/wd4334" "/wd4804" "/wd4805")
 elseif(ANDROID OR APPLE)
-  set(valhalla_FLAGS ${valhalla_FLAGS} "-Wno-narrowing" "-Wno-shorten-64-to-32")
+  set(valhalla_FLAGS ${valhalla_FLAGS} "-Wno-conversion" "-Wno-narrowing" "-Wno-shorten-64-to-32")
 endif()
 
 set(valhalla_INCLUDE_DIRS "${PROJECT_SOURCE_DIR}/config" "${PROJECT_SOURCE_DIR}/config/valhalla" "${PROJECT_SOURCE_DIR}/proto" "${PROJECT_SOURCE_DIR}/proto/valhalla" "${PROJECT_SOURCE_DIR}/valhalla" "${PROJECT_SOURCE_DIR}/valhalla/valhalla" PARENT_SCOPE)
