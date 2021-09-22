@@ -1907,7 +1907,7 @@ done:
                   for (uint packed_c = 0; packed_c < limit; packed_c++)
                   {
                      int v = etc1_decode_value(diff, inten, selector, packed_c);
-                     uint err = labs(v - static_cast<int>(color));
+                     uint err = (uint)labs(v - static_cast<int>(color));
                      if (err < best_error)
                      {
                         best_error = err;
