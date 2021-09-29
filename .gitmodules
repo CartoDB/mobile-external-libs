@@ -1,7 +1,3 @@
-[submodule "boost"]
-	path = boost
-	url = https://github.com/boostorg/boost.git
-	branch = master
 [submodule "rapidjson"]
 	path = rapidjson
 	url = https://github.com/nutiteq/rapidjson.git
