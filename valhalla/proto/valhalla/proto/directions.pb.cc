@@ -277,7 +277,7 @@ bool DirectionsLeg_GuidanceView_Type_Parse(
   }
   return success;
 }
-#if (__cplusplus < 201703) && (!defined(_MSC_VER) || _MSC_VER >= 1900)
+#if (__cplusplus < 201703) && (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
 constexpr DirectionsLeg_GuidanceView_Type DirectionsLeg_GuidanceView::kJunction;
 constexpr DirectionsLeg_GuidanceView_Type DirectionsLeg_GuidanceView::kSapa;
 constexpr DirectionsLeg_GuidanceView_Type DirectionsLeg_GuidanceView::kTollbranch;
@@ -290,7 +290,7 @@ constexpr DirectionsLeg_GuidanceView_Type DirectionsLeg_GuidanceView::kSignboard
 constexpr DirectionsLeg_GuidanceView_Type DirectionsLeg_GuidanceView::Type_MIN;
 constexpr DirectionsLeg_GuidanceView_Type DirectionsLeg_GuidanceView::Type_MAX;
 constexpr int DirectionsLeg_GuidanceView::Type_ARRAYSIZE;
-#endif  // (__cplusplus < 201703) && (!defined(_MSC_VER) || _MSC_VER >= 1900)
+#endif  // (__cplusplus < 201703) && (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
 bool DirectionsLeg_Maneuver_CardinalDirection_IsValid(int value) {
   switch (value) {
     case 0:
@@ -366,7 +366,7 @@ bool DirectionsLeg_Maneuver_CardinalDirection_Parse(
   }
   return success;
 }
-#if (__cplusplus < 201703) && (!defined(_MSC_VER) || _MSC_VER >= 1900)
+#if (__cplusplus < 201703) && (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
 constexpr DirectionsLeg_Maneuver_CardinalDirection DirectionsLeg_Maneuver::kNorth;
 constexpr DirectionsLeg_Maneuver_CardinalDirection DirectionsLeg_Maneuver::kNorthEast;
 constexpr DirectionsLeg_Maneuver_CardinalDirection DirectionsLeg_Maneuver::kEast;
@@ -378,7 +378,7 @@ constexpr DirectionsLeg_Maneuver_CardinalDirection DirectionsLeg_Maneuver::kNort
 constexpr DirectionsLeg_Maneuver_CardinalDirection DirectionsLeg_Maneuver::CardinalDirection_MIN;
 constexpr DirectionsLeg_Maneuver_CardinalDirection DirectionsLeg_Maneuver::CardinalDirection_MAX;
 constexpr int DirectionsLeg_Maneuver::CardinalDirection_ARRAYSIZE;
-#endif  // (__cplusplus < 201703) && (!defined(_MSC_VER) || _MSC_VER >= 1900)
+#endif  // (__cplusplus < 201703) && (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
 bool DirectionsLeg_Maneuver_Type_IsValid(int value) {
   switch (value) {
     case 0:
@@ -578,7 +578,7 @@ bool DirectionsLeg_Maneuver_Type_Parse(
   }
   return success;
 }
-#if (__cplusplus < 201703) && (!defined(_MSC_VER) || _MSC_VER >= 1900)
+#if (__cplusplus < 201703) && (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
 constexpr DirectionsLeg_Maneuver_Type DirectionsLeg_Maneuver::kNone;
 constexpr DirectionsLeg_Maneuver_Type DirectionsLeg_Maneuver::kStart;
 constexpr DirectionsLeg_Maneuver_Type DirectionsLeg_Maneuver::kStartRight;
@@ -621,7 +621,7 @@ constexpr DirectionsLeg_Maneuver_Type DirectionsLeg_Maneuver::kMergeLeft;
 constexpr DirectionsLeg_Maneuver_Type DirectionsLeg_Maneuver::Type_MIN;
 constexpr DirectionsLeg_Maneuver_Type DirectionsLeg_Maneuver::Type_MAX;
 constexpr int DirectionsLeg_Maneuver::Type_ARRAYSIZE;
-#endif  // (__cplusplus < 201703) && (!defined(_MSC_VER) || _MSC_VER >= 1900)
+#endif  // (__cplusplus < 201703) && (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
 bool DirectionsLeg_Maneuver_BssManeuverType_IsValid(int value) {
   switch (value) {
     case 1:
@@ -677,14 +677,14 @@ bool DirectionsLeg_Maneuver_BssManeuverType_Parse(
   }
   return success;
 }
-#if (__cplusplus < 201703) && (!defined(_MSC_VER) || _MSC_VER >= 1900)
+#if (__cplusplus < 201703) && (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
 constexpr DirectionsLeg_Maneuver_BssManeuverType DirectionsLeg_Maneuver::kNoneAction;
 constexpr DirectionsLeg_Maneuver_BssManeuverType DirectionsLeg_Maneuver::kRentBikeAtBikeShare;
 constexpr DirectionsLeg_Maneuver_BssManeuverType DirectionsLeg_Maneuver::kReturnBikeAtBikeShare;
 constexpr DirectionsLeg_Maneuver_BssManeuverType DirectionsLeg_Maneuver::BssManeuverType_MIN;
 constexpr DirectionsLeg_Maneuver_BssManeuverType DirectionsLeg_Maneuver::BssManeuverType_MAX;
 constexpr int DirectionsLeg_Maneuver::BssManeuverType_ARRAYSIZE;
-#endif  // (__cplusplus < 201703) && (!defined(_MSC_VER) || _MSC_VER >= 1900)
+#endif  // (__cplusplus < 201703) && (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
 bool DirectionsLeg_TravelMode_IsValid(int value) {
   switch (value) {
     case 0:
@@ -744,7 +744,7 @@ bool DirectionsLeg_TravelMode_Parse(
   }
   return success;
 }
-#if (__cplusplus < 201703) && (!defined(_MSC_VER) || _MSC_VER >= 1900)
+#if (__cplusplus < 201703) && (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
 constexpr DirectionsLeg_TravelMode DirectionsLeg::kDrive;
 constexpr DirectionsLeg_TravelMode DirectionsLeg::kPedestrian;
 constexpr DirectionsLeg_TravelMode DirectionsLeg::kBicycle;
@@ -752,7 +752,7 @@ constexpr DirectionsLeg_TravelMode DirectionsLeg::kTransit;
 constexpr DirectionsLeg_TravelMode DirectionsLeg::TravelMode_MIN;
 constexpr DirectionsLeg_TravelMode DirectionsLeg::TravelMode_MAX;
 constexpr int DirectionsLeg::TravelMode_ARRAYSIZE;
-#endif  // (__cplusplus < 201703) && (!defined(_MSC_VER) || _MSC_VER >= 1900)
+#endif  // (__cplusplus < 201703) && (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
 bool DirectionsLeg_VehicleType_IsValid(int value) {
   switch (value) {
     case 0:
@@ -816,7 +816,7 @@ bool DirectionsLeg_VehicleType_Parse(
   }
   return success;
 }
-#if (__cplusplus < 201703) && (!defined(_MSC_VER) || _MSC_VER >= 1900)
+#if (__cplusplus < 201703) && (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
 constexpr DirectionsLeg_VehicleType DirectionsLeg::kCar;
 constexpr DirectionsLeg_VehicleType DirectionsLeg::kMotorcycle;
 constexpr DirectionsLeg_VehicleType DirectionsLeg::kAutoBus;
@@ -825,7 +825,7 @@ constexpr DirectionsLeg_VehicleType DirectionsLeg::kMotorScooter;
 constexpr DirectionsLeg_VehicleType DirectionsLeg::VehicleType_MIN;
 constexpr DirectionsLeg_VehicleType DirectionsLeg::VehicleType_MAX;
 constexpr int DirectionsLeg::VehicleType_ARRAYSIZE;
-#endif  // (__cplusplus < 201703) && (!defined(_MSC_VER) || _MSC_VER >= 1900)
+#endif  // (__cplusplus < 201703) && (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
 bool DirectionsLeg_PedestrianType_IsValid(int value) {
   switch (value) {
     case 0:
@@ -881,14 +881,14 @@ bool DirectionsLeg_PedestrianType_Parse(
   }
   return success;
 }
-#if (__cplusplus < 201703) && (!defined(_MSC_VER) || _MSC_VER >= 1900)
+#if (__cplusplus < 201703) && (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
 constexpr DirectionsLeg_PedestrianType DirectionsLeg::kFoot;
 constexpr DirectionsLeg_PedestrianType DirectionsLeg::kWheelchair;
 constexpr DirectionsLeg_PedestrianType DirectionsLeg::kSegway;
 constexpr DirectionsLeg_PedestrianType DirectionsLeg::PedestrianType_MIN;
 constexpr DirectionsLeg_PedestrianType DirectionsLeg::PedestrianType_MAX;
 constexpr int DirectionsLeg::PedestrianType_ARRAYSIZE;
-#endif  // (__cplusplus < 201703) && (!defined(_MSC_VER) || _MSC_VER >= 1900)
+#endif  // (__cplusplus < 201703) && (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
 bool DirectionsLeg_BicycleType_IsValid(int value) {
   switch (value) {
     case 0:
@@ -948,7 +948,7 @@ bool DirectionsLeg_BicycleType_Parse(
   }
   return success;
 }
-#if (__cplusplus < 201703) && (!defined(_MSC_VER) || _MSC_VER >= 1900)
+#if (__cplusplus < 201703) && (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
 constexpr DirectionsLeg_BicycleType DirectionsLeg::kRoad;
 constexpr DirectionsLeg_BicycleType DirectionsLeg::kCross;
 constexpr DirectionsLeg_BicycleType DirectionsLeg::kHybrid;
@@ -956,7 +956,7 @@ constexpr DirectionsLeg_BicycleType DirectionsLeg::kMountain;
 constexpr DirectionsLeg_BicycleType DirectionsLeg::BicycleType_MIN;
 constexpr DirectionsLeg_BicycleType DirectionsLeg::BicycleType_MAX;
 constexpr int DirectionsLeg::BicycleType_ARRAYSIZE;
-#endif  // (__cplusplus < 201703) && (!defined(_MSC_VER) || _MSC_VER >= 1900)
+#endif  // (__cplusplus < 201703) && (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
 bool DirectionsLeg_TransitType_IsValid(int value) {
   switch (value) {
     case 0:
@@ -1032,7 +1032,7 @@ bool DirectionsLeg_TransitType_Parse(
   }
   return success;
 }
-#if (__cplusplus < 201703) && (!defined(_MSC_VER) || _MSC_VER >= 1900)
+#if (__cplusplus < 201703) && (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
 constexpr DirectionsLeg_TransitType DirectionsLeg::kTram;
 constexpr DirectionsLeg_TransitType DirectionsLeg::kMetro;
 constexpr DirectionsLeg_TransitType DirectionsLeg::kRail;
@@ -1044,7 +1044,7 @@ constexpr DirectionsLeg_TransitType DirectionsLeg::kFunicular;
 constexpr DirectionsLeg_TransitType DirectionsLeg::TransitType_MIN;
 constexpr DirectionsLeg_TransitType DirectionsLeg::TransitType_MAX;
 constexpr int DirectionsLeg::TransitType_ARRAYSIZE;
-#endif  // (__cplusplus < 201703) && (!defined(_MSC_VER) || _MSC_VER >= 1900)
+#endif  // (__cplusplus < 201703) && (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
 
 // ===================================================================
 
@@ -1098,7 +1098,7 @@ DirectionsLeg_Summary::DirectionsLeg_Summary(const DirectionsLeg_Summary& from)
   // @@protoc_insertion_point(copy_constructor:valhalla.DirectionsLeg.Summary)
 }
 
-void DirectionsLeg_Summary::SharedCtor() {
+inline void DirectionsLeg_Summary::SharedCtor() {
 ::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
     reinterpret_cast<char*>(&bbox_) - reinterpret_cast<char*>(this)),
     0, static_cast<size_t>(reinterpret_cast<char*>(&has_time_restrictions_) -
@@ -1129,7 +1129,7 @@ void DirectionsLeg_Summary::SetCachedSize(int size) const {
 
 void DirectionsLeg_Summary::Clear() {
 // @@protoc_insertion_point(message_clear_start:valhalla.DirectionsLeg.Summary)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -1151,12 +1151,12 @@ const char* DirectionsLeg_Summary::_InternalParse(const char* ptr, ::PROTOBUF_NA
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   _Internal::HasBits has_bits{};
   while (!ctx->Done(&ptr)) {
-    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    uint32_t tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // optional float length = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 13)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 13)) {
           _Internal::set_has_length(&has_bits);
           length_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
           ptr += sizeof(float);
@@ -1165,7 +1165,7 @@ const char* DirectionsLeg_Summary::_InternalParse(const char* ptr, ::PROTOBUF_NA
         continue;
       // optional double time = 2;
       case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 17)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 17)) {
           _Internal::set_has_time(&has_bits);
           time_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<double>(ptr);
           ptr += sizeof(double);
@@ -1174,7 +1174,7 @@ const char* DirectionsLeg_Summary::_InternalParse(const char* ptr, ::PROTOBUF_NA
         continue;
       // optional .valhalla.BoundingBox bbox = 3;
       case 3:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 26)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 26)) {
           ptr = ctx->ParseMessage(_internal_mutable_bbox(), ptr);
           CHK_(ptr);
         } else
@@ -1182,7 +1182,7 @@ const char* DirectionsLeg_Summary::_InternalParse(const char* ptr, ::PROTOBUF_NA
         continue;
       // optional bool has_time_restrictions = 4;
       case 4:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 32)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 32)) {
           _Internal::set_has_has_time_restrictions(&has_bits);
           has_time_restrictions_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
@@ -1213,10 +1213,10 @@ failure:
 #undef CHK_
 }
 
-::PROTOBUF_NAMESPACE_ID::uint8* DirectionsLeg_Summary::_InternalSerialize(
-    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+uint8_t* DirectionsLeg_Summary::_InternalSerialize(
+    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:valhalla.DirectionsLeg.Summary)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   cached_has_bits = _has_bits_[0];
@@ -1258,7 +1258,7 @@ size_t DirectionsLeg_Summary::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:valhalla.DirectionsLeg.Summary)
   size_t total_size = 0;
 
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -1304,7 +1304,7 @@ void DirectionsLeg_Summary::CheckTypeAndMergeFrom(
 void DirectionsLeg_Summary::MergeFrom(const DirectionsLeg_Summary& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:valhalla.DirectionsLeg.Summary)
   GOOGLE_DCHECK_NE(&from, this);
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   cached_has_bits = from._has_bits_[0];
@@ -1410,41 +1410,65 @@ DirectionsLeg_TransitInfo::DirectionsLeg_TransitInfo(const DirectionsLeg_Transit
       transit_stops_(from.transit_stops_) {
   _internal_metadata_.MergeFrom<std::string>(from._internal_metadata_);
   onestop_id_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    onestop_id_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   if (from._internal_has_onestop_id()) {
     onestop_id_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_onestop_id(), 
       GetArenaForAllocation());
   }
   short_name_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    short_name_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   if (from._internal_has_short_name()) {
     short_name_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_short_name(), 
       GetArenaForAllocation());
   }
   long_name_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    long_name_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   if (from._internal_has_long_name()) {
     long_name_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_long_name(), 
       GetArenaForAllocation());
   }
   headsign_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    headsign_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   if (from._internal_has_headsign()) {
     headsign_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_headsign(), 
       GetArenaForAllocation());
   }
   description_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    description_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   if (from._internal_has_description()) {
     description_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_description(), 
       GetArenaForAllocation());
   }
   operator_onestop_id_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    operator_onestop_id_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   if (from._internal_has_operator_onestop_id()) {
     operator_onestop_id_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_operator_onestop_id(), 
       GetArenaForAllocation());
   }
   operator_name_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    operator_name_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   if (from._internal_has_operator_name()) {
     operator_name_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_operator_name(), 
       GetArenaForAllocation());
   }
   operator_url_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    operator_url_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   if (from._internal_has_operator_url()) {
     operator_url_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_operator_url(), 
       GetArenaForAllocation());
@@ -1455,15 +1479,39 @@ DirectionsLeg_TransitInfo::DirectionsLeg_TransitInfo(const DirectionsLeg_Transit
   // @@protoc_insertion_point(copy_constructor:valhalla.DirectionsLeg.TransitInfo)
 }
 
-void DirectionsLeg_TransitInfo::SharedCtor() {
+inline void DirectionsLeg_TransitInfo::SharedCtor() {
 onestop_id_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  onestop_id_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
 short_name_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  short_name_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
 long_name_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  long_name_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
 headsign_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  headsign_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
 description_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  description_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
 operator_onestop_id_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  operator_onestop_id_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
 operator_name_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  operator_name_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
 operator_url_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  operator_url_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
 ::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
     reinterpret_cast<char*>(&color_) - reinterpret_cast<char*>(this)),
     0, static_cast<size_t>(reinterpret_cast<char*>(&text_color_) -
@@ -1501,7 +1549,7 @@ void DirectionsLeg_TransitInfo::SetCachedSize(int size) const {
 
 void DirectionsLeg_TransitInfo::Clear() {
 // @@protoc_insertion_point(message_clear_start:valhalla.DirectionsLeg.TransitInfo)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -1546,12 +1594,12 @@ const char* DirectionsLeg_TransitInfo::_InternalParse(const char* ptr, ::PROTOBU
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   _Internal::HasBits has_bits{};
   while (!ctx->Done(&ptr)) {
-    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    uint32_t tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // optional string onestop_id = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
           auto str = _internal_mutable_onestop_id();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
@@ -1560,7 +1608,7 @@ const char* DirectionsLeg_TransitInfo::_InternalParse(const char* ptr, ::PROTOBU
         continue;
       // optional string short_name = 2;
       case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 18)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 18)) {
           auto str = _internal_mutable_short_name();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
@@ -1569,7 +1617,7 @@ const char* DirectionsLeg_TransitInfo::_InternalParse(const char* ptr, ::PROTOBU
         continue;
       // optional string long_name = 3;
       case 3:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 26)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 26)) {
           auto str = _internal_mutable_long_name();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
@@ -1578,7 +1626,7 @@ const char* DirectionsLeg_TransitInfo::_InternalParse(const char* ptr, ::PROTOBU
         continue;
       // optional string headsign = 4;
       case 4:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 34)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 34)) {
           auto str = _internal_mutable_headsign();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
@@ -1587,7 +1635,7 @@ const char* DirectionsLeg_TransitInfo::_InternalParse(const char* ptr, ::PROTOBU
         continue;
       // optional uint32 color = 5;
       case 5:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 40)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 40)) {
           _Internal::set_has_color(&has_bits);
           color_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
@@ -1596,7 +1644,7 @@ const char* DirectionsLeg_TransitInfo::_InternalParse(const char* ptr, ::PROTOBU
         continue;
       // optional uint32 text_color = 6;
       case 6:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 48)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 48)) {
           _Internal::set_has_text_color(&has_bits);
           text_color_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
@@ -1605,7 +1653,7 @@ const char* DirectionsLeg_TransitInfo::_InternalParse(const char* ptr, ::PROTOBU
         continue;
       // optional string description = 7;
       case 7:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 58)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 58)) {
           auto str = _internal_mutable_description();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
@@ -1614,7 +1662,7 @@ const char* DirectionsLeg_TransitInfo::_InternalParse(const char* ptr, ::PROTOBU
         continue;
       // optional string operator_onestop_id = 8;
       case 8:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 66)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 66)) {
           auto str = _internal_mutable_operator_onestop_id();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
@@ -1623,7 +1671,7 @@ const char* DirectionsLeg_TransitInfo::_InternalParse(const char* ptr, ::PROTOBU
         continue;
       // optional string operator_name = 9;
       case 9:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 74)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 74)) {
           auto str = _internal_mutable_operator_name();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
@@ -1632,7 +1680,7 @@ const char* DirectionsLeg_TransitInfo::_InternalParse(const char* ptr, ::PROTOBU
         continue;
       // optional string operator_url = 10;
       case 10:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 82)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 82)) {
           auto str = _internal_mutable_operator_url();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
@@ -1641,7 +1689,7 @@ const char* DirectionsLeg_TransitInfo::_InternalParse(const char* ptr, ::PROTOBU
         continue;
       // repeated .valhalla.TransitPlatformInfo transit_stops = 11;
       case 11:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 90)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 90)) {
           ptr -= 1;
           do {
             ptr += 1;
@@ -1676,10 +1724,10 @@ failure:
 #undef CHK_
 }
 
-::PROTOBUF_NAMESPACE_ID::uint8* DirectionsLeg_TransitInfo::_InternalSerialize(
-    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+uint8_t* DirectionsLeg_TransitInfo::_InternalSerialize(
+    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:valhalla.DirectionsLeg.TransitInfo)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   cached_has_bits = _has_bits_[0];
@@ -1763,7 +1811,7 @@ size_t DirectionsLeg_TransitInfo::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:valhalla.DirectionsLeg.TransitInfo)
   size_t total_size = 0;
 
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -1862,7 +1910,7 @@ void DirectionsLeg_TransitInfo::CheckTypeAndMergeFrom(
 void DirectionsLeg_TransitInfo::MergeFrom(const DirectionsLeg_TransitInfo& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:valhalla.DirectionsLeg.TransitInfo)
   GOOGLE_DCHECK_NE(&from, this);
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   transit_stops_.MergeFrom(from.transit_stops_);
@@ -2008,11 +2056,17 @@ DirectionsLeg_GuidanceView::DirectionsLeg_GuidanceView(const DirectionsLeg_Guida
       overlay_ids_(from.overlay_ids_) {
   _internal_metadata_.MergeFrom<std::string>(from._internal_metadata_);
   data_id_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    data_id_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   if (from._internal_has_data_id()) {
     data_id_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_data_id(), 
       GetArenaForAllocation());
   }
   base_id_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    base_id_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   if (from._internal_has_base_id()) {
     base_id_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_base_id(), 
       GetArenaForAllocation());
@@ -2021,9 +2075,15 @@ DirectionsLeg_GuidanceView::DirectionsLeg_GuidanceView(const DirectionsLeg_Guida
   // @@protoc_insertion_point(copy_constructor:valhalla.DirectionsLeg.GuidanceView)
 }
 
-void DirectionsLeg_GuidanceView::SharedCtor() {
+inline void DirectionsLeg_GuidanceView::SharedCtor() {
 data_id_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  data_id_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
 base_id_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  base_id_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
 type_ = 0;
 }
 
@@ -2052,7 +2112,7 @@ void DirectionsLeg_GuidanceView::SetCachedSize(int size) const {
 
 void DirectionsLeg_GuidanceView::Clear() {
 // @@protoc_insertion_point(message_clear_start:valhalla.DirectionsLeg.GuidanceView)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -2075,12 +2135,12 @@ const char* DirectionsLeg_GuidanceView::_InternalParse(const char* ptr, ::PROTOB
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   _Internal::HasBits has_bits{};
   while (!ctx->Done(&ptr)) {
-    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    uint32_t tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // optional string data_id = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
           auto str = _internal_mutable_data_id();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
@@ -2089,8 +2149,8 @@ const char* DirectionsLeg_GuidanceView::_InternalParse(const char* ptr, ::PROTOB
         continue;
       // optional .valhalla.DirectionsLeg.GuidanceView.Type type = 2;
       case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 16)) {
-          ::PROTOBUF_NAMESPACE_ID::uint64 val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 16)) {
+          uint64_t val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
           if (PROTOBUF_PREDICT_TRUE(::valhalla::DirectionsLeg_GuidanceView_Type_IsValid(val))) {
             _internal_set_type(static_cast<::valhalla::DirectionsLeg_GuidanceView_Type>(val));
@@ -2102,7 +2162,7 @@ const char* DirectionsLeg_GuidanceView::_InternalParse(const char* ptr, ::PROTOB
         continue;
       // optional string base_id = 3;
       case 3:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 26)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 26)) {
           auto str = _internal_mutable_base_id();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
@@ -2111,7 +2171,7 @@ const char* DirectionsLeg_GuidanceView::_InternalParse(const char* ptr, ::PROTOB
         continue;
       // repeated string overlay_ids = 4;
       case 4:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 34)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 34)) {
           ptr -= 1;
           do {
             ptr += 1;
@@ -2147,10 +2207,10 @@ failure:
 #undef CHK_
 }
 
-::PROTOBUF_NAMESPACE_ID::uint8* DirectionsLeg_GuidanceView::_InternalSerialize(
-    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+uint8_t* DirectionsLeg_GuidanceView::_InternalSerialize(
+    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:valhalla.DirectionsLeg.GuidanceView)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   cached_has_bits = _has_bits_[0];
@@ -2191,7 +2251,7 @@ size_t DirectionsLeg_GuidanceView::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:valhalla.DirectionsLeg.GuidanceView)
   size_t total_size = 0;
 
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -2243,7 +2303,7 @@ void DirectionsLeg_GuidanceView::CheckTypeAndMergeFrom(
 void DirectionsLeg_GuidanceView::MergeFrom(const DirectionsLeg_GuidanceView& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:valhalla.DirectionsLeg.GuidanceView)
   GOOGLE_DCHECK_NE(&from, this);
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   overlay_ids_.MergeFrom(from.overlay_ids_);
@@ -2329,6 +2389,9 @@ DirectionsLeg_Maneuver_SignElement::DirectionsLeg_Maneuver_SignElement(const Dir
       _has_bits_(from._has_bits_) {
   _internal_metadata_.MergeFrom<std::string>(from._internal_metadata_);
   text_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    text_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   if (from._internal_has_text()) {
     text_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_text(), 
       GetArenaForAllocation());
@@ -2339,8 +2402,11 @@ DirectionsLeg_Maneuver_SignElement::DirectionsLeg_Maneuver_SignElement(const Dir
   // @@protoc_insertion_point(copy_constructor:valhalla.DirectionsLeg.Maneuver.SignElement)
 }
 
-void DirectionsLeg_Maneuver_SignElement::SharedCtor() {
+inline void DirectionsLeg_Maneuver_SignElement::SharedCtor() {
 text_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  text_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
 ::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
     reinterpret_cast<char*>(&is_route_number_) - reinterpret_cast<char*>(this)),
     0, static_cast<size_t>(reinterpret_cast<char*>(&consecutive_count_) -
@@ -2371,7 +2437,7 @@ void DirectionsLeg_Maneuver_SignElement::SetCachedSize(int size) const {
 
 void DirectionsLeg_Maneuver_SignElement::Clear() {
 // @@protoc_insertion_point(message_clear_start:valhalla.DirectionsLeg.Maneuver.SignElement)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -2392,12 +2458,12 @@ const char* DirectionsLeg_Maneuver_SignElement::_InternalParse(const char* ptr, 
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   _Internal::HasBits has_bits{};
   while (!ctx->Done(&ptr)) {
-    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    uint32_t tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // optional string text = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
           auto str = _internal_mutable_text();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
@@ -2406,7 +2472,7 @@ const char* DirectionsLeg_Maneuver_SignElement::_InternalParse(const char* ptr, 
         continue;
       // optional bool is_route_number = 2;
       case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 16)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 16)) {
           _Internal::set_has_is_route_number(&has_bits);
           is_route_number_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
@@ -2415,7 +2481,7 @@ const char* DirectionsLeg_Maneuver_SignElement::_InternalParse(const char* ptr, 
         continue;
       // optional uint32 consecutive_count = 3;
       case 3:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 24)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 24)) {
           _Internal::set_has_consecutive_count(&has_bits);
           consecutive_count_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
@@ -2446,10 +2512,10 @@ failure:
 #undef CHK_
 }
 
-::PROTOBUF_NAMESPACE_ID::uint8* DirectionsLeg_Maneuver_SignElement::_InternalSerialize(
-    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+uint8_t* DirectionsLeg_Maneuver_SignElement::_InternalSerialize(
+    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:valhalla.DirectionsLeg.Maneuver.SignElement)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   cached_has_bits = _has_bits_[0];
@@ -2483,7 +2549,7 @@ size_t DirectionsLeg_Maneuver_SignElement::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:valhalla.DirectionsLeg.Maneuver.SignElement)
   size_t total_size = 0;
 
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -2524,7 +2590,7 @@ void DirectionsLeg_Maneuver_SignElement::CheckTypeAndMergeFrom(
 void DirectionsLeg_Maneuver_SignElement::MergeFrom(const DirectionsLeg_Maneuver_SignElement& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:valhalla.DirectionsLeg.Maneuver.SignElement)
   GOOGLE_DCHECK_NE(&from, this);
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   cached_has_bits = from._has_bits_[0];
@@ -2613,7 +2679,7 @@ DirectionsLeg_Maneuver_Sign::DirectionsLeg_Maneuver_Sign(const DirectionsLeg_Man
   // @@protoc_insertion_point(copy_constructor:valhalla.DirectionsLeg.Maneuver.Sign)
 }
 
-void DirectionsLeg_Maneuver_Sign::SharedCtor() {
+inline void DirectionsLeg_Maneuver_Sign::SharedCtor() {
 }
 
 DirectionsLeg_Maneuver_Sign::~DirectionsLeg_Maneuver_Sign() {
@@ -2639,7 +2705,7 @@ void DirectionsLeg_Maneuver_Sign::SetCachedSize(int size) const {
 
 void DirectionsLeg_Maneuver_Sign::Clear() {
 // @@protoc_insertion_point(message_clear_start:valhalla.DirectionsLeg.Maneuver.Sign)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -2656,12 +2722,12 @@ void DirectionsLeg_Maneuver_Sign::Clear() {
 const char* DirectionsLeg_Maneuver_Sign::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
-    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    uint32_t tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // repeated .valhalla.DirectionsLeg.Maneuver.SignElement exit_numbers = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
           ptr -= 1;
           do {
             ptr += 1;
@@ -2674,7 +2740,7 @@ const char* DirectionsLeg_Maneuver_Sign::_InternalParse(const char* ptr, ::PROTO
         continue;
       // repeated .valhalla.DirectionsLeg.Maneuver.SignElement exit_onto_streets = 2;
       case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 18)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 18)) {
           ptr -= 1;
           do {
             ptr += 1;
@@ -2687,7 +2753,7 @@ const char* DirectionsLeg_Maneuver_Sign::_InternalParse(const char* ptr, ::PROTO
         continue;
       // repeated .valhalla.DirectionsLeg.Maneuver.SignElement exit_toward_locations = 3;
       case 3:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 26)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 26)) {
           ptr -= 1;
           do {
             ptr += 1;
@@ -2700,7 +2766,7 @@ const char* DirectionsLeg_Maneuver_Sign::_InternalParse(const char* ptr, ::PROTO
         continue;
       // repeated .valhalla.DirectionsLeg.Maneuver.SignElement exit_names = 4;
       case 4:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 34)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 34)) {
           ptr -= 1;
           do {
             ptr += 1;
@@ -2713,7 +2779,7 @@ const char* DirectionsLeg_Maneuver_Sign::_InternalParse(const char* ptr, ::PROTO
         continue;
       // repeated .valhalla.DirectionsLeg.Maneuver.SignElement guide_onto_streets = 5;
       case 5:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 42)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 42)) {
           ptr -= 1;
           do {
             ptr += 1;
@@ -2726,7 +2792,7 @@ const char* DirectionsLeg_Maneuver_Sign::_InternalParse(const char* ptr, ::PROTO
         continue;
       // repeated .valhalla.DirectionsLeg.Maneuver.SignElement guide_toward_locations = 6;
       case 6:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 50)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 50)) {
           ptr -= 1;
           do {
             ptr += 1;
@@ -2739,7 +2805,7 @@ const char* DirectionsLeg_Maneuver_Sign::_InternalParse(const char* ptr, ::PROTO
         continue;
       // repeated .valhalla.DirectionsLeg.Maneuver.SignElement junction_names = 7;
       case 7:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 58)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 58)) {
           ptr -= 1;
           do {
             ptr += 1;
@@ -2773,10 +2839,10 @@ failure:
 #undef CHK_
 }
 
-::PROTOBUF_NAMESPACE_ID::uint8* DirectionsLeg_Maneuver_Sign::_InternalSerialize(
-    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+uint8_t* DirectionsLeg_Maneuver_Sign::_InternalSerialize(
+    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:valhalla.DirectionsLeg.Maneuver.Sign)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   // repeated .valhalla.DirectionsLeg.Maneuver.SignElement exit_numbers = 1;
@@ -2847,7 +2913,7 @@ size_t DirectionsLeg_Maneuver_Sign::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:valhalla.DirectionsLeg.Maneuver.Sign)
   size_t total_size = 0;
 
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -2917,7 +2983,7 @@ void DirectionsLeg_Maneuver_Sign::CheckTypeAndMergeFrom(
 void DirectionsLeg_Maneuver_Sign::MergeFrom(const DirectionsLeg_Maneuver_Sign& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:valhalla.DirectionsLeg.Maneuver.Sign)
   GOOGLE_DCHECK_NE(&from, this);
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   exit_numbers_.MergeFrom(from.exit_numbers_);
@@ -3102,41 +3168,65 @@ DirectionsLeg_Maneuver::DirectionsLeg_Maneuver(const DirectionsLeg_Maneuver& fro
       guidance_views_(from.guidance_views_) {
   _internal_metadata_.MergeFrom<std::string>(from._internal_metadata_);
   text_instruction_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    text_instruction_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   if (from._internal_has_text_instruction()) {
     text_instruction_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_text_instruction(), 
       GetArenaForAllocation());
   }
   verbal_transition_alert_instruction_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    verbal_transition_alert_instruction_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   if (from._internal_has_verbal_transition_alert_instruction()) {
     verbal_transition_alert_instruction_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_verbal_transition_alert_instruction(), 
       GetArenaForAllocation());
   }
   verbal_pre_transition_instruction_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    verbal_pre_transition_instruction_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   if (from._internal_has_verbal_pre_transition_instruction()) {
     verbal_pre_transition_instruction_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_verbal_pre_transition_instruction(), 
       GetArenaForAllocation());
   }
   verbal_post_transition_instruction_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    verbal_post_transition_instruction_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   if (from._internal_has_verbal_post_transition_instruction()) {
     verbal_post_transition_instruction_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_verbal_post_transition_instruction(), 
       GetArenaForAllocation());
   }
   depart_instruction_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    depart_instruction_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   if (from._internal_has_depart_instruction()) {
     depart_instruction_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_depart_instruction(), 
       GetArenaForAllocation());
   }
   verbal_depart_instruction_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    verbal_depart_instruction_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   if (from._internal_has_verbal_depart_instruction()) {
     verbal_depart_instruction_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_verbal_depart_instruction(), 
       GetArenaForAllocation());
   }
   arrive_instruction_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    arrive_instruction_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   if (from._internal_has_arrive_instruction()) {
     arrive_instruction_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_arrive_instruction(), 
       GetArenaForAllocation());
   }
   verbal_arrive_instruction_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    verbal_arrive_instruction_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   if (from._internal_has_verbal_arrive_instruction()) {
     verbal_arrive_instruction_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_verbal_arrive_instruction(), 
       GetArenaForAllocation());
@@ -3157,15 +3247,39 @@ DirectionsLeg_Maneuver::DirectionsLeg_Maneuver(const DirectionsLeg_Maneuver& fro
   // @@protoc_insertion_point(copy_constructor:valhalla.DirectionsLeg.Maneuver)
 }
 
-void DirectionsLeg_Maneuver::SharedCtor() {
+inline void DirectionsLeg_Maneuver::SharedCtor() {
 text_instruction_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  text_instruction_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
 verbal_transition_alert_instruction_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  verbal_transition_alert_instruction_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
 verbal_pre_transition_instruction_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  verbal_pre_transition_instruction_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
 verbal_post_transition_instruction_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  verbal_post_transition_instruction_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
 depart_instruction_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  depart_instruction_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
 verbal_depart_instruction_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  verbal_depart_instruction_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
 arrive_instruction_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  arrive_instruction_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
 verbal_arrive_instruction_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  verbal_arrive_instruction_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
 ::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
     reinterpret_cast<char*>(&sign_) - reinterpret_cast<char*>(this)),
     0, static_cast<size_t>(reinterpret_cast<char*>(&has_time_restrictions_) -
@@ -3206,7 +3320,7 @@ void DirectionsLeg_Maneuver::SetCachedSize(int size) const {
 
 void DirectionsLeg_Maneuver::Clear() {
 // @@protoc_insertion_point(message_clear_start:valhalla.DirectionsLeg.Maneuver)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -3275,13 +3389,13 @@ const char* DirectionsLeg_Maneuver::_InternalParse(const char* ptr, ::PROTOBUF_N
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   _Internal::HasBits has_bits{};
   while (!ctx->Done(&ptr)) {
-    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    uint32_t tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // optional .valhalla.DirectionsLeg.Maneuver.Type type = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 8)) {
-          ::PROTOBUF_NAMESPACE_ID::uint64 val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 8)) {
+          uint64_t val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
           if (PROTOBUF_PREDICT_TRUE(::valhalla::DirectionsLeg_Maneuver_Type_IsValid(val))) {
             _internal_set_type(static_cast<::valhalla::DirectionsLeg_Maneuver_Type>(val));
@@ -3293,7 +3407,7 @@ const char* DirectionsLeg_Maneuver::_InternalParse(const char* ptr, ::PROTOBUF_N
         continue;
       // optional string text_instruction = 2;
       case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 18)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 18)) {
           auto str = _internal_mutable_text_instruction();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
@@ -3302,7 +3416,7 @@ const char* DirectionsLeg_Maneuver::_InternalParse(const char* ptr, ::PROTOBUF_N
         continue;
       // repeated .valhalla.StreetName street_name = 3;
       case 3:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 26)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 26)) {
           ptr -= 1;
           do {
             ptr += 1;
@@ -3315,7 +3429,7 @@ const char* DirectionsLeg_Maneuver::_InternalParse(const char* ptr, ::PROTOBUF_N
         continue;
       // optional float length = 4;
       case 4:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 37)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 37)) {
           _Internal::set_has_length(&has_bits);
           length_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
           ptr += sizeof(float);
@@ -3324,7 +3438,7 @@ const char* DirectionsLeg_Maneuver::_InternalParse(const char* ptr, ::PROTOBUF_N
         continue;
       // optional double time = 5;
       case 5:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 41)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 41)) {
           _Internal::set_has_time(&has_bits);
           time_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<double>(ptr);
           ptr += sizeof(double);
@@ -3333,8 +3447,8 @@ const char* DirectionsLeg_Maneuver::_InternalParse(const char* ptr, ::PROTOBUF_N
         continue;
       // optional .valhalla.DirectionsLeg.Maneuver.CardinalDirection begin_cardinal_direction = 6;
       case 6:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 48)) {
-          ::PROTOBUF_NAMESPACE_ID::uint64 val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 48)) {
+          uint64_t val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
           if (PROTOBUF_PREDICT_TRUE(::valhalla::DirectionsLeg_Maneuver_CardinalDirection_IsValid(val))) {
             _internal_set_begin_cardinal_direction(static_cast<::valhalla::DirectionsLeg_Maneuver_CardinalDirection>(val));
@@ -3346,7 +3460,7 @@ const char* DirectionsLeg_Maneuver::_InternalParse(const char* ptr, ::PROTOBUF_N
         continue;
       // optional uint32 begin_heading = 7;
       case 7:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 56)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 56)) {
           _Internal::set_has_begin_heading(&has_bits);
           begin_heading_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
@@ -3355,7 +3469,7 @@ const char* DirectionsLeg_Maneuver::_InternalParse(const char* ptr, ::PROTOBUF_N
         continue;
       // optional uint32 begin_shape_index = 8;
       case 8:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 64)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 64)) {
           _Internal::set_has_begin_shape_index(&has_bits);
           begin_shape_index_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
@@ -3364,7 +3478,7 @@ const char* DirectionsLeg_Maneuver::_InternalParse(const char* ptr, ::PROTOBUF_N
         continue;
       // optional uint32 end_shape_index = 9;
       case 9:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 72)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 72)) {
           _Internal::set_has_end_shape_index(&has_bits);
           end_shape_index_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
@@ -3373,7 +3487,7 @@ const char* DirectionsLeg_Maneuver::_InternalParse(const char* ptr, ::PROTOBUF_N
         continue;
       // optional bool portions_toll = 10;
       case 10:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 80)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 80)) {
           _Internal::set_has_portions_toll(&has_bits);
           portions_toll_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
@@ -3382,7 +3496,7 @@ const char* DirectionsLeg_Maneuver::_InternalParse(const char* ptr, ::PROTOBUF_N
         continue;
       // optional bool portions_unpaved = 11;
       case 11:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 88)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 88)) {
           _Internal::set_has_portions_unpaved(&has_bits);
           portions_unpaved_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
@@ -3391,7 +3505,7 @@ const char* DirectionsLeg_Maneuver::_InternalParse(const char* ptr, ::PROTOBUF_N
         continue;
       // optional string verbal_transition_alert_instruction = 12;
       case 12:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 98)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 98)) {
           auto str = _internal_mutable_verbal_transition_alert_instruction();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
@@ -3400,7 +3514,7 @@ const char* DirectionsLeg_Maneuver::_InternalParse(const char* ptr, ::PROTOBUF_N
         continue;
       // optional string verbal_pre_transition_instruction = 13;
       case 13:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 106)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 106)) {
           auto str = _internal_mutable_verbal_pre_transition_instruction();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
@@ -3409,7 +3523,7 @@ const char* DirectionsLeg_Maneuver::_InternalParse(const char* ptr, ::PROTOBUF_N
         continue;
       // optional string verbal_post_transition_instruction = 14;
       case 14:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 114)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 114)) {
           auto str = _internal_mutable_verbal_post_transition_instruction();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
@@ -3418,7 +3532,7 @@ const char* DirectionsLeg_Maneuver::_InternalParse(const char* ptr, ::PROTOBUF_N
         continue;
       // repeated .valhalla.StreetName begin_street_name = 15;
       case 15:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 122)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 122)) {
           ptr -= 1;
           do {
             ptr += 1;
@@ -3431,7 +3545,7 @@ const char* DirectionsLeg_Maneuver::_InternalParse(const char* ptr, ::PROTOBUF_N
         continue;
       // optional .valhalla.DirectionsLeg.Maneuver.Sign sign = 16;
       case 16:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 130)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 130)) {
           ptr = ctx->ParseMessage(_internal_mutable_sign(), ptr);
           CHK_(ptr);
         } else
@@ -3439,7 +3553,7 @@ const char* DirectionsLeg_Maneuver::_InternalParse(const char* ptr, ::PROTOBUF_N
         continue;
       // optional uint32 roundabout_exit_count = 17;
       case 17:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 136)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 136)) {
           _Internal::set_has_roundabout_exit_count(&has_bits);
           roundabout_exit_count_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
@@ -3448,7 +3562,7 @@ const char* DirectionsLeg_Maneuver::_InternalParse(const char* ptr, ::PROTOBUF_N
         continue;
       // optional string depart_instruction = 18;
       case 18:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 146)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 146)) {
           auto str = _internal_mutable_depart_instruction();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
@@ -3457,7 +3571,7 @@ const char* DirectionsLeg_Maneuver::_InternalParse(const char* ptr, ::PROTOBUF_N
         continue;
       // optional string verbal_depart_instruction = 19;
       case 19:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 154)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 154)) {
           auto str = _internal_mutable_verbal_depart_instruction();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
@@ -3466,7 +3580,7 @@ const char* DirectionsLeg_Maneuver::_InternalParse(const char* ptr, ::PROTOBUF_N
         continue;
       // optional string arrive_instruction = 20;
       case 20:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 162)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 162)) {
           auto str = _internal_mutable_arrive_instruction();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
@@ -3475,7 +3589,7 @@ const char* DirectionsLeg_Maneuver::_InternalParse(const char* ptr, ::PROTOBUF_N
         continue;
       // optional string verbal_arrive_instruction = 21;
       case 21:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 170)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 170)) {
           auto str = _internal_mutable_verbal_arrive_instruction();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
@@ -3484,7 +3598,7 @@ const char* DirectionsLeg_Maneuver::_InternalParse(const char* ptr, ::PROTOBUF_N
         continue;
       // optional .valhalla.DirectionsLeg.TransitInfo transit_info = 22;
       case 22:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 178)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 178)) {
           ptr = ctx->ParseMessage(_internal_mutable_transit_info(), ptr);
           CHK_(ptr);
         } else
@@ -3492,7 +3606,7 @@ const char* DirectionsLeg_Maneuver::_InternalParse(const char* ptr, ::PROTOBUF_N
         continue;
       // optional bool verbal_multi_cue = 23;
       case 23:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 184)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 184)) {
           _Internal::set_has_verbal_multi_cue(&has_bits);
           verbal_multi_cue_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
@@ -3501,8 +3615,8 @@ const char* DirectionsLeg_Maneuver::_InternalParse(const char* ptr, ::PROTOBUF_N
         continue;
       // optional .valhalla.DirectionsLeg.TravelMode travel_mode = 24;
       case 24:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 192)) {
-          ::PROTOBUF_NAMESPACE_ID::uint64 val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 192)) {
+          uint64_t val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
           if (PROTOBUF_PREDICT_TRUE(::valhalla::DirectionsLeg_TravelMode_IsValid(val))) {
             _internal_set_travel_mode(static_cast<::valhalla::DirectionsLeg_TravelMode>(val));
@@ -3514,8 +3628,8 @@ const char* DirectionsLeg_Maneuver::_InternalParse(const char* ptr, ::PROTOBUF_N
         continue;
       // optional .valhalla.DirectionsLeg.VehicleType vehicle_type = 25;
       case 25:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 200)) {
-          ::PROTOBUF_NAMESPACE_ID::uint64 val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 200)) {
+          uint64_t val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
           if (PROTOBUF_PREDICT_TRUE(::valhalla::DirectionsLeg_VehicleType_IsValid(val))) {
             _internal_set_vehicle_type(static_cast<::valhalla::DirectionsLeg_VehicleType>(val));
@@ -3527,8 +3641,8 @@ const char* DirectionsLeg_Maneuver::_InternalParse(const char* ptr, ::PROTOBUF_N
         continue;
       // optional .valhalla.DirectionsLeg.PedestrianType pedestrian_type = 26;
       case 26:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 208)) {
-          ::PROTOBUF_NAMESPACE_ID::uint64 val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 208)) {
+          uint64_t val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
           if (PROTOBUF_PREDICT_TRUE(::valhalla::DirectionsLeg_PedestrianType_IsValid(val))) {
             _internal_set_pedestrian_type(static_cast<::valhalla::DirectionsLeg_PedestrianType>(val));
@@ -3540,8 +3654,8 @@ const char* DirectionsLeg_Maneuver::_InternalParse(const char* ptr, ::PROTOBUF_N
         continue;
       // optional .valhalla.DirectionsLeg.BicycleType bicycle_type = 27;
       case 27:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 216)) {
-          ::PROTOBUF_NAMESPACE_ID::uint64 val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 216)) {
+          uint64_t val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
           if (PROTOBUF_PREDICT_TRUE(::valhalla::DirectionsLeg_BicycleType_IsValid(val))) {
             _internal_set_bicycle_type(static_cast<::valhalla::DirectionsLeg_BicycleType>(val));
@@ -3553,8 +3667,8 @@ const char* DirectionsLeg_Maneuver::_InternalParse(const char* ptr, ::PROTOBUF_N
         continue;
       // optional .valhalla.DirectionsLeg.TransitType transit_type = 28;
       case 28:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 224)) {
-          ::PROTOBUF_NAMESPACE_ID::uint64 val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 224)) {
+          uint64_t val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
           if (PROTOBUF_PREDICT_TRUE(::valhalla::DirectionsLeg_TransitType_IsValid(val))) {
             _internal_set_transit_type(static_cast<::valhalla::DirectionsLeg_TransitType>(val));
@@ -3566,7 +3680,7 @@ const char* DirectionsLeg_Maneuver::_InternalParse(const char* ptr, ::PROTOBUF_N
         continue;
       // optional uint32 begin_path_index = 29;
       case 29:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 232)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 232)) {
           _Internal::set_has_begin_path_index(&has_bits);
           begin_path_index_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
@@ -3575,7 +3689,7 @@ const char* DirectionsLeg_Maneuver::_InternalParse(const char* ptr, ::PROTOBUF_N
         continue;
       // optional uint32 end_path_index = 30;
       case 30:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 240)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 240)) {
           _Internal::set_has_end_path_index(&has_bits);
           end_path_index_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
@@ -3584,7 +3698,7 @@ const char* DirectionsLeg_Maneuver::_InternalParse(const char* ptr, ::PROTOBUF_N
         continue;
       // optional bool to_stay_on = 31;
       case 31:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 248)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 248)) {
           _Internal::set_has_to_stay_on(&has_bits);
           to_stay_on_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
@@ -3593,7 +3707,7 @@ const char* DirectionsLeg_Maneuver::_InternalParse(const char* ptr, ::PROTOBUF_N
         continue;
       // repeated .valhalla.StreetName roundabout_exit_street_names = 32;
       case 32:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 2)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 2)) {
           ptr -= 2;
           do {
             ptr += 2;
@@ -3606,7 +3720,7 @@ const char* DirectionsLeg_Maneuver::_InternalParse(const char* ptr, ::PROTOBUF_N
         continue;
       // optional uint32 turn_degree = 33;
       case 33:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 8)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 8)) {
           _Internal::set_has_turn_degree(&has_bits);
           turn_degree_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
@@ -3615,7 +3729,7 @@ const char* DirectionsLeg_Maneuver::_InternalParse(const char* ptr, ::PROTOBUF_N
         continue;
       // optional bool has_time_restrictions = 34;
       case 34:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 16)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 16)) {
           _Internal::set_has_has_time_restrictions(&has_bits);
           has_time_restrictions_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
@@ -3624,7 +3738,7 @@ const char* DirectionsLeg_Maneuver::_InternalParse(const char* ptr, ::PROTOBUF_N
         continue;
       // repeated .valhalla.DirectionsLeg.GuidanceView guidance_views = 35;
       case 35:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 26)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 26)) {
           ptr -= 2;
           do {
             ptr += 2;
@@ -3637,8 +3751,8 @@ const char* DirectionsLeg_Maneuver::_InternalParse(const char* ptr, ::PROTOBUF_N
         continue;
       // optional .valhalla.DirectionsLeg.Maneuver.BssManeuverType bss_maneuver_type = 36;
       case 36:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 32)) {
-          ::PROTOBUF_NAMESPACE_ID::uint64 val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 32)) {
+          uint64_t val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
           if (PROTOBUF_PREDICT_TRUE(::valhalla::DirectionsLeg_Maneuver_BssManeuverType_IsValid(val))) {
             _internal_set_bss_maneuver_type(static_cast<::valhalla::DirectionsLeg_Maneuver_BssManeuverType>(val));
@@ -3672,10 +3786,10 @@ failure:
 #undef CHK_
 }
 
-::PROTOBUF_NAMESPACE_ID::uint8* DirectionsLeg_Maneuver::_InternalSerialize(
-    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+uint8_t* DirectionsLeg_Maneuver::_InternalSerialize(
+    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:valhalla.DirectionsLeg.Maneuver)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   cached_has_bits = _has_bits_[0];
@@ -3927,7 +4041,7 @@ size_t DirectionsLeg_Maneuver::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:valhalla.DirectionsLeg.Maneuver)
   size_t total_size = 0;
 
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -4181,7 +4295,7 @@ void DirectionsLeg_Maneuver::CheckTypeAndMergeFrom(
 void DirectionsLeg_Maneuver::MergeFrom(const DirectionsLeg_Maneuver& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:valhalla.DirectionsLeg.Maneuver)
   GOOGLE_DCHECK_NE(&from, this);
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   street_name_.MergeFrom(from.street_name_);
@@ -4422,6 +4536,9 @@ DirectionsLeg::DirectionsLeg(const DirectionsLeg& from)
       maneuver_(from.maneuver_) {
   _internal_metadata_.MergeFrom<std::string>(from._internal_metadata_);
   shape_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    shape_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   if (from._internal_has_shape()) {
     shape_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_shape(), 
       GetArenaForAllocation());
@@ -4437,8 +4554,11 @@ DirectionsLeg::DirectionsLeg(const DirectionsLeg& from)
   // @@protoc_insertion_point(copy_constructor:valhalla.DirectionsLeg)
 }
 
-void DirectionsLeg::SharedCtor() {
+inline void DirectionsLeg::SharedCtor() {
 shape_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  shape_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
 ::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
     reinterpret_cast<char*>(&summary_) - reinterpret_cast<char*>(this)),
     0, static_cast<size_t>(reinterpret_cast<char*>(&leg_count_) -
@@ -4470,7 +4590,7 @@ void DirectionsLeg::SetCachedSize(int size) const {
 
 void DirectionsLeg::Clear() {
 // @@protoc_insertion_point(message_clear_start:valhalla.DirectionsLeg)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -4499,12 +4619,12 @@ const char* DirectionsLeg::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   _Internal::HasBits has_bits{};
   while (!ctx->Done(&ptr)) {
-    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    uint32_t tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // optional uint64 trip_id = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 8)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 8)) {
           _Internal::set_has_trip_id(&has_bits);
           trip_id_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
@@ -4513,7 +4633,7 @@ const char* DirectionsLeg::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_
         continue;
       // optional uint32 leg_id = 2;
       case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 16)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 16)) {
           _Internal::set_has_leg_id(&has_bits);
           leg_id_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
@@ -4522,7 +4642,7 @@ const char* DirectionsLeg::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_
         continue;
       // optional uint32 leg_count = 3;
       case 3:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 24)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 24)) {
           _Internal::set_has_leg_count(&has_bits);
           leg_count_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
@@ -4531,7 +4651,7 @@ const char* DirectionsLeg::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_
         continue;
       // repeated .valhalla.Location location = 4;
       case 4:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 34)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 34)) {
           ptr -= 1;
           do {
             ptr += 1;
@@ -4544,7 +4664,7 @@ const char* DirectionsLeg::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_
         continue;
       // optional .valhalla.DirectionsLeg.Summary summary = 5;
       case 5:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 42)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 42)) {
           ptr = ctx->ParseMessage(_internal_mutable_summary(), ptr);
           CHK_(ptr);
         } else
@@ -4552,7 +4672,7 @@ const char* DirectionsLeg::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_
         continue;
       // repeated .valhalla.DirectionsLeg.Maneuver maneuver = 6;
       case 6:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 50)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 50)) {
           ptr -= 1;
           do {
             ptr += 1;
@@ -4565,7 +4685,7 @@ const char* DirectionsLeg::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_
         continue;
       // optional string shape = 7;
       case 7:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 58)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 58)) {
           auto str = _internal_mutable_shape();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
@@ -4596,10 +4716,10 @@ failure:
 #undef CHK_
 }
 
-::PROTOBUF_NAMESPACE_ID::uint8* DirectionsLeg::_InternalSerialize(
-    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+uint8_t* DirectionsLeg::_InternalSerialize(
+    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:valhalla.DirectionsLeg)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   cached_has_bits = _has_bits_[0];
@@ -4663,7 +4783,7 @@ size_t DirectionsLeg::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:valhalla.DirectionsLeg)
   size_t total_size = 0;
 
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -4730,7 +4850,7 @@ void DirectionsLeg::CheckTypeAndMergeFrom(
 void DirectionsLeg::MergeFrom(const DirectionsLeg& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:valhalla.DirectionsLeg)
   GOOGLE_DCHECK_NE(&from, this);
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   location_.MergeFrom(from.location_);
@@ -4817,7 +4937,7 @@ DirectionsRoute::DirectionsRoute(const DirectionsRoute& from)
   // @@protoc_insertion_point(copy_constructor:valhalla.DirectionsRoute)
 }
 
-void DirectionsRoute::SharedCtor() {
+inline void DirectionsRoute::SharedCtor() {
 }
 
 DirectionsRoute::~DirectionsRoute() {
@@ -4843,7 +4963,7 @@ void DirectionsRoute::SetCachedSize(int size) const {
 
 void DirectionsRoute::Clear() {
 // @@protoc_insertion_point(message_clear_start:valhalla.DirectionsRoute)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -4854,12 +4974,12 @@ void DirectionsRoute::Clear() {
 const char* DirectionsRoute::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
-    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    uint32_t tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // repeated .valhalla.DirectionsLeg legs = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
           ptr -= 1;
           do {
             ptr += 1;
@@ -4893,10 +5013,10 @@ failure:
 #undef CHK_
 }
 
-::PROTOBUF_NAMESPACE_ID::uint8* DirectionsRoute::_InternalSerialize(
-    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+uint8_t* DirectionsRoute::_InternalSerialize(
+    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:valhalla.DirectionsRoute)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   // repeated .valhalla.DirectionsLeg legs = 1;
@@ -4919,7 +5039,7 @@ size_t DirectionsRoute::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:valhalla.DirectionsRoute)
   size_t total_size = 0;
 
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -4947,7 +5067,7 @@ void DirectionsRoute::CheckTypeAndMergeFrom(
 void DirectionsRoute::MergeFrom(const DirectionsRoute& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:valhalla.DirectionsRoute)
   GOOGLE_DCHECK_NE(&from, this);
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   legs_.MergeFrom(from.legs_);
@@ -4999,7 +5119,7 @@ Directions::Directions(const Directions& from)
   // @@protoc_insertion_point(copy_constructor:valhalla.Directions)
 }
 
-void Directions::SharedCtor() {
+inline void Directions::SharedCtor() {
 }
 
 Directions::~Directions() {
@@ -5025,7 +5145,7 @@ void Directions::SetCachedSize(int size) const {
 
 void Directions::Clear() {
 // @@protoc_insertion_point(message_clear_start:valhalla.Directions)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -5036,12 +5156,12 @@ void Directions::Clear() {
 const char* Directions::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
-    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    uint32_t tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // repeated .valhalla.DirectionsRoute routes = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
           ptr -= 1;
           do {
             ptr += 1;
@@ -5075,10 +5195,10 @@ failure:
 #undef CHK_
 }
 
-::PROTOBUF_NAMESPACE_ID::uint8* Directions::_InternalSerialize(
-    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+uint8_t* Directions::_InternalSerialize(
+    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:valhalla.Directions)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   // repeated .valhalla.DirectionsRoute routes = 1;
@@ -5101,7 +5221,7 @@ size_t Directions::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:valhalla.Directions)
   size_t total_size = 0;
 
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -5129,7 +5249,7 @@ void Directions::CheckTypeAndMergeFrom(
 void Directions::MergeFrom(const Directions& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:valhalla.Directions)
   GOOGLE_DCHECK_NE(&from, this);
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   routes_.MergeFrom(from.routes_);

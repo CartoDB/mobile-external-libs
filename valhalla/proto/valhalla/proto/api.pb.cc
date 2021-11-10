@@ -123,7 +123,7 @@ Api::Api(const Api& from)
   // @@protoc_insertion_point(copy_constructor:valhalla.Api)
 }
 
-void Api::SharedCtor() {
+inline void Api::SharedCtor() {
 ::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
     reinterpret_cast<char*>(&options_) - reinterpret_cast<char*>(this)),
     0, static_cast<size_t>(reinterpret_cast<char*>(&info_) -
@@ -157,7 +157,7 @@ void Api::SetCachedSize(int size) const {
 
 void Api::Clear() {
 // @@protoc_insertion_point(message_clear_start:valhalla.Api)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -188,12 +188,12 @@ const char* Api::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::intern
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   _Internal::HasBits has_bits{};
   while (!ctx->Done(&ptr)) {
-    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    uint32_t tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // optional .valhalla.Options options = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
           ptr = ctx->ParseMessage(_internal_mutable_options(), ptr);
           CHK_(ptr);
         } else
@@ -201,7 +201,7 @@ const char* Api::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::intern
         continue;
       // optional .valhalla.Trip trip = 2;
       case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 18)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 18)) {
           ptr = ctx->ParseMessage(_internal_mutable_trip(), ptr);
           CHK_(ptr);
         } else
@@ -209,7 +209,7 @@ const char* Api::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::intern
         continue;
       // optional .valhalla.Directions directions = 3;
       case 3:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 26)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 26)) {
           ptr = ctx->ParseMessage(_internal_mutable_directions(), ptr);
           CHK_(ptr);
         } else
@@ -217,7 +217,7 @@ const char* Api::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::intern
         continue;
       // optional .valhalla.Info info = 4;
       case 4:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 34)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 34)) {
           ptr = ctx->ParseMessage(_internal_mutable_info(), ptr);
           CHK_(ptr);
         } else
@@ -247,10 +247,10 @@ failure:
 #undef CHK_
 }
 
-::PROTOBUF_NAMESPACE_ID::uint8* Api::_InternalSerialize(
-    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+uint8_t* Api::_InternalSerialize(
+    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:valhalla.Api)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   cached_has_bits = _has_bits_[0];
@@ -298,7 +298,7 @@ size_t Api::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:valhalla.Api)
   size_t total_size = 0;
 
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -350,7 +350,7 @@ void Api::CheckTypeAndMergeFrom(
 void Api::MergeFrom(const Api& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:valhalla.Api)
   GOOGLE_DCHECK_NE(&from, this);
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   cached_has_bits = from._has_bits_[0];
