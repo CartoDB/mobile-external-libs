@@ -31,6 +31,7 @@
 #include <google/protobuf/extension_set.h>  // IWYU pragma: export
 #include <google/protobuf/generated_enum_util.h>
 #include "tripcommon.pb.h"
+#include "sign.pb.h"
 // @@protoc_insertion_point(includes)
 #include <google/protobuf/port_def.inc>
 #define PROTOBUF_INTERNAL_EXPORT_directions_2eproto
@@ -46,7 +47,7 @@ struct TableStruct_directions_2eproto {
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::AuxiliaryParseTableField aux[]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
-  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[9]
+  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[7]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::FieldMetadata field_metadata[];
   static const ::PROTOBUF_NAMESPACE_ID::internal::SerializationTable serialization_table[];
@@ -65,12 +66,6 @@ extern DirectionsLeg_GuidanceViewDefaultTypeInternal _DirectionsLeg_GuidanceView
 class DirectionsLeg_Maneuver;
 struct DirectionsLeg_ManeuverDefaultTypeInternal;
 extern DirectionsLeg_ManeuverDefaultTypeInternal _DirectionsLeg_Maneuver_default_instance_;
-class DirectionsLeg_Maneuver_Sign;
-struct DirectionsLeg_Maneuver_SignDefaultTypeInternal;
-extern DirectionsLeg_Maneuver_SignDefaultTypeInternal _DirectionsLeg_Maneuver_Sign_default_instance_;
-class DirectionsLeg_Maneuver_SignElement;
-struct DirectionsLeg_Maneuver_SignElementDefaultTypeInternal;
-extern DirectionsLeg_Maneuver_SignElementDefaultTypeInternal _DirectionsLeg_Maneuver_SignElement_default_instance_;
 class DirectionsLeg_Summary;
 struct DirectionsLeg_SummaryDefaultTypeInternal;
 extern DirectionsLeg_SummaryDefaultTypeInternal _DirectionsLeg_Summary_default_instance_;
@@ -86,8 +81,6 @@ template<> ::valhalla::Directions* Arena::CreateMaybeMessage<::valhalla::Directi
 template<> ::valhalla::DirectionsLeg* Arena::CreateMaybeMessage<::valhalla::DirectionsLeg>(Arena*);
 template<> ::valhalla::DirectionsLeg_GuidanceView* Arena::CreateMaybeMessage<::valhalla::DirectionsLeg_GuidanceView>(Arena*);
 template<> ::valhalla::DirectionsLeg_Maneuver* Arena::CreateMaybeMessage<::valhalla::DirectionsLeg_Maneuver>(Arena*);
-template<> ::valhalla::DirectionsLeg_Maneuver_Sign* Arena::CreateMaybeMessage<::valhalla::DirectionsLeg_Maneuver_Sign>(Arena*);
-template<> ::valhalla::DirectionsLeg_Maneuver_SignElement* Arena::CreateMaybeMessage<::valhalla::DirectionsLeg_Maneuver_SignElement>(Arena*);
 template<> ::valhalla::DirectionsLeg_Summary* Arena::CreateMaybeMessage<::valhalla::DirectionsLeg_Summary>(Arena*);
 template<> ::valhalla::DirectionsLeg_TransitInfo* Arena::CreateMaybeMessage<::valhalla::DirectionsLeg_TransitInfo>(Arena*);
 template<> ::valhalla::DirectionsRoute* Arena::CreateMaybeMessage<::valhalla::DirectionsRoute>(Arena*);
@@ -1109,449 +1102,6 @@ class DirectionsLeg_GuidanceView final :
 };
 // -------------------------------------------------------------------
 
-class DirectionsLeg_Maneuver_SignElement final :
-    public ::PROTOBUF_NAMESPACE_ID::MessageLite /* @@protoc_insertion_point(class_definition:valhalla.DirectionsLeg.Maneuver.SignElement) */ {
- public:
-  inline DirectionsLeg_Maneuver_SignElement() : DirectionsLeg_Maneuver_SignElement(nullptr) {}
-  ~DirectionsLeg_Maneuver_SignElement() override;
-  explicit constexpr DirectionsLeg_Maneuver_SignElement(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
-
-  DirectionsLeg_Maneuver_SignElement(const DirectionsLeg_Maneuver_SignElement& from);
-  DirectionsLeg_Maneuver_SignElement(DirectionsLeg_Maneuver_SignElement&& from) noexcept
-    : DirectionsLeg_Maneuver_SignElement() {
-    *this = ::std::move(from);
-  }
-
-  inline DirectionsLeg_Maneuver_SignElement& operator=(const DirectionsLeg_Maneuver_SignElement& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  inline DirectionsLeg_Maneuver_SignElement& operator=(DirectionsLeg_Maneuver_SignElement&& from) noexcept {
-    if (this == &from) return *this;
-    if (GetOwningArena() == from.GetOwningArena()
-  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
-        && GetOwningArena() != nullptr
-  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
-    ) {
-      InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-
-  inline const std::string& unknown_fields() const {
-    return _internal_metadata_.unknown_fields<std::string>(::PROTOBUF_NAMESPACE_ID::internal::GetEmptyString);
-  }
-  inline std::string* mutable_unknown_fields() {
-    return _internal_metadata_.mutable_unknown_fields<std::string>();
-  }
-
-  static const DirectionsLeg_Maneuver_SignElement& default_instance() {
-    return *internal_default_instance();
-  }
-  static inline const DirectionsLeg_Maneuver_SignElement* internal_default_instance() {
-    return reinterpret_cast<const DirectionsLeg_Maneuver_SignElement*>(
-               &_DirectionsLeg_Maneuver_SignElement_default_instance_);
-  }
-  static constexpr int kIndexInFileMessages =
-    3;
-
-  friend void swap(DirectionsLeg_Maneuver_SignElement& a, DirectionsLeg_Maneuver_SignElement& b) {
-    a.Swap(&b);
-  }
-  inline void Swap(DirectionsLeg_Maneuver_SignElement* other) {
-    if (other == this) return;
-  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
-    if (GetOwningArena() != nullptr &&
-        GetOwningArena() == other->GetOwningArena()) {
-   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
-    if (GetOwningArena() == other->GetOwningArena()) {
-  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
-      InternalSwap(other);
-    } else {
-      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
-    }
-  }
-  void UnsafeArenaSwap(DirectionsLeg_Maneuver_SignElement* other) {
-    if (other == this) return;
-    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
-    InternalSwap(other);
-  }
-
-  // implements Message ----------------------------------------------
-
-  DirectionsLeg_Maneuver_SignElement* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
-    return CreateMaybeMessage<DirectionsLeg_Maneuver_SignElement>(arena);
-  }
-  void CheckTypeAndMergeFrom(const ::PROTOBUF_NAMESPACE_ID::MessageLite& from)  final;
-  void CopyFrom(const DirectionsLeg_Maneuver_SignElement& from);
-  void MergeFrom(const DirectionsLeg_Maneuver_SignElement& from);
-  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
-  bool IsInitialized() const final;
-
-  size_t ByteSizeLong() const final;
-  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
-  uint8_t* _InternalSerialize(
-      uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
-  int GetCachedSize() const final { return _cached_size_.Get(); }
-
-  private:
-  void SharedCtor();
-  void SharedDtor();
-  void SetCachedSize(int size) const;
-  void InternalSwap(DirectionsLeg_Maneuver_SignElement* other);
-
-  private:
-  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
-  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "valhalla.DirectionsLeg.Maneuver.SignElement";
-  }
-  protected:
-  explicit DirectionsLeg_Maneuver_SignElement(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                       bool is_message_owned = false);
-  private:
-  static void ArenaDtor(void* object);
-  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
-  public:
-
-  std::string GetTypeName() const final;
-
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-
-  enum : int {
-    kTextFieldNumber = 1,
-    kIsRouteNumberFieldNumber = 2,
-    kConsecutiveCountFieldNumber = 3,
-  };
-  // optional string text = 1;
-  bool has_text() const;
-  private:
-  bool _internal_has_text() const;
-  public:
-  void clear_text();
-  const std::string& text() const;
-  template <typename ArgT0 = const std::string&, typename... ArgT>
-  void set_text(ArgT0&& arg0, ArgT... args);
-  std::string* mutable_text();
-  PROTOBUF_NODISCARD std::string* release_text();
-  void set_allocated_text(std::string* text);
-  private:
-  const std::string& _internal_text() const;
-  inline PROTOBUF_ALWAYS_INLINE void _internal_set_text(const std::string& value);
-  std::string* _internal_mutable_text();
-  public:
-
-  // optional bool is_route_number = 2;
-  bool has_is_route_number() const;
-  private:
-  bool _internal_has_is_route_number() const;
-  public:
-  void clear_is_route_number();
-  bool is_route_number() const;
-  void set_is_route_number(bool value);
-  private:
-  bool _internal_is_route_number() const;
-  void _internal_set_is_route_number(bool value);
-  public:
-
-  // optional uint32 consecutive_count = 3;
-  bool has_consecutive_count() const;
-  private:
-  bool _internal_has_consecutive_count() const;
-  public:
-  void clear_consecutive_count();
-  uint32_t consecutive_count() const;
-  void set_consecutive_count(uint32_t value);
-  private:
-  uint32_t _internal_consecutive_count() const;
-  void _internal_set_consecutive_count(uint32_t value);
-  public:
-
-  // @@protoc_insertion_point(class_scope:valhalla.DirectionsLeg.Maneuver.SignElement)
- private:
-  class _Internal;
-
-  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
-  typedef void InternalArenaConstructable_;
-  typedef void DestructorSkippable_;
-  ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
-  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr text_;
-  bool is_route_number_;
-  uint32_t consecutive_count_;
-  friend struct ::TableStruct_directions_2eproto;
-};
-// -------------------------------------------------------------------
-
-class DirectionsLeg_Maneuver_Sign final :
-    public ::PROTOBUF_NAMESPACE_ID::MessageLite /* @@protoc_insertion_point(class_definition:valhalla.DirectionsLeg.Maneuver.Sign) */ {
- public:
-  inline DirectionsLeg_Maneuver_Sign() : DirectionsLeg_Maneuver_Sign(nullptr) {}
-  ~DirectionsLeg_Maneuver_Sign() override;
-  explicit constexpr DirectionsLeg_Maneuver_Sign(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
-
-  DirectionsLeg_Maneuver_Sign(const DirectionsLeg_Maneuver_Sign& from);
-  DirectionsLeg_Maneuver_Sign(DirectionsLeg_Maneuver_Sign&& from) noexcept
-    : DirectionsLeg_Maneuver_Sign() {
-    *this = ::std::move(from);
-  }
-
-  inline DirectionsLeg_Maneuver_Sign& operator=(const DirectionsLeg_Maneuver_Sign& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  inline DirectionsLeg_Maneuver_Sign& operator=(DirectionsLeg_Maneuver_Sign&& from) noexcept {
-    if (this == &from) return *this;
-    if (GetOwningArena() == from.GetOwningArena()
-  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
-        && GetOwningArena() != nullptr
-  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
-    ) {
-      InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-
-  inline const std::string& unknown_fields() const {
-    return _internal_metadata_.unknown_fields<std::string>(::PROTOBUF_NAMESPACE_ID::internal::GetEmptyString);
-  }
-  inline std::string* mutable_unknown_fields() {
-    return _internal_metadata_.mutable_unknown_fields<std::string>();
-  }
-
-  static const DirectionsLeg_Maneuver_Sign& default_instance() {
-    return *internal_default_instance();
-  }
-  static inline const DirectionsLeg_Maneuver_Sign* internal_default_instance() {
-    return reinterpret_cast<const DirectionsLeg_Maneuver_Sign*>(
-               &_DirectionsLeg_Maneuver_Sign_default_instance_);
-  }
-  static constexpr int kIndexInFileMessages =
-    4;
-
-  friend void swap(DirectionsLeg_Maneuver_Sign& a, DirectionsLeg_Maneuver_Sign& b) {
-    a.Swap(&b);
-  }
-  inline void Swap(DirectionsLeg_Maneuver_Sign* other) {
-    if (other == this) return;
-  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
-    if (GetOwningArena() != nullptr &&
-        GetOwningArena() == other->GetOwningArena()) {
-   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
-    if (GetOwningArena() == other->GetOwningArena()) {
-  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
-      InternalSwap(other);
-    } else {
-      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
-    }
-  }
-  void UnsafeArenaSwap(DirectionsLeg_Maneuver_Sign* other) {
-    if (other == this) return;
-    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
-    InternalSwap(other);
-  }
-
-  // implements Message ----------------------------------------------
-
-  DirectionsLeg_Maneuver_Sign* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
-    return CreateMaybeMessage<DirectionsLeg_Maneuver_Sign>(arena);
-  }
-  void CheckTypeAndMergeFrom(const ::PROTOBUF_NAMESPACE_ID::MessageLite& from)  final;
-  void CopyFrom(const DirectionsLeg_Maneuver_Sign& from);
-  void MergeFrom(const DirectionsLeg_Maneuver_Sign& from);
-  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
-  bool IsInitialized() const final;
-
-  size_t ByteSizeLong() const final;
-  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
-  uint8_t* _InternalSerialize(
-      uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
-  int GetCachedSize() const final { return _cached_size_.Get(); }
-
-  private:
-  void SharedCtor();
-  void SharedDtor();
-  void SetCachedSize(int size) const;
-  void InternalSwap(DirectionsLeg_Maneuver_Sign* other);
-
-  private:
-  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
-  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "valhalla.DirectionsLeg.Maneuver.Sign";
-  }
-  protected:
-  explicit DirectionsLeg_Maneuver_Sign(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                       bool is_message_owned = false);
-  private:
-  static void ArenaDtor(void* object);
-  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
-  public:
-
-  std::string GetTypeName() const final;
-
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-
-  enum : int {
-    kExitNumbersFieldNumber = 1,
-    kExitOntoStreetsFieldNumber = 2,
-    kExitTowardLocationsFieldNumber = 3,
-    kExitNamesFieldNumber = 4,
-    kGuideOntoStreetsFieldNumber = 5,
-    kGuideTowardLocationsFieldNumber = 6,
-    kJunctionNamesFieldNumber = 7,
-  };
-  // repeated .valhalla.DirectionsLeg.Maneuver.SignElement exit_numbers = 1;
-  int exit_numbers_size() const;
-  private:
-  int _internal_exit_numbers_size() const;
-  public:
-  void clear_exit_numbers();
-  ::valhalla::DirectionsLeg_Maneuver_SignElement* mutable_exit_numbers(int index);
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::DirectionsLeg_Maneuver_SignElement >*
-      mutable_exit_numbers();
-  private:
-  const ::valhalla::DirectionsLeg_Maneuver_SignElement& _internal_exit_numbers(int index) const;
-  ::valhalla::DirectionsLeg_Maneuver_SignElement* _internal_add_exit_numbers();
-  public:
-  const ::valhalla::DirectionsLeg_Maneuver_SignElement& exit_numbers(int index) const;
-  ::valhalla::DirectionsLeg_Maneuver_SignElement* add_exit_numbers();
-  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::DirectionsLeg_Maneuver_SignElement >&
-      exit_numbers() const;
-
-  // repeated .valhalla.DirectionsLeg.Maneuver.SignElement exit_onto_streets = 2;
-  int exit_onto_streets_size() const;
-  private:
-  int _internal_exit_onto_streets_size() const;
-  public:
-  void clear_exit_onto_streets();
-  ::valhalla::DirectionsLeg_Maneuver_SignElement* mutable_exit_onto_streets(int index);
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::DirectionsLeg_Maneuver_SignElement >*
-      mutable_exit_onto_streets();
-  private:
-  const ::valhalla::DirectionsLeg_Maneuver_SignElement& _internal_exit_onto_streets(int index) const;
-  ::valhalla::DirectionsLeg_Maneuver_SignElement* _internal_add_exit_onto_streets();
-  public:
-  const ::valhalla::DirectionsLeg_Maneuver_SignElement& exit_onto_streets(int index) const;
-  ::valhalla::DirectionsLeg_Maneuver_SignElement* add_exit_onto_streets();
-  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::DirectionsLeg_Maneuver_SignElement >&
-      exit_onto_streets() const;
-
-  // repeated .valhalla.DirectionsLeg.Maneuver.SignElement exit_toward_locations = 3;
-  int exit_toward_locations_size() const;
-  private:
-  int _internal_exit_toward_locations_size() const;
-  public:
-  void clear_exit_toward_locations();
-  ::valhalla::DirectionsLeg_Maneuver_SignElement* mutable_exit_toward_locations(int index);
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::DirectionsLeg_Maneuver_SignElement >*
-      mutable_exit_toward_locations();
-  private:
-  const ::valhalla::DirectionsLeg_Maneuver_SignElement& _internal_exit_toward_locations(int index) const;
-  ::valhalla::DirectionsLeg_Maneuver_SignElement* _internal_add_exit_toward_locations();
-  public:
-  const ::valhalla::DirectionsLeg_Maneuver_SignElement& exit_toward_locations(int index) const;
-  ::valhalla::DirectionsLeg_Maneuver_SignElement* add_exit_toward_locations();
-  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::DirectionsLeg_Maneuver_SignElement >&
-      exit_toward_locations() const;
-
-  // repeated .valhalla.DirectionsLeg.Maneuver.SignElement exit_names = 4;
-  int exit_names_size() const;
-  private:
-  int _internal_exit_names_size() const;
-  public:
-  void clear_exit_names();
-  ::valhalla::DirectionsLeg_Maneuver_SignElement* mutable_exit_names(int index);
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::DirectionsLeg_Maneuver_SignElement >*
-      mutable_exit_names();
-  private:
-  const ::valhalla::DirectionsLeg_Maneuver_SignElement& _internal_exit_names(int index) const;
-  ::valhalla::DirectionsLeg_Maneuver_SignElement* _internal_add_exit_names();
-  public:
-  const ::valhalla::DirectionsLeg_Maneuver_SignElement& exit_names(int index) const;
-  ::valhalla::DirectionsLeg_Maneuver_SignElement* add_exit_names();
-  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::DirectionsLeg_Maneuver_SignElement >&
-      exit_names() const;
-
-  // repeated .valhalla.DirectionsLeg.Maneuver.SignElement guide_onto_streets = 5;
-  int guide_onto_streets_size() const;
-  private:
-  int _internal_guide_onto_streets_size() const;
-  public:
-  void clear_guide_onto_streets();
-  ::valhalla::DirectionsLeg_Maneuver_SignElement* mutable_guide_onto_streets(int index);
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::DirectionsLeg_Maneuver_SignElement >*
-      mutable_guide_onto_streets();
-  private:
-  const ::valhalla::DirectionsLeg_Maneuver_SignElement& _internal_guide_onto_streets(int index) const;
-  ::valhalla::DirectionsLeg_Maneuver_SignElement* _internal_add_guide_onto_streets();
-  public:
-  const ::valhalla::DirectionsLeg_Maneuver_SignElement& guide_onto_streets(int index) const;
-  ::valhalla::DirectionsLeg_Maneuver_SignElement* add_guide_onto_streets();
-  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::DirectionsLeg_Maneuver_SignElement >&
-      guide_onto_streets() const;
-
-  // repeated .valhalla.DirectionsLeg.Maneuver.SignElement guide_toward_locations = 6;
-  int guide_toward_locations_size() const;
-  private:
-  int _internal_guide_toward_locations_size() const;
-  public:
-  void clear_guide_toward_locations();
-  ::valhalla::DirectionsLeg_Maneuver_SignElement* mutable_guide_toward_locations(int index);
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::DirectionsLeg_Maneuver_SignElement >*
-      mutable_guide_toward_locations();
-  private:
-  const ::valhalla::DirectionsLeg_Maneuver_SignElement& _internal_guide_toward_locations(int index) const;
-  ::valhalla::DirectionsLeg_Maneuver_SignElement* _internal_add_guide_toward_locations();
-  public:
-  const ::valhalla::DirectionsLeg_Maneuver_SignElement& guide_toward_locations(int index) const;
-  ::valhalla::DirectionsLeg_Maneuver_SignElement* add_guide_toward_locations();
-  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::DirectionsLeg_Maneuver_SignElement >&
-      guide_toward_locations() const;
-
-  // repeated .valhalla.DirectionsLeg.Maneuver.SignElement junction_names = 7;
-  int junction_names_size() const;
-  private:
-  int _internal_junction_names_size() const;
-  public:
-  void clear_junction_names();
-  ::valhalla::DirectionsLeg_Maneuver_SignElement* mutable_junction_names(int index);
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::DirectionsLeg_Maneuver_SignElement >*
-      mutable_junction_names();
-  private:
-  const ::valhalla::DirectionsLeg_Maneuver_SignElement& _internal_junction_names(int index) const;
-  ::valhalla::DirectionsLeg_Maneuver_SignElement* _internal_add_junction_names();
-  public:
-  const ::valhalla::DirectionsLeg_Maneuver_SignElement& junction_names(int index) const;
-  ::valhalla::DirectionsLeg_Maneuver_SignElement* add_junction_names();
-  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::DirectionsLeg_Maneuver_SignElement >&
-      junction_names() const;
-
-  // @@protoc_insertion_point(class_scope:valhalla.DirectionsLeg.Maneuver.Sign)
- private:
-  class _Internal;
-
-  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
-  typedef void InternalArenaConstructable_;
-  typedef void DestructorSkippable_;
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::DirectionsLeg_Maneuver_SignElement > exit_numbers_;
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::DirectionsLeg_Maneuver_SignElement > exit_onto_streets_;
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::DirectionsLeg_Maneuver_SignElement > exit_toward_locations_;
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::DirectionsLeg_Maneuver_SignElement > exit_names_;
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::DirectionsLeg_Maneuver_SignElement > guide_onto_streets_;
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::DirectionsLeg_Maneuver_SignElement > guide_toward_locations_;
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::DirectionsLeg_Maneuver_SignElement > junction_names_;
-  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
-  friend struct ::TableStruct_directions_2eproto;
-};
-// -------------------------------------------------------------------
-
 class DirectionsLeg_Maneuver final :
     public ::PROTOBUF_NAMESPACE_ID::MessageLite /* @@protoc_insertion_point(class_definition:valhalla.DirectionsLeg.Maneuver) */ {
  public:
@@ -1598,7 +1148,7 @@ class DirectionsLeg_Maneuver final :
                &_DirectionsLeg_Maneuver_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    5;
+    3;
 
   friend void swap(DirectionsLeg_Maneuver& a, DirectionsLeg_Maneuver& b) {
     a.Swap(&b);
@@ -1661,9 +1211,6 @@ class DirectionsLeg_Maneuver final :
   std::string GetTypeName() const final;
 
   // nested types ----------------------------------------------------
-
-  typedef DirectionsLeg_Maneuver_SignElement SignElement;
-  typedef DirectionsLeg_Maneuver_Sign Sign;
 
   typedef DirectionsLeg_Maneuver_CardinalDirection CardinalDirection;
   static constexpr CardinalDirection kNorth =
@@ -1846,6 +1393,7 @@ class DirectionsLeg_Maneuver final :
     kVerbalDepartInstructionFieldNumber = 19,
     kArriveInstructionFieldNumber = 20,
     kVerbalArriveInstructionFieldNumber = 21,
+    kVerbalSuccinctTransitionInstructionFieldNumber = 37,
     kSignFieldNumber = 16,
     kTransitInfoFieldNumber = 22,
     kTypeFieldNumber = 1,
@@ -2087,23 +1635,41 @@ class DirectionsLeg_Maneuver final :
   std::string* _internal_mutable_verbal_arrive_instruction();
   public:
 
-  // optional .valhalla.DirectionsLeg.Maneuver.Sign sign = 16;
+  // optional string verbal_succinct_transition_instruction = 37;
+  bool has_verbal_succinct_transition_instruction() const;
+  private:
+  bool _internal_has_verbal_succinct_transition_instruction() const;
+  public:
+  void clear_verbal_succinct_transition_instruction();
+  const std::string& verbal_succinct_transition_instruction() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_verbal_succinct_transition_instruction(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_verbal_succinct_transition_instruction();
+  PROTOBUF_NODISCARD std::string* release_verbal_succinct_transition_instruction();
+  void set_allocated_verbal_succinct_transition_instruction(std::string* verbal_succinct_transition_instruction);
+  private:
+  const std::string& _internal_verbal_succinct_transition_instruction() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_verbal_succinct_transition_instruction(const std::string& value);
+  std::string* _internal_mutable_verbal_succinct_transition_instruction();
+  public:
+
+  // optional .valhalla.TripSign sign = 16;
   bool has_sign() const;
   private:
   bool _internal_has_sign() const;
   public:
   void clear_sign();
-  const ::valhalla::DirectionsLeg_Maneuver_Sign& sign() const;
-  PROTOBUF_NODISCARD ::valhalla::DirectionsLeg_Maneuver_Sign* release_sign();
-  ::valhalla::DirectionsLeg_Maneuver_Sign* mutable_sign();
-  void set_allocated_sign(::valhalla::DirectionsLeg_Maneuver_Sign* sign);
+  const ::valhalla::TripSign& sign() const;
+  PROTOBUF_NODISCARD ::valhalla::TripSign* release_sign();
+  ::valhalla::TripSign* mutable_sign();
+  void set_allocated_sign(::valhalla::TripSign* sign);
   private:
-  const ::valhalla::DirectionsLeg_Maneuver_Sign& _internal_sign() const;
-  ::valhalla::DirectionsLeg_Maneuver_Sign* _internal_mutable_sign();
+  const ::valhalla::TripSign& _internal_sign() const;
+  ::valhalla::TripSign* _internal_mutable_sign();
   public:
   void unsafe_arena_set_allocated_sign(
-      ::valhalla::DirectionsLeg_Maneuver_Sign* sign);
-  ::valhalla::DirectionsLeg_Maneuver_Sign* unsafe_arena_release_sign();
+      ::valhalla::TripSign* sign);
+  ::valhalla::TripSign* unsafe_arena_release_sign();
 
   // optional .valhalla.DirectionsLeg.TransitInfo transit_info = 22;
   bool has_transit_info() const;
@@ -2416,7 +1982,7 @@ class DirectionsLeg_Maneuver final :
   template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
-  ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
+  ::PROTOBUF_NAMESPACE_ID::internal::HasBits<2> _has_bits_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::StreetName > street_name_;
   ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::StreetName > begin_street_name_;
@@ -2430,7 +1996,8 @@ class DirectionsLeg_Maneuver final :
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr verbal_depart_instruction_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr arrive_instruction_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr verbal_arrive_instruction_;
-  ::valhalla::DirectionsLeg_Maneuver_Sign* sign_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr verbal_succinct_transition_instruction_;
+  ::valhalla::TripSign* sign_;
   ::valhalla::DirectionsLeg_TransitInfo* transit_info_;
   int type_;
   float length_;
@@ -2504,7 +2071,7 @@ class DirectionsLeg final :
                &_DirectionsLeg_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    6;
+    4;
 
   friend void swap(DirectionsLeg& a, DirectionsLeg& b) {
     a.Swap(&b);
@@ -2919,7 +2486,7 @@ class DirectionsRoute final :
                &_DirectionsRoute_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    7;
+    5;
 
   friend void swap(DirectionsRoute& a, DirectionsRoute& b) {
     a.Swap(&b);
@@ -3065,7 +2632,7 @@ class Directions final :
                &_Directions_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    8;
+    6;
 
   friend void swap(Directions& a, Directions& b) {
     a.Swap(&b);
@@ -4243,424 +3810,11 @@ DirectionsLeg_GuidanceView::mutable_overlay_ids() {
 
 // -------------------------------------------------------------------
 
-// DirectionsLeg_Maneuver_SignElement
-
-// optional string text = 1;
-inline bool DirectionsLeg_Maneuver_SignElement::_internal_has_text() const {
-  bool value = (_has_bits_[0] & 0x00000001u) != 0;
-  return value;
-}
-inline bool DirectionsLeg_Maneuver_SignElement::has_text() const {
-  return _internal_has_text();
-}
-inline void DirectionsLeg_Maneuver_SignElement::clear_text() {
-  text_.ClearToEmpty();
-  _has_bits_[0] &= ~0x00000001u;
-}
-inline const std::string& DirectionsLeg_Maneuver_SignElement::text() const {
-  // @@protoc_insertion_point(field_get:valhalla.DirectionsLeg.Maneuver.SignElement.text)
-  return _internal_text();
-}
-template <typename ArgT0, typename... ArgT>
-inline PROTOBUF_ALWAYS_INLINE
-void DirectionsLeg_Maneuver_SignElement::set_text(ArgT0&& arg0, ArgT... args) {
- _has_bits_[0] |= 0x00000001u;
- text_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:valhalla.DirectionsLeg.Maneuver.SignElement.text)
-}
-inline std::string* DirectionsLeg_Maneuver_SignElement::mutable_text() {
-  std::string* _s = _internal_mutable_text();
-  // @@protoc_insertion_point(field_mutable:valhalla.DirectionsLeg.Maneuver.SignElement.text)
-  return _s;
-}
-inline const std::string& DirectionsLeg_Maneuver_SignElement::_internal_text() const {
-  return text_.Get();
-}
-inline void DirectionsLeg_Maneuver_SignElement::_internal_set_text(const std::string& value) {
-  _has_bits_[0] |= 0x00000001u;
-  text_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, value, GetArenaForAllocation());
-}
-inline std::string* DirectionsLeg_Maneuver_SignElement::_internal_mutable_text() {
-  _has_bits_[0] |= 0x00000001u;
-  return text_.Mutable(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArenaForAllocation());
-}
-inline std::string* DirectionsLeg_Maneuver_SignElement::release_text() {
-  // @@protoc_insertion_point(field_release:valhalla.DirectionsLeg.Maneuver.SignElement.text)
-  if (!_internal_has_text()) {
-    return nullptr;
-  }
-  _has_bits_[0] &= ~0x00000001u;
-  auto* p = text_.ReleaseNonDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArenaForAllocation());
-#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  if (text_.IsDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited())) {
-    text_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
-  }
-#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  return p;
-}
-inline void DirectionsLeg_Maneuver_SignElement::set_allocated_text(std::string* text) {
-  if (text != nullptr) {
-    _has_bits_[0] |= 0x00000001u;
-  } else {
-    _has_bits_[0] &= ~0x00000001u;
-  }
-  text_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), text,
-      GetArenaForAllocation());
-#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  if (text_.IsDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited())) {
-    text_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
-  }
-#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:valhalla.DirectionsLeg.Maneuver.SignElement.text)
-}
-
-// optional bool is_route_number = 2;
-inline bool DirectionsLeg_Maneuver_SignElement::_internal_has_is_route_number() const {
-  bool value = (_has_bits_[0] & 0x00000002u) != 0;
-  return value;
-}
-inline bool DirectionsLeg_Maneuver_SignElement::has_is_route_number() const {
-  return _internal_has_is_route_number();
-}
-inline void DirectionsLeg_Maneuver_SignElement::clear_is_route_number() {
-  is_route_number_ = false;
-  _has_bits_[0] &= ~0x00000002u;
-}
-inline bool DirectionsLeg_Maneuver_SignElement::_internal_is_route_number() const {
-  return is_route_number_;
-}
-inline bool DirectionsLeg_Maneuver_SignElement::is_route_number() const {
-  // @@protoc_insertion_point(field_get:valhalla.DirectionsLeg.Maneuver.SignElement.is_route_number)
-  return _internal_is_route_number();
-}
-inline void DirectionsLeg_Maneuver_SignElement::_internal_set_is_route_number(bool value) {
-  _has_bits_[0] |= 0x00000002u;
-  is_route_number_ = value;
-}
-inline void DirectionsLeg_Maneuver_SignElement::set_is_route_number(bool value) {
-  _internal_set_is_route_number(value);
-  // @@protoc_insertion_point(field_set:valhalla.DirectionsLeg.Maneuver.SignElement.is_route_number)
-}
-
-// optional uint32 consecutive_count = 3;
-inline bool DirectionsLeg_Maneuver_SignElement::_internal_has_consecutive_count() const {
-  bool value = (_has_bits_[0] & 0x00000004u) != 0;
-  return value;
-}
-inline bool DirectionsLeg_Maneuver_SignElement::has_consecutive_count() const {
-  return _internal_has_consecutive_count();
-}
-inline void DirectionsLeg_Maneuver_SignElement::clear_consecutive_count() {
-  consecutive_count_ = 0u;
-  _has_bits_[0] &= ~0x00000004u;
-}
-inline uint32_t DirectionsLeg_Maneuver_SignElement::_internal_consecutive_count() const {
-  return consecutive_count_;
-}
-inline uint32_t DirectionsLeg_Maneuver_SignElement::consecutive_count() const {
-  // @@protoc_insertion_point(field_get:valhalla.DirectionsLeg.Maneuver.SignElement.consecutive_count)
-  return _internal_consecutive_count();
-}
-inline void DirectionsLeg_Maneuver_SignElement::_internal_set_consecutive_count(uint32_t value) {
-  _has_bits_[0] |= 0x00000004u;
-  consecutive_count_ = value;
-}
-inline void DirectionsLeg_Maneuver_SignElement::set_consecutive_count(uint32_t value) {
-  _internal_set_consecutive_count(value);
-  // @@protoc_insertion_point(field_set:valhalla.DirectionsLeg.Maneuver.SignElement.consecutive_count)
-}
-
-// -------------------------------------------------------------------
-
-// DirectionsLeg_Maneuver_Sign
-
-// repeated .valhalla.DirectionsLeg.Maneuver.SignElement exit_numbers = 1;
-inline int DirectionsLeg_Maneuver_Sign::_internal_exit_numbers_size() const {
-  return exit_numbers_.size();
-}
-inline int DirectionsLeg_Maneuver_Sign::exit_numbers_size() const {
-  return _internal_exit_numbers_size();
-}
-inline void DirectionsLeg_Maneuver_Sign::clear_exit_numbers() {
-  exit_numbers_.Clear();
-}
-inline ::valhalla::DirectionsLeg_Maneuver_SignElement* DirectionsLeg_Maneuver_Sign::mutable_exit_numbers(int index) {
-  // @@protoc_insertion_point(field_mutable:valhalla.DirectionsLeg.Maneuver.Sign.exit_numbers)
-  return exit_numbers_.Mutable(index);
-}
-inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::DirectionsLeg_Maneuver_SignElement >*
-DirectionsLeg_Maneuver_Sign::mutable_exit_numbers() {
-  // @@protoc_insertion_point(field_mutable_list:valhalla.DirectionsLeg.Maneuver.Sign.exit_numbers)
-  return &exit_numbers_;
-}
-inline const ::valhalla::DirectionsLeg_Maneuver_SignElement& DirectionsLeg_Maneuver_Sign::_internal_exit_numbers(int index) const {
-  return exit_numbers_.Get(index);
-}
-inline const ::valhalla::DirectionsLeg_Maneuver_SignElement& DirectionsLeg_Maneuver_Sign::exit_numbers(int index) const {
-  // @@protoc_insertion_point(field_get:valhalla.DirectionsLeg.Maneuver.Sign.exit_numbers)
-  return _internal_exit_numbers(index);
-}
-inline ::valhalla::DirectionsLeg_Maneuver_SignElement* DirectionsLeg_Maneuver_Sign::_internal_add_exit_numbers() {
-  return exit_numbers_.Add();
-}
-inline ::valhalla::DirectionsLeg_Maneuver_SignElement* DirectionsLeg_Maneuver_Sign::add_exit_numbers() {
-  ::valhalla::DirectionsLeg_Maneuver_SignElement* _add = _internal_add_exit_numbers();
-  // @@protoc_insertion_point(field_add:valhalla.DirectionsLeg.Maneuver.Sign.exit_numbers)
-  return _add;
-}
-inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::DirectionsLeg_Maneuver_SignElement >&
-DirectionsLeg_Maneuver_Sign::exit_numbers() const {
-  // @@protoc_insertion_point(field_list:valhalla.DirectionsLeg.Maneuver.Sign.exit_numbers)
-  return exit_numbers_;
-}
-
-// repeated .valhalla.DirectionsLeg.Maneuver.SignElement exit_onto_streets = 2;
-inline int DirectionsLeg_Maneuver_Sign::_internal_exit_onto_streets_size() const {
-  return exit_onto_streets_.size();
-}
-inline int DirectionsLeg_Maneuver_Sign::exit_onto_streets_size() const {
-  return _internal_exit_onto_streets_size();
-}
-inline void DirectionsLeg_Maneuver_Sign::clear_exit_onto_streets() {
-  exit_onto_streets_.Clear();
-}
-inline ::valhalla::DirectionsLeg_Maneuver_SignElement* DirectionsLeg_Maneuver_Sign::mutable_exit_onto_streets(int index) {
-  // @@protoc_insertion_point(field_mutable:valhalla.DirectionsLeg.Maneuver.Sign.exit_onto_streets)
-  return exit_onto_streets_.Mutable(index);
-}
-inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::DirectionsLeg_Maneuver_SignElement >*
-DirectionsLeg_Maneuver_Sign::mutable_exit_onto_streets() {
-  // @@protoc_insertion_point(field_mutable_list:valhalla.DirectionsLeg.Maneuver.Sign.exit_onto_streets)
-  return &exit_onto_streets_;
-}
-inline const ::valhalla::DirectionsLeg_Maneuver_SignElement& DirectionsLeg_Maneuver_Sign::_internal_exit_onto_streets(int index) const {
-  return exit_onto_streets_.Get(index);
-}
-inline const ::valhalla::DirectionsLeg_Maneuver_SignElement& DirectionsLeg_Maneuver_Sign::exit_onto_streets(int index) const {
-  // @@protoc_insertion_point(field_get:valhalla.DirectionsLeg.Maneuver.Sign.exit_onto_streets)
-  return _internal_exit_onto_streets(index);
-}
-inline ::valhalla::DirectionsLeg_Maneuver_SignElement* DirectionsLeg_Maneuver_Sign::_internal_add_exit_onto_streets() {
-  return exit_onto_streets_.Add();
-}
-inline ::valhalla::DirectionsLeg_Maneuver_SignElement* DirectionsLeg_Maneuver_Sign::add_exit_onto_streets() {
-  ::valhalla::DirectionsLeg_Maneuver_SignElement* _add = _internal_add_exit_onto_streets();
-  // @@protoc_insertion_point(field_add:valhalla.DirectionsLeg.Maneuver.Sign.exit_onto_streets)
-  return _add;
-}
-inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::DirectionsLeg_Maneuver_SignElement >&
-DirectionsLeg_Maneuver_Sign::exit_onto_streets() const {
-  // @@protoc_insertion_point(field_list:valhalla.DirectionsLeg.Maneuver.Sign.exit_onto_streets)
-  return exit_onto_streets_;
-}
-
-// repeated .valhalla.DirectionsLeg.Maneuver.SignElement exit_toward_locations = 3;
-inline int DirectionsLeg_Maneuver_Sign::_internal_exit_toward_locations_size() const {
-  return exit_toward_locations_.size();
-}
-inline int DirectionsLeg_Maneuver_Sign::exit_toward_locations_size() const {
-  return _internal_exit_toward_locations_size();
-}
-inline void DirectionsLeg_Maneuver_Sign::clear_exit_toward_locations() {
-  exit_toward_locations_.Clear();
-}
-inline ::valhalla::DirectionsLeg_Maneuver_SignElement* DirectionsLeg_Maneuver_Sign::mutable_exit_toward_locations(int index) {
-  // @@protoc_insertion_point(field_mutable:valhalla.DirectionsLeg.Maneuver.Sign.exit_toward_locations)
-  return exit_toward_locations_.Mutable(index);
-}
-inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::DirectionsLeg_Maneuver_SignElement >*
-DirectionsLeg_Maneuver_Sign::mutable_exit_toward_locations() {
-  // @@protoc_insertion_point(field_mutable_list:valhalla.DirectionsLeg.Maneuver.Sign.exit_toward_locations)
-  return &exit_toward_locations_;
-}
-inline const ::valhalla::DirectionsLeg_Maneuver_SignElement& DirectionsLeg_Maneuver_Sign::_internal_exit_toward_locations(int index) const {
-  return exit_toward_locations_.Get(index);
-}
-inline const ::valhalla::DirectionsLeg_Maneuver_SignElement& DirectionsLeg_Maneuver_Sign::exit_toward_locations(int index) const {
-  // @@protoc_insertion_point(field_get:valhalla.DirectionsLeg.Maneuver.Sign.exit_toward_locations)
-  return _internal_exit_toward_locations(index);
-}
-inline ::valhalla::DirectionsLeg_Maneuver_SignElement* DirectionsLeg_Maneuver_Sign::_internal_add_exit_toward_locations() {
-  return exit_toward_locations_.Add();
-}
-inline ::valhalla::DirectionsLeg_Maneuver_SignElement* DirectionsLeg_Maneuver_Sign::add_exit_toward_locations() {
-  ::valhalla::DirectionsLeg_Maneuver_SignElement* _add = _internal_add_exit_toward_locations();
-  // @@protoc_insertion_point(field_add:valhalla.DirectionsLeg.Maneuver.Sign.exit_toward_locations)
-  return _add;
-}
-inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::DirectionsLeg_Maneuver_SignElement >&
-DirectionsLeg_Maneuver_Sign::exit_toward_locations() const {
-  // @@protoc_insertion_point(field_list:valhalla.DirectionsLeg.Maneuver.Sign.exit_toward_locations)
-  return exit_toward_locations_;
-}
-
-// repeated .valhalla.DirectionsLeg.Maneuver.SignElement exit_names = 4;
-inline int DirectionsLeg_Maneuver_Sign::_internal_exit_names_size() const {
-  return exit_names_.size();
-}
-inline int DirectionsLeg_Maneuver_Sign::exit_names_size() const {
-  return _internal_exit_names_size();
-}
-inline void DirectionsLeg_Maneuver_Sign::clear_exit_names() {
-  exit_names_.Clear();
-}
-inline ::valhalla::DirectionsLeg_Maneuver_SignElement* DirectionsLeg_Maneuver_Sign::mutable_exit_names(int index) {
-  // @@protoc_insertion_point(field_mutable:valhalla.DirectionsLeg.Maneuver.Sign.exit_names)
-  return exit_names_.Mutable(index);
-}
-inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::DirectionsLeg_Maneuver_SignElement >*
-DirectionsLeg_Maneuver_Sign::mutable_exit_names() {
-  // @@protoc_insertion_point(field_mutable_list:valhalla.DirectionsLeg.Maneuver.Sign.exit_names)
-  return &exit_names_;
-}
-inline const ::valhalla::DirectionsLeg_Maneuver_SignElement& DirectionsLeg_Maneuver_Sign::_internal_exit_names(int index) const {
-  return exit_names_.Get(index);
-}
-inline const ::valhalla::DirectionsLeg_Maneuver_SignElement& DirectionsLeg_Maneuver_Sign::exit_names(int index) const {
-  // @@protoc_insertion_point(field_get:valhalla.DirectionsLeg.Maneuver.Sign.exit_names)
-  return _internal_exit_names(index);
-}
-inline ::valhalla::DirectionsLeg_Maneuver_SignElement* DirectionsLeg_Maneuver_Sign::_internal_add_exit_names() {
-  return exit_names_.Add();
-}
-inline ::valhalla::DirectionsLeg_Maneuver_SignElement* DirectionsLeg_Maneuver_Sign::add_exit_names() {
-  ::valhalla::DirectionsLeg_Maneuver_SignElement* _add = _internal_add_exit_names();
-  // @@protoc_insertion_point(field_add:valhalla.DirectionsLeg.Maneuver.Sign.exit_names)
-  return _add;
-}
-inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::DirectionsLeg_Maneuver_SignElement >&
-DirectionsLeg_Maneuver_Sign::exit_names() const {
-  // @@protoc_insertion_point(field_list:valhalla.DirectionsLeg.Maneuver.Sign.exit_names)
-  return exit_names_;
-}
-
-// repeated .valhalla.DirectionsLeg.Maneuver.SignElement guide_onto_streets = 5;
-inline int DirectionsLeg_Maneuver_Sign::_internal_guide_onto_streets_size() const {
-  return guide_onto_streets_.size();
-}
-inline int DirectionsLeg_Maneuver_Sign::guide_onto_streets_size() const {
-  return _internal_guide_onto_streets_size();
-}
-inline void DirectionsLeg_Maneuver_Sign::clear_guide_onto_streets() {
-  guide_onto_streets_.Clear();
-}
-inline ::valhalla::DirectionsLeg_Maneuver_SignElement* DirectionsLeg_Maneuver_Sign::mutable_guide_onto_streets(int index) {
-  // @@protoc_insertion_point(field_mutable:valhalla.DirectionsLeg.Maneuver.Sign.guide_onto_streets)
-  return guide_onto_streets_.Mutable(index);
-}
-inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::DirectionsLeg_Maneuver_SignElement >*
-DirectionsLeg_Maneuver_Sign::mutable_guide_onto_streets() {
-  // @@protoc_insertion_point(field_mutable_list:valhalla.DirectionsLeg.Maneuver.Sign.guide_onto_streets)
-  return &guide_onto_streets_;
-}
-inline const ::valhalla::DirectionsLeg_Maneuver_SignElement& DirectionsLeg_Maneuver_Sign::_internal_guide_onto_streets(int index) const {
-  return guide_onto_streets_.Get(index);
-}
-inline const ::valhalla::DirectionsLeg_Maneuver_SignElement& DirectionsLeg_Maneuver_Sign::guide_onto_streets(int index) const {
-  // @@protoc_insertion_point(field_get:valhalla.DirectionsLeg.Maneuver.Sign.guide_onto_streets)
-  return _internal_guide_onto_streets(index);
-}
-inline ::valhalla::DirectionsLeg_Maneuver_SignElement* DirectionsLeg_Maneuver_Sign::_internal_add_guide_onto_streets() {
-  return guide_onto_streets_.Add();
-}
-inline ::valhalla::DirectionsLeg_Maneuver_SignElement* DirectionsLeg_Maneuver_Sign::add_guide_onto_streets() {
-  ::valhalla::DirectionsLeg_Maneuver_SignElement* _add = _internal_add_guide_onto_streets();
-  // @@protoc_insertion_point(field_add:valhalla.DirectionsLeg.Maneuver.Sign.guide_onto_streets)
-  return _add;
-}
-inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::DirectionsLeg_Maneuver_SignElement >&
-DirectionsLeg_Maneuver_Sign::guide_onto_streets() const {
-  // @@protoc_insertion_point(field_list:valhalla.DirectionsLeg.Maneuver.Sign.guide_onto_streets)
-  return guide_onto_streets_;
-}
-
-// repeated .valhalla.DirectionsLeg.Maneuver.SignElement guide_toward_locations = 6;
-inline int DirectionsLeg_Maneuver_Sign::_internal_guide_toward_locations_size() const {
-  return guide_toward_locations_.size();
-}
-inline int DirectionsLeg_Maneuver_Sign::guide_toward_locations_size() const {
-  return _internal_guide_toward_locations_size();
-}
-inline void DirectionsLeg_Maneuver_Sign::clear_guide_toward_locations() {
-  guide_toward_locations_.Clear();
-}
-inline ::valhalla::DirectionsLeg_Maneuver_SignElement* DirectionsLeg_Maneuver_Sign::mutable_guide_toward_locations(int index) {
-  // @@protoc_insertion_point(field_mutable:valhalla.DirectionsLeg.Maneuver.Sign.guide_toward_locations)
-  return guide_toward_locations_.Mutable(index);
-}
-inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::DirectionsLeg_Maneuver_SignElement >*
-DirectionsLeg_Maneuver_Sign::mutable_guide_toward_locations() {
-  // @@protoc_insertion_point(field_mutable_list:valhalla.DirectionsLeg.Maneuver.Sign.guide_toward_locations)
-  return &guide_toward_locations_;
-}
-inline const ::valhalla::DirectionsLeg_Maneuver_SignElement& DirectionsLeg_Maneuver_Sign::_internal_guide_toward_locations(int index) const {
-  return guide_toward_locations_.Get(index);
-}
-inline const ::valhalla::DirectionsLeg_Maneuver_SignElement& DirectionsLeg_Maneuver_Sign::guide_toward_locations(int index) const {
-  // @@protoc_insertion_point(field_get:valhalla.DirectionsLeg.Maneuver.Sign.guide_toward_locations)
-  return _internal_guide_toward_locations(index);
-}
-inline ::valhalla::DirectionsLeg_Maneuver_SignElement* DirectionsLeg_Maneuver_Sign::_internal_add_guide_toward_locations() {
-  return guide_toward_locations_.Add();
-}
-inline ::valhalla::DirectionsLeg_Maneuver_SignElement* DirectionsLeg_Maneuver_Sign::add_guide_toward_locations() {
-  ::valhalla::DirectionsLeg_Maneuver_SignElement* _add = _internal_add_guide_toward_locations();
-  // @@protoc_insertion_point(field_add:valhalla.DirectionsLeg.Maneuver.Sign.guide_toward_locations)
-  return _add;
-}
-inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::DirectionsLeg_Maneuver_SignElement >&
-DirectionsLeg_Maneuver_Sign::guide_toward_locations() const {
-  // @@protoc_insertion_point(field_list:valhalla.DirectionsLeg.Maneuver.Sign.guide_toward_locations)
-  return guide_toward_locations_;
-}
-
-// repeated .valhalla.DirectionsLeg.Maneuver.SignElement junction_names = 7;
-inline int DirectionsLeg_Maneuver_Sign::_internal_junction_names_size() const {
-  return junction_names_.size();
-}
-inline int DirectionsLeg_Maneuver_Sign::junction_names_size() const {
-  return _internal_junction_names_size();
-}
-inline void DirectionsLeg_Maneuver_Sign::clear_junction_names() {
-  junction_names_.Clear();
-}
-inline ::valhalla::DirectionsLeg_Maneuver_SignElement* DirectionsLeg_Maneuver_Sign::mutable_junction_names(int index) {
-  // @@protoc_insertion_point(field_mutable:valhalla.DirectionsLeg.Maneuver.Sign.junction_names)
-  return junction_names_.Mutable(index);
-}
-inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::DirectionsLeg_Maneuver_SignElement >*
-DirectionsLeg_Maneuver_Sign::mutable_junction_names() {
-  // @@protoc_insertion_point(field_mutable_list:valhalla.DirectionsLeg.Maneuver.Sign.junction_names)
-  return &junction_names_;
-}
-inline const ::valhalla::DirectionsLeg_Maneuver_SignElement& DirectionsLeg_Maneuver_Sign::_internal_junction_names(int index) const {
-  return junction_names_.Get(index);
-}
-inline const ::valhalla::DirectionsLeg_Maneuver_SignElement& DirectionsLeg_Maneuver_Sign::junction_names(int index) const {
-  // @@protoc_insertion_point(field_get:valhalla.DirectionsLeg.Maneuver.Sign.junction_names)
-  return _internal_junction_names(index);
-}
-inline ::valhalla::DirectionsLeg_Maneuver_SignElement* DirectionsLeg_Maneuver_Sign::_internal_add_junction_names() {
-  return junction_names_.Add();
-}
-inline ::valhalla::DirectionsLeg_Maneuver_SignElement* DirectionsLeg_Maneuver_Sign::add_junction_names() {
-  ::valhalla::DirectionsLeg_Maneuver_SignElement* _add = _internal_add_junction_names();
-  // @@protoc_insertion_point(field_add:valhalla.DirectionsLeg.Maneuver.Sign.junction_names)
-  return _add;
-}
-inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::DirectionsLeg_Maneuver_SignElement >&
-DirectionsLeg_Maneuver_Sign::junction_names() const {
-  // @@protoc_insertion_point(field_list:valhalla.DirectionsLeg.Maneuver.Sign.junction_names)
-  return junction_names_;
-}
-
-// -------------------------------------------------------------------
-
 // DirectionsLeg_Maneuver
 
 // optional .valhalla.DirectionsLeg.Maneuver.Type type = 1;
 inline bool DirectionsLeg_Maneuver::_internal_has_type() const {
-  bool value = (_has_bits_[0] & 0x00000400u) != 0;
+  bool value = (_has_bits_[0] & 0x00000800u) != 0;
   return value;
 }
 inline bool DirectionsLeg_Maneuver::has_type() const {
@@ -4668,7 +3822,7 @@ inline bool DirectionsLeg_Maneuver::has_type() const {
 }
 inline void DirectionsLeg_Maneuver::clear_type() {
   type_ = 0;
-  _has_bits_[0] &= ~0x00000400u;
+  _has_bits_[0] &= ~0x00000800u;
 }
 inline ::valhalla::DirectionsLeg_Maneuver_Type DirectionsLeg_Maneuver::_internal_type() const {
   return static_cast< ::valhalla::DirectionsLeg_Maneuver_Type >(type_);
@@ -4679,7 +3833,7 @@ inline ::valhalla::DirectionsLeg_Maneuver_Type DirectionsLeg_Maneuver::type() co
 }
 inline void DirectionsLeg_Maneuver::_internal_set_type(::valhalla::DirectionsLeg_Maneuver_Type value) {
   assert(::valhalla::DirectionsLeg_Maneuver_Type_IsValid(value));
-  _has_bits_[0] |= 0x00000400u;
+  _has_bits_[0] |= 0x00000800u;
   type_ = value;
 }
 inline void DirectionsLeg_Maneuver::set_type(::valhalla::DirectionsLeg_Maneuver_Type value) {
@@ -4795,7 +3949,7 @@ DirectionsLeg_Maneuver::street_name() const {
 
 // optional float length = 4;
 inline bool DirectionsLeg_Maneuver::_internal_has_length() const {
-  bool value = (_has_bits_[0] & 0x00000800u) != 0;
+  bool value = (_has_bits_[0] & 0x00001000u) != 0;
   return value;
 }
 inline bool DirectionsLeg_Maneuver::has_length() const {
@@ -4803,7 +3957,7 @@ inline bool DirectionsLeg_Maneuver::has_length() const {
 }
 inline void DirectionsLeg_Maneuver::clear_length() {
   length_ = 0;
-  _has_bits_[0] &= ~0x00000800u;
+  _has_bits_[0] &= ~0x00001000u;
 }
 inline float DirectionsLeg_Maneuver::_internal_length() const {
   return length_;
@@ -4813,7 +3967,7 @@ inline float DirectionsLeg_Maneuver::length() const {
   return _internal_length();
 }
 inline void DirectionsLeg_Maneuver::_internal_set_length(float value) {
-  _has_bits_[0] |= 0x00000800u;
+  _has_bits_[0] |= 0x00001000u;
   length_ = value;
 }
 inline void DirectionsLeg_Maneuver::set_length(float value) {
@@ -4823,7 +3977,7 @@ inline void DirectionsLeg_Maneuver::set_length(float value) {
 
 // optional double time = 5;
 inline bool DirectionsLeg_Maneuver::_internal_has_time() const {
-  bool value = (_has_bits_[0] & 0x00001000u) != 0;
+  bool value = (_has_bits_[0] & 0x00002000u) != 0;
   return value;
 }
 inline bool DirectionsLeg_Maneuver::has_time() const {
@@ -4831,7 +3985,7 @@ inline bool DirectionsLeg_Maneuver::has_time() const {
 }
 inline void DirectionsLeg_Maneuver::clear_time() {
   time_ = 0;
-  _has_bits_[0] &= ~0x00001000u;
+  _has_bits_[0] &= ~0x00002000u;
 }
 inline double DirectionsLeg_Maneuver::_internal_time() const {
   return time_;
@@ -4841,7 +3995,7 @@ inline double DirectionsLeg_Maneuver::time() const {
   return _internal_time();
 }
 inline void DirectionsLeg_Maneuver::_internal_set_time(double value) {
-  _has_bits_[0] |= 0x00001000u;
+  _has_bits_[0] |= 0x00002000u;
   time_ = value;
 }
 inline void DirectionsLeg_Maneuver::set_time(double value) {
@@ -4851,7 +4005,7 @@ inline void DirectionsLeg_Maneuver::set_time(double value) {
 
 // optional .valhalla.DirectionsLeg.Maneuver.CardinalDirection begin_cardinal_direction = 6;
 inline bool DirectionsLeg_Maneuver::_internal_has_begin_cardinal_direction() const {
-  bool value = (_has_bits_[0] & 0x00002000u) != 0;
+  bool value = (_has_bits_[0] & 0x00004000u) != 0;
   return value;
 }
 inline bool DirectionsLeg_Maneuver::has_begin_cardinal_direction() const {
@@ -4859,7 +4013,7 @@ inline bool DirectionsLeg_Maneuver::has_begin_cardinal_direction() const {
 }
 inline void DirectionsLeg_Maneuver::clear_begin_cardinal_direction() {
   begin_cardinal_direction_ = 0;
-  _has_bits_[0] &= ~0x00002000u;
+  _has_bits_[0] &= ~0x00004000u;
 }
 inline ::valhalla::DirectionsLeg_Maneuver_CardinalDirection DirectionsLeg_Maneuver::_internal_begin_cardinal_direction() const {
   return static_cast< ::valhalla::DirectionsLeg_Maneuver_CardinalDirection >(begin_cardinal_direction_);
@@ -4870,7 +4024,7 @@ inline ::valhalla::DirectionsLeg_Maneuver_CardinalDirection DirectionsLeg_Maneuv
 }
 inline void DirectionsLeg_Maneuver::_internal_set_begin_cardinal_direction(::valhalla::DirectionsLeg_Maneuver_CardinalDirection value) {
   assert(::valhalla::DirectionsLeg_Maneuver_CardinalDirection_IsValid(value));
-  _has_bits_[0] |= 0x00002000u;
+  _has_bits_[0] |= 0x00004000u;
   begin_cardinal_direction_ = value;
 }
 inline void DirectionsLeg_Maneuver::set_begin_cardinal_direction(::valhalla::DirectionsLeg_Maneuver_CardinalDirection value) {
@@ -4880,7 +4034,7 @@ inline void DirectionsLeg_Maneuver::set_begin_cardinal_direction(::valhalla::Dir
 
 // optional uint32 begin_heading = 7;
 inline bool DirectionsLeg_Maneuver::_internal_has_begin_heading() const {
-  bool value = (_has_bits_[0] & 0x00004000u) != 0;
+  bool value = (_has_bits_[0] & 0x00008000u) != 0;
   return value;
 }
 inline bool DirectionsLeg_Maneuver::has_begin_heading() const {
@@ -4888,7 +4042,7 @@ inline bool DirectionsLeg_Maneuver::has_begin_heading() const {
 }
 inline void DirectionsLeg_Maneuver::clear_begin_heading() {
   begin_heading_ = 0u;
-  _has_bits_[0] &= ~0x00004000u;
+  _has_bits_[0] &= ~0x00008000u;
 }
 inline uint32_t DirectionsLeg_Maneuver::_internal_begin_heading() const {
   return begin_heading_;
@@ -4898,7 +4052,7 @@ inline uint32_t DirectionsLeg_Maneuver::begin_heading() const {
   return _internal_begin_heading();
 }
 inline void DirectionsLeg_Maneuver::_internal_set_begin_heading(uint32_t value) {
-  _has_bits_[0] |= 0x00004000u;
+  _has_bits_[0] |= 0x00008000u;
   begin_heading_ = value;
 }
 inline void DirectionsLeg_Maneuver::set_begin_heading(uint32_t value) {
@@ -4908,7 +4062,7 @@ inline void DirectionsLeg_Maneuver::set_begin_heading(uint32_t value) {
 
 // optional uint32 begin_shape_index = 8;
 inline bool DirectionsLeg_Maneuver::_internal_has_begin_shape_index() const {
-  bool value = (_has_bits_[0] & 0x00008000u) != 0;
+  bool value = (_has_bits_[0] & 0x00010000u) != 0;
   return value;
 }
 inline bool DirectionsLeg_Maneuver::has_begin_shape_index() const {
@@ -4916,7 +4070,7 @@ inline bool DirectionsLeg_Maneuver::has_begin_shape_index() const {
 }
 inline void DirectionsLeg_Maneuver::clear_begin_shape_index() {
   begin_shape_index_ = 0u;
-  _has_bits_[0] &= ~0x00008000u;
+  _has_bits_[0] &= ~0x00010000u;
 }
 inline uint32_t DirectionsLeg_Maneuver::_internal_begin_shape_index() const {
   return begin_shape_index_;
@@ -4926,7 +4080,7 @@ inline uint32_t DirectionsLeg_Maneuver::begin_shape_index() const {
   return _internal_begin_shape_index();
 }
 inline void DirectionsLeg_Maneuver::_internal_set_begin_shape_index(uint32_t value) {
-  _has_bits_[0] |= 0x00008000u;
+  _has_bits_[0] |= 0x00010000u;
   begin_shape_index_ = value;
 }
 inline void DirectionsLeg_Maneuver::set_begin_shape_index(uint32_t value) {
@@ -4936,7 +4090,7 @@ inline void DirectionsLeg_Maneuver::set_begin_shape_index(uint32_t value) {
 
 // optional uint32 end_shape_index = 9;
 inline bool DirectionsLeg_Maneuver::_internal_has_end_shape_index() const {
-  bool value = (_has_bits_[0] & 0x00010000u) != 0;
+  bool value = (_has_bits_[0] & 0x00020000u) != 0;
   return value;
 }
 inline bool DirectionsLeg_Maneuver::has_end_shape_index() const {
@@ -4944,7 +4098,7 @@ inline bool DirectionsLeg_Maneuver::has_end_shape_index() const {
 }
 inline void DirectionsLeg_Maneuver::clear_end_shape_index() {
   end_shape_index_ = 0u;
-  _has_bits_[0] &= ~0x00010000u;
+  _has_bits_[0] &= ~0x00020000u;
 }
 inline uint32_t DirectionsLeg_Maneuver::_internal_end_shape_index() const {
   return end_shape_index_;
@@ -4954,7 +4108,7 @@ inline uint32_t DirectionsLeg_Maneuver::end_shape_index() const {
   return _internal_end_shape_index();
 }
 inline void DirectionsLeg_Maneuver::_internal_set_end_shape_index(uint32_t value) {
-  _has_bits_[0] |= 0x00010000u;
+  _has_bits_[0] |= 0x00020000u;
   end_shape_index_ = value;
 }
 inline void DirectionsLeg_Maneuver::set_end_shape_index(uint32_t value) {
@@ -4964,7 +4118,7 @@ inline void DirectionsLeg_Maneuver::set_end_shape_index(uint32_t value) {
 
 // optional bool portions_toll = 10;
 inline bool DirectionsLeg_Maneuver::_internal_has_portions_toll() const {
-  bool value = (_has_bits_[0] & 0x00040000u) != 0;
+  bool value = (_has_bits_[0] & 0x00080000u) != 0;
   return value;
 }
 inline bool DirectionsLeg_Maneuver::has_portions_toll() const {
@@ -4972,7 +4126,7 @@ inline bool DirectionsLeg_Maneuver::has_portions_toll() const {
 }
 inline void DirectionsLeg_Maneuver::clear_portions_toll() {
   portions_toll_ = false;
-  _has_bits_[0] &= ~0x00040000u;
+  _has_bits_[0] &= ~0x00080000u;
 }
 inline bool DirectionsLeg_Maneuver::_internal_portions_toll() const {
   return portions_toll_;
@@ -4982,7 +4136,7 @@ inline bool DirectionsLeg_Maneuver::portions_toll() const {
   return _internal_portions_toll();
 }
 inline void DirectionsLeg_Maneuver::_internal_set_portions_toll(bool value) {
-  _has_bits_[0] |= 0x00040000u;
+  _has_bits_[0] |= 0x00080000u;
   portions_toll_ = value;
 }
 inline void DirectionsLeg_Maneuver::set_portions_toll(bool value) {
@@ -4992,7 +4146,7 @@ inline void DirectionsLeg_Maneuver::set_portions_toll(bool value) {
 
 // optional bool portions_unpaved = 11;
 inline bool DirectionsLeg_Maneuver::_internal_has_portions_unpaved() const {
-  bool value = (_has_bits_[0] & 0x00080000u) != 0;
+  bool value = (_has_bits_[0] & 0x00100000u) != 0;
   return value;
 }
 inline bool DirectionsLeg_Maneuver::has_portions_unpaved() const {
@@ -5000,7 +4154,7 @@ inline bool DirectionsLeg_Maneuver::has_portions_unpaved() const {
 }
 inline void DirectionsLeg_Maneuver::clear_portions_unpaved() {
   portions_unpaved_ = false;
-  _has_bits_[0] &= ~0x00080000u;
+  _has_bits_[0] &= ~0x00100000u;
 }
 inline bool DirectionsLeg_Maneuver::_internal_portions_unpaved() const {
   return portions_unpaved_;
@@ -5010,7 +4164,7 @@ inline bool DirectionsLeg_Maneuver::portions_unpaved() const {
   return _internal_portions_unpaved();
 }
 inline void DirectionsLeg_Maneuver::_internal_set_portions_unpaved(bool value) {
-  _has_bits_[0] |= 0x00080000u;
+  _has_bits_[0] |= 0x00100000u;
   portions_unpaved_ = value;
 }
 inline void DirectionsLeg_Maneuver::set_portions_unpaved(bool value) {
@@ -5262,44 +4416,40 @@ DirectionsLeg_Maneuver::begin_street_name() const {
   return begin_street_name_;
 }
 
-// optional .valhalla.DirectionsLeg.Maneuver.Sign sign = 16;
+// optional .valhalla.TripSign sign = 16;
 inline bool DirectionsLeg_Maneuver::_internal_has_sign() const {
-  bool value = (_has_bits_[0] & 0x00000100u) != 0;
+  bool value = (_has_bits_[0] & 0x00000200u) != 0;
   PROTOBUF_ASSUME(!value || sign_ != nullptr);
   return value;
 }
 inline bool DirectionsLeg_Maneuver::has_sign() const {
   return _internal_has_sign();
 }
-inline void DirectionsLeg_Maneuver::clear_sign() {
-  if (sign_ != nullptr) sign_->Clear();
-  _has_bits_[0] &= ~0x00000100u;
+inline const ::valhalla::TripSign& DirectionsLeg_Maneuver::_internal_sign() const {
+  const ::valhalla::TripSign* p = sign_;
+  return p != nullptr ? *p : reinterpret_cast<const ::valhalla::TripSign&>(
+      ::valhalla::_TripSign_default_instance_);
 }
-inline const ::valhalla::DirectionsLeg_Maneuver_Sign& DirectionsLeg_Maneuver::_internal_sign() const {
-  const ::valhalla::DirectionsLeg_Maneuver_Sign* p = sign_;
-  return p != nullptr ? *p : reinterpret_cast<const ::valhalla::DirectionsLeg_Maneuver_Sign&>(
-      ::valhalla::_DirectionsLeg_Maneuver_Sign_default_instance_);
-}
-inline const ::valhalla::DirectionsLeg_Maneuver_Sign& DirectionsLeg_Maneuver::sign() const {
+inline const ::valhalla::TripSign& DirectionsLeg_Maneuver::sign() const {
   // @@protoc_insertion_point(field_get:valhalla.DirectionsLeg.Maneuver.sign)
   return _internal_sign();
 }
 inline void DirectionsLeg_Maneuver::unsafe_arena_set_allocated_sign(
-    ::valhalla::DirectionsLeg_Maneuver_Sign* sign) {
+    ::valhalla::TripSign* sign) {
   if (GetArenaForAllocation() == nullptr) {
     delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(sign_);
   }
   sign_ = sign;
   if (sign) {
-    _has_bits_[0] |= 0x00000100u;
+    _has_bits_[0] |= 0x00000200u;
   } else {
-    _has_bits_[0] &= ~0x00000100u;
+    _has_bits_[0] &= ~0x00000200u;
   }
   // @@protoc_insertion_point(field_unsafe_arena_set_allocated:valhalla.DirectionsLeg.Maneuver.sign)
 }
-inline ::valhalla::DirectionsLeg_Maneuver_Sign* DirectionsLeg_Maneuver::release_sign() {
-  _has_bits_[0] &= ~0x00000100u;
-  ::valhalla::DirectionsLeg_Maneuver_Sign* temp = sign_;
+inline ::valhalla::TripSign* DirectionsLeg_Maneuver::release_sign() {
+  _has_bits_[0] &= ~0x00000200u;
+  ::valhalla::TripSign* temp = sign_;
   sign_ = nullptr;
 #ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
   auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
@@ -5312,41 +4462,43 @@ inline ::valhalla::DirectionsLeg_Maneuver_Sign* DirectionsLeg_Maneuver::release_
 #endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
   return temp;
 }
-inline ::valhalla::DirectionsLeg_Maneuver_Sign* DirectionsLeg_Maneuver::unsafe_arena_release_sign() {
+inline ::valhalla::TripSign* DirectionsLeg_Maneuver::unsafe_arena_release_sign() {
   // @@protoc_insertion_point(field_release:valhalla.DirectionsLeg.Maneuver.sign)
-  _has_bits_[0] &= ~0x00000100u;
-  ::valhalla::DirectionsLeg_Maneuver_Sign* temp = sign_;
+  _has_bits_[0] &= ~0x00000200u;
+  ::valhalla::TripSign* temp = sign_;
   sign_ = nullptr;
   return temp;
 }
-inline ::valhalla::DirectionsLeg_Maneuver_Sign* DirectionsLeg_Maneuver::_internal_mutable_sign() {
-  _has_bits_[0] |= 0x00000100u;
+inline ::valhalla::TripSign* DirectionsLeg_Maneuver::_internal_mutable_sign() {
+  _has_bits_[0] |= 0x00000200u;
   if (sign_ == nullptr) {
-    auto* p = CreateMaybeMessage<::valhalla::DirectionsLeg_Maneuver_Sign>(GetArenaForAllocation());
+    auto* p = CreateMaybeMessage<::valhalla::TripSign>(GetArenaForAllocation());
     sign_ = p;
   }
   return sign_;
 }
-inline ::valhalla::DirectionsLeg_Maneuver_Sign* DirectionsLeg_Maneuver::mutable_sign() {
-  ::valhalla::DirectionsLeg_Maneuver_Sign* _msg = _internal_mutable_sign();
+inline ::valhalla::TripSign* DirectionsLeg_Maneuver::mutable_sign() {
+  ::valhalla::TripSign* _msg = _internal_mutable_sign();
   // @@protoc_insertion_point(field_mutable:valhalla.DirectionsLeg.Maneuver.sign)
   return _msg;
 }
-inline void DirectionsLeg_Maneuver::set_allocated_sign(::valhalla::DirectionsLeg_Maneuver_Sign* sign) {
+inline void DirectionsLeg_Maneuver::set_allocated_sign(::valhalla::TripSign* sign) {
   ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
   if (message_arena == nullptr) {
-    delete sign_;
+    delete reinterpret_cast< ::PROTOBUF_NAMESPACE_ID::MessageLite*>(sign_);
   }
   if (sign) {
     ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
-        ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper<::valhalla::DirectionsLeg_Maneuver_Sign>::GetOwningArena(sign);
+        ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper<
+            ::PROTOBUF_NAMESPACE_ID::MessageLite>::GetOwningArena(
+                reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(sign));
     if (message_arena != submessage_arena) {
       sign = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
           message_arena, sign, submessage_arena);
     }
-    _has_bits_[0] |= 0x00000100u;
+    _has_bits_[0] |= 0x00000200u;
   } else {
-    _has_bits_[0] &= ~0x00000100u;
+    _has_bits_[0] &= ~0x00000200u;
   }
   sign_ = sign;
   // @@protoc_insertion_point(field_set_allocated:valhalla.DirectionsLeg.Maneuver.sign)
@@ -5354,7 +4506,7 @@ inline void DirectionsLeg_Maneuver::set_allocated_sign(::valhalla::DirectionsLeg
 
 // optional uint32 roundabout_exit_count = 17;
 inline bool DirectionsLeg_Maneuver::_internal_has_roundabout_exit_count() const {
-  bool value = (_has_bits_[0] & 0x00020000u) != 0;
+  bool value = (_has_bits_[0] & 0x00040000u) != 0;
   return value;
 }
 inline bool DirectionsLeg_Maneuver::has_roundabout_exit_count() const {
@@ -5362,7 +4514,7 @@ inline bool DirectionsLeg_Maneuver::has_roundabout_exit_count() const {
 }
 inline void DirectionsLeg_Maneuver::clear_roundabout_exit_count() {
   roundabout_exit_count_ = 0u;
-  _has_bits_[0] &= ~0x00020000u;
+  _has_bits_[0] &= ~0x00040000u;
 }
 inline uint32_t DirectionsLeg_Maneuver::_internal_roundabout_exit_count() const {
   return roundabout_exit_count_;
@@ -5372,7 +4524,7 @@ inline uint32_t DirectionsLeg_Maneuver::roundabout_exit_count() const {
   return _internal_roundabout_exit_count();
 }
 inline void DirectionsLeg_Maneuver::_internal_set_roundabout_exit_count(uint32_t value) {
-  _has_bits_[0] |= 0x00020000u;
+  _has_bits_[0] |= 0x00040000u;
   roundabout_exit_count_ = value;
 }
 inline void DirectionsLeg_Maneuver::set_roundabout_exit_count(uint32_t value) {
@@ -5658,7 +4810,7 @@ inline void DirectionsLeg_Maneuver::set_allocated_verbal_arrive_instruction(std:
 
 // optional .valhalla.DirectionsLeg.TransitInfo transit_info = 22;
 inline bool DirectionsLeg_Maneuver::_internal_has_transit_info() const {
-  bool value = (_has_bits_[0] & 0x00000200u) != 0;
+  bool value = (_has_bits_[0] & 0x00000400u) != 0;
   PROTOBUF_ASSUME(!value || transit_info_ != nullptr);
   return value;
 }
@@ -5667,7 +4819,7 @@ inline bool DirectionsLeg_Maneuver::has_transit_info() const {
 }
 inline void DirectionsLeg_Maneuver::clear_transit_info() {
   if (transit_info_ != nullptr) transit_info_->Clear();
-  _has_bits_[0] &= ~0x00000200u;
+  _has_bits_[0] &= ~0x00000400u;
 }
 inline const ::valhalla::DirectionsLeg_TransitInfo& DirectionsLeg_Maneuver::_internal_transit_info() const {
   const ::valhalla::DirectionsLeg_TransitInfo* p = transit_info_;
@@ -5685,14 +4837,14 @@ inline void DirectionsLeg_Maneuver::unsafe_arena_set_allocated_transit_info(
   }
   transit_info_ = transit_info;
   if (transit_info) {
-    _has_bits_[0] |= 0x00000200u;
+    _has_bits_[0] |= 0x00000400u;
   } else {
-    _has_bits_[0] &= ~0x00000200u;
+    _has_bits_[0] &= ~0x00000400u;
   }
   // @@protoc_insertion_point(field_unsafe_arena_set_allocated:valhalla.DirectionsLeg.Maneuver.transit_info)
 }
 inline ::valhalla::DirectionsLeg_TransitInfo* DirectionsLeg_Maneuver::release_transit_info() {
-  _has_bits_[0] &= ~0x00000200u;
+  _has_bits_[0] &= ~0x00000400u;
   ::valhalla::DirectionsLeg_TransitInfo* temp = transit_info_;
   transit_info_ = nullptr;
 #ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
@@ -5708,13 +4860,13 @@ inline ::valhalla::DirectionsLeg_TransitInfo* DirectionsLeg_Maneuver::release_tr
 }
 inline ::valhalla::DirectionsLeg_TransitInfo* DirectionsLeg_Maneuver::unsafe_arena_release_transit_info() {
   // @@protoc_insertion_point(field_release:valhalla.DirectionsLeg.Maneuver.transit_info)
-  _has_bits_[0] &= ~0x00000200u;
+  _has_bits_[0] &= ~0x00000400u;
   ::valhalla::DirectionsLeg_TransitInfo* temp = transit_info_;
   transit_info_ = nullptr;
   return temp;
 }
 inline ::valhalla::DirectionsLeg_TransitInfo* DirectionsLeg_Maneuver::_internal_mutable_transit_info() {
-  _has_bits_[0] |= 0x00000200u;
+  _has_bits_[0] |= 0x00000400u;
   if (transit_info_ == nullptr) {
     auto* p = CreateMaybeMessage<::valhalla::DirectionsLeg_TransitInfo>(GetArenaForAllocation());
     transit_info_ = p;
@@ -5738,9 +4890,9 @@ inline void DirectionsLeg_Maneuver::set_allocated_transit_info(::valhalla::Direc
       transit_info = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
           message_arena, transit_info, submessage_arena);
     }
-    _has_bits_[0] |= 0x00000200u;
+    _has_bits_[0] |= 0x00000400u;
   } else {
-    _has_bits_[0] &= ~0x00000200u;
+    _has_bits_[0] &= ~0x00000400u;
   }
   transit_info_ = transit_info;
   // @@protoc_insertion_point(field_set_allocated:valhalla.DirectionsLeg.Maneuver.transit_info)
@@ -5748,7 +4900,7 @@ inline void DirectionsLeg_Maneuver::set_allocated_transit_info(::valhalla::Direc
 
 // optional bool verbal_multi_cue = 23;
 inline bool DirectionsLeg_Maneuver::_internal_has_verbal_multi_cue() const {
-  bool value = (_has_bits_[0] & 0x00100000u) != 0;
+  bool value = (_has_bits_[0] & 0x00200000u) != 0;
   return value;
 }
 inline bool DirectionsLeg_Maneuver::has_verbal_multi_cue() const {
@@ -5756,7 +4908,7 @@ inline bool DirectionsLeg_Maneuver::has_verbal_multi_cue() const {
 }
 inline void DirectionsLeg_Maneuver::clear_verbal_multi_cue() {
   verbal_multi_cue_ = false;
-  _has_bits_[0] &= ~0x00100000u;
+  _has_bits_[0] &= ~0x00200000u;
 }
 inline bool DirectionsLeg_Maneuver::_internal_verbal_multi_cue() const {
   return verbal_multi_cue_;
@@ -5766,7 +4918,7 @@ inline bool DirectionsLeg_Maneuver::verbal_multi_cue() const {
   return _internal_verbal_multi_cue();
 }
 inline void DirectionsLeg_Maneuver::_internal_set_verbal_multi_cue(bool value) {
-  _has_bits_[0] |= 0x00100000u;
+  _has_bits_[0] |= 0x00200000u;
   verbal_multi_cue_ = value;
 }
 inline void DirectionsLeg_Maneuver::set_verbal_multi_cue(bool value) {
@@ -5776,7 +4928,7 @@ inline void DirectionsLeg_Maneuver::set_verbal_multi_cue(bool value) {
 
 // optional .valhalla.DirectionsLeg.TravelMode travel_mode = 24;
 inline bool DirectionsLeg_Maneuver::_internal_has_travel_mode() const {
-  bool value = (_has_bits_[0] & 0x00400000u) != 0;
+  bool value = (_has_bits_[0] & 0x00800000u) != 0;
   return value;
 }
 inline bool DirectionsLeg_Maneuver::has_travel_mode() const {
@@ -5784,7 +4936,7 @@ inline bool DirectionsLeg_Maneuver::has_travel_mode() const {
 }
 inline void DirectionsLeg_Maneuver::clear_travel_mode() {
   travel_mode_ = 0;
-  _has_bits_[0] &= ~0x00400000u;
+  _has_bits_[0] &= ~0x00800000u;
 }
 inline ::valhalla::DirectionsLeg_TravelMode DirectionsLeg_Maneuver::_internal_travel_mode() const {
   return static_cast< ::valhalla::DirectionsLeg_TravelMode >(travel_mode_);
@@ -5795,7 +4947,7 @@ inline ::valhalla::DirectionsLeg_TravelMode DirectionsLeg_Maneuver::travel_mode(
 }
 inline void DirectionsLeg_Maneuver::_internal_set_travel_mode(::valhalla::DirectionsLeg_TravelMode value) {
   assert(::valhalla::DirectionsLeg_TravelMode_IsValid(value));
-  _has_bits_[0] |= 0x00400000u;
+  _has_bits_[0] |= 0x00800000u;
   travel_mode_ = value;
 }
 inline void DirectionsLeg_Maneuver::set_travel_mode(::valhalla::DirectionsLeg_TravelMode value) {
@@ -5805,7 +4957,7 @@ inline void DirectionsLeg_Maneuver::set_travel_mode(::valhalla::DirectionsLeg_Tr
 
 // optional .valhalla.DirectionsLeg.VehicleType vehicle_type = 25;
 inline bool DirectionsLeg_Maneuver::_internal_has_vehicle_type() const {
-  bool value = (_has_bits_[0] & 0x00800000u) != 0;
+  bool value = (_has_bits_[0] & 0x01000000u) != 0;
   return value;
 }
 inline bool DirectionsLeg_Maneuver::has_vehicle_type() const {
@@ -5813,7 +4965,7 @@ inline bool DirectionsLeg_Maneuver::has_vehicle_type() const {
 }
 inline void DirectionsLeg_Maneuver::clear_vehicle_type() {
   vehicle_type_ = 0;
-  _has_bits_[0] &= ~0x00800000u;
+  _has_bits_[0] &= ~0x01000000u;
 }
 inline ::valhalla::DirectionsLeg_VehicleType DirectionsLeg_Maneuver::_internal_vehicle_type() const {
   return static_cast< ::valhalla::DirectionsLeg_VehicleType >(vehicle_type_);
@@ -5824,7 +4976,7 @@ inline ::valhalla::DirectionsLeg_VehicleType DirectionsLeg_Maneuver::vehicle_typ
 }
 inline void DirectionsLeg_Maneuver::_internal_set_vehicle_type(::valhalla::DirectionsLeg_VehicleType value) {
   assert(::valhalla::DirectionsLeg_VehicleType_IsValid(value));
-  _has_bits_[0] |= 0x00800000u;
+  _has_bits_[0] |= 0x01000000u;
   vehicle_type_ = value;
 }
 inline void DirectionsLeg_Maneuver::set_vehicle_type(::valhalla::DirectionsLeg_VehicleType value) {
@@ -5834,7 +4986,7 @@ inline void DirectionsLeg_Maneuver::set_vehicle_type(::valhalla::DirectionsLeg_V
 
 // optional .valhalla.DirectionsLeg.PedestrianType pedestrian_type = 26;
 inline bool DirectionsLeg_Maneuver::_internal_has_pedestrian_type() const {
-  bool value = (_has_bits_[0] & 0x01000000u) != 0;
+  bool value = (_has_bits_[0] & 0x02000000u) != 0;
   return value;
 }
 inline bool DirectionsLeg_Maneuver::has_pedestrian_type() const {
@@ -5842,7 +4994,7 @@ inline bool DirectionsLeg_Maneuver::has_pedestrian_type() const {
 }
 inline void DirectionsLeg_Maneuver::clear_pedestrian_type() {
   pedestrian_type_ = 0;
-  _has_bits_[0] &= ~0x01000000u;
+  _has_bits_[0] &= ~0x02000000u;
 }
 inline ::valhalla::DirectionsLeg_PedestrianType DirectionsLeg_Maneuver::_internal_pedestrian_type() const {
   return static_cast< ::valhalla::DirectionsLeg_PedestrianType >(pedestrian_type_);
@@ -5853,7 +5005,7 @@ inline ::valhalla::DirectionsLeg_PedestrianType DirectionsLeg_Maneuver::pedestri
 }
 inline void DirectionsLeg_Maneuver::_internal_set_pedestrian_type(::valhalla::DirectionsLeg_PedestrianType value) {
   assert(::valhalla::DirectionsLeg_PedestrianType_IsValid(value));
-  _has_bits_[0] |= 0x01000000u;
+  _has_bits_[0] |= 0x02000000u;
   pedestrian_type_ = value;
 }
 inline void DirectionsLeg_Maneuver::set_pedestrian_type(::valhalla::DirectionsLeg_PedestrianType value) {
@@ -5863,7 +5015,7 @@ inline void DirectionsLeg_Maneuver::set_pedestrian_type(::valhalla::DirectionsLe
 
 // optional .valhalla.DirectionsLeg.BicycleType bicycle_type = 27;
 inline bool DirectionsLeg_Maneuver::_internal_has_bicycle_type() const {
-  bool value = (_has_bits_[0] & 0x02000000u) != 0;
+  bool value = (_has_bits_[0] & 0x04000000u) != 0;
   return value;
 }
 inline bool DirectionsLeg_Maneuver::has_bicycle_type() const {
@@ -5871,7 +5023,7 @@ inline bool DirectionsLeg_Maneuver::has_bicycle_type() const {
 }
 inline void DirectionsLeg_Maneuver::clear_bicycle_type() {
   bicycle_type_ = 0;
-  _has_bits_[0] &= ~0x02000000u;
+  _has_bits_[0] &= ~0x04000000u;
 }
 inline ::valhalla::DirectionsLeg_BicycleType DirectionsLeg_Maneuver::_internal_bicycle_type() const {
   return static_cast< ::valhalla::DirectionsLeg_BicycleType >(bicycle_type_);
@@ -5882,7 +5034,7 @@ inline ::valhalla::DirectionsLeg_BicycleType DirectionsLeg_Maneuver::bicycle_typ
 }
 inline void DirectionsLeg_Maneuver::_internal_set_bicycle_type(::valhalla::DirectionsLeg_BicycleType value) {
   assert(::valhalla::DirectionsLeg_BicycleType_IsValid(value));
-  _has_bits_[0] |= 0x02000000u;
+  _has_bits_[0] |= 0x04000000u;
   bicycle_type_ = value;
 }
 inline void DirectionsLeg_Maneuver::set_bicycle_type(::valhalla::DirectionsLeg_BicycleType value) {
@@ -5892,7 +5044,7 @@ inline void DirectionsLeg_Maneuver::set_bicycle_type(::valhalla::DirectionsLeg_B
 
 // optional .valhalla.DirectionsLeg.TransitType transit_type = 28;
 inline bool DirectionsLeg_Maneuver::_internal_has_transit_type() const {
-  bool value = (_has_bits_[0] & 0x04000000u) != 0;
+  bool value = (_has_bits_[0] & 0x08000000u) != 0;
   return value;
 }
 inline bool DirectionsLeg_Maneuver::has_transit_type() const {
@@ -5900,7 +5052,7 @@ inline bool DirectionsLeg_Maneuver::has_transit_type() const {
 }
 inline void DirectionsLeg_Maneuver::clear_transit_type() {
   transit_type_ = 0;
-  _has_bits_[0] &= ~0x04000000u;
+  _has_bits_[0] &= ~0x08000000u;
 }
 inline ::valhalla::DirectionsLeg_TransitType DirectionsLeg_Maneuver::_internal_transit_type() const {
   return static_cast< ::valhalla::DirectionsLeg_TransitType >(transit_type_);
@@ -5911,7 +5063,7 @@ inline ::valhalla::DirectionsLeg_TransitType DirectionsLeg_Maneuver::transit_typ
 }
 inline void DirectionsLeg_Maneuver::_internal_set_transit_type(::valhalla::DirectionsLeg_TransitType value) {
   assert(::valhalla::DirectionsLeg_TransitType_IsValid(value));
-  _has_bits_[0] |= 0x04000000u;
+  _has_bits_[0] |= 0x08000000u;
   transit_type_ = value;
 }
 inline void DirectionsLeg_Maneuver::set_transit_type(::valhalla::DirectionsLeg_TransitType value) {
@@ -5921,7 +5073,7 @@ inline void DirectionsLeg_Maneuver::set_transit_type(::valhalla::DirectionsLeg_T
 
 // optional uint32 begin_path_index = 29;
 inline bool DirectionsLeg_Maneuver::_internal_has_begin_path_index() const {
-  bool value = (_has_bits_[0] & 0x08000000u) != 0;
+  bool value = (_has_bits_[0] & 0x10000000u) != 0;
   return value;
 }
 inline bool DirectionsLeg_Maneuver::has_begin_path_index() const {
@@ -5929,7 +5081,7 @@ inline bool DirectionsLeg_Maneuver::has_begin_path_index() const {
 }
 inline void DirectionsLeg_Maneuver::clear_begin_path_index() {
   begin_path_index_ = 0u;
-  _has_bits_[0] &= ~0x08000000u;
+  _has_bits_[0] &= ~0x10000000u;
 }
 inline uint32_t DirectionsLeg_Maneuver::_internal_begin_path_index() const {
   return begin_path_index_;
@@ -5939,7 +5091,7 @@ inline uint32_t DirectionsLeg_Maneuver::begin_path_index() const {
   return _internal_begin_path_index();
 }
 inline void DirectionsLeg_Maneuver::_internal_set_begin_path_index(uint32_t value) {
-  _has_bits_[0] |= 0x08000000u;
+  _has_bits_[0] |= 0x10000000u;
   begin_path_index_ = value;
 }
 inline void DirectionsLeg_Maneuver::set_begin_path_index(uint32_t value) {
@@ -5949,7 +5101,7 @@ inline void DirectionsLeg_Maneuver::set_begin_path_index(uint32_t value) {
 
 // optional uint32 end_path_index = 30;
 inline bool DirectionsLeg_Maneuver::_internal_has_end_path_index() const {
-  bool value = (_has_bits_[0] & 0x10000000u) != 0;
+  bool value = (_has_bits_[0] & 0x20000000u) != 0;
   return value;
 }
 inline bool DirectionsLeg_Maneuver::has_end_path_index() const {
@@ -5957,7 +5109,7 @@ inline bool DirectionsLeg_Maneuver::has_end_path_index() const {
 }
 inline void DirectionsLeg_Maneuver::clear_end_path_index() {
   end_path_index_ = 0u;
-  _has_bits_[0] &= ~0x10000000u;
+  _has_bits_[0] &= ~0x20000000u;
 }
 inline uint32_t DirectionsLeg_Maneuver::_internal_end_path_index() const {
   return end_path_index_;
@@ -5967,7 +5119,7 @@ inline uint32_t DirectionsLeg_Maneuver::end_path_index() const {
   return _internal_end_path_index();
 }
 inline void DirectionsLeg_Maneuver::_internal_set_end_path_index(uint32_t value) {
-  _has_bits_[0] |= 0x10000000u;
+  _has_bits_[0] |= 0x20000000u;
   end_path_index_ = value;
 }
 inline void DirectionsLeg_Maneuver::set_end_path_index(uint32_t value) {
@@ -5977,7 +5129,7 @@ inline void DirectionsLeg_Maneuver::set_end_path_index(uint32_t value) {
 
 // optional bool to_stay_on = 31;
 inline bool DirectionsLeg_Maneuver::_internal_has_to_stay_on() const {
-  bool value = (_has_bits_[0] & 0x00200000u) != 0;
+  bool value = (_has_bits_[0] & 0x00400000u) != 0;
   return value;
 }
 inline bool DirectionsLeg_Maneuver::has_to_stay_on() const {
@@ -5985,7 +5137,7 @@ inline bool DirectionsLeg_Maneuver::has_to_stay_on() const {
 }
 inline void DirectionsLeg_Maneuver::clear_to_stay_on() {
   to_stay_on_ = false;
-  _has_bits_[0] &= ~0x00200000u;
+  _has_bits_[0] &= ~0x00400000u;
 }
 inline bool DirectionsLeg_Maneuver::_internal_to_stay_on() const {
   return to_stay_on_;
@@ -5995,7 +5147,7 @@ inline bool DirectionsLeg_Maneuver::to_stay_on() const {
   return _internal_to_stay_on();
 }
 inline void DirectionsLeg_Maneuver::_internal_set_to_stay_on(bool value) {
-  _has_bits_[0] |= 0x00200000u;
+  _has_bits_[0] |= 0x00400000u;
   to_stay_on_ = value;
 }
 inline void DirectionsLeg_Maneuver::set_to_stay_on(bool value) {
@@ -6042,7 +5194,7 @@ DirectionsLeg_Maneuver::roundabout_exit_street_names() const {
 
 // optional uint32 turn_degree = 33;
 inline bool DirectionsLeg_Maneuver::_internal_has_turn_degree() const {
-  bool value = (_has_bits_[0] & 0x20000000u) != 0;
+  bool value = (_has_bits_[0] & 0x40000000u) != 0;
   return value;
 }
 inline bool DirectionsLeg_Maneuver::has_turn_degree() const {
@@ -6050,7 +5202,7 @@ inline bool DirectionsLeg_Maneuver::has_turn_degree() const {
 }
 inline void DirectionsLeg_Maneuver::clear_turn_degree() {
   turn_degree_ = 0u;
-  _has_bits_[0] &= ~0x20000000u;
+  _has_bits_[0] &= ~0x40000000u;
 }
 inline uint32_t DirectionsLeg_Maneuver::_internal_turn_degree() const {
   return turn_degree_;
@@ -6060,7 +5212,7 @@ inline uint32_t DirectionsLeg_Maneuver::turn_degree() const {
   return _internal_turn_degree();
 }
 inline void DirectionsLeg_Maneuver::_internal_set_turn_degree(uint32_t value) {
-  _has_bits_[0] |= 0x20000000u;
+  _has_bits_[0] |= 0x40000000u;
   turn_degree_ = value;
 }
 inline void DirectionsLeg_Maneuver::set_turn_degree(uint32_t value) {
@@ -6070,7 +5222,7 @@ inline void DirectionsLeg_Maneuver::set_turn_degree(uint32_t value) {
 
 // optional bool has_time_restrictions = 34;
 inline bool DirectionsLeg_Maneuver::_internal_has_has_time_restrictions() const {
-  bool value = (_has_bits_[0] & 0x40000000u) != 0;
+  bool value = (_has_bits_[0] & 0x80000000u) != 0;
   return value;
 }
 inline bool DirectionsLeg_Maneuver::has_has_time_restrictions() const {
@@ -6078,7 +5230,7 @@ inline bool DirectionsLeg_Maneuver::has_has_time_restrictions() const {
 }
 inline void DirectionsLeg_Maneuver::clear_has_time_restrictions() {
   has_time_restrictions_ = false;
-  _has_bits_[0] &= ~0x40000000u;
+  _has_bits_[0] &= ~0x80000000u;
 }
 inline bool DirectionsLeg_Maneuver::_internal_has_time_restrictions() const {
   return has_time_restrictions_;
@@ -6088,7 +5240,7 @@ inline bool DirectionsLeg_Maneuver::has_time_restrictions() const {
   return _internal_has_time_restrictions();
 }
 inline void DirectionsLeg_Maneuver::_internal_set_has_time_restrictions(bool value) {
-  _has_bits_[0] |= 0x40000000u;
+  _has_bits_[0] |= 0x80000000u;
   has_time_restrictions_ = value;
 }
 inline void DirectionsLeg_Maneuver::set_has_time_restrictions(bool value) {
@@ -6138,7 +5290,7 @@ DirectionsLeg_Maneuver::guidance_views() const {
 
 // optional .valhalla.DirectionsLeg.Maneuver.BssManeuverType bss_maneuver_type = 36;
 inline bool DirectionsLeg_Maneuver::_internal_has_bss_maneuver_type() const {
-  bool value = (_has_bits_[0] & 0x80000000u) != 0;
+  bool value = (_has_bits_[1] & 0x00000001u) != 0;
   return value;
 }
 inline bool DirectionsLeg_Maneuver::has_bss_maneuver_type() const {
@@ -6146,7 +5298,7 @@ inline bool DirectionsLeg_Maneuver::has_bss_maneuver_type() const {
 }
 inline void DirectionsLeg_Maneuver::clear_bss_maneuver_type() {
   bss_maneuver_type_ = 1;
-  _has_bits_[0] &= ~0x80000000u;
+  _has_bits_[1] &= ~0x00000001u;
 }
 inline ::valhalla::DirectionsLeg_Maneuver_BssManeuverType DirectionsLeg_Maneuver::_internal_bss_maneuver_type() const {
   return static_cast< ::valhalla::DirectionsLeg_Maneuver_BssManeuverType >(bss_maneuver_type_);
@@ -6157,12 +5309,81 @@ inline ::valhalla::DirectionsLeg_Maneuver_BssManeuverType DirectionsLeg_Maneuver
 }
 inline void DirectionsLeg_Maneuver::_internal_set_bss_maneuver_type(::valhalla::DirectionsLeg_Maneuver_BssManeuverType value) {
   assert(::valhalla::DirectionsLeg_Maneuver_BssManeuverType_IsValid(value));
-  _has_bits_[0] |= 0x80000000u;
+  _has_bits_[1] |= 0x00000001u;
   bss_maneuver_type_ = value;
 }
 inline void DirectionsLeg_Maneuver::set_bss_maneuver_type(::valhalla::DirectionsLeg_Maneuver_BssManeuverType value) {
   _internal_set_bss_maneuver_type(value);
   // @@protoc_insertion_point(field_set:valhalla.DirectionsLeg.Maneuver.bss_maneuver_type)
+}
+
+// optional string verbal_succinct_transition_instruction = 37;
+inline bool DirectionsLeg_Maneuver::_internal_has_verbal_succinct_transition_instruction() const {
+  bool value = (_has_bits_[0] & 0x00000100u) != 0;
+  return value;
+}
+inline bool DirectionsLeg_Maneuver::has_verbal_succinct_transition_instruction() const {
+  return _internal_has_verbal_succinct_transition_instruction();
+}
+inline void DirectionsLeg_Maneuver::clear_verbal_succinct_transition_instruction() {
+  verbal_succinct_transition_instruction_.ClearToEmpty();
+  _has_bits_[0] &= ~0x00000100u;
+}
+inline const std::string& DirectionsLeg_Maneuver::verbal_succinct_transition_instruction() const {
+  // @@protoc_insertion_point(field_get:valhalla.DirectionsLeg.Maneuver.verbal_succinct_transition_instruction)
+  return _internal_verbal_succinct_transition_instruction();
+}
+template <typename ArgT0, typename... ArgT>
+inline PROTOBUF_ALWAYS_INLINE
+void DirectionsLeg_Maneuver::set_verbal_succinct_transition_instruction(ArgT0&& arg0, ArgT... args) {
+ _has_bits_[0] |= 0x00000100u;
+ verbal_succinct_transition_instruction_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:valhalla.DirectionsLeg.Maneuver.verbal_succinct_transition_instruction)
+}
+inline std::string* DirectionsLeg_Maneuver::mutable_verbal_succinct_transition_instruction() {
+  std::string* _s = _internal_mutable_verbal_succinct_transition_instruction();
+  // @@protoc_insertion_point(field_mutable:valhalla.DirectionsLeg.Maneuver.verbal_succinct_transition_instruction)
+  return _s;
+}
+inline const std::string& DirectionsLeg_Maneuver::_internal_verbal_succinct_transition_instruction() const {
+  return verbal_succinct_transition_instruction_.Get();
+}
+inline void DirectionsLeg_Maneuver::_internal_set_verbal_succinct_transition_instruction(const std::string& value) {
+  _has_bits_[0] |= 0x00000100u;
+  verbal_succinct_transition_instruction_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, value, GetArenaForAllocation());
+}
+inline std::string* DirectionsLeg_Maneuver::_internal_mutable_verbal_succinct_transition_instruction() {
+  _has_bits_[0] |= 0x00000100u;
+  return verbal_succinct_transition_instruction_.Mutable(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArenaForAllocation());
+}
+inline std::string* DirectionsLeg_Maneuver::release_verbal_succinct_transition_instruction() {
+  // @@protoc_insertion_point(field_release:valhalla.DirectionsLeg.Maneuver.verbal_succinct_transition_instruction)
+  if (!_internal_has_verbal_succinct_transition_instruction()) {
+    return nullptr;
+  }
+  _has_bits_[0] &= ~0x00000100u;
+  auto* p = verbal_succinct_transition_instruction_.ReleaseNonDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArenaForAllocation());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (verbal_succinct_transition_instruction_.IsDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited())) {
+    verbal_succinct_transition_instruction_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
+  }
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  return p;
+}
+inline void DirectionsLeg_Maneuver::set_allocated_verbal_succinct_transition_instruction(std::string* verbal_succinct_transition_instruction) {
+  if (verbal_succinct_transition_instruction != nullptr) {
+    _has_bits_[0] |= 0x00000100u;
+  } else {
+    _has_bits_[0] &= ~0x00000100u;
+  }
+  verbal_succinct_transition_instruction_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), verbal_succinct_transition_instruction,
+      GetArenaForAllocation());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (verbal_succinct_transition_instruction_.IsDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited())) {
+    verbal_succinct_transition_instruction_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
+  }
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:valhalla.DirectionsLeg.Maneuver.verbal_succinct_transition_instruction)
 }
 
 // -------------------------------------------------------------------
@@ -6580,10 +5801,6 @@ Directions::routes() const {
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
-// -------------------------------------------------------------------
-
-// -------------------------------------------------------------------
-
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

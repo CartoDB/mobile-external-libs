@@ -70,9 +70,9 @@ extern Location_SearchFilterDefaultTypeInternal _Location_SearchFilter_default_i
 class StreetName;
 struct StreetNameDefaultTypeInternal;
 extern StreetNameDefaultTypeInternal _StreetName_default_instance_;
-class TaggedName;
-struct TaggedNameDefaultTypeInternal;
-extern TaggedNameDefaultTypeInternal _TaggedName_default_instance_;
+class TaggedValue;
+struct TaggedValueDefaultTypeInternal;
+extern TaggedValueDefaultTypeInternal _TaggedValue_default_instance_;
 class TransitEgressInfo;
 struct TransitEgressInfoDefaultTypeInternal;
 extern TransitEgressInfoDefaultTypeInternal _TransitEgressInfo_default_instance_;
@@ -93,7 +93,7 @@ template<> ::valhalla::Location* Arena::CreateMaybeMessage<::valhalla::Location>
 template<> ::valhalla::Location_PathEdge* Arena::CreateMaybeMessage<::valhalla::Location_PathEdge>(Arena*);
 template<> ::valhalla::Location_SearchFilter* Arena::CreateMaybeMessage<::valhalla::Location_SearchFilter>(Arena*);
 template<> ::valhalla::StreetName* Arena::CreateMaybeMessage<::valhalla::StreetName>(Arena*);
-template<> ::valhalla::TaggedName* Arena::CreateMaybeMessage<::valhalla::TaggedName>(Arena*);
+template<> ::valhalla::TaggedValue* Arena::CreateMaybeMessage<::valhalla::TaggedValue>(Arena*);
 template<> ::valhalla::TransitEgressInfo* Arena::CreateMaybeMessage<::valhalla::TransitEgressInfo>(Arena*);
 template<> ::valhalla::TransitPlatformInfo* Arena::CreateMaybeMessage<::valhalla::TransitPlatformInfo>(Arena*);
 template<> ::valhalla::TransitStationInfo* Arena::CreateMaybeMessage<::valhalla::TransitStationInfo>(Arena*);
@@ -201,25 +201,26 @@ inline const std::string& TurnLane_State_Name(T enum_t_value) {
 }
 bool TurnLane_State_Parse(
     ::PROTOBUF_NAMESPACE_ID::ConstStringParam name, TurnLane_State* value);
-enum TaggedName_Type : int {
-  TaggedName_Type_kTunnel = 1,
-  TaggedName_Type_kBridge = 2
+enum TaggedValue_Type : int {
+  TaggedValue_Type_kLayer = 1,
+  TaggedValue_Type_kTunnel = 49,
+  TaggedValue_Type_kBridge = 50
 };
-bool TaggedName_Type_IsValid(int value);
-constexpr TaggedName_Type TaggedName_Type_Type_MIN = TaggedName_Type_kTunnel;
-constexpr TaggedName_Type TaggedName_Type_Type_MAX = TaggedName_Type_kBridge;
-constexpr int TaggedName_Type_Type_ARRAYSIZE = TaggedName_Type_Type_MAX + 1;
+bool TaggedValue_Type_IsValid(int value);
+constexpr TaggedValue_Type TaggedValue_Type_Type_MIN = TaggedValue_Type_kLayer;
+constexpr TaggedValue_Type TaggedValue_Type_Type_MAX = TaggedValue_Type_kBridge;
+constexpr int TaggedValue_Type_Type_ARRAYSIZE = TaggedValue_Type_Type_MAX + 1;
 
-const std::string& TaggedName_Type_Name(TaggedName_Type value);
+const std::string& TaggedValue_Type_Name(TaggedValue_Type value);
 template<typename T>
-inline const std::string& TaggedName_Type_Name(T enum_t_value) {
-  static_assert(::std::is_same<T, TaggedName_Type>::value ||
+inline const std::string& TaggedValue_Type_Name(T enum_t_value) {
+  static_assert(::std::is_same<T, TaggedValue_Type>::value ||
     ::std::is_integral<T>::value,
-    "Incorrect type passed to function TaggedName_Type_Name.");
-  return TaggedName_Type_Name(static_cast<TaggedName_Type>(enum_t_value));
+    "Incorrect type passed to function TaggedValue_Type_Name.");
+  return TaggedValue_Type_Name(static_cast<TaggedValue_Type>(enum_t_value));
 }
-bool TaggedName_Type_Parse(
-    ::PROTOBUF_NAMESPACE_ID::ConstStringParam name, TaggedName_Type* value);
+bool TaggedValue_Type_Parse(
+    ::PROTOBUF_NAMESPACE_ID::ConstStringParam name, TaggedValue_Type* value);
 enum RoadClass : int {
   kMotorway = 0,
   kTrunk = 1,
@@ -1327,8 +1328,11 @@ class Location final :
     kSearchCutoffFieldNumber = 28,
     kStreetSideToleranceFieldNumber = 29,
     kRouteIndexFieldNumber = 30,
-    kShapeIndexFieldNumber = 31,
+    kWaypointIndexFieldNumber = 31,
     kStreetSideMaxDistanceFieldNumber = 33,
+    kPreferredLayerFieldNumber = 34,
+    kDistanceFromLegOriginFieldNumber = 36,
+    kLegShapeIndexFieldNumber = 35,
     kRankCandidatesFieldNumber = 21,
     kTimeFieldNumber = 20,
   };
@@ -1784,17 +1788,17 @@ class Location final :
   void _internal_set_route_index(uint32_t value);
   public:
 
-  // optional uint32 shape_index = 31;
-  bool has_shape_index() const;
+  // optional uint32 waypoint_index = 31;
+  bool has_waypoint_index() const;
   private:
-  bool _internal_has_shape_index() const;
+  bool _internal_has_waypoint_index() const;
   public:
-  void clear_shape_index();
-  uint32_t shape_index() const;
-  void set_shape_index(uint32_t value);
+  void clear_waypoint_index();
+  uint32_t waypoint_index() const;
+  void set_waypoint_index(uint32_t value);
   private:
-  uint32_t _internal_shape_index() const;
-  void _internal_set_shape_index(uint32_t value);
+  uint32_t _internal_waypoint_index() const;
+  void _internal_set_waypoint_index(uint32_t value);
   public:
 
   // optional uint32 street_side_max_distance = 33;
@@ -1808,6 +1812,45 @@ class Location final :
   private:
   uint32_t _internal_street_side_max_distance() const;
   void _internal_set_street_side_max_distance(uint32_t value);
+  public:
+
+  // optional int32 preferred_layer = 34;
+  bool has_preferred_layer() const;
+  private:
+  bool _internal_has_preferred_layer() const;
+  public:
+  void clear_preferred_layer();
+  int32_t preferred_layer() const;
+  void set_preferred_layer(int32_t value);
+  private:
+  int32_t _internal_preferred_layer() const;
+  void _internal_set_preferred_layer(int32_t value);
+  public:
+
+  // optional double distance_from_leg_origin = 36;
+  bool has_distance_from_leg_origin() const;
+  private:
+  bool _internal_has_distance_from_leg_origin() const;
+  public:
+  void clear_distance_from_leg_origin();
+  double distance_from_leg_origin() const;
+  void set_distance_from_leg_origin(double value);
+  private:
+  double _internal_distance_from_leg_origin() const;
+  void _internal_set_distance_from_leg_origin(double value);
+  public:
+
+  // optional uint32 leg_shape_index = 35;
+  bool has_leg_shape_index() const;
+  private:
+  bool _internal_has_leg_shape_index() const;
+  public:
+  void clear_leg_shape_index();
+  uint32_t leg_shape_index() const;
+  void set_leg_shape_index(uint32_t value);
+  private:
+  uint32_t _internal_leg_shape_index() const;
+  void _internal_set_leg_shape_index(uint32_t value);
   public:
 
   // optional bool rank_candidates = 21 [default = true];
@@ -1843,7 +1886,7 @@ class Location final :
   template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
-  ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
+  ::PROTOBUF_NAMESPACE_ID::internal::HasBits<2> _has_bits_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::Location_PathEdge > path_edges_;
   ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::Location_PathEdge > filtered_edges_;
@@ -1874,8 +1917,11 @@ class Location final :
   uint32_t search_cutoff_;
   uint32_t street_side_tolerance_;
   uint32_t route_index_;
-  uint32_t shape_index_;
+  uint32_t waypoint_index_;
   uint32_t street_side_max_distance_;
+  int32_t preferred_layer_;
+  double distance_from_leg_origin_;
+  uint32_t leg_shape_index_;
   bool rank_candidates_;
   double time_;
   friend struct ::TableStruct_tripcommon_2eproto;
@@ -2941,24 +2987,24 @@ class TurnLane final :
 };
 // -------------------------------------------------------------------
 
-class TaggedName final :
-    public ::PROTOBUF_NAMESPACE_ID::MessageLite /* @@protoc_insertion_point(class_definition:valhalla.TaggedName) */ {
+class TaggedValue final :
+    public ::PROTOBUF_NAMESPACE_ID::MessageLite /* @@protoc_insertion_point(class_definition:valhalla.TaggedValue) */ {
  public:
-  inline TaggedName() : TaggedName(nullptr) {}
-  ~TaggedName() override;
-  explicit constexpr TaggedName(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+  inline TaggedValue() : TaggedValue(nullptr) {}
+  ~TaggedValue() override;
+  explicit constexpr TaggedValue(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
 
-  TaggedName(const TaggedName& from);
-  TaggedName(TaggedName&& from) noexcept
-    : TaggedName() {
+  TaggedValue(const TaggedValue& from);
+  TaggedValue(TaggedValue&& from) noexcept
+    : TaggedValue() {
     *this = ::std::move(from);
   }
 
-  inline TaggedName& operator=(const TaggedName& from) {
+  inline TaggedValue& operator=(const TaggedValue& from) {
     CopyFrom(from);
     return *this;
   }
-  inline TaggedName& operator=(TaggedName&& from) noexcept {
+  inline TaggedValue& operator=(TaggedValue&& from) noexcept {
     if (this == &from) return *this;
     if (GetOwningArena() == from.GetOwningArena()
   #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
@@ -2979,20 +3025,20 @@ class TaggedName final :
     return _internal_metadata_.mutable_unknown_fields<std::string>();
   }
 
-  static const TaggedName& default_instance() {
+  static const TaggedValue& default_instance() {
     return *internal_default_instance();
   }
-  static inline const TaggedName* internal_default_instance() {
-    return reinterpret_cast<const TaggedName*>(
-               &_TaggedName_default_instance_);
+  static inline const TaggedValue* internal_default_instance() {
+    return reinterpret_cast<const TaggedValue*>(
+               &_TaggedValue_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
     10;
 
-  friend void swap(TaggedName& a, TaggedName& b) {
+  friend void swap(TaggedValue& a, TaggedValue& b) {
     a.Swap(&b);
   }
-  inline void Swap(TaggedName* other) {
+  inline void Swap(TaggedValue* other) {
     if (other == this) return;
   #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
     if (GetOwningArena() != nullptr &&
@@ -3005,7 +3051,7 @@ class TaggedName final :
       ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
     }
   }
-  void UnsafeArenaSwap(TaggedName* other) {
+  void UnsafeArenaSwap(TaggedValue* other) {
     if (other == this) return;
     GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
     InternalSwap(other);
@@ -3013,12 +3059,12 @@ class TaggedName final :
 
   // implements Message ----------------------------------------------
 
-  TaggedName* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
-    return CreateMaybeMessage<TaggedName>(arena);
+  TaggedValue* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<TaggedValue>(arena);
   }
   void CheckTypeAndMergeFrom(const ::PROTOBUF_NAMESPACE_ID::MessageLite& from)  final;
-  void CopyFrom(const TaggedName& from);
-  void MergeFrom(const TaggedName& from);
+  void CopyFrom(const TaggedValue& from);
+  void MergeFrom(const TaggedValue& from);
   PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
   bool IsInitialized() const final;
 
@@ -3032,15 +3078,15 @@ class TaggedName final :
   void SharedCtor();
   void SharedDtor();
   void SetCachedSize(int size) const;
-  void InternalSwap(TaggedName* other);
+  void InternalSwap(TaggedValue* other);
 
   private:
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "valhalla.TaggedName";
+    return "valhalla.TaggedValue";
   }
   protected:
-  explicit TaggedName(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+  explicit TaggedValue(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                        bool is_message_owned = false);
   private:
   static void ArenaDtor(void* object);
@@ -3051,30 +3097,32 @@ class TaggedName final :
 
   // nested types ----------------------------------------------------
 
-  typedef TaggedName_Type Type;
+  typedef TaggedValue_Type Type;
+  static constexpr Type kLayer =
+    TaggedValue_Type_kLayer;
   static constexpr Type kTunnel =
-    TaggedName_Type_kTunnel;
+    TaggedValue_Type_kTunnel;
   static constexpr Type kBridge =
-    TaggedName_Type_kBridge;
+    TaggedValue_Type_kBridge;
   static inline bool Type_IsValid(int value) {
-    return TaggedName_Type_IsValid(value);
+    return TaggedValue_Type_IsValid(value);
   }
   static constexpr Type Type_MIN =
-    TaggedName_Type_Type_MIN;
+    TaggedValue_Type_Type_MIN;
   static constexpr Type Type_MAX =
-    TaggedName_Type_Type_MAX;
+    TaggedValue_Type_Type_MAX;
   static constexpr int Type_ARRAYSIZE =
-    TaggedName_Type_Type_ARRAYSIZE;
+    TaggedValue_Type_Type_ARRAYSIZE;
   template<typename T>
   static inline const std::string& Type_Name(T enum_t_value) {
     static_assert(::std::is_same<T, Type>::value ||
       ::std::is_integral<T>::value,
       "Incorrect type passed to function Type_Name.");
-    return TaggedName_Type_Name(enum_t_value);
+    return TaggedValue_Type_Name(enum_t_value);
   }
   static inline bool Type_Parse(::PROTOBUF_NAMESPACE_ID::ConstStringParam name,
       Type* value) {
-    return TaggedName_Type_Parse(name, value);
+    return TaggedValue_Type_Parse(name, value);
   }
 
   // accessors -------------------------------------------------------
@@ -3101,20 +3149,20 @@ class TaggedName final :
   std::string* _internal_mutable_value();
   public:
 
-  // optional .valhalla.TaggedName.Type type = 2;
+  // optional .valhalla.TaggedValue.Type type = 2;
   bool has_type() const;
   private:
   bool _internal_has_type() const;
   public:
   void clear_type();
-  ::valhalla::TaggedName_Type type() const;
-  void set_type(::valhalla::TaggedName_Type value);
+  ::valhalla::TaggedValue_Type type() const;
+  void set_type(::valhalla::TaggedValue_Type value);
   private:
-  ::valhalla::TaggedName_Type _internal_type() const;
-  void _internal_set_type(::valhalla::TaggedName_Type value);
+  ::valhalla::TaggedValue_Type _internal_type() const;
+  void _internal_set_type(::valhalla::TaggedValue_Type value);
   public:
 
-  // @@protoc_insertion_point(class_scope:valhalla.TaggedName)
+  // @@protoc_insertion_point(class_scope:valhalla.TaggedValue)
  private:
   class _Internal;
 
@@ -4945,7 +4993,7 @@ inline void Location::set_accuracy(uint32_t value) {
 
 // optional double time = 20 [default = -1];
 inline bool Location::_internal_has_time() const {
-  bool value = (_has_bits_[0] & 0x40000000u) != 0;
+  bool value = (_has_bits_[1] & 0x00000002u) != 0;
   return value;
 }
 inline bool Location::has_time() const {
@@ -4953,7 +5001,7 @@ inline bool Location::has_time() const {
 }
 inline void Location::clear_time() {
   time_ = -1;
-  _has_bits_[0] &= ~0x40000000u;
+  _has_bits_[1] &= ~0x00000002u;
 }
 inline double Location::_internal_time() const {
   return time_;
@@ -4963,7 +5011,7 @@ inline double Location::time() const {
   return _internal_time();
 }
 inline void Location::_internal_set_time(double value) {
-  _has_bits_[0] |= 0x40000000u;
+  _has_bits_[1] |= 0x00000002u;
   time_ = value;
 }
 inline void Location::set_time(double value) {
@@ -4973,7 +5021,7 @@ inline void Location::set_time(double value) {
 
 // optional bool rank_candidates = 21 [default = true];
 inline bool Location::_internal_has_rank_candidates() const {
-  bool value = (_has_bits_[0] & 0x20000000u) != 0;
+  bool value = (_has_bits_[1] & 0x00000001u) != 0;
   return value;
 }
 inline bool Location::has_rank_candidates() const {
@@ -4981,7 +5029,7 @@ inline bool Location::has_rank_candidates() const {
 }
 inline void Location::clear_rank_candidates() {
   rank_candidates_ = true;
-  _has_bits_[0] &= ~0x20000000u;
+  _has_bits_[1] &= ~0x00000001u;
 }
 inline bool Location::_internal_rank_candidates() const {
   return rank_candidates_;
@@ -4991,7 +5039,7 @@ inline bool Location::rank_candidates() const {
   return _internal_rank_candidates();
 }
 inline void Location::_internal_set_rank_candidates(bool value) {
-  _has_bits_[0] |= 0x20000000u;
+  _has_bits_[1] |= 0x00000001u;
   rank_candidates_ = value;
 }
 inline void Location::set_rank_candidates(bool value) {
@@ -5197,6 +5245,62 @@ inline void Location::set_allocated_projected_ll(::valhalla::LatLng* projected_l
   // @@protoc_insertion_point(field_set_allocated:valhalla.Location.projected_ll)
 }
 
+// optional uint32 leg_shape_index = 35;
+inline bool Location::_internal_has_leg_shape_index() const {
+  bool value = (_has_bits_[0] & 0x80000000u) != 0;
+  return value;
+}
+inline bool Location::has_leg_shape_index() const {
+  return _internal_has_leg_shape_index();
+}
+inline void Location::clear_leg_shape_index() {
+  leg_shape_index_ = 0u;
+  _has_bits_[0] &= ~0x80000000u;
+}
+inline uint32_t Location::_internal_leg_shape_index() const {
+  return leg_shape_index_;
+}
+inline uint32_t Location::leg_shape_index() const {
+  // @@protoc_insertion_point(field_get:valhalla.Location.leg_shape_index)
+  return _internal_leg_shape_index();
+}
+inline void Location::_internal_set_leg_shape_index(uint32_t value) {
+  _has_bits_[0] |= 0x80000000u;
+  leg_shape_index_ = value;
+}
+inline void Location::set_leg_shape_index(uint32_t value) {
+  _internal_set_leg_shape_index(value);
+  // @@protoc_insertion_point(field_set:valhalla.Location.leg_shape_index)
+}
+
+// optional double distance_from_leg_origin = 36;
+inline bool Location::_internal_has_distance_from_leg_origin() const {
+  bool value = (_has_bits_[0] & 0x40000000u) != 0;
+  return value;
+}
+inline bool Location::has_distance_from_leg_origin() const {
+  return _internal_has_distance_from_leg_origin();
+}
+inline void Location::clear_distance_from_leg_origin() {
+  distance_from_leg_origin_ = 0;
+  _has_bits_[0] &= ~0x40000000u;
+}
+inline double Location::_internal_distance_from_leg_origin() const {
+  return distance_from_leg_origin_;
+}
+inline double Location::distance_from_leg_origin() const {
+  // @@protoc_insertion_point(field_get:valhalla.Location.distance_from_leg_origin)
+  return _internal_distance_from_leg_origin();
+}
+inline void Location::_internal_set_distance_from_leg_origin(double value) {
+  _has_bits_[0] |= 0x40000000u;
+  distance_from_leg_origin_ = value;
+}
+inline void Location::set_distance_from_leg_origin(double value) {
+  _internal_set_distance_from_leg_origin(value);
+  // @@protoc_insertion_point(field_set:valhalla.Location.distance_from_leg_origin)
+}
+
 // optional .valhalla.Location.PreferredSide preferred_side = 26 [default = either];
 inline bool Location::_internal_has_preferred_side() const {
   bool value = (_has_bits_[0] & 0x00800000u) != 0;
@@ -5400,32 +5504,32 @@ inline void Location::set_route_index(uint32_t value) {
   // @@protoc_insertion_point(field_set:valhalla.Location.route_index)
 }
 
-// optional uint32 shape_index = 31;
-inline bool Location::_internal_has_shape_index() const {
+// optional uint32 waypoint_index = 31;
+inline bool Location::_internal_has_waypoint_index() const {
   bool value = (_has_bits_[0] & 0x08000000u) != 0;
   return value;
 }
-inline bool Location::has_shape_index() const {
-  return _internal_has_shape_index();
+inline bool Location::has_waypoint_index() const {
+  return _internal_has_waypoint_index();
 }
-inline void Location::clear_shape_index() {
-  shape_index_ = 0u;
+inline void Location::clear_waypoint_index() {
+  waypoint_index_ = 0u;
   _has_bits_[0] &= ~0x08000000u;
 }
-inline uint32_t Location::_internal_shape_index() const {
-  return shape_index_;
+inline uint32_t Location::_internal_waypoint_index() const {
+  return waypoint_index_;
 }
-inline uint32_t Location::shape_index() const {
-  // @@protoc_insertion_point(field_get:valhalla.Location.shape_index)
-  return _internal_shape_index();
+inline uint32_t Location::waypoint_index() const {
+  // @@protoc_insertion_point(field_get:valhalla.Location.waypoint_index)
+  return _internal_waypoint_index();
 }
-inline void Location::_internal_set_shape_index(uint32_t value) {
+inline void Location::_internal_set_waypoint_index(uint32_t value) {
   _has_bits_[0] |= 0x08000000u;
-  shape_index_ = value;
+  waypoint_index_ = value;
 }
-inline void Location::set_shape_index(uint32_t value) {
-  _internal_set_shape_index(value);
-  // @@protoc_insertion_point(field_set:valhalla.Location.shape_index)
+inline void Location::set_waypoint_index(uint32_t value) {
+  _internal_set_waypoint_index(value);
+  // @@protoc_insertion_point(field_set:valhalla.Location.waypoint_index)
 }
 
 // optional .valhalla.Location.SearchFilter search_filter = 32;
@@ -5544,6 +5648,34 @@ inline void Location::_internal_set_street_side_max_distance(uint32_t value) {
 inline void Location::set_street_side_max_distance(uint32_t value) {
   _internal_set_street_side_max_distance(value);
   // @@protoc_insertion_point(field_set:valhalla.Location.street_side_max_distance)
+}
+
+// optional int32 preferred_layer = 34;
+inline bool Location::_internal_has_preferred_layer() const {
+  bool value = (_has_bits_[0] & 0x20000000u) != 0;
+  return value;
+}
+inline bool Location::has_preferred_layer() const {
+  return _internal_has_preferred_layer();
+}
+inline void Location::clear_preferred_layer() {
+  preferred_layer_ = 0;
+  _has_bits_[0] &= ~0x20000000u;
+}
+inline int32_t Location::_internal_preferred_layer() const {
+  return preferred_layer_;
+}
+inline int32_t Location::preferred_layer() const {
+  // @@protoc_insertion_point(field_get:valhalla.Location.preferred_layer)
+  return _internal_preferred_layer();
+}
+inline void Location::_internal_set_preferred_layer(int32_t value) {
+  _has_bits_[0] |= 0x20000000u;
+  preferred_layer_ = value;
+}
+inline void Location::set_preferred_layer(int32_t value) {
+  _internal_set_preferred_layer(value);
+  // @@protoc_insertion_point(field_set:valhalla.Location.preferred_layer)
 }
 
 // -------------------------------------------------------------------
@@ -6767,49 +6899,49 @@ inline void TurnLane::set_active_direction(uint32_t value) {
 
 // -------------------------------------------------------------------
 
-// TaggedName
+// TaggedValue
 
 // optional string value = 1;
-inline bool TaggedName::_internal_has_value() const {
+inline bool TaggedValue::_internal_has_value() const {
   bool value = (_has_bits_[0] & 0x00000001u) != 0;
   return value;
 }
-inline bool TaggedName::has_value() const {
+inline bool TaggedValue::has_value() const {
   return _internal_has_value();
 }
-inline void TaggedName::clear_value() {
+inline void TaggedValue::clear_value() {
   value_.ClearToEmpty();
   _has_bits_[0] &= ~0x00000001u;
 }
-inline const std::string& TaggedName::value() const {
-  // @@protoc_insertion_point(field_get:valhalla.TaggedName.value)
+inline const std::string& TaggedValue::value() const {
+  // @@protoc_insertion_point(field_get:valhalla.TaggedValue.value)
   return _internal_value();
 }
 template <typename ArgT0, typename... ArgT>
 inline PROTOBUF_ALWAYS_INLINE
-void TaggedName::set_value(ArgT0&& arg0, ArgT... args) {
+void TaggedValue::set_value(ArgT0&& arg0, ArgT... args) {
  _has_bits_[0] |= 0x00000001u;
  value_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:valhalla.TaggedName.value)
+  // @@protoc_insertion_point(field_set:valhalla.TaggedValue.value)
 }
-inline std::string* TaggedName::mutable_value() {
+inline std::string* TaggedValue::mutable_value() {
   std::string* _s = _internal_mutable_value();
-  // @@protoc_insertion_point(field_mutable:valhalla.TaggedName.value)
+  // @@protoc_insertion_point(field_mutable:valhalla.TaggedValue.value)
   return _s;
 }
-inline const std::string& TaggedName::_internal_value() const {
+inline const std::string& TaggedValue::_internal_value() const {
   return value_.Get();
 }
-inline void TaggedName::_internal_set_value(const std::string& value) {
+inline void TaggedValue::_internal_set_value(const std::string& value) {
   _has_bits_[0] |= 0x00000001u;
   value_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, value, GetArenaForAllocation());
 }
-inline std::string* TaggedName::_internal_mutable_value() {
+inline std::string* TaggedValue::_internal_mutable_value() {
   _has_bits_[0] |= 0x00000001u;
   return value_.Mutable(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArenaForAllocation());
 }
-inline std::string* TaggedName::release_value() {
-  // @@protoc_insertion_point(field_release:valhalla.TaggedName.value)
+inline std::string* TaggedValue::release_value() {
+  // @@protoc_insertion_point(field_release:valhalla.TaggedValue.value)
   if (!_internal_has_value()) {
     return nullptr;
   }
@@ -6822,7 +6954,7 @@ inline std::string* TaggedName::release_value() {
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   return p;
 }
-inline void TaggedName::set_allocated_value(std::string* value) {
+inline void TaggedValue::set_allocated_value(std::string* value) {
   if (value != nullptr) {
     _has_bits_[0] |= 0x00000001u;
   } else {
@@ -6835,36 +6967,36 @@ inline void TaggedName::set_allocated_value(std::string* value) {
     value_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
   }
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:valhalla.TaggedName.value)
+  // @@protoc_insertion_point(field_set_allocated:valhalla.TaggedValue.value)
 }
 
-// optional .valhalla.TaggedName.Type type = 2;
-inline bool TaggedName::_internal_has_type() const {
+// optional .valhalla.TaggedValue.Type type = 2;
+inline bool TaggedValue::_internal_has_type() const {
   bool value = (_has_bits_[0] & 0x00000002u) != 0;
   return value;
 }
-inline bool TaggedName::has_type() const {
+inline bool TaggedValue::has_type() const {
   return _internal_has_type();
 }
-inline void TaggedName::clear_type() {
+inline void TaggedValue::clear_type() {
   type_ = 1;
   _has_bits_[0] &= ~0x00000002u;
 }
-inline ::valhalla::TaggedName_Type TaggedName::_internal_type() const {
-  return static_cast< ::valhalla::TaggedName_Type >(type_);
+inline ::valhalla::TaggedValue_Type TaggedValue::_internal_type() const {
+  return static_cast< ::valhalla::TaggedValue_Type >(type_);
 }
-inline ::valhalla::TaggedName_Type TaggedName::type() const {
-  // @@protoc_insertion_point(field_get:valhalla.TaggedName.type)
+inline ::valhalla::TaggedValue_Type TaggedValue::type() const {
+  // @@protoc_insertion_point(field_get:valhalla.TaggedValue.type)
   return _internal_type();
 }
-inline void TaggedName::_internal_set_type(::valhalla::TaggedName_Type value) {
-  assert(::valhalla::TaggedName_Type_IsValid(value));
+inline void TaggedValue::_internal_set_type(::valhalla::TaggedValue_Type value) {
+  assert(::valhalla::TaggedValue_Type_IsValid(value));
   _has_bits_[0] |= 0x00000002u;
   type_ = value;
 }
-inline void TaggedName::set_type(::valhalla::TaggedName_Type value) {
+inline void TaggedValue::set_type(::valhalla::TaggedValue_Type value) {
   _internal_set_type(value);
-  // @@protoc_insertion_point(field_set:valhalla.TaggedName.type)
+  // @@protoc_insertion_point(field_set:valhalla.TaggedValue.type)
 }
 
 #ifdef __GNUC__
@@ -6902,7 +7034,7 @@ template <> struct is_proto_enum< ::valhalla::Location_SideOfStreet> : ::std::tr
 template <> struct is_proto_enum< ::valhalla::Location_PreferredSide> : ::std::true_type {};
 template <> struct is_proto_enum< ::valhalla::TransitPlatformInfo_Type> : ::std::true_type {};
 template <> struct is_proto_enum< ::valhalla::TurnLane_State> : ::std::true_type {};
-template <> struct is_proto_enum< ::valhalla::TaggedName_Type> : ::std::true_type {};
+template <> struct is_proto_enum< ::valhalla::TaggedValue_Type> : ::std::true_type {};
 template <> struct is_proto_enum< ::valhalla::RoadClass> : ::std::true_type {};
 
 PROTOBUF_NAMESPACE_CLOSE

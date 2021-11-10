@@ -31,6 +31,7 @@
 #include <google/protobuf/extension_set.h>  // IWYU pragma: export
 #include <google/protobuf/generated_enum_util.h>
 #include "tripcommon.pb.h"
+#include "sign.pb.h"
 #include "incidents.pb.h"
 // @@protoc_insertion_point(includes)
 #include <google/protobuf/port_def.inc>
@@ -47,7 +48,7 @@ struct TableStruct_trip_2eproto {
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::AuxiliaryParseTableField aux[]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
-  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[19]
+  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[17]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::FieldMetadata field_metadata[];
   static const ::PROTOBUF_NAMESPACE_ID::internal::SerializationTable serialization_table[];
@@ -96,12 +97,6 @@ extern TripLeg_RestrictionDefaultTypeInternal _TripLeg_Restriction_default_insta
 class TripLeg_ShapeAttributes;
 struct TripLeg_ShapeAttributesDefaultTypeInternal;
 extern TripLeg_ShapeAttributesDefaultTypeInternal _TripLeg_ShapeAttributes_default_instance_;
-class TripLeg_Sign;
-struct TripLeg_SignDefaultTypeInternal;
-extern TripLeg_SignDefaultTypeInternal _TripLeg_Sign_default_instance_;
-class TripLeg_SignElement;
-struct TripLeg_SignElementDefaultTypeInternal;
-extern TripLeg_SignElementDefaultTypeInternal _TripLeg_SignElement_default_instance_;
 class TripLeg_TrafficSegment;
 struct TripLeg_TrafficSegmentDefaultTypeInternal;
 extern TripLeg_TrafficSegmentDefaultTypeInternal _TripLeg_TrafficSegment_default_instance_;
@@ -127,8 +122,6 @@ template<> ::valhalla::TripLeg_Node* Arena::CreateMaybeMessage<::valhalla::TripL
 template<> ::valhalla::TripLeg_PathCost* Arena::CreateMaybeMessage<::valhalla::TripLeg_PathCost>(Arena*);
 template<> ::valhalla::TripLeg_Restriction* Arena::CreateMaybeMessage<::valhalla::TripLeg_Restriction>(Arena*);
 template<> ::valhalla::TripLeg_ShapeAttributes* Arena::CreateMaybeMessage<::valhalla::TripLeg_ShapeAttributes>(Arena*);
-template<> ::valhalla::TripLeg_Sign* Arena::CreateMaybeMessage<::valhalla::TripLeg_Sign>(Arena*);
-template<> ::valhalla::TripLeg_SignElement* Arena::CreateMaybeMessage<::valhalla::TripLeg_SignElement>(Arena*);
 template<> ::valhalla::TripLeg_TrafficSegment* Arena::CreateMaybeMessage<::valhalla::TripLeg_TrafficSegment>(Arena*);
 template<> ::valhalla::TripLeg_TransitRouteInfo* Arena::CreateMaybeMessage<::valhalla::TripLeg_TransitRouteInfo>(Arena*);
 template<> ::valhalla::TripRoute* Arena::CreateMaybeMessage<::valhalla::TripRoute>(Arena*);
@@ -436,474 +429,6 @@ bool TripLeg_Sidewalk_Parse(
     ::PROTOBUF_NAMESPACE_ID::ConstStringParam name, TripLeg_Sidewalk* value);
 // ===================================================================
 
-class TripLeg_SignElement final :
-    public ::PROTOBUF_NAMESPACE_ID::MessageLite /* @@protoc_insertion_point(class_definition:valhalla.TripLeg.SignElement) */ {
- public:
-  inline TripLeg_SignElement() : TripLeg_SignElement(nullptr) {}
-  ~TripLeg_SignElement() override;
-  explicit constexpr TripLeg_SignElement(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
-
-  TripLeg_SignElement(const TripLeg_SignElement& from);
-  TripLeg_SignElement(TripLeg_SignElement&& from) noexcept
-    : TripLeg_SignElement() {
-    *this = ::std::move(from);
-  }
-
-  inline TripLeg_SignElement& operator=(const TripLeg_SignElement& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  inline TripLeg_SignElement& operator=(TripLeg_SignElement&& from) noexcept {
-    if (this == &from) return *this;
-    if (GetOwningArena() == from.GetOwningArena()
-  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
-        && GetOwningArena() != nullptr
-  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
-    ) {
-      InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-
-  inline const std::string& unknown_fields() const {
-    return _internal_metadata_.unknown_fields<std::string>(::PROTOBUF_NAMESPACE_ID::internal::GetEmptyString);
-  }
-  inline std::string* mutable_unknown_fields() {
-    return _internal_metadata_.mutable_unknown_fields<std::string>();
-  }
-
-  static const TripLeg_SignElement& default_instance() {
-    return *internal_default_instance();
-  }
-  static inline const TripLeg_SignElement* internal_default_instance() {
-    return reinterpret_cast<const TripLeg_SignElement*>(
-               &_TripLeg_SignElement_default_instance_);
-  }
-  static constexpr int kIndexInFileMessages =
-    0;
-
-  friend void swap(TripLeg_SignElement& a, TripLeg_SignElement& b) {
-    a.Swap(&b);
-  }
-  inline void Swap(TripLeg_SignElement* other) {
-    if (other == this) return;
-  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
-    if (GetOwningArena() != nullptr &&
-        GetOwningArena() == other->GetOwningArena()) {
-   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
-    if (GetOwningArena() == other->GetOwningArena()) {
-  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
-      InternalSwap(other);
-    } else {
-      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
-    }
-  }
-  void UnsafeArenaSwap(TripLeg_SignElement* other) {
-    if (other == this) return;
-    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
-    InternalSwap(other);
-  }
-
-  // implements Message ----------------------------------------------
-
-  TripLeg_SignElement* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
-    return CreateMaybeMessage<TripLeg_SignElement>(arena);
-  }
-  void CheckTypeAndMergeFrom(const ::PROTOBUF_NAMESPACE_ID::MessageLite& from)  final;
-  void CopyFrom(const TripLeg_SignElement& from);
-  void MergeFrom(const TripLeg_SignElement& from);
-  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
-  bool IsInitialized() const final;
-
-  size_t ByteSizeLong() const final;
-  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
-  uint8_t* _InternalSerialize(
-      uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
-  int GetCachedSize() const final { return _cached_size_.Get(); }
-
-  private:
-  void SharedCtor();
-  void SharedDtor();
-  void SetCachedSize(int size) const;
-  void InternalSwap(TripLeg_SignElement* other);
-
-  private:
-  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
-  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "valhalla.TripLeg.SignElement";
-  }
-  protected:
-  explicit TripLeg_SignElement(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                       bool is_message_owned = false);
-  private:
-  static void ArenaDtor(void* object);
-  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
-  public:
-
-  std::string GetTypeName() const final;
-
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-
-  enum : int {
-    kTextFieldNumber = 1,
-    kIsRouteNumberFieldNumber = 2,
-  };
-  // optional string text = 1;
-  bool has_text() const;
-  private:
-  bool _internal_has_text() const;
-  public:
-  void clear_text();
-  const std::string& text() const;
-  template <typename ArgT0 = const std::string&, typename... ArgT>
-  void set_text(ArgT0&& arg0, ArgT... args);
-  std::string* mutable_text();
-  PROTOBUF_NODISCARD std::string* release_text();
-  void set_allocated_text(std::string* text);
-  private:
-  const std::string& _internal_text() const;
-  inline PROTOBUF_ALWAYS_INLINE void _internal_set_text(const std::string& value);
-  std::string* _internal_mutable_text();
-  public:
-
-  // optional bool is_route_number = 2;
-  bool has_is_route_number() const;
-  private:
-  bool _internal_has_is_route_number() const;
-  public:
-  void clear_is_route_number();
-  bool is_route_number() const;
-  void set_is_route_number(bool value);
-  private:
-  bool _internal_is_route_number() const;
-  void _internal_set_is_route_number(bool value);
-  public:
-
-  // @@protoc_insertion_point(class_scope:valhalla.TripLeg.SignElement)
- private:
-  class _Internal;
-
-  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
-  typedef void InternalArenaConstructable_;
-  typedef void DestructorSkippable_;
-  ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
-  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr text_;
-  bool is_route_number_;
-  friend struct ::TableStruct_trip_2eproto;
-};
-// -------------------------------------------------------------------
-
-class TripLeg_Sign final :
-    public ::PROTOBUF_NAMESPACE_ID::MessageLite /* @@protoc_insertion_point(class_definition:valhalla.TripLeg.Sign) */ {
- public:
-  inline TripLeg_Sign() : TripLeg_Sign(nullptr) {}
-  ~TripLeg_Sign() override;
-  explicit constexpr TripLeg_Sign(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
-
-  TripLeg_Sign(const TripLeg_Sign& from);
-  TripLeg_Sign(TripLeg_Sign&& from) noexcept
-    : TripLeg_Sign() {
-    *this = ::std::move(from);
-  }
-
-  inline TripLeg_Sign& operator=(const TripLeg_Sign& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  inline TripLeg_Sign& operator=(TripLeg_Sign&& from) noexcept {
-    if (this == &from) return *this;
-    if (GetOwningArena() == from.GetOwningArena()
-  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
-        && GetOwningArena() != nullptr
-  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
-    ) {
-      InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-
-  inline const std::string& unknown_fields() const {
-    return _internal_metadata_.unknown_fields<std::string>(::PROTOBUF_NAMESPACE_ID::internal::GetEmptyString);
-  }
-  inline std::string* mutable_unknown_fields() {
-    return _internal_metadata_.mutable_unknown_fields<std::string>();
-  }
-
-  static const TripLeg_Sign& default_instance() {
-    return *internal_default_instance();
-  }
-  static inline const TripLeg_Sign* internal_default_instance() {
-    return reinterpret_cast<const TripLeg_Sign*>(
-               &_TripLeg_Sign_default_instance_);
-  }
-  static constexpr int kIndexInFileMessages =
-    1;
-
-  friend void swap(TripLeg_Sign& a, TripLeg_Sign& b) {
-    a.Swap(&b);
-  }
-  inline void Swap(TripLeg_Sign* other) {
-    if (other == this) return;
-  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
-    if (GetOwningArena() != nullptr &&
-        GetOwningArena() == other->GetOwningArena()) {
-   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
-    if (GetOwningArena() == other->GetOwningArena()) {
-  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
-      InternalSwap(other);
-    } else {
-      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
-    }
-  }
-  void UnsafeArenaSwap(TripLeg_Sign* other) {
-    if (other == this) return;
-    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
-    InternalSwap(other);
-  }
-
-  // implements Message ----------------------------------------------
-
-  TripLeg_Sign* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
-    return CreateMaybeMessage<TripLeg_Sign>(arena);
-  }
-  void CheckTypeAndMergeFrom(const ::PROTOBUF_NAMESPACE_ID::MessageLite& from)  final;
-  void CopyFrom(const TripLeg_Sign& from);
-  void MergeFrom(const TripLeg_Sign& from);
-  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
-  bool IsInitialized() const final;
-
-  size_t ByteSizeLong() const final;
-  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
-  uint8_t* _InternalSerialize(
-      uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
-  int GetCachedSize() const final { return _cached_size_.Get(); }
-
-  private:
-  void SharedCtor();
-  void SharedDtor();
-  void SetCachedSize(int size) const;
-  void InternalSwap(TripLeg_Sign* other);
-
-  private:
-  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
-  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "valhalla.TripLeg.Sign";
-  }
-  protected:
-  explicit TripLeg_Sign(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                       bool is_message_owned = false);
-  private:
-  static void ArenaDtor(void* object);
-  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
-  public:
-
-  std::string GetTypeName() const final;
-
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-
-  enum : int {
-    kExitNumbersFieldNumber = 1,
-    kExitOntoStreetsFieldNumber = 2,
-    kExitTowardLocationsFieldNumber = 3,
-    kExitNamesFieldNumber = 4,
-    kGuideOntoStreetsFieldNumber = 5,
-    kGuideTowardLocationsFieldNumber = 6,
-    kJunctionNamesFieldNumber = 7,
-    kGuidanceViewJunctionsFieldNumber = 8,
-    kGuidanceViewSignboardsFieldNumber = 9,
-  };
-  // repeated .valhalla.TripLeg.SignElement exit_numbers = 1;
-  int exit_numbers_size() const;
-  private:
-  int _internal_exit_numbers_size() const;
-  public:
-  void clear_exit_numbers();
-  ::valhalla::TripLeg_SignElement* mutable_exit_numbers(int index);
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::TripLeg_SignElement >*
-      mutable_exit_numbers();
-  private:
-  const ::valhalla::TripLeg_SignElement& _internal_exit_numbers(int index) const;
-  ::valhalla::TripLeg_SignElement* _internal_add_exit_numbers();
-  public:
-  const ::valhalla::TripLeg_SignElement& exit_numbers(int index) const;
-  ::valhalla::TripLeg_SignElement* add_exit_numbers();
-  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::TripLeg_SignElement >&
-      exit_numbers() const;
-
-  // repeated .valhalla.TripLeg.SignElement exit_onto_streets = 2;
-  int exit_onto_streets_size() const;
-  private:
-  int _internal_exit_onto_streets_size() const;
-  public:
-  void clear_exit_onto_streets();
-  ::valhalla::TripLeg_SignElement* mutable_exit_onto_streets(int index);
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::TripLeg_SignElement >*
-      mutable_exit_onto_streets();
-  private:
-  const ::valhalla::TripLeg_SignElement& _internal_exit_onto_streets(int index) const;
-  ::valhalla::TripLeg_SignElement* _internal_add_exit_onto_streets();
-  public:
-  const ::valhalla::TripLeg_SignElement& exit_onto_streets(int index) const;
-  ::valhalla::TripLeg_SignElement* add_exit_onto_streets();
-  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::TripLeg_SignElement >&
-      exit_onto_streets() const;
-
-  // repeated .valhalla.TripLeg.SignElement exit_toward_locations = 3;
-  int exit_toward_locations_size() const;
-  private:
-  int _internal_exit_toward_locations_size() const;
-  public:
-  void clear_exit_toward_locations();
-  ::valhalla::TripLeg_SignElement* mutable_exit_toward_locations(int index);
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::TripLeg_SignElement >*
-      mutable_exit_toward_locations();
-  private:
-  const ::valhalla::TripLeg_SignElement& _internal_exit_toward_locations(int index) const;
-  ::valhalla::TripLeg_SignElement* _internal_add_exit_toward_locations();
-  public:
-  const ::valhalla::TripLeg_SignElement& exit_toward_locations(int index) const;
-  ::valhalla::TripLeg_SignElement* add_exit_toward_locations();
-  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::TripLeg_SignElement >&
-      exit_toward_locations() const;
-
-  // repeated .valhalla.TripLeg.SignElement exit_names = 4;
-  int exit_names_size() const;
-  private:
-  int _internal_exit_names_size() const;
-  public:
-  void clear_exit_names();
-  ::valhalla::TripLeg_SignElement* mutable_exit_names(int index);
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::TripLeg_SignElement >*
-      mutable_exit_names();
-  private:
-  const ::valhalla::TripLeg_SignElement& _internal_exit_names(int index) const;
-  ::valhalla::TripLeg_SignElement* _internal_add_exit_names();
-  public:
-  const ::valhalla::TripLeg_SignElement& exit_names(int index) const;
-  ::valhalla::TripLeg_SignElement* add_exit_names();
-  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::TripLeg_SignElement >&
-      exit_names() const;
-
-  // repeated .valhalla.TripLeg.SignElement guide_onto_streets = 5;
-  int guide_onto_streets_size() const;
-  private:
-  int _internal_guide_onto_streets_size() const;
-  public:
-  void clear_guide_onto_streets();
-  ::valhalla::TripLeg_SignElement* mutable_guide_onto_streets(int index);
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::TripLeg_SignElement >*
-      mutable_guide_onto_streets();
-  private:
-  const ::valhalla::TripLeg_SignElement& _internal_guide_onto_streets(int index) const;
-  ::valhalla::TripLeg_SignElement* _internal_add_guide_onto_streets();
-  public:
-  const ::valhalla::TripLeg_SignElement& guide_onto_streets(int index) const;
-  ::valhalla::TripLeg_SignElement* add_guide_onto_streets();
-  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::TripLeg_SignElement >&
-      guide_onto_streets() const;
-
-  // repeated .valhalla.TripLeg.SignElement guide_toward_locations = 6;
-  int guide_toward_locations_size() const;
-  private:
-  int _internal_guide_toward_locations_size() const;
-  public:
-  void clear_guide_toward_locations();
-  ::valhalla::TripLeg_SignElement* mutable_guide_toward_locations(int index);
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::TripLeg_SignElement >*
-      mutable_guide_toward_locations();
-  private:
-  const ::valhalla::TripLeg_SignElement& _internal_guide_toward_locations(int index) const;
-  ::valhalla::TripLeg_SignElement* _internal_add_guide_toward_locations();
-  public:
-  const ::valhalla::TripLeg_SignElement& guide_toward_locations(int index) const;
-  ::valhalla::TripLeg_SignElement* add_guide_toward_locations();
-  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::TripLeg_SignElement >&
-      guide_toward_locations() const;
-
-  // repeated .valhalla.TripLeg.SignElement junction_names = 7;
-  int junction_names_size() const;
-  private:
-  int _internal_junction_names_size() const;
-  public:
-  void clear_junction_names();
-  ::valhalla::TripLeg_SignElement* mutable_junction_names(int index);
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::TripLeg_SignElement >*
-      mutable_junction_names();
-  private:
-  const ::valhalla::TripLeg_SignElement& _internal_junction_names(int index) const;
-  ::valhalla::TripLeg_SignElement* _internal_add_junction_names();
-  public:
-  const ::valhalla::TripLeg_SignElement& junction_names(int index) const;
-  ::valhalla::TripLeg_SignElement* add_junction_names();
-  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::TripLeg_SignElement >&
-      junction_names() const;
-
-  // repeated .valhalla.TripLeg.SignElement guidance_view_junctions = 8;
-  int guidance_view_junctions_size() const;
-  private:
-  int _internal_guidance_view_junctions_size() const;
-  public:
-  void clear_guidance_view_junctions();
-  ::valhalla::TripLeg_SignElement* mutable_guidance_view_junctions(int index);
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::TripLeg_SignElement >*
-      mutable_guidance_view_junctions();
-  private:
-  const ::valhalla::TripLeg_SignElement& _internal_guidance_view_junctions(int index) const;
-  ::valhalla::TripLeg_SignElement* _internal_add_guidance_view_junctions();
-  public:
-  const ::valhalla::TripLeg_SignElement& guidance_view_junctions(int index) const;
-  ::valhalla::TripLeg_SignElement* add_guidance_view_junctions();
-  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::TripLeg_SignElement >&
-      guidance_view_junctions() const;
-
-  // repeated .valhalla.TripLeg.SignElement guidance_view_signboards = 9;
-  int guidance_view_signboards_size() const;
-  private:
-  int _internal_guidance_view_signboards_size() const;
-  public:
-  void clear_guidance_view_signboards();
-  ::valhalla::TripLeg_SignElement* mutable_guidance_view_signboards(int index);
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::TripLeg_SignElement >*
-      mutable_guidance_view_signboards();
-  private:
-  const ::valhalla::TripLeg_SignElement& _internal_guidance_view_signboards(int index) const;
-  ::valhalla::TripLeg_SignElement* _internal_add_guidance_view_signboards();
-  public:
-  const ::valhalla::TripLeg_SignElement& guidance_view_signboards(int index) const;
-  ::valhalla::TripLeg_SignElement* add_guidance_view_signboards();
-  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::TripLeg_SignElement >&
-      guidance_view_signboards() const;
-
-  // @@protoc_insertion_point(class_scope:valhalla.TripLeg.Sign)
- private:
-  class _Internal;
-
-  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
-  typedef void InternalArenaConstructable_;
-  typedef void DestructorSkippable_;
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::TripLeg_SignElement > exit_numbers_;
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::TripLeg_SignElement > exit_onto_streets_;
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::TripLeg_SignElement > exit_toward_locations_;
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::TripLeg_SignElement > exit_names_;
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::TripLeg_SignElement > guide_onto_streets_;
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::TripLeg_SignElement > guide_toward_locations_;
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::TripLeg_SignElement > junction_names_;
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::TripLeg_SignElement > guidance_view_junctions_;
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::TripLeg_SignElement > guidance_view_signboards_;
-  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
-  friend struct ::TableStruct_trip_2eproto;
-};
-// -------------------------------------------------------------------
-
 class TripLeg_TransitRouteInfo final :
     public ::PROTOBUF_NAMESPACE_ID::MessageLite /* @@protoc_insertion_point(class_definition:valhalla.TripLeg.TransitRouteInfo) */ {
  public:
@@ -950,7 +475,7 @@ class TripLeg_TransitRouteInfo final :
                &_TripLeg_TransitRouteInfo_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    2;
+    0;
 
   friend void swap(TripLeg_TransitRouteInfo& a, TripLeg_TransitRouteInfo& b) {
     a.Swap(&b);
@@ -1297,7 +822,7 @@ class TripLeg_BikeShareStationInfo final :
                &_TripLeg_BikeShareStationInfo_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    3;
+    1;
 
   friend void swap(TripLeg_BikeShareStationInfo& a, TripLeg_BikeShareStationInfo& b) {
     a.Swap(&b);
@@ -1554,7 +1079,7 @@ class TripLeg_LaneConnectivity final :
                &_TripLeg_LaneConnectivity_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    4;
+    2;
 
   friend void swap(TripLeg_LaneConnectivity& a, TripLeg_LaneConnectivity& b) {
     a.Swap(&b);
@@ -1736,7 +1261,7 @@ class TripLeg_TrafficSegment final :
                &_TripLeg_TrafficSegment_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    5;
+    3;
 
   friend void swap(TripLeg_TrafficSegment& a, TripLeg_TrafficSegment& b) {
     a.Swap(&b);
@@ -1938,7 +1463,7 @@ class TripLeg_Restriction final :
                &_TripLeg_Restriction_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    6;
+    4;
 
   friend void swap(TripLeg_Restriction& a, TripLeg_Restriction& b) {
     a.Swap(&b);
@@ -2080,7 +1605,7 @@ class TripLeg_Edge final :
                &_TripLeg_Edge_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    7;
+    5;
 
   friend void swap(TripLeg_Edge& a, TripLeg_Edge& b) {
     a.Swap(&b);
@@ -2151,7 +1676,7 @@ class TripLeg_Edge final :
     kLaneConnectivityFieldNumber = 39,
     kTrafficSegmentFieldNumber = 41,
     kTurnLanesFieldNumber = 42,
-    kTaggedNameFieldNumber = 48,
+    kTaggedValueFieldNumber = 48,
     kSignFieldNumber = 19,
     kTransitRouteInfoFieldNumber = 25,
     kRestrictionFieldNumber = 45,
@@ -2272,41 +1797,41 @@ class TripLeg_Edge final :
   const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::TurnLane >&
       turn_lanes() const;
 
-  // repeated .valhalla.TaggedName tagged_name = 48;
-  int tagged_name_size() const;
+  // repeated .valhalla.TaggedValue tagged_value = 48;
+  int tagged_value_size() const;
   private:
-  int _internal_tagged_name_size() const;
+  int _internal_tagged_value_size() const;
   public:
-  void clear_tagged_name();
-  ::valhalla::TaggedName* mutable_tagged_name(int index);
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::TaggedName >*
-      mutable_tagged_name();
+  void clear_tagged_value();
+  ::valhalla::TaggedValue* mutable_tagged_value(int index);
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::TaggedValue >*
+      mutable_tagged_value();
   private:
-  const ::valhalla::TaggedName& _internal_tagged_name(int index) const;
-  ::valhalla::TaggedName* _internal_add_tagged_name();
+  const ::valhalla::TaggedValue& _internal_tagged_value(int index) const;
+  ::valhalla::TaggedValue* _internal_add_tagged_value();
   public:
-  const ::valhalla::TaggedName& tagged_name(int index) const;
-  ::valhalla::TaggedName* add_tagged_name();
-  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::TaggedName >&
-      tagged_name() const;
+  const ::valhalla::TaggedValue& tagged_value(int index) const;
+  ::valhalla::TaggedValue* add_tagged_value();
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::TaggedValue >&
+      tagged_value() const;
 
-  // optional .valhalla.TripLeg.Sign sign = 19;
+  // optional .valhalla.TripSign sign = 19;
   bool has_sign() const;
   private:
   bool _internal_has_sign() const;
   public:
   void clear_sign();
-  const ::valhalla::TripLeg_Sign& sign() const;
-  PROTOBUF_NODISCARD ::valhalla::TripLeg_Sign* release_sign();
-  ::valhalla::TripLeg_Sign* mutable_sign();
-  void set_allocated_sign(::valhalla::TripLeg_Sign* sign);
+  const ::valhalla::TripSign& sign() const;
+  PROTOBUF_NODISCARD ::valhalla::TripSign* release_sign();
+  ::valhalla::TripSign* mutable_sign();
+  void set_allocated_sign(::valhalla::TripSign* sign);
   private:
-  const ::valhalla::TripLeg_Sign& _internal_sign() const;
-  ::valhalla::TripLeg_Sign* _internal_mutable_sign();
+  const ::valhalla::TripSign& _internal_sign() const;
+  ::valhalla::TripSign* _internal_mutable_sign();
   public:
   void unsafe_arena_set_allocated_sign(
-      ::valhalla::TripLeg_Sign* sign);
-  ::valhalla::TripLeg_Sign* unsafe_arena_release_sign();
+      ::valhalla::TripSign* sign);
+  ::valhalla::TripSign* unsafe_arena_release_sign();
 
   // optional .valhalla.TripLeg.TransitRouteInfo transit_route_info = 25;
   bool has_transit_route_info() const;
@@ -2929,8 +2454,8 @@ class TripLeg_Edge final :
   ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::TripLeg_LaneConnectivity > lane_connectivity_;
   ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::TripLeg_TrafficSegment > traffic_segment_;
   ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::TurnLane > turn_lanes_;
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::TaggedName > tagged_name_;
-  ::valhalla::TripLeg_Sign* sign_;
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::TaggedValue > tagged_value_;
+  ::valhalla::TripSign* sign_;
   ::valhalla::TripLeg_TransitRouteInfo* transit_route_info_;
   ::valhalla::TripLeg_Restriction* restriction_;
   float length_km_;
@@ -3027,7 +2552,7 @@ class TripLeg_IntersectingEdge final :
                &_TripLeg_IntersectingEdge_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    8;
+    6;
 
   friend void swap(TripLeg_IntersectingEdge& a, TripLeg_IntersectingEdge& b) {
     a.Swap(&b);
@@ -3094,6 +2619,7 @@ class TripLeg_IntersectingEdge final :
   // accessors -------------------------------------------------------
 
   enum : int {
+    kSignFieldNumber = 10,
     kBeginHeadingFieldNumber = 1,
     kPrevNameConsistencyFieldNumber = 2,
     kCurrNameConsistencyFieldNumber = 3,
@@ -3102,7 +2628,26 @@ class TripLeg_IntersectingEdge final :
     kWalkabilityFieldNumber = 6,
     kUseFieldNumber = 7,
     kRoadClassFieldNumber = 8,
+    kLaneCountFieldNumber = 9,
   };
+  // optional .valhalla.TripSign sign = 10;
+  bool has_sign() const;
+  private:
+  bool _internal_has_sign() const;
+  public:
+  void clear_sign();
+  const ::valhalla::TripSign& sign() const;
+  PROTOBUF_NODISCARD ::valhalla::TripSign* release_sign();
+  ::valhalla::TripSign* mutable_sign();
+  void set_allocated_sign(::valhalla::TripSign* sign);
+  private:
+  const ::valhalla::TripSign& _internal_sign() const;
+  ::valhalla::TripSign* _internal_mutable_sign();
+  public:
+  void unsafe_arena_set_allocated_sign(
+      ::valhalla::TripSign* sign);
+  ::valhalla::TripSign* unsafe_arena_release_sign();
+
   // optional uint32 begin_heading = 1;
   bool has_begin_heading() const;
   private:
@@ -3207,6 +2752,19 @@ class TripLeg_IntersectingEdge final :
   void _internal_set_road_class(::valhalla::RoadClass value);
   public:
 
+  // optional uint32 lane_count = 9;
+  bool has_lane_count() const;
+  private:
+  bool _internal_has_lane_count() const;
+  public:
+  void clear_lane_count();
+  uint32_t lane_count() const;
+  void set_lane_count(uint32_t value);
+  private:
+  uint32_t _internal_lane_count() const;
+  void _internal_set_lane_count(uint32_t value);
+  public:
+
   // @@protoc_insertion_point(class_scope:valhalla.TripLeg.IntersectingEdge)
  private:
   class _Internal;
@@ -3216,6 +2774,7 @@ class TripLeg_IntersectingEdge final :
   typedef void DestructorSkippable_;
   ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  ::valhalla::TripSign* sign_;
   uint32_t begin_heading_;
   bool prev_name_consistency_;
   bool curr_name_consistency_;
@@ -3224,6 +2783,7 @@ class TripLeg_IntersectingEdge final :
   int walkability_;
   int use_;
   int road_class_;
+  uint32_t lane_count_;
   friend struct ::TableStruct_trip_2eproto;
 };
 // -------------------------------------------------------------------
@@ -3274,7 +2834,7 @@ class TripLeg_Cost final :
                &_TripLeg_Cost_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    9;
+    7;
 
   friend void swap(TripLeg_Cost& a, TripLeg_Cost& b) {
     a.Swap(&b);
@@ -3431,7 +2991,7 @@ class TripLeg_PathCost final :
                &_TripLeg_PathCost_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    10;
+    8;
 
   friend void swap(TripLeg_PathCost& a, TripLeg_PathCost& b) {
     a.Swap(&b);
@@ -3598,7 +3158,7 @@ class TripLeg_Node final :
                &_TripLeg_Node_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    11;
+    9;
 
   friend void swap(TripLeg_Node& a, TripLeg_Node& b) {
     a.Swap(&b);
@@ -3998,7 +3558,7 @@ class TripLeg_Admin final :
                &_TripLeg_Admin_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    12;
+    10;
 
   friend void swap(TripLeg_Admin& a, TripLeg_Admin& b) {
     a.Swap(&b);
@@ -4205,7 +3765,7 @@ class TripLeg_ShapeAttributes final :
                &_TripLeg_ShapeAttributes_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    13;
+    11;
 
   friend void swap(TripLeg_ShapeAttributes& a, TripLeg_ShapeAttributes& b) {
     a.Swap(&b);
@@ -4431,7 +3991,7 @@ class TripLeg_Incident final :
                &_TripLeg_Incident_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    14;
+    12;
 
   friend void swap(TripLeg_Incident& a, TripLeg_Incident& b) {
     a.Swap(&b);
@@ -4608,7 +4168,7 @@ class TripLeg_Closure final :
                &_TripLeg_Closure_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    15;
+    13;
 
   friend void swap(TripLeg_Closure& a, TripLeg_Closure& b) {
     a.Swap(&b);
@@ -4765,7 +4325,7 @@ class TripLeg final :
                &_TripLeg_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    16;
+    14;
 
   friend void swap(TripLeg& a, TripLeg& b) {
     a.Swap(&b);
@@ -4829,8 +4389,6 @@ class TripLeg final :
 
   // nested types ----------------------------------------------------
 
-  typedef TripLeg_SignElement SignElement;
-  typedef TripLeg_Sign Sign;
   typedef TripLeg_TransitRouteInfo TransitRouteInfo;
   typedef TripLeg_BikeShareStationInfo BikeShareStationInfo;
   typedef TripLeg_LaneConnectivity LaneConnectivity;
@@ -5561,7 +5119,7 @@ class TripRoute final :
                &_TripRoute_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    17;
+    15;
 
   friend void swap(TripRoute& a, TripRoute& b) {
     a.Swap(&b);
@@ -5707,7 +5265,7 @@ class Trip final :
                &_Trip_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    18;
+    16;
 
   friend void swap(Trip& a, Trip& b) {
     a.Swap(&b);
@@ -5814,471 +5372,6 @@ class Trip final :
   #pragma GCC diagnostic push
   #pragma GCC diagnostic ignored "-Wstrict-aliasing"
 #endif  // __GNUC__
-// TripLeg_SignElement
-
-// optional string text = 1;
-inline bool TripLeg_SignElement::_internal_has_text() const {
-  bool value = (_has_bits_[0] & 0x00000001u) != 0;
-  return value;
-}
-inline bool TripLeg_SignElement::has_text() const {
-  return _internal_has_text();
-}
-inline void TripLeg_SignElement::clear_text() {
-  text_.ClearToEmpty();
-  _has_bits_[0] &= ~0x00000001u;
-}
-inline const std::string& TripLeg_SignElement::text() const {
-  // @@protoc_insertion_point(field_get:valhalla.TripLeg.SignElement.text)
-  return _internal_text();
-}
-template <typename ArgT0, typename... ArgT>
-inline PROTOBUF_ALWAYS_INLINE
-void TripLeg_SignElement::set_text(ArgT0&& arg0, ArgT... args) {
- _has_bits_[0] |= 0x00000001u;
- text_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:valhalla.TripLeg.SignElement.text)
-}
-inline std::string* TripLeg_SignElement::mutable_text() {
-  std::string* _s = _internal_mutable_text();
-  // @@protoc_insertion_point(field_mutable:valhalla.TripLeg.SignElement.text)
-  return _s;
-}
-inline const std::string& TripLeg_SignElement::_internal_text() const {
-  return text_.Get();
-}
-inline void TripLeg_SignElement::_internal_set_text(const std::string& value) {
-  _has_bits_[0] |= 0x00000001u;
-  text_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, value, GetArenaForAllocation());
-}
-inline std::string* TripLeg_SignElement::_internal_mutable_text() {
-  _has_bits_[0] |= 0x00000001u;
-  return text_.Mutable(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArenaForAllocation());
-}
-inline std::string* TripLeg_SignElement::release_text() {
-  // @@protoc_insertion_point(field_release:valhalla.TripLeg.SignElement.text)
-  if (!_internal_has_text()) {
-    return nullptr;
-  }
-  _has_bits_[0] &= ~0x00000001u;
-  auto* p = text_.ReleaseNonDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArenaForAllocation());
-#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  if (text_.IsDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited())) {
-    text_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
-  }
-#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  return p;
-}
-inline void TripLeg_SignElement::set_allocated_text(std::string* text) {
-  if (text != nullptr) {
-    _has_bits_[0] |= 0x00000001u;
-  } else {
-    _has_bits_[0] &= ~0x00000001u;
-  }
-  text_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), text,
-      GetArenaForAllocation());
-#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  if (text_.IsDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited())) {
-    text_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
-  }
-#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:valhalla.TripLeg.SignElement.text)
-}
-
-// optional bool is_route_number = 2;
-inline bool TripLeg_SignElement::_internal_has_is_route_number() const {
-  bool value = (_has_bits_[0] & 0x00000002u) != 0;
-  return value;
-}
-inline bool TripLeg_SignElement::has_is_route_number() const {
-  return _internal_has_is_route_number();
-}
-inline void TripLeg_SignElement::clear_is_route_number() {
-  is_route_number_ = false;
-  _has_bits_[0] &= ~0x00000002u;
-}
-inline bool TripLeg_SignElement::_internal_is_route_number() const {
-  return is_route_number_;
-}
-inline bool TripLeg_SignElement::is_route_number() const {
-  // @@protoc_insertion_point(field_get:valhalla.TripLeg.SignElement.is_route_number)
-  return _internal_is_route_number();
-}
-inline void TripLeg_SignElement::_internal_set_is_route_number(bool value) {
-  _has_bits_[0] |= 0x00000002u;
-  is_route_number_ = value;
-}
-inline void TripLeg_SignElement::set_is_route_number(bool value) {
-  _internal_set_is_route_number(value);
-  // @@protoc_insertion_point(field_set:valhalla.TripLeg.SignElement.is_route_number)
-}
-
-// -------------------------------------------------------------------
-
-// TripLeg_Sign
-
-// repeated .valhalla.TripLeg.SignElement exit_numbers = 1;
-inline int TripLeg_Sign::_internal_exit_numbers_size() const {
-  return exit_numbers_.size();
-}
-inline int TripLeg_Sign::exit_numbers_size() const {
-  return _internal_exit_numbers_size();
-}
-inline void TripLeg_Sign::clear_exit_numbers() {
-  exit_numbers_.Clear();
-}
-inline ::valhalla::TripLeg_SignElement* TripLeg_Sign::mutable_exit_numbers(int index) {
-  // @@protoc_insertion_point(field_mutable:valhalla.TripLeg.Sign.exit_numbers)
-  return exit_numbers_.Mutable(index);
-}
-inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::TripLeg_SignElement >*
-TripLeg_Sign::mutable_exit_numbers() {
-  // @@protoc_insertion_point(field_mutable_list:valhalla.TripLeg.Sign.exit_numbers)
-  return &exit_numbers_;
-}
-inline const ::valhalla::TripLeg_SignElement& TripLeg_Sign::_internal_exit_numbers(int index) const {
-  return exit_numbers_.Get(index);
-}
-inline const ::valhalla::TripLeg_SignElement& TripLeg_Sign::exit_numbers(int index) const {
-  // @@protoc_insertion_point(field_get:valhalla.TripLeg.Sign.exit_numbers)
-  return _internal_exit_numbers(index);
-}
-inline ::valhalla::TripLeg_SignElement* TripLeg_Sign::_internal_add_exit_numbers() {
-  return exit_numbers_.Add();
-}
-inline ::valhalla::TripLeg_SignElement* TripLeg_Sign::add_exit_numbers() {
-  ::valhalla::TripLeg_SignElement* _add = _internal_add_exit_numbers();
-  // @@protoc_insertion_point(field_add:valhalla.TripLeg.Sign.exit_numbers)
-  return _add;
-}
-inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::TripLeg_SignElement >&
-TripLeg_Sign::exit_numbers() const {
-  // @@protoc_insertion_point(field_list:valhalla.TripLeg.Sign.exit_numbers)
-  return exit_numbers_;
-}
-
-// repeated .valhalla.TripLeg.SignElement exit_onto_streets = 2;
-inline int TripLeg_Sign::_internal_exit_onto_streets_size() const {
-  return exit_onto_streets_.size();
-}
-inline int TripLeg_Sign::exit_onto_streets_size() const {
-  return _internal_exit_onto_streets_size();
-}
-inline void TripLeg_Sign::clear_exit_onto_streets() {
-  exit_onto_streets_.Clear();
-}
-inline ::valhalla::TripLeg_SignElement* TripLeg_Sign::mutable_exit_onto_streets(int index) {
-  // @@protoc_insertion_point(field_mutable:valhalla.TripLeg.Sign.exit_onto_streets)
-  return exit_onto_streets_.Mutable(index);
-}
-inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::TripLeg_SignElement >*
-TripLeg_Sign::mutable_exit_onto_streets() {
-  // @@protoc_insertion_point(field_mutable_list:valhalla.TripLeg.Sign.exit_onto_streets)
-  return &exit_onto_streets_;
-}
-inline const ::valhalla::TripLeg_SignElement& TripLeg_Sign::_internal_exit_onto_streets(int index) const {
-  return exit_onto_streets_.Get(index);
-}
-inline const ::valhalla::TripLeg_SignElement& TripLeg_Sign::exit_onto_streets(int index) const {
-  // @@protoc_insertion_point(field_get:valhalla.TripLeg.Sign.exit_onto_streets)
-  return _internal_exit_onto_streets(index);
-}
-inline ::valhalla::TripLeg_SignElement* TripLeg_Sign::_internal_add_exit_onto_streets() {
-  return exit_onto_streets_.Add();
-}
-inline ::valhalla::TripLeg_SignElement* TripLeg_Sign::add_exit_onto_streets() {
-  ::valhalla::TripLeg_SignElement* _add = _internal_add_exit_onto_streets();
-  // @@protoc_insertion_point(field_add:valhalla.TripLeg.Sign.exit_onto_streets)
-  return _add;
-}
-inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::TripLeg_SignElement >&
-TripLeg_Sign::exit_onto_streets() const {
-  // @@protoc_insertion_point(field_list:valhalla.TripLeg.Sign.exit_onto_streets)
-  return exit_onto_streets_;
-}
-
-// repeated .valhalla.TripLeg.SignElement exit_toward_locations = 3;
-inline int TripLeg_Sign::_internal_exit_toward_locations_size() const {
-  return exit_toward_locations_.size();
-}
-inline int TripLeg_Sign::exit_toward_locations_size() const {
-  return _internal_exit_toward_locations_size();
-}
-inline void TripLeg_Sign::clear_exit_toward_locations() {
-  exit_toward_locations_.Clear();
-}
-inline ::valhalla::TripLeg_SignElement* TripLeg_Sign::mutable_exit_toward_locations(int index) {
-  // @@protoc_insertion_point(field_mutable:valhalla.TripLeg.Sign.exit_toward_locations)
-  return exit_toward_locations_.Mutable(index);
-}
-inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::TripLeg_SignElement >*
-TripLeg_Sign::mutable_exit_toward_locations() {
-  // @@protoc_insertion_point(field_mutable_list:valhalla.TripLeg.Sign.exit_toward_locations)
-  return &exit_toward_locations_;
-}
-inline const ::valhalla::TripLeg_SignElement& TripLeg_Sign::_internal_exit_toward_locations(int index) const {
-  return exit_toward_locations_.Get(index);
-}
-inline const ::valhalla::TripLeg_SignElement& TripLeg_Sign::exit_toward_locations(int index) const {
-  // @@protoc_insertion_point(field_get:valhalla.TripLeg.Sign.exit_toward_locations)
-  return _internal_exit_toward_locations(index);
-}
-inline ::valhalla::TripLeg_SignElement* TripLeg_Sign::_internal_add_exit_toward_locations() {
-  return exit_toward_locations_.Add();
-}
-inline ::valhalla::TripLeg_SignElement* TripLeg_Sign::add_exit_toward_locations() {
-  ::valhalla::TripLeg_SignElement* _add = _internal_add_exit_toward_locations();
-  // @@protoc_insertion_point(field_add:valhalla.TripLeg.Sign.exit_toward_locations)
-  return _add;
-}
-inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::TripLeg_SignElement >&
-TripLeg_Sign::exit_toward_locations() const {
-  // @@protoc_insertion_point(field_list:valhalla.TripLeg.Sign.exit_toward_locations)
-  return exit_toward_locations_;
-}
-
-// repeated .valhalla.TripLeg.SignElement exit_names = 4;
-inline int TripLeg_Sign::_internal_exit_names_size() const {
-  return exit_names_.size();
-}
-inline int TripLeg_Sign::exit_names_size() const {
-  return _internal_exit_names_size();
-}
-inline void TripLeg_Sign::clear_exit_names() {
-  exit_names_.Clear();
-}
-inline ::valhalla::TripLeg_SignElement* TripLeg_Sign::mutable_exit_names(int index) {
-  // @@protoc_insertion_point(field_mutable:valhalla.TripLeg.Sign.exit_names)
-  return exit_names_.Mutable(index);
-}
-inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::TripLeg_SignElement >*
-TripLeg_Sign::mutable_exit_names() {
-  // @@protoc_insertion_point(field_mutable_list:valhalla.TripLeg.Sign.exit_names)
-  return &exit_names_;
-}
-inline const ::valhalla::TripLeg_SignElement& TripLeg_Sign::_internal_exit_names(int index) const {
-  return exit_names_.Get(index);
-}
-inline const ::valhalla::TripLeg_SignElement& TripLeg_Sign::exit_names(int index) const {
-  // @@protoc_insertion_point(field_get:valhalla.TripLeg.Sign.exit_names)
-  return _internal_exit_names(index);
-}
-inline ::valhalla::TripLeg_SignElement* TripLeg_Sign::_internal_add_exit_names() {
-  return exit_names_.Add();
-}
-inline ::valhalla::TripLeg_SignElement* TripLeg_Sign::add_exit_names() {
-  ::valhalla::TripLeg_SignElement* _add = _internal_add_exit_names();
-  // @@protoc_insertion_point(field_add:valhalla.TripLeg.Sign.exit_names)
-  return _add;
-}
-inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::TripLeg_SignElement >&
-TripLeg_Sign::exit_names() const {
-  // @@protoc_insertion_point(field_list:valhalla.TripLeg.Sign.exit_names)
-  return exit_names_;
-}
-
-// repeated .valhalla.TripLeg.SignElement guide_onto_streets = 5;
-inline int TripLeg_Sign::_internal_guide_onto_streets_size() const {
-  return guide_onto_streets_.size();
-}
-inline int TripLeg_Sign::guide_onto_streets_size() const {
-  return _internal_guide_onto_streets_size();
-}
-inline void TripLeg_Sign::clear_guide_onto_streets() {
-  guide_onto_streets_.Clear();
-}
-inline ::valhalla::TripLeg_SignElement* TripLeg_Sign::mutable_guide_onto_streets(int index) {
-  // @@protoc_insertion_point(field_mutable:valhalla.TripLeg.Sign.guide_onto_streets)
-  return guide_onto_streets_.Mutable(index);
-}
-inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::TripLeg_SignElement >*
-TripLeg_Sign::mutable_guide_onto_streets() {
-  // @@protoc_insertion_point(field_mutable_list:valhalla.TripLeg.Sign.guide_onto_streets)
-  return &guide_onto_streets_;
-}
-inline const ::valhalla::TripLeg_SignElement& TripLeg_Sign::_internal_guide_onto_streets(int index) const {
-  return guide_onto_streets_.Get(index);
-}
-inline const ::valhalla::TripLeg_SignElement& TripLeg_Sign::guide_onto_streets(int index) const {
-  // @@protoc_insertion_point(field_get:valhalla.TripLeg.Sign.guide_onto_streets)
-  return _internal_guide_onto_streets(index);
-}
-inline ::valhalla::TripLeg_SignElement* TripLeg_Sign::_internal_add_guide_onto_streets() {
-  return guide_onto_streets_.Add();
-}
-inline ::valhalla::TripLeg_SignElement* TripLeg_Sign::add_guide_onto_streets() {
-  ::valhalla::TripLeg_SignElement* _add = _internal_add_guide_onto_streets();
-  // @@protoc_insertion_point(field_add:valhalla.TripLeg.Sign.guide_onto_streets)
-  return _add;
-}
-inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::TripLeg_SignElement >&
-TripLeg_Sign::guide_onto_streets() const {
-  // @@protoc_insertion_point(field_list:valhalla.TripLeg.Sign.guide_onto_streets)
-  return guide_onto_streets_;
-}
-
-// repeated .valhalla.TripLeg.SignElement guide_toward_locations = 6;
-inline int TripLeg_Sign::_internal_guide_toward_locations_size() const {
-  return guide_toward_locations_.size();
-}
-inline int TripLeg_Sign::guide_toward_locations_size() const {
-  return _internal_guide_toward_locations_size();
-}
-inline void TripLeg_Sign::clear_guide_toward_locations() {
-  guide_toward_locations_.Clear();
-}
-inline ::valhalla::TripLeg_SignElement* TripLeg_Sign::mutable_guide_toward_locations(int index) {
-  // @@protoc_insertion_point(field_mutable:valhalla.TripLeg.Sign.guide_toward_locations)
-  return guide_toward_locations_.Mutable(index);
-}
-inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::TripLeg_SignElement >*
-TripLeg_Sign::mutable_guide_toward_locations() {
-  // @@protoc_insertion_point(field_mutable_list:valhalla.TripLeg.Sign.guide_toward_locations)
-  return &guide_toward_locations_;
-}
-inline const ::valhalla::TripLeg_SignElement& TripLeg_Sign::_internal_guide_toward_locations(int index) const {
-  return guide_toward_locations_.Get(index);
-}
-inline const ::valhalla::TripLeg_SignElement& TripLeg_Sign::guide_toward_locations(int index) const {
-  // @@protoc_insertion_point(field_get:valhalla.TripLeg.Sign.guide_toward_locations)
-  return _internal_guide_toward_locations(index);
-}
-inline ::valhalla::TripLeg_SignElement* TripLeg_Sign::_internal_add_guide_toward_locations() {
-  return guide_toward_locations_.Add();
-}
-inline ::valhalla::TripLeg_SignElement* TripLeg_Sign::add_guide_toward_locations() {
-  ::valhalla::TripLeg_SignElement* _add = _internal_add_guide_toward_locations();
-  // @@protoc_insertion_point(field_add:valhalla.TripLeg.Sign.guide_toward_locations)
-  return _add;
-}
-inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::TripLeg_SignElement >&
-TripLeg_Sign::guide_toward_locations() const {
-  // @@protoc_insertion_point(field_list:valhalla.TripLeg.Sign.guide_toward_locations)
-  return guide_toward_locations_;
-}
-
-// repeated .valhalla.TripLeg.SignElement junction_names = 7;
-inline int TripLeg_Sign::_internal_junction_names_size() const {
-  return junction_names_.size();
-}
-inline int TripLeg_Sign::junction_names_size() const {
-  return _internal_junction_names_size();
-}
-inline void TripLeg_Sign::clear_junction_names() {
-  junction_names_.Clear();
-}
-inline ::valhalla::TripLeg_SignElement* TripLeg_Sign::mutable_junction_names(int index) {
-  // @@protoc_insertion_point(field_mutable:valhalla.TripLeg.Sign.junction_names)
-  return junction_names_.Mutable(index);
-}
-inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::TripLeg_SignElement >*
-TripLeg_Sign::mutable_junction_names() {
-  // @@protoc_insertion_point(field_mutable_list:valhalla.TripLeg.Sign.junction_names)
-  return &junction_names_;
-}
-inline const ::valhalla::TripLeg_SignElement& TripLeg_Sign::_internal_junction_names(int index) const {
-  return junction_names_.Get(index);
-}
-inline const ::valhalla::TripLeg_SignElement& TripLeg_Sign::junction_names(int index) const {
-  // @@protoc_insertion_point(field_get:valhalla.TripLeg.Sign.junction_names)
-  return _internal_junction_names(index);
-}
-inline ::valhalla::TripLeg_SignElement* TripLeg_Sign::_internal_add_junction_names() {
-  return junction_names_.Add();
-}
-inline ::valhalla::TripLeg_SignElement* TripLeg_Sign::add_junction_names() {
-  ::valhalla::TripLeg_SignElement* _add = _internal_add_junction_names();
-  // @@protoc_insertion_point(field_add:valhalla.TripLeg.Sign.junction_names)
-  return _add;
-}
-inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::TripLeg_SignElement >&
-TripLeg_Sign::junction_names() const {
-  // @@protoc_insertion_point(field_list:valhalla.TripLeg.Sign.junction_names)
-  return junction_names_;
-}
-
-// repeated .valhalla.TripLeg.SignElement guidance_view_junctions = 8;
-inline int TripLeg_Sign::_internal_guidance_view_junctions_size() const {
-  return guidance_view_junctions_.size();
-}
-inline int TripLeg_Sign::guidance_view_junctions_size() const {
-  return _internal_guidance_view_junctions_size();
-}
-inline void TripLeg_Sign::clear_guidance_view_junctions() {
-  guidance_view_junctions_.Clear();
-}
-inline ::valhalla::TripLeg_SignElement* TripLeg_Sign::mutable_guidance_view_junctions(int index) {
-  // @@protoc_insertion_point(field_mutable:valhalla.TripLeg.Sign.guidance_view_junctions)
-  return guidance_view_junctions_.Mutable(index);
-}
-inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::TripLeg_SignElement >*
-TripLeg_Sign::mutable_guidance_view_junctions() {
-  // @@protoc_insertion_point(field_mutable_list:valhalla.TripLeg.Sign.guidance_view_junctions)
-  return &guidance_view_junctions_;
-}
-inline const ::valhalla::TripLeg_SignElement& TripLeg_Sign::_internal_guidance_view_junctions(int index) const {
-  return guidance_view_junctions_.Get(index);
-}
-inline const ::valhalla::TripLeg_SignElement& TripLeg_Sign::guidance_view_junctions(int index) const {
-  // @@protoc_insertion_point(field_get:valhalla.TripLeg.Sign.guidance_view_junctions)
-  return _internal_guidance_view_junctions(index);
-}
-inline ::valhalla::TripLeg_SignElement* TripLeg_Sign::_internal_add_guidance_view_junctions() {
-  return guidance_view_junctions_.Add();
-}
-inline ::valhalla::TripLeg_SignElement* TripLeg_Sign::add_guidance_view_junctions() {
-  ::valhalla::TripLeg_SignElement* _add = _internal_add_guidance_view_junctions();
-  // @@protoc_insertion_point(field_add:valhalla.TripLeg.Sign.guidance_view_junctions)
-  return _add;
-}
-inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::TripLeg_SignElement >&
-TripLeg_Sign::guidance_view_junctions() const {
-  // @@protoc_insertion_point(field_list:valhalla.TripLeg.Sign.guidance_view_junctions)
-  return guidance_view_junctions_;
-}
-
-// repeated .valhalla.TripLeg.SignElement guidance_view_signboards = 9;
-inline int TripLeg_Sign::_internal_guidance_view_signboards_size() const {
-  return guidance_view_signboards_.size();
-}
-inline int TripLeg_Sign::guidance_view_signboards_size() const {
-  return _internal_guidance_view_signboards_size();
-}
-inline void TripLeg_Sign::clear_guidance_view_signboards() {
-  guidance_view_signboards_.Clear();
-}
-inline ::valhalla::TripLeg_SignElement* TripLeg_Sign::mutable_guidance_view_signboards(int index) {
-  // @@protoc_insertion_point(field_mutable:valhalla.TripLeg.Sign.guidance_view_signboards)
-  return guidance_view_signboards_.Mutable(index);
-}
-inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::TripLeg_SignElement >*
-TripLeg_Sign::mutable_guidance_view_signboards() {
-  // @@protoc_insertion_point(field_mutable_list:valhalla.TripLeg.Sign.guidance_view_signboards)
-  return &guidance_view_signboards_;
-}
-inline const ::valhalla::TripLeg_SignElement& TripLeg_Sign::_internal_guidance_view_signboards(int index) const {
-  return guidance_view_signboards_.Get(index);
-}
-inline const ::valhalla::TripLeg_SignElement& TripLeg_Sign::guidance_view_signboards(int index) const {
-  // @@protoc_insertion_point(field_get:valhalla.TripLeg.Sign.guidance_view_signboards)
-  return _internal_guidance_view_signboards(index);
-}
-inline ::valhalla::TripLeg_SignElement* TripLeg_Sign::_internal_add_guidance_view_signboards() {
-  return guidance_view_signboards_.Add();
-}
-inline ::valhalla::TripLeg_SignElement* TripLeg_Sign::add_guidance_view_signboards() {
-  ::valhalla::TripLeg_SignElement* _add = _internal_add_guidance_view_signboards();
-  // @@protoc_insertion_point(field_add:valhalla.TripLeg.Sign.guidance_view_signboards)
-  return _add;
-}
-inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::TripLeg_SignElement >&
-TripLeg_Sign::guidance_view_signboards() const {
-  // @@protoc_insertion_point(field_list:valhalla.TripLeg.Sign.guidance_view_signboards)
-  return guidance_view_signboards_;
-}
-
-// -------------------------------------------------------------------
-
 // TripLeg_TransitRouteInfo
 
 // optional string onestop_id = 1;
@@ -8217,7 +7310,7 @@ inline void TripLeg_Edge::set_surface(::valhalla::TripLeg_Surface value) {
   // @@protoc_insertion_point(field_set:valhalla.TripLeg.Edge.surface)
 }
 
-// optional .valhalla.TripLeg.Sign sign = 19;
+// optional .valhalla.TripSign sign = 19;
 inline bool TripLeg_Edge::_internal_has_sign() const {
   bool value = (_has_bits_[0] & 0x00000001u) != 0;
   PROTOBUF_ASSUME(!value || sign_ != nullptr);
@@ -8226,21 +7319,17 @@ inline bool TripLeg_Edge::_internal_has_sign() const {
 inline bool TripLeg_Edge::has_sign() const {
   return _internal_has_sign();
 }
-inline void TripLeg_Edge::clear_sign() {
-  if (sign_ != nullptr) sign_->Clear();
-  _has_bits_[0] &= ~0x00000001u;
+inline const ::valhalla::TripSign& TripLeg_Edge::_internal_sign() const {
+  const ::valhalla::TripSign* p = sign_;
+  return p != nullptr ? *p : reinterpret_cast<const ::valhalla::TripSign&>(
+      ::valhalla::_TripSign_default_instance_);
 }
-inline const ::valhalla::TripLeg_Sign& TripLeg_Edge::_internal_sign() const {
-  const ::valhalla::TripLeg_Sign* p = sign_;
-  return p != nullptr ? *p : reinterpret_cast<const ::valhalla::TripLeg_Sign&>(
-      ::valhalla::_TripLeg_Sign_default_instance_);
-}
-inline const ::valhalla::TripLeg_Sign& TripLeg_Edge::sign() const {
+inline const ::valhalla::TripSign& TripLeg_Edge::sign() const {
   // @@protoc_insertion_point(field_get:valhalla.TripLeg.Edge.sign)
   return _internal_sign();
 }
 inline void TripLeg_Edge::unsafe_arena_set_allocated_sign(
-    ::valhalla::TripLeg_Sign* sign) {
+    ::valhalla::TripSign* sign) {
   if (GetArenaForAllocation() == nullptr) {
     delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(sign_);
   }
@@ -8252,9 +7341,9 @@ inline void TripLeg_Edge::unsafe_arena_set_allocated_sign(
   }
   // @@protoc_insertion_point(field_unsafe_arena_set_allocated:valhalla.TripLeg.Edge.sign)
 }
-inline ::valhalla::TripLeg_Sign* TripLeg_Edge::release_sign() {
+inline ::valhalla::TripSign* TripLeg_Edge::release_sign() {
   _has_bits_[0] &= ~0x00000001u;
-  ::valhalla::TripLeg_Sign* temp = sign_;
+  ::valhalla::TripSign* temp = sign_;
   sign_ = nullptr;
 #ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
   auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
@@ -8267,34 +7356,36 @@ inline ::valhalla::TripLeg_Sign* TripLeg_Edge::release_sign() {
 #endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
   return temp;
 }
-inline ::valhalla::TripLeg_Sign* TripLeg_Edge::unsafe_arena_release_sign() {
+inline ::valhalla::TripSign* TripLeg_Edge::unsafe_arena_release_sign() {
   // @@protoc_insertion_point(field_release:valhalla.TripLeg.Edge.sign)
   _has_bits_[0] &= ~0x00000001u;
-  ::valhalla::TripLeg_Sign* temp = sign_;
+  ::valhalla::TripSign* temp = sign_;
   sign_ = nullptr;
   return temp;
 }
-inline ::valhalla::TripLeg_Sign* TripLeg_Edge::_internal_mutable_sign() {
+inline ::valhalla::TripSign* TripLeg_Edge::_internal_mutable_sign() {
   _has_bits_[0] |= 0x00000001u;
   if (sign_ == nullptr) {
-    auto* p = CreateMaybeMessage<::valhalla::TripLeg_Sign>(GetArenaForAllocation());
+    auto* p = CreateMaybeMessage<::valhalla::TripSign>(GetArenaForAllocation());
     sign_ = p;
   }
   return sign_;
 }
-inline ::valhalla::TripLeg_Sign* TripLeg_Edge::mutable_sign() {
-  ::valhalla::TripLeg_Sign* _msg = _internal_mutable_sign();
+inline ::valhalla::TripSign* TripLeg_Edge::mutable_sign() {
+  ::valhalla::TripSign* _msg = _internal_mutable_sign();
   // @@protoc_insertion_point(field_mutable:valhalla.TripLeg.Edge.sign)
   return _msg;
 }
-inline void TripLeg_Edge::set_allocated_sign(::valhalla::TripLeg_Sign* sign) {
+inline void TripLeg_Edge::set_allocated_sign(::valhalla::TripSign* sign) {
   ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
   if (message_arena == nullptr) {
-    delete sign_;
+    delete reinterpret_cast< ::PROTOBUF_NAMESPACE_ID::MessageLite*>(sign_);
   }
   if (sign) {
     ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
-        ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper<::valhalla::TripLeg_Sign>::GetOwningArena(sign);
+        ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper<
+            ::PROTOBUF_NAMESPACE_ID::MessageLite>::GetOwningArena(
+                reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(sign));
     if (message_arena != submessage_arena) {
       sign = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
           message_arena, sign, submessage_arena);
@@ -9255,41 +8346,41 @@ inline void TripLeg_Edge::set_is_urban(bool value) {
   // @@protoc_insertion_point(field_set:valhalla.TripLeg.Edge.is_urban)
 }
 
-// repeated .valhalla.TaggedName tagged_name = 48;
-inline int TripLeg_Edge::_internal_tagged_name_size() const {
-  return tagged_name_.size();
+// repeated .valhalla.TaggedValue tagged_value = 48;
+inline int TripLeg_Edge::_internal_tagged_value_size() const {
+  return tagged_value_.size();
 }
-inline int TripLeg_Edge::tagged_name_size() const {
-  return _internal_tagged_name_size();
+inline int TripLeg_Edge::tagged_value_size() const {
+  return _internal_tagged_value_size();
 }
-inline ::valhalla::TaggedName* TripLeg_Edge::mutable_tagged_name(int index) {
-  // @@protoc_insertion_point(field_mutable:valhalla.TripLeg.Edge.tagged_name)
-  return tagged_name_.Mutable(index);
+inline ::valhalla::TaggedValue* TripLeg_Edge::mutable_tagged_value(int index) {
+  // @@protoc_insertion_point(field_mutable:valhalla.TripLeg.Edge.tagged_value)
+  return tagged_value_.Mutable(index);
 }
-inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::TaggedName >*
-TripLeg_Edge::mutable_tagged_name() {
-  // @@protoc_insertion_point(field_mutable_list:valhalla.TripLeg.Edge.tagged_name)
-  return &tagged_name_;
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::TaggedValue >*
+TripLeg_Edge::mutable_tagged_value() {
+  // @@protoc_insertion_point(field_mutable_list:valhalla.TripLeg.Edge.tagged_value)
+  return &tagged_value_;
 }
-inline const ::valhalla::TaggedName& TripLeg_Edge::_internal_tagged_name(int index) const {
-  return tagged_name_.Get(index);
+inline const ::valhalla::TaggedValue& TripLeg_Edge::_internal_tagged_value(int index) const {
+  return tagged_value_.Get(index);
 }
-inline const ::valhalla::TaggedName& TripLeg_Edge::tagged_name(int index) const {
-  // @@protoc_insertion_point(field_get:valhalla.TripLeg.Edge.tagged_name)
-  return _internal_tagged_name(index);
+inline const ::valhalla::TaggedValue& TripLeg_Edge::tagged_value(int index) const {
+  // @@protoc_insertion_point(field_get:valhalla.TripLeg.Edge.tagged_value)
+  return _internal_tagged_value(index);
 }
-inline ::valhalla::TaggedName* TripLeg_Edge::_internal_add_tagged_name() {
-  return tagged_name_.Add();
+inline ::valhalla::TaggedValue* TripLeg_Edge::_internal_add_tagged_value() {
+  return tagged_value_.Add();
 }
-inline ::valhalla::TaggedName* TripLeg_Edge::add_tagged_name() {
-  ::valhalla::TaggedName* _add = _internal_add_tagged_name();
-  // @@protoc_insertion_point(field_add:valhalla.TripLeg.Edge.tagged_name)
+inline ::valhalla::TaggedValue* TripLeg_Edge::add_tagged_value() {
+  ::valhalla::TaggedValue* _add = _internal_add_tagged_value();
+  // @@protoc_insertion_point(field_add:valhalla.TripLeg.Edge.tagged_value)
   return _add;
 }
-inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::TaggedName >&
-TripLeg_Edge::tagged_name() const {
-  // @@protoc_insertion_point(field_list:valhalla.TripLeg.Edge.tagged_name)
-  return tagged_name_;
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::TaggedValue >&
+TripLeg_Edge::tagged_value() const {
+  // @@protoc_insertion_point(field_list:valhalla.TripLeg.Edge.tagged_value)
+  return tagged_value_;
 }
 
 // optional float source_along_edge = 49;
@@ -9411,7 +8502,7 @@ inline void TripLeg_Edge::set_shoulder(bool value) {
 
 // optional uint32 begin_heading = 1;
 inline bool TripLeg_IntersectingEdge::_internal_has_begin_heading() const {
-  bool value = (_has_bits_[0] & 0x00000001u) != 0;
+  bool value = (_has_bits_[0] & 0x00000002u) != 0;
   return value;
 }
 inline bool TripLeg_IntersectingEdge::has_begin_heading() const {
@@ -9419,7 +8510,7 @@ inline bool TripLeg_IntersectingEdge::has_begin_heading() const {
 }
 inline void TripLeg_IntersectingEdge::clear_begin_heading() {
   begin_heading_ = 0u;
-  _has_bits_[0] &= ~0x00000001u;
+  _has_bits_[0] &= ~0x00000002u;
 }
 inline uint32_t TripLeg_IntersectingEdge::_internal_begin_heading() const {
   return begin_heading_;
@@ -9429,7 +8520,7 @@ inline uint32_t TripLeg_IntersectingEdge::begin_heading() const {
   return _internal_begin_heading();
 }
 inline void TripLeg_IntersectingEdge::_internal_set_begin_heading(uint32_t value) {
-  _has_bits_[0] |= 0x00000001u;
+  _has_bits_[0] |= 0x00000002u;
   begin_heading_ = value;
 }
 inline void TripLeg_IntersectingEdge::set_begin_heading(uint32_t value) {
@@ -9439,7 +8530,7 @@ inline void TripLeg_IntersectingEdge::set_begin_heading(uint32_t value) {
 
 // optional bool prev_name_consistency = 2;
 inline bool TripLeg_IntersectingEdge::_internal_has_prev_name_consistency() const {
-  bool value = (_has_bits_[0] & 0x00000002u) != 0;
+  bool value = (_has_bits_[0] & 0x00000004u) != 0;
   return value;
 }
 inline bool TripLeg_IntersectingEdge::has_prev_name_consistency() const {
@@ -9447,7 +8538,7 @@ inline bool TripLeg_IntersectingEdge::has_prev_name_consistency() const {
 }
 inline void TripLeg_IntersectingEdge::clear_prev_name_consistency() {
   prev_name_consistency_ = false;
-  _has_bits_[0] &= ~0x00000002u;
+  _has_bits_[0] &= ~0x00000004u;
 }
 inline bool TripLeg_IntersectingEdge::_internal_prev_name_consistency() const {
   return prev_name_consistency_;
@@ -9457,7 +8548,7 @@ inline bool TripLeg_IntersectingEdge::prev_name_consistency() const {
   return _internal_prev_name_consistency();
 }
 inline void TripLeg_IntersectingEdge::_internal_set_prev_name_consistency(bool value) {
-  _has_bits_[0] |= 0x00000002u;
+  _has_bits_[0] |= 0x00000004u;
   prev_name_consistency_ = value;
 }
 inline void TripLeg_IntersectingEdge::set_prev_name_consistency(bool value) {
@@ -9467,7 +8558,7 @@ inline void TripLeg_IntersectingEdge::set_prev_name_consistency(bool value) {
 
 // optional bool curr_name_consistency = 3;
 inline bool TripLeg_IntersectingEdge::_internal_has_curr_name_consistency() const {
-  bool value = (_has_bits_[0] & 0x00000004u) != 0;
+  bool value = (_has_bits_[0] & 0x00000008u) != 0;
   return value;
 }
 inline bool TripLeg_IntersectingEdge::has_curr_name_consistency() const {
@@ -9475,7 +8566,7 @@ inline bool TripLeg_IntersectingEdge::has_curr_name_consistency() const {
 }
 inline void TripLeg_IntersectingEdge::clear_curr_name_consistency() {
   curr_name_consistency_ = false;
-  _has_bits_[0] &= ~0x00000004u;
+  _has_bits_[0] &= ~0x00000008u;
 }
 inline bool TripLeg_IntersectingEdge::_internal_curr_name_consistency() const {
   return curr_name_consistency_;
@@ -9485,7 +8576,7 @@ inline bool TripLeg_IntersectingEdge::curr_name_consistency() const {
   return _internal_curr_name_consistency();
 }
 inline void TripLeg_IntersectingEdge::_internal_set_curr_name_consistency(bool value) {
-  _has_bits_[0] |= 0x00000004u;
+  _has_bits_[0] |= 0x00000008u;
   curr_name_consistency_ = value;
 }
 inline void TripLeg_IntersectingEdge::set_curr_name_consistency(bool value) {
@@ -9495,7 +8586,7 @@ inline void TripLeg_IntersectingEdge::set_curr_name_consistency(bool value) {
 
 // optional .valhalla.TripLeg.Traversability driveability = 4;
 inline bool TripLeg_IntersectingEdge::_internal_has_driveability() const {
-  bool value = (_has_bits_[0] & 0x00000008u) != 0;
+  bool value = (_has_bits_[0] & 0x00000010u) != 0;
   return value;
 }
 inline bool TripLeg_IntersectingEdge::has_driveability() const {
@@ -9503,7 +8594,7 @@ inline bool TripLeg_IntersectingEdge::has_driveability() const {
 }
 inline void TripLeg_IntersectingEdge::clear_driveability() {
   driveability_ = 0;
-  _has_bits_[0] &= ~0x00000008u;
+  _has_bits_[0] &= ~0x00000010u;
 }
 inline ::valhalla::TripLeg_Traversability TripLeg_IntersectingEdge::_internal_driveability() const {
   return static_cast< ::valhalla::TripLeg_Traversability >(driveability_);
@@ -9514,7 +8605,7 @@ inline ::valhalla::TripLeg_Traversability TripLeg_IntersectingEdge::driveability
 }
 inline void TripLeg_IntersectingEdge::_internal_set_driveability(::valhalla::TripLeg_Traversability value) {
   assert(::valhalla::TripLeg_Traversability_IsValid(value));
-  _has_bits_[0] |= 0x00000008u;
+  _has_bits_[0] |= 0x00000010u;
   driveability_ = value;
 }
 inline void TripLeg_IntersectingEdge::set_driveability(::valhalla::TripLeg_Traversability value) {
@@ -9524,7 +8615,7 @@ inline void TripLeg_IntersectingEdge::set_driveability(::valhalla::TripLeg_Trave
 
 // optional .valhalla.TripLeg.Traversability cyclability = 5;
 inline bool TripLeg_IntersectingEdge::_internal_has_cyclability() const {
-  bool value = (_has_bits_[0] & 0x00000010u) != 0;
+  bool value = (_has_bits_[0] & 0x00000020u) != 0;
   return value;
 }
 inline bool TripLeg_IntersectingEdge::has_cyclability() const {
@@ -9532,7 +8623,7 @@ inline bool TripLeg_IntersectingEdge::has_cyclability() const {
 }
 inline void TripLeg_IntersectingEdge::clear_cyclability() {
   cyclability_ = 0;
-  _has_bits_[0] &= ~0x00000010u;
+  _has_bits_[0] &= ~0x00000020u;
 }
 inline ::valhalla::TripLeg_Traversability TripLeg_IntersectingEdge::_internal_cyclability() const {
   return static_cast< ::valhalla::TripLeg_Traversability >(cyclability_);
@@ -9543,7 +8634,7 @@ inline ::valhalla::TripLeg_Traversability TripLeg_IntersectingEdge::cyclability(
 }
 inline void TripLeg_IntersectingEdge::_internal_set_cyclability(::valhalla::TripLeg_Traversability value) {
   assert(::valhalla::TripLeg_Traversability_IsValid(value));
-  _has_bits_[0] |= 0x00000010u;
+  _has_bits_[0] |= 0x00000020u;
   cyclability_ = value;
 }
 inline void TripLeg_IntersectingEdge::set_cyclability(::valhalla::TripLeg_Traversability value) {
@@ -9553,7 +8644,7 @@ inline void TripLeg_IntersectingEdge::set_cyclability(::valhalla::TripLeg_Traver
 
 // optional .valhalla.TripLeg.Traversability walkability = 6;
 inline bool TripLeg_IntersectingEdge::_internal_has_walkability() const {
-  bool value = (_has_bits_[0] & 0x00000020u) != 0;
+  bool value = (_has_bits_[0] & 0x00000040u) != 0;
   return value;
 }
 inline bool TripLeg_IntersectingEdge::has_walkability() const {
@@ -9561,7 +8652,7 @@ inline bool TripLeg_IntersectingEdge::has_walkability() const {
 }
 inline void TripLeg_IntersectingEdge::clear_walkability() {
   walkability_ = 0;
-  _has_bits_[0] &= ~0x00000020u;
+  _has_bits_[0] &= ~0x00000040u;
 }
 inline ::valhalla::TripLeg_Traversability TripLeg_IntersectingEdge::_internal_walkability() const {
   return static_cast< ::valhalla::TripLeg_Traversability >(walkability_);
@@ -9572,7 +8663,7 @@ inline ::valhalla::TripLeg_Traversability TripLeg_IntersectingEdge::walkability(
 }
 inline void TripLeg_IntersectingEdge::_internal_set_walkability(::valhalla::TripLeg_Traversability value) {
   assert(::valhalla::TripLeg_Traversability_IsValid(value));
-  _has_bits_[0] |= 0x00000020u;
+  _has_bits_[0] |= 0x00000040u;
   walkability_ = value;
 }
 inline void TripLeg_IntersectingEdge::set_walkability(::valhalla::TripLeg_Traversability value) {
@@ -9582,7 +8673,7 @@ inline void TripLeg_IntersectingEdge::set_walkability(::valhalla::TripLeg_Traver
 
 // optional .valhalla.TripLeg.Use use = 7;
 inline bool TripLeg_IntersectingEdge::_internal_has_use() const {
-  bool value = (_has_bits_[0] & 0x00000040u) != 0;
+  bool value = (_has_bits_[0] & 0x00000080u) != 0;
   return value;
 }
 inline bool TripLeg_IntersectingEdge::has_use() const {
@@ -9590,7 +8681,7 @@ inline bool TripLeg_IntersectingEdge::has_use() const {
 }
 inline void TripLeg_IntersectingEdge::clear_use() {
   use_ = 0;
-  _has_bits_[0] &= ~0x00000040u;
+  _has_bits_[0] &= ~0x00000080u;
 }
 inline ::valhalla::TripLeg_Use TripLeg_IntersectingEdge::_internal_use() const {
   return static_cast< ::valhalla::TripLeg_Use >(use_);
@@ -9601,7 +8692,7 @@ inline ::valhalla::TripLeg_Use TripLeg_IntersectingEdge::use() const {
 }
 inline void TripLeg_IntersectingEdge::_internal_set_use(::valhalla::TripLeg_Use value) {
   assert(::valhalla::TripLeg_Use_IsValid(value));
-  _has_bits_[0] |= 0x00000040u;
+  _has_bits_[0] |= 0x00000080u;
   use_ = value;
 }
 inline void TripLeg_IntersectingEdge::set_use(::valhalla::TripLeg_Use value) {
@@ -9611,7 +8702,7 @@ inline void TripLeg_IntersectingEdge::set_use(::valhalla::TripLeg_Use value) {
 
 // optional .valhalla.RoadClass road_class = 8;
 inline bool TripLeg_IntersectingEdge::_internal_has_road_class() const {
-  bool value = (_has_bits_[0] & 0x00000080u) != 0;
+  bool value = (_has_bits_[0] & 0x00000100u) != 0;
   return value;
 }
 inline bool TripLeg_IntersectingEdge::has_road_class() const {
@@ -9619,7 +8710,7 @@ inline bool TripLeg_IntersectingEdge::has_road_class() const {
 }
 inline void TripLeg_IntersectingEdge::clear_road_class() {
   road_class_ = 0;
-  _has_bits_[0] &= ~0x00000080u;
+  _has_bits_[0] &= ~0x00000100u;
 }
 inline ::valhalla::RoadClass TripLeg_IntersectingEdge::_internal_road_class() const {
   return static_cast< ::valhalla::RoadClass >(road_class_);
@@ -9630,12 +8721,128 @@ inline ::valhalla::RoadClass TripLeg_IntersectingEdge::road_class() const {
 }
 inline void TripLeg_IntersectingEdge::_internal_set_road_class(::valhalla::RoadClass value) {
   assert(::valhalla::RoadClass_IsValid(value));
-  _has_bits_[0] |= 0x00000080u;
+  _has_bits_[0] |= 0x00000100u;
   road_class_ = value;
 }
 inline void TripLeg_IntersectingEdge::set_road_class(::valhalla::RoadClass value) {
   _internal_set_road_class(value);
   // @@protoc_insertion_point(field_set:valhalla.TripLeg.IntersectingEdge.road_class)
+}
+
+// optional uint32 lane_count = 9;
+inline bool TripLeg_IntersectingEdge::_internal_has_lane_count() const {
+  bool value = (_has_bits_[0] & 0x00000200u) != 0;
+  return value;
+}
+inline bool TripLeg_IntersectingEdge::has_lane_count() const {
+  return _internal_has_lane_count();
+}
+inline void TripLeg_IntersectingEdge::clear_lane_count() {
+  lane_count_ = 0u;
+  _has_bits_[0] &= ~0x00000200u;
+}
+inline uint32_t TripLeg_IntersectingEdge::_internal_lane_count() const {
+  return lane_count_;
+}
+inline uint32_t TripLeg_IntersectingEdge::lane_count() const {
+  // @@protoc_insertion_point(field_get:valhalla.TripLeg.IntersectingEdge.lane_count)
+  return _internal_lane_count();
+}
+inline void TripLeg_IntersectingEdge::_internal_set_lane_count(uint32_t value) {
+  _has_bits_[0] |= 0x00000200u;
+  lane_count_ = value;
+}
+inline void TripLeg_IntersectingEdge::set_lane_count(uint32_t value) {
+  _internal_set_lane_count(value);
+  // @@protoc_insertion_point(field_set:valhalla.TripLeg.IntersectingEdge.lane_count)
+}
+
+// optional .valhalla.TripSign sign = 10;
+inline bool TripLeg_IntersectingEdge::_internal_has_sign() const {
+  bool value = (_has_bits_[0] & 0x00000001u) != 0;
+  PROTOBUF_ASSUME(!value || sign_ != nullptr);
+  return value;
+}
+inline bool TripLeg_IntersectingEdge::has_sign() const {
+  return _internal_has_sign();
+}
+inline const ::valhalla::TripSign& TripLeg_IntersectingEdge::_internal_sign() const {
+  const ::valhalla::TripSign* p = sign_;
+  return p != nullptr ? *p : reinterpret_cast<const ::valhalla::TripSign&>(
+      ::valhalla::_TripSign_default_instance_);
+}
+inline const ::valhalla::TripSign& TripLeg_IntersectingEdge::sign() const {
+  // @@protoc_insertion_point(field_get:valhalla.TripLeg.IntersectingEdge.sign)
+  return _internal_sign();
+}
+inline void TripLeg_IntersectingEdge::unsafe_arena_set_allocated_sign(
+    ::valhalla::TripSign* sign) {
+  if (GetArenaForAllocation() == nullptr) {
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(sign_);
+  }
+  sign_ = sign;
+  if (sign) {
+    _has_bits_[0] |= 0x00000001u;
+  } else {
+    _has_bits_[0] &= ~0x00000001u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:valhalla.TripLeg.IntersectingEdge.sign)
+}
+inline ::valhalla::TripSign* TripLeg_IntersectingEdge::release_sign() {
+  _has_bits_[0] &= ~0x00000001u;
+  ::valhalla::TripSign* temp = sign_;
+  sign_ = nullptr;
+#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
+  auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
+  temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  if (GetArenaForAllocation() == nullptr) { delete old; }
+#else  // PROTOBUF_FORCE_COPY_IN_RELEASE
+  if (GetArenaForAllocation() != nullptr) {
+    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  }
+#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
+  return temp;
+}
+inline ::valhalla::TripSign* TripLeg_IntersectingEdge::unsafe_arena_release_sign() {
+  // @@protoc_insertion_point(field_release:valhalla.TripLeg.IntersectingEdge.sign)
+  _has_bits_[0] &= ~0x00000001u;
+  ::valhalla::TripSign* temp = sign_;
+  sign_ = nullptr;
+  return temp;
+}
+inline ::valhalla::TripSign* TripLeg_IntersectingEdge::_internal_mutable_sign() {
+  _has_bits_[0] |= 0x00000001u;
+  if (sign_ == nullptr) {
+    auto* p = CreateMaybeMessage<::valhalla::TripSign>(GetArenaForAllocation());
+    sign_ = p;
+  }
+  return sign_;
+}
+inline ::valhalla::TripSign* TripLeg_IntersectingEdge::mutable_sign() {
+  ::valhalla::TripSign* _msg = _internal_mutable_sign();
+  // @@protoc_insertion_point(field_mutable:valhalla.TripLeg.IntersectingEdge.sign)
+  return _msg;
+}
+inline void TripLeg_IntersectingEdge::set_allocated_sign(::valhalla::TripSign* sign) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
+  if (message_arena == nullptr) {
+    delete reinterpret_cast< ::PROTOBUF_NAMESPACE_ID::MessageLite*>(sign_);
+  }
+  if (sign) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+        ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper<
+            ::PROTOBUF_NAMESPACE_ID::MessageLite>::GetOwningArena(
+                reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(sign));
+    if (message_arena != submessage_arena) {
+      sign = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, sign, submessage_arena);
+    }
+    _has_bits_[0] |= 0x00000001u;
+  } else {
+    _has_bits_[0] &= ~0x00000001u;
+  }
+  sign_ = sign;
+  // @@protoc_insertion_point(field_set_allocated:valhalla.TripLeg.IntersectingEdge.sign)
 }
 
 // -------------------------------------------------------------------
@@ -12060,10 +11267,6 @@ Trip::routes() const {
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
-// -------------------------------------------------------------------
-
-// -------------------------------------------------------------------
-
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

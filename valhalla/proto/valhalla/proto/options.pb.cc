@@ -46,7 +46,7 @@ constexpr CostingOptions::CostingOptions(
   : filter_stop_ids_()
   , filter_operator_ids_()
   , filter_route_ids_()
-  , avoid_edges_()
+  , exclude_edges_()
   , transport_type_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
   , name_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
   , maneuver_penalty_(0)
@@ -118,6 +118,12 @@ constexpr CostingOptions::CostingOptions(
   , use_living_streets_(0)
   , service_factor_(0)
   , closure_factor_(0)
+  , private_access_penalty_(0)
+  , exclude_unpaved_(false)
+  , include_hot_(false)
+  , include_hov2_(false)
+  , include_hov3_(false)
+  , exclude_cash_only_tolls_(false)
   , costing_(0)
 
   , filter_closures_(true){}
@@ -146,7 +152,7 @@ constexpr Options::Options(
   ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
   : costing_options_()
   , locations_()
-  , avoid_locations_()
+  , exclude_locations_()
   , sources_()
   , targets_()
   , shape_()
@@ -154,7 +160,7 @@ constexpr Options::Options(
   , trace_()
   , filter_attributes_()
   , recostings_()
-  , avoid_polygons_()
+  , exclude_polygons_()
   , language_(nullptr)
   , id_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
   , jsonp_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
@@ -727,7 +733,6 @@ bool Costing_IsValid(int value) {
     case 0:
     case 2:
     case 3:
-    case 4:
     case 5:
     case 6:
     case 7:
@@ -743,14 +748,13 @@ bool Costing_IsValid(int value) {
   }
 }
 
-static ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<std::string> Costing_strings[13] = {};
+static ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<std::string> Costing_strings[12] = {};
 
 static const char Costing_names[] =
   "auto_"
   "bicycle"
   "bikeshare"
   "bus"
-  "hov"
   "motor_scooter"
   "motorcycle"
   "multimodal"
@@ -765,30 +769,28 @@ static const ::PROTOBUF_NAMESPACE_ID::internal::EnumEntry Costing_entries[] = {
   { {Costing_names + 5, 7}, 2 },
   { {Costing_names + 12, 9}, 14 },
   { {Costing_names + 21, 3}, 3 },
-  { {Costing_names + 24, 3}, 4 },
-  { {Costing_names + 27, 13}, 5 },
-  { {Costing_names + 40, 10}, 10 },
-  { {Costing_names + 50, 10}, 6 },
-  { {Costing_names + 60, 5}, 13 },
-  { {Costing_names + 65, 10}, 7 },
-  { {Costing_names + 75, 4}, 12 },
-  { {Costing_names + 79, 7}, 8 },
-  { {Costing_names + 86, 5}, 9 },
+  { {Costing_names + 24, 13}, 5 },
+  { {Costing_names + 37, 10}, 10 },
+  { {Costing_names + 47, 10}, 6 },
+  { {Costing_names + 57, 5}, 13 },
+  { {Costing_names + 62, 10}, 7 },
+  { {Costing_names + 72, 4}, 12 },
+  { {Costing_names + 76, 7}, 8 },
+  { {Costing_names + 83, 5}, 9 },
 };
 
 static const int Costing_entries_by_number[] = {
   0, // 0 -> auto_
   1, // 2 -> bicycle
   3, // 3 -> bus
-  4, // 4 -> hov
-  5, // 5 -> motor_scooter
-  7, // 6 -> multimodal
-  9, // 7 -> pedestrian
-  11, // 8 -> transit
-  12, // 9 -> truck
-  6, // 10 -> motorcycle
-  10, // 12 -> taxi
-  8, // 13 -> none_
+  4, // 5 -> motor_scooter
+  6, // 6 -> multimodal
+  8, // 7 -> pedestrian
+  10, // 8 -> transit
+  11, // 9 -> truck
+  5, // 10 -> motorcycle
+  9, // 12 -> taxi
+  7, // 13 -> none_
   2, // 14 -> bikeshare
 };
 
@@ -798,12 +800,12 @@ const std::string& Costing_Name(
       ::PROTOBUF_NAMESPACE_ID::internal::InitializeEnumStrings(
           Costing_entries,
           Costing_entries_by_number,
-          13, Costing_strings);
+          12, Costing_strings);
   (void) dummy;
   int idx = ::PROTOBUF_NAMESPACE_ID::internal::LookUpEnumName(
       Costing_entries,
       Costing_entries_by_number,
-      13, value);
+      12, value);
   return idx == -1 ? ::PROTOBUF_NAMESPACE_ID::internal::GetEmptyString() :
                      Costing_strings[idx].get();
 }
@@ -811,7 +813,7 @@ bool Costing_Parse(
     ::PROTOBUF_NAMESPACE_ID::ConstStringParam name, Costing* value) {
   int int_value;
   bool success = ::PROTOBUF_NAMESPACE_ID::internal::LookUpEnumValue(
-      Costing_entries, 13, name, &int_value);
+      Costing_entries, 12, name, &int_value);
   if (success) {
     *value = static_cast<Costing>(int_value);
   }
@@ -1543,14 +1545,32 @@ class CostingOptions::_Internal {
   static void set_has_closure_factor(HasBits* has_bits) {
     (*has_bits)[2] |= 8u;
   }
-  static void set_has_costing(HasBits* has_bits) {
+  static void set_has_private_access_penalty(HasBits* has_bits) {
     (*has_bits)[2] |= 16u;
+  }
+  static void set_has_exclude_unpaved(HasBits* has_bits) {
+    (*has_bits)[2] |= 32u;
+  }
+  static void set_has_include_hot(HasBits* has_bits) {
+    (*has_bits)[2] |= 64u;
+  }
+  static void set_has_include_hov2(HasBits* has_bits) {
+    (*has_bits)[2] |= 128u;
+  }
+  static void set_has_include_hov3(HasBits* has_bits) {
+    (*has_bits)[2] |= 256u;
+  }
+  static void set_has_exclude_cash_only_tolls(HasBits* has_bits) {
+    (*has_bits)[2] |= 512u;
+  }
+  static void set_has_costing(HasBits* has_bits) {
+    (*has_bits)[2] |= 1024u;
   }
   static void set_has_name(HasBits* has_bits) {
     (*has_bits)[0] |= 2u;
   }
   static void set_has_filter_closures(HasBits* has_bits) {
-    (*has_bits)[2] |= 32u;
+    (*has_bits)[2] |= 2048u;
   }
 };
 
@@ -1560,7 +1580,7 @@ CostingOptions::CostingOptions(::PROTOBUF_NAMESPACE_ID::Arena* arena,
   filter_stop_ids_(arena),
   filter_operator_ids_(arena),
   filter_route_ids_(arena),
-  avoid_edges_(arena) {
+  exclude_edges_(arena) {
   SharedCtor();
   if (!is_message_owned) {
     RegisterArenaDtor(arena);
@@ -1573,7 +1593,7 @@ CostingOptions::CostingOptions(const CostingOptions& from)
       filter_stop_ids_(from.filter_stop_ids_),
       filter_operator_ids_(from.filter_operator_ids_),
       filter_route_ids_(from.filter_route_ids_),
-      avoid_edges_(from.avoid_edges_) {
+      exclude_edges_(from.exclude_edges_) {
   _internal_metadata_.MergeFrom<std::string>(from._internal_metadata_);
   transport_type_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
@@ -1645,7 +1665,7 @@ void CostingOptions::Clear() {
   filter_stop_ids_.Clear();
   filter_operator_ids_.Clear();
   filter_route_ids_.Clear();
-  avoid_edges_.Clear();
+  exclude_edges_.Clear();
   cached_has_bits = _has_bits_[0];
   if (cached_has_bits & 0x00000003u) {
     if (cached_has_bits & 0x00000001u) {
@@ -1697,10 +1717,15 @@ void CostingOptions::Clear() {
         reinterpret_cast<char*>(&rail_ferry_cost_)) + sizeof(use_tracks_));
   }
   cached_has_bits = _has_bits_[2];
-  if (cached_has_bits & 0x0000003fu) {
+  if (cached_has_bits & 0x000000ffu) {
     ::memset(&use_distance_, 0, static_cast<size_t>(
+        reinterpret_cast<char*>(&include_hov2_) -
+        reinterpret_cast<char*>(&use_distance_)) + sizeof(include_hov2_));
+  }
+  if (cached_has_bits & 0x00000f00u) {
+    ::memset(&include_hov3_, 0, static_cast<size_t>(
         reinterpret_cast<char*>(&costing_) -
-        reinterpret_cast<char*>(&use_distance_)) + sizeof(costing_));
+        reinterpret_cast<char*>(&include_hov3_)) + sizeof(costing_));
     filter_closures_ = true;
   }
   _has_bits_.Clear();
@@ -2370,6 +2395,60 @@ const char* CostingOptions::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE
         } else
           goto handle_unusual;
         continue;
+      // optional float private_access_penalty = 71;
+      case 71:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 61)) {
+          _Internal::set_has_private_access_penalty(&_has_bits_);
+          private_access_penalty_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+          ptr += sizeof(float);
+        } else
+          goto handle_unusual;
+        continue;
+      // optional bool exclude_unpaved = 72;
+      case 72:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 64)) {
+          _Internal::set_has_exclude_unpaved(&_has_bits_);
+          exclude_unpaved_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // optional bool include_hot = 73;
+      case 73:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 72)) {
+          _Internal::set_has_include_hot(&_has_bits_);
+          include_hot_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // optional bool include_hov2 = 74;
+      case 74:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 80)) {
+          _Internal::set_has_include_hov2(&_has_bits_);
+          include_hov2_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // optional bool include_hov3 = 75;
+      case 75:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 88)) {
+          _Internal::set_has_include_hov3(&_has_bits_);
+          include_hov3_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // optional bool exclude_cash_only_tolls = 76;
+      case 76:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 96)) {
+          _Internal::set_has_exclude_cash_only_tolls(&_has_bits_);
+          exclude_cash_only_tolls_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
       // optional .valhalla.Costing costing = 90;
       case 90:
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 208)) {
@@ -2392,13 +2471,13 @@ const char* CostingOptions::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE
         } else
           goto handle_unusual;
         continue;
-      // repeated .valhalla.AvoidEdge avoid_edges = 92;
+      // repeated .valhalla.AvoidEdge exclude_edges = 92;
       case 92:
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 226)) {
           ptr -= 2;
           do {
             ptr += 2;
-            ptr = ctx->ParseMessage(_internal_add_avoid_edges(), ptr);
+            ptr = ctx->ParseMessage(_internal_add_exclude_edges(), ptr);
             CHK_(ptr);
             if (!ctx->DataAvailable(ptr)) break;
           } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<738>(ptr));
@@ -2869,8 +2948,44 @@ uint8_t* CostingOptions::_InternalSerialize(
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(70, this->_internal_closure_factor(), target);
   }
 
-  // optional .valhalla.Costing costing = 90;
+  // optional float private_access_penalty = 71;
   if (cached_has_bits & 0x00000010u) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(71, this->_internal_private_access_penalty(), target);
+  }
+
+  // optional bool exclude_unpaved = 72;
+  if (cached_has_bits & 0x00000020u) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteBoolToArray(72, this->_internal_exclude_unpaved(), target);
+  }
+
+  // optional bool include_hot = 73;
+  if (cached_has_bits & 0x00000040u) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteBoolToArray(73, this->_internal_include_hot(), target);
+  }
+
+  // optional bool include_hov2 = 74;
+  if (cached_has_bits & 0x00000080u) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteBoolToArray(74, this->_internal_include_hov2(), target);
+  }
+
+  // optional bool include_hov3 = 75;
+  if (cached_has_bits & 0x00000100u) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteBoolToArray(75, this->_internal_include_hov3(), target);
+  }
+
+  // optional bool exclude_cash_only_tolls = 76;
+  if (cached_has_bits & 0x00000200u) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteBoolToArray(76, this->_internal_exclude_cash_only_tolls(), target);
+  }
+
+  // optional .valhalla.Costing costing = 90;
+  if (cached_has_bits & 0x00000400u) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteEnumToArray(
       90, this->_internal_costing(), target);
@@ -2883,17 +2998,17 @@ uint8_t* CostingOptions::_InternalSerialize(
         91, this->_internal_name(), target);
   }
 
-  // repeated .valhalla.AvoidEdge avoid_edges = 92;
+  // repeated .valhalla.AvoidEdge exclude_edges = 92;
   for (unsigned int i = 0,
-      n = static_cast<unsigned int>(this->_internal_avoid_edges_size()); i < n; i++) {
+      n = static_cast<unsigned int>(this->_internal_exclude_edges_size()); i < n; i++) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(92, this->_internal_avoid_edges(i), target, stream);
+      InternalWriteMessage(92, this->_internal_exclude_edges(i), target, stream);
   }
 
   cached_has_bits = _has_bits_[2];
   // optional bool filter_closures = 93 [default = true];
-  if (cached_has_bits & 0x00000020u) {
+  if (cached_has_bits & 0x00000800u) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteBoolToArray(93, this->_internal_filter_closures(), target);
   }
@@ -2938,9 +3053,9 @@ size_t CostingOptions::ByteSizeLong() const {
       filter_route_ids_.Get(i));
   }
 
-  // repeated .valhalla.AvoidEdge avoid_edges = 92;
-  total_size += 2UL * this->_internal_avoid_edges_size();
-  for (const auto& msg : this->avoid_edges_) {
+  // repeated .valhalla.AvoidEdge exclude_edges = 92;
+  total_size += 2UL * this->_internal_exclude_edges_size();
+  for (const auto& msg : this->exclude_edges_) {
     total_size +=
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
   }
@@ -3303,7 +3418,7 @@ size_t CostingOptions::ByteSizeLong() const {
 
   }
   cached_has_bits = _has_bits_[2];
-  if (cached_has_bits & 0x0000003fu) {
+  if (cached_has_bits & 0x000000ffu) {
     // optional float use_distance = 67;
     if (cached_has_bits & 0x00000001u) {
       total_size += 2 + 4;
@@ -3324,14 +3439,46 @@ size_t CostingOptions::ByteSizeLong() const {
       total_size += 2 + 4;
     }
 
-    // optional .valhalla.Costing costing = 90;
+    // optional float private_access_penalty = 71;
     if (cached_has_bits & 0x00000010u) {
+      total_size += 2 + 4;
+    }
+
+    // optional bool exclude_unpaved = 72;
+    if (cached_has_bits & 0x00000020u) {
+      total_size += 2 + 1;
+    }
+
+    // optional bool include_hot = 73;
+    if (cached_has_bits & 0x00000040u) {
+      total_size += 2 + 1;
+    }
+
+    // optional bool include_hov2 = 74;
+    if (cached_has_bits & 0x00000080u) {
+      total_size += 2 + 1;
+    }
+
+  }
+  if (cached_has_bits & 0x00000f00u) {
+    // optional bool include_hov3 = 75;
+    if (cached_has_bits & 0x00000100u) {
+      total_size += 2 + 1;
+    }
+
+    // optional bool exclude_cash_only_tolls = 76;
+    if (cached_has_bits & 0x00000200u) {
+      total_size += 2 + 1;
+    }
+
+    // optional .valhalla.Costing costing = 90;
+    if (cached_has_bits & 0x00000400u) {
       total_size += 2 +
         ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::EnumSize(this->_internal_costing());
     }
 
     // optional bool filter_closures = 93 [default = true];
-    if (cached_has_bits & 0x00000020u) {
+    if (cached_has_bits & 0x00000800u) {
       total_size += 2 + 1;
     }
 
@@ -3359,7 +3506,7 @@ void CostingOptions::MergeFrom(const CostingOptions& from) {
   filter_stop_ids_.MergeFrom(from.filter_stop_ids_);
   filter_operator_ids_.MergeFrom(from.filter_operator_ids_);
   filter_route_ids_.MergeFrom(from.filter_route_ids_);
-  avoid_edges_.MergeFrom(from.avoid_edges_);
+  exclude_edges_.MergeFrom(from.exclude_edges_);
   cached_has_bits = from._has_bits_[0];
   if (cached_has_bits & 0x000000ffu) {
     if (cached_has_bits & 0x00000001u) {
@@ -3579,7 +3726,7 @@ void CostingOptions::MergeFrom(const CostingOptions& from) {
     _has_bits_[1] |= cached_has_bits;
   }
   cached_has_bits = from._has_bits_[2];
-  if (cached_has_bits & 0x0000003fu) {
+  if (cached_has_bits & 0x000000ffu) {
     if (cached_has_bits & 0x00000001u) {
       use_distance_ = from.use_distance_;
     }
@@ -3593,9 +3740,30 @@ void CostingOptions::MergeFrom(const CostingOptions& from) {
       closure_factor_ = from.closure_factor_;
     }
     if (cached_has_bits & 0x00000010u) {
-      costing_ = from.costing_;
+      private_access_penalty_ = from.private_access_penalty_;
     }
     if (cached_has_bits & 0x00000020u) {
+      exclude_unpaved_ = from.exclude_unpaved_;
+    }
+    if (cached_has_bits & 0x00000040u) {
+      include_hot_ = from.include_hot_;
+    }
+    if (cached_has_bits & 0x00000080u) {
+      include_hov2_ = from.include_hov2_;
+    }
+    _has_bits_[2] |= cached_has_bits;
+  }
+  if (cached_has_bits & 0x00000f00u) {
+    if (cached_has_bits & 0x00000100u) {
+      include_hov3_ = from.include_hov3_;
+    }
+    if (cached_has_bits & 0x00000200u) {
+      exclude_cash_only_tolls_ = from.exclude_cash_only_tolls_;
+    }
+    if (cached_has_bits & 0x00000400u) {
+      costing_ = from.costing_;
+    }
+    if (cached_has_bits & 0x00000800u) {
       filter_closures_ = from.filter_closures_;
     }
     _has_bits_[2] |= cached_has_bits;
@@ -3625,7 +3793,7 @@ void CostingOptions::InternalSwap(CostingOptions* other) {
   filter_stop_ids_.InternalSwap(&other->filter_stop_ids_);
   filter_operator_ids_.InternalSwap(&other->filter_operator_ids_);
   filter_route_ids_.InternalSwap(&other->filter_route_ids_);
-  avoid_edges_.InternalSwap(&other->avoid_edges_);
+  exclude_edges_.InternalSwap(&other->exclude_edges_);
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
       &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
       &transport_type_, lhs_arena,
@@ -3948,8 +4116,8 @@ const ::PROTOBUF_NAMESPACE_ID::internal::LazyString Options::_i_give_permission_
 void Options::clear_locations() {
   locations_.Clear();
 }
-void Options::clear_avoid_locations() {
-  avoid_locations_.Clear();
+void Options::clear_exclude_locations() {
+  exclude_locations_.Clear();
 }
 void Options::clear_sources() {
   sources_.Clear();
@@ -3968,7 +4136,7 @@ Options::Options(::PROTOBUF_NAMESPACE_ID::Arena* arena,
   : ::PROTOBUF_NAMESPACE_ID::MessageLite(arena, is_message_owned),
   costing_options_(arena),
   locations_(arena),
-  avoid_locations_(arena),
+  exclude_locations_(arena),
   sources_(arena),
   targets_(arena),
   shape_(arena),
@@ -3976,7 +4144,7 @@ Options::Options(::PROTOBUF_NAMESPACE_ID::Arena* arena,
   trace_(arena),
   filter_attributes_(arena),
   recostings_(arena),
-  avoid_polygons_(arena) {
+  exclude_polygons_(arena) {
   SharedCtor();
   if (!is_message_owned) {
     RegisterArenaDtor(arena);
@@ -3988,7 +4156,7 @@ Options::Options(const Options& from)
       _has_bits_(from._has_bits_),
       costing_options_(from.costing_options_),
       locations_(from.locations_),
-      avoid_locations_(from.avoid_locations_),
+      exclude_locations_(from.exclude_locations_),
       sources_(from.sources_),
       targets_(from.targets_),
       shape_(from.shape_),
@@ -3996,7 +4164,7 @@ Options::Options(const Options& from)
       trace_(from.trace_),
       filter_attributes_(from.filter_attributes_),
       recostings_(from.recostings_),
-      avoid_polygons_(from.avoid_polygons_) {
+      exclude_polygons_(from.exclude_polygons_) {
   _internal_metadata_.MergeFrom<std::string>(from._internal_metadata_);
   language_.UnsafeSetDefault(nullptr);
   if (from._internal_has_language()) {
@@ -4106,7 +4274,7 @@ void Options::Clear() {
 
   costing_options_.Clear();
   locations_.Clear();
-  avoid_locations_.Clear();
+  exclude_locations_.Clear();
   sources_.Clear();
   targets_.Clear();
   shape_.Clear();
@@ -4114,7 +4282,7 @@ void Options::Clear() {
   trace_.Clear();
   filter_attributes_.Clear();
   recostings_.Clear();
-  avoid_polygons_.Clear();
+  exclude_polygons_.Clear();
   cached_has_bits = _has_bits_[0];
   if (cached_has_bits & 0x0000001fu) {
     if (cached_has_bits & 0x00000001u) {
@@ -4327,13 +4495,13 @@ const char* Options::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::in
         } else
           goto handle_unusual;
         continue;
-      // repeated .valhalla.Location avoid_locations = 15;
+      // repeated .valhalla.Location exclude_locations = 15;
       case 15:
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 122)) {
           ptr -= 1;
           do {
             ptr += 1;
-            ptr = ctx->ParseMessage(_internal_add_avoid_locations(), ptr);
+            ptr = ctx->ParseMessage(_internal_add_exclude_locations(), ptr);
             CHK_(ptr);
             if (!ctx->DataAvailable(ptr)) break;
           } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<122>(ptr));
@@ -4646,13 +4814,13 @@ const char* Options::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::in
         } else
           goto handle_unusual;
         continue;
-      // repeated .valhalla.Options.Ring avoid_polygons = 47;
+      // repeated .valhalla.Options.Ring exclude_polygons = 47;
       case 47:
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 122)) {
           ptr -= 2;
           do {
             ptr += 2;
-            ptr = ctx->ParseMessage(_internal_add_avoid_polygons(), ptr);
+            ptr = ctx->ParseMessage(_internal_add_exclude_polygons(), ptr);
             CHK_(ptr);
             if (!ctx->DataAvailable(ptr)) break;
           } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<378>(ptr));
@@ -4782,12 +4950,12 @@ uint8_t* Options::_InternalSerialize(
       InternalWriteMessage(14, this->_internal_locations(i), target, stream);
   }
 
-  // repeated .valhalla.Location avoid_locations = 15;
+  // repeated .valhalla.Location exclude_locations = 15;
   for (unsigned int i = 0,
-      n = static_cast<unsigned int>(this->_internal_avoid_locations_size()); i < n; i++) {
+      n = static_cast<unsigned int>(this->_internal_exclude_locations_size()); i < n; i++) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(15, this->_internal_avoid_locations(i), target, stream);
+      InternalWriteMessage(15, this->_internal_exclude_locations(i), target, stream);
   }
 
   // repeated .valhalla.Location sources = 16;
@@ -4984,12 +5152,12 @@ uint8_t* Options::_InternalSerialize(
       InternalWriteMessage(46, this->_internal_recostings(i), target, stream);
   }
 
-  // repeated .valhalla.Options.Ring avoid_polygons = 47;
+  // repeated .valhalla.Options.Ring exclude_polygons = 47;
   for (unsigned int i = 0,
-      n = static_cast<unsigned int>(this->_internal_avoid_polygons_size()); i < n; i++) {
+      n = static_cast<unsigned int>(this->_internal_exclude_polygons_size()); i < n; i++) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(47, this->_internal_avoid_polygons(i), target, stream);
+      InternalWriteMessage(47, this->_internal_exclude_polygons(i), target, stream);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -5022,9 +5190,9 @@ size_t Options::ByteSizeLong() const {
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
   }
 
-  // repeated .valhalla.Location avoid_locations = 15;
-  total_size += 1UL * this->_internal_avoid_locations_size();
-  for (const auto& msg : this->avoid_locations_) {
+  // repeated .valhalla.Location exclude_locations = 15;
+  total_size += 1UL * this->_internal_exclude_locations_size();
+  for (const auto& msg : this->exclude_locations_) {
     total_size +=
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
   }
@@ -5079,9 +5247,9 @@ size_t Options::ByteSizeLong() const {
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
   }
 
-  // repeated .valhalla.Options.Ring avoid_polygons = 47;
-  total_size += 2UL * this->_internal_avoid_polygons_size();
-  for (const auto& msg : this->avoid_polygons_) {
+  // repeated .valhalla.Options.Ring exclude_polygons = 47;
+  total_size += 2UL * this->_internal_exclude_polygons_size();
+  for (const auto& msg : this->exclude_polygons_) {
     total_size +=
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
   }
@@ -5315,7 +5483,7 @@ void Options::MergeFrom(const Options& from) {
 
   costing_options_.MergeFrom(from.costing_options_);
   locations_.MergeFrom(from.locations_);
-  avoid_locations_.MergeFrom(from.avoid_locations_);
+  exclude_locations_.MergeFrom(from.exclude_locations_);
   sources_.MergeFrom(from.sources_);
   targets_.MergeFrom(from.targets_);
   shape_.MergeFrom(from.shape_);
@@ -5323,7 +5491,7 @@ void Options::MergeFrom(const Options& from) {
   trace_.MergeFrom(from.trace_);
   filter_attributes_.MergeFrom(from.filter_attributes_);
   recostings_.MergeFrom(from.recostings_);
-  avoid_polygons_.MergeFrom(from.avoid_polygons_);
+  exclude_polygons_.MergeFrom(from.exclude_polygons_);
   cached_has_bits = from._has_bits_[0];
   if (cached_has_bits & 0x000000ffu) {
     if (cached_has_bits & 0x00000001u) {
@@ -5466,7 +5634,7 @@ void Options::InternalSwap(Options* other) {
   swap(_has_bits_[1], other->_has_bits_[1]);
   costing_options_.InternalSwap(&other->costing_options_);
   locations_.InternalSwap(&other->locations_);
-  avoid_locations_.InternalSwap(&other->avoid_locations_);
+  exclude_locations_.InternalSwap(&other->exclude_locations_);
   sources_.InternalSwap(&other->sources_);
   targets_.InternalSwap(&other->targets_);
   shape_.InternalSwap(&other->shape_);
@@ -5474,7 +5642,7 @@ void Options::InternalSwap(Options* other) {
   trace_.InternalSwap(&other->trace_);
   filter_attributes_.InternalSwap(&other->filter_attributes_);
   recostings_.InternalSwap(&other->recostings_);
-  avoid_polygons_.InternalSwap(&other->avoid_polygons_);
+  exclude_polygons_.InternalSwap(&other->exclude_polygons_);
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
       nullptr,
       &language_, lhs_arena,

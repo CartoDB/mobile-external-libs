@@ -250,7 +250,6 @@ enum Costing : int {
   auto_ = 0,
   bicycle = 2,
   bus = 3,
-  hov = 4,
   motor_scooter = 5,
   multimodal = 6,
   pedestrian = 7,
@@ -728,7 +727,7 @@ class CostingOptions final :
     kFilterStopIdsFieldNumber = 50,
     kFilterOperatorIdsFieldNumber = 52,
     kFilterRouteIdsFieldNumber = 54,
-    kAvoidEdgesFieldNumber = 92,
+    kExcludeEdgesFieldNumber = 92,
     kTransportTypeFieldNumber = 29,
     kNameFieldNumber = 91,
     kManeuverPenaltyFieldNumber = 1,
@@ -797,6 +796,12 @@ class CostingOptions final :
     kUseLivingStreetsFieldNumber = 68,
     kServiceFactorFieldNumber = 69,
     kClosureFactorFieldNumber = 70,
+    kPrivateAccessPenaltyFieldNumber = 71,
+    kExcludeUnpavedFieldNumber = 72,
+    kIncludeHotFieldNumber = 73,
+    kIncludeHov2FieldNumber = 74,
+    kIncludeHov3FieldNumber = 75,
+    kExcludeCashOnlyTollsFieldNumber = 76,
     kCostingFieldNumber = 90,
     kFilterClosuresFieldNumber = 93,
   };
@@ -872,23 +877,23 @@ class CostingOptions final :
   std::string* _internal_add_filter_route_ids();
   public:
 
-  // repeated .valhalla.AvoidEdge avoid_edges = 92;
-  int avoid_edges_size() const;
+  // repeated .valhalla.AvoidEdge exclude_edges = 92;
+  int exclude_edges_size() const;
   private:
-  int _internal_avoid_edges_size() const;
+  int _internal_exclude_edges_size() const;
   public:
-  void clear_avoid_edges();
-  ::valhalla::AvoidEdge* mutable_avoid_edges(int index);
+  void clear_exclude_edges();
+  ::valhalla::AvoidEdge* mutable_exclude_edges(int index);
   ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::AvoidEdge >*
-      mutable_avoid_edges();
+      mutable_exclude_edges();
   private:
-  const ::valhalla::AvoidEdge& _internal_avoid_edges(int index) const;
-  ::valhalla::AvoidEdge* _internal_add_avoid_edges();
+  const ::valhalla::AvoidEdge& _internal_exclude_edges(int index) const;
+  ::valhalla::AvoidEdge* _internal_add_exclude_edges();
   public:
-  const ::valhalla::AvoidEdge& avoid_edges(int index) const;
-  ::valhalla::AvoidEdge* add_avoid_edges();
+  const ::valhalla::AvoidEdge& exclude_edges(int index) const;
+  ::valhalla::AvoidEdge* add_exclude_edges();
   const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::AvoidEdge >&
-      avoid_edges() const;
+      exclude_edges() const;
 
   // optional string transport_type = 29;
   bool has_transport_type() const;
@@ -1784,6 +1789,84 @@ class CostingOptions final :
   void _internal_set_closure_factor(float value);
   public:
 
+  // optional float private_access_penalty = 71;
+  bool has_private_access_penalty() const;
+  private:
+  bool _internal_has_private_access_penalty() const;
+  public:
+  void clear_private_access_penalty();
+  float private_access_penalty() const;
+  void set_private_access_penalty(float value);
+  private:
+  float _internal_private_access_penalty() const;
+  void _internal_set_private_access_penalty(float value);
+  public:
+
+  // optional bool exclude_unpaved = 72;
+  bool has_exclude_unpaved() const;
+  private:
+  bool _internal_has_exclude_unpaved() const;
+  public:
+  void clear_exclude_unpaved();
+  bool exclude_unpaved() const;
+  void set_exclude_unpaved(bool value);
+  private:
+  bool _internal_exclude_unpaved() const;
+  void _internal_set_exclude_unpaved(bool value);
+  public:
+
+  // optional bool include_hot = 73;
+  bool has_include_hot() const;
+  private:
+  bool _internal_has_include_hot() const;
+  public:
+  void clear_include_hot();
+  bool include_hot() const;
+  void set_include_hot(bool value);
+  private:
+  bool _internal_include_hot() const;
+  void _internal_set_include_hot(bool value);
+  public:
+
+  // optional bool include_hov2 = 74;
+  bool has_include_hov2() const;
+  private:
+  bool _internal_has_include_hov2() const;
+  public:
+  void clear_include_hov2();
+  bool include_hov2() const;
+  void set_include_hov2(bool value);
+  private:
+  bool _internal_include_hov2() const;
+  void _internal_set_include_hov2(bool value);
+  public:
+
+  // optional bool include_hov3 = 75;
+  bool has_include_hov3() const;
+  private:
+  bool _internal_has_include_hov3() const;
+  public:
+  void clear_include_hov3();
+  bool include_hov3() const;
+  void set_include_hov3(bool value);
+  private:
+  bool _internal_include_hov3() const;
+  void _internal_set_include_hov3(bool value);
+  public:
+
+  // optional bool exclude_cash_only_tolls = 76;
+  bool has_exclude_cash_only_tolls() const;
+  private:
+  bool _internal_has_exclude_cash_only_tolls() const;
+  public:
+  void clear_exclude_cash_only_tolls();
+  bool exclude_cash_only_tolls() const;
+  void set_exclude_cash_only_tolls(bool value);
+  private:
+  bool _internal_exclude_cash_only_tolls() const;
+  void _internal_set_exclude_cash_only_tolls(bool value);
+  public:
+
   // optional .valhalla.Costing costing = 90;
   bool has_costing() const;
   private:
@@ -1822,7 +1905,7 @@ class CostingOptions final :
   ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<std::string> filter_stop_ids_;
   ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<std::string> filter_operator_ids_;
   ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<std::string> filter_route_ids_;
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::AvoidEdge > avoid_edges_;
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::AvoidEdge > exclude_edges_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr transport_type_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr name_;
   float maneuver_penalty_;
@@ -1891,6 +1974,12 @@ class CostingOptions final :
   float use_living_streets_;
   float service_factor_;
   float closure_factor_;
+  float private_access_penalty_;
+  bool exclude_unpaved_;
+  bool include_hot_;
+  bool include_hov2_;
+  bool include_hov3_;
+  bool exclude_cash_only_tolls_;
   int costing_;
   bool filter_closures_;
   friend struct ::TableStruct_options_2eproto;
@@ -2290,7 +2379,7 @@ class Options final :
   enum : int {
     kCostingOptionsFieldNumber = 13,
     kLocationsFieldNumber = 14,
-    kAvoidLocationsFieldNumber = 15,
+    kExcludeLocationsFieldNumber = 15,
     kSourcesFieldNumber = 16,
     kTargetsFieldNumber = 17,
     kShapeFieldNumber = 20,
@@ -2298,7 +2387,7 @@ class Options final :
     kTraceFieldNumber = 27,
     kFilterAttributesFieldNumber = 34,
     kRecostingsFieldNumber = 46,
-    kAvoidPolygonsFieldNumber = 47,
+    kExcludePolygonsFieldNumber = 47,
     kLanguageFieldNumber = 2,
     kIdFieldNumber = 5,
     kJsonpFieldNumber = 6,
@@ -2370,23 +2459,23 @@ class Options final :
   const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::Location >&
       locations() const;
 
-  // repeated .valhalla.Location avoid_locations = 15;
-  int avoid_locations_size() const;
+  // repeated .valhalla.Location exclude_locations = 15;
+  int exclude_locations_size() const;
   private:
-  int _internal_avoid_locations_size() const;
+  int _internal_exclude_locations_size() const;
   public:
-  void clear_avoid_locations();
-  ::valhalla::Location* mutable_avoid_locations(int index);
+  void clear_exclude_locations();
+  ::valhalla::Location* mutable_exclude_locations(int index);
   ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::Location >*
-      mutable_avoid_locations();
+      mutable_exclude_locations();
   private:
-  const ::valhalla::Location& _internal_avoid_locations(int index) const;
-  ::valhalla::Location* _internal_add_avoid_locations();
+  const ::valhalla::Location& _internal_exclude_locations(int index) const;
+  ::valhalla::Location* _internal_add_exclude_locations();
   public:
-  const ::valhalla::Location& avoid_locations(int index) const;
-  ::valhalla::Location* add_avoid_locations();
+  const ::valhalla::Location& exclude_locations(int index) const;
+  ::valhalla::Location* add_exclude_locations();
   const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::Location >&
-      avoid_locations() const;
+      exclude_locations() const;
 
   // repeated .valhalla.Location sources = 16;
   int sources_size() const;
@@ -2520,23 +2609,23 @@ class Options final :
   const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::CostingOptions >&
       recostings() const;
 
-  // repeated .valhalla.Options.Ring avoid_polygons = 47;
-  int avoid_polygons_size() const;
+  // repeated .valhalla.Options.Ring exclude_polygons = 47;
+  int exclude_polygons_size() const;
   private:
-  int _internal_avoid_polygons_size() const;
+  int _internal_exclude_polygons_size() const;
   public:
-  void clear_avoid_polygons();
-  ::valhalla::Options_Ring* mutable_avoid_polygons(int index);
+  void clear_exclude_polygons();
+  ::valhalla::Options_Ring* mutable_exclude_polygons(int index);
   ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::Options_Ring >*
-      mutable_avoid_polygons();
+      mutable_exclude_polygons();
   private:
-  const ::valhalla::Options_Ring& _internal_avoid_polygons(int index) const;
-  ::valhalla::Options_Ring* _internal_add_avoid_polygons();
+  const ::valhalla::Options_Ring& _internal_exclude_polygons(int index) const;
+  ::valhalla::Options_Ring* _internal_add_exclude_polygons();
   public:
-  const ::valhalla::Options_Ring& avoid_polygons(int index) const;
-  ::valhalla::Options_Ring* add_avoid_polygons();
+  const ::valhalla::Options_Ring& exclude_polygons(int index) const;
+  ::valhalla::Options_Ring* add_exclude_polygons();
   const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::Options_Ring >&
-      avoid_polygons() const;
+      exclude_polygons() const;
 
   // optional string language = 2 [default = "en-US"];
   bool has_language() const;
@@ -3016,7 +3105,7 @@ class Options final :
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::CostingOptions > costing_options_;
   ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::Location > locations_;
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::Location > avoid_locations_;
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::Location > exclude_locations_;
   ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::Location > sources_;
   ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::Location > targets_;
   ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::Location > shape_;
@@ -3024,7 +3113,7 @@ class Options final :
   ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::Location > trace_;
   ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<std::string> filter_attributes_;
   ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::CostingOptions > recostings_;
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::Options_Ring > avoid_polygons_;
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::Options_Ring > exclude_polygons_;
   static const ::PROTOBUF_NAMESPACE_ID::internal::LazyString _i_give_permission_to_break_this_code_default_language_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr language_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr id_;
@@ -5407,9 +5496,177 @@ inline void CostingOptions::set_closure_factor(float value) {
   // @@protoc_insertion_point(field_set:valhalla.CostingOptions.closure_factor)
 }
 
+// optional float private_access_penalty = 71;
+inline bool CostingOptions::_internal_has_private_access_penalty() const {
+  bool value = (_has_bits_[2] & 0x00000010u) != 0;
+  return value;
+}
+inline bool CostingOptions::has_private_access_penalty() const {
+  return _internal_has_private_access_penalty();
+}
+inline void CostingOptions::clear_private_access_penalty() {
+  private_access_penalty_ = 0;
+  _has_bits_[2] &= ~0x00000010u;
+}
+inline float CostingOptions::_internal_private_access_penalty() const {
+  return private_access_penalty_;
+}
+inline float CostingOptions::private_access_penalty() const {
+  // @@protoc_insertion_point(field_get:valhalla.CostingOptions.private_access_penalty)
+  return _internal_private_access_penalty();
+}
+inline void CostingOptions::_internal_set_private_access_penalty(float value) {
+  _has_bits_[2] |= 0x00000010u;
+  private_access_penalty_ = value;
+}
+inline void CostingOptions::set_private_access_penalty(float value) {
+  _internal_set_private_access_penalty(value);
+  // @@protoc_insertion_point(field_set:valhalla.CostingOptions.private_access_penalty)
+}
+
+// optional bool exclude_unpaved = 72;
+inline bool CostingOptions::_internal_has_exclude_unpaved() const {
+  bool value = (_has_bits_[2] & 0x00000020u) != 0;
+  return value;
+}
+inline bool CostingOptions::has_exclude_unpaved() const {
+  return _internal_has_exclude_unpaved();
+}
+inline void CostingOptions::clear_exclude_unpaved() {
+  exclude_unpaved_ = false;
+  _has_bits_[2] &= ~0x00000020u;
+}
+inline bool CostingOptions::_internal_exclude_unpaved() const {
+  return exclude_unpaved_;
+}
+inline bool CostingOptions::exclude_unpaved() const {
+  // @@protoc_insertion_point(field_get:valhalla.CostingOptions.exclude_unpaved)
+  return _internal_exclude_unpaved();
+}
+inline void CostingOptions::_internal_set_exclude_unpaved(bool value) {
+  _has_bits_[2] |= 0x00000020u;
+  exclude_unpaved_ = value;
+}
+inline void CostingOptions::set_exclude_unpaved(bool value) {
+  _internal_set_exclude_unpaved(value);
+  // @@protoc_insertion_point(field_set:valhalla.CostingOptions.exclude_unpaved)
+}
+
+// optional bool include_hot = 73;
+inline bool CostingOptions::_internal_has_include_hot() const {
+  bool value = (_has_bits_[2] & 0x00000040u) != 0;
+  return value;
+}
+inline bool CostingOptions::has_include_hot() const {
+  return _internal_has_include_hot();
+}
+inline void CostingOptions::clear_include_hot() {
+  include_hot_ = false;
+  _has_bits_[2] &= ~0x00000040u;
+}
+inline bool CostingOptions::_internal_include_hot() const {
+  return include_hot_;
+}
+inline bool CostingOptions::include_hot() const {
+  // @@protoc_insertion_point(field_get:valhalla.CostingOptions.include_hot)
+  return _internal_include_hot();
+}
+inline void CostingOptions::_internal_set_include_hot(bool value) {
+  _has_bits_[2] |= 0x00000040u;
+  include_hot_ = value;
+}
+inline void CostingOptions::set_include_hot(bool value) {
+  _internal_set_include_hot(value);
+  // @@protoc_insertion_point(field_set:valhalla.CostingOptions.include_hot)
+}
+
+// optional bool include_hov2 = 74;
+inline bool CostingOptions::_internal_has_include_hov2() const {
+  bool value = (_has_bits_[2] & 0x00000080u) != 0;
+  return value;
+}
+inline bool CostingOptions::has_include_hov2() const {
+  return _internal_has_include_hov2();
+}
+inline void CostingOptions::clear_include_hov2() {
+  include_hov2_ = false;
+  _has_bits_[2] &= ~0x00000080u;
+}
+inline bool CostingOptions::_internal_include_hov2() const {
+  return include_hov2_;
+}
+inline bool CostingOptions::include_hov2() const {
+  // @@protoc_insertion_point(field_get:valhalla.CostingOptions.include_hov2)
+  return _internal_include_hov2();
+}
+inline void CostingOptions::_internal_set_include_hov2(bool value) {
+  _has_bits_[2] |= 0x00000080u;
+  include_hov2_ = value;
+}
+inline void CostingOptions::set_include_hov2(bool value) {
+  _internal_set_include_hov2(value);
+  // @@protoc_insertion_point(field_set:valhalla.CostingOptions.include_hov2)
+}
+
+// optional bool include_hov3 = 75;
+inline bool CostingOptions::_internal_has_include_hov3() const {
+  bool value = (_has_bits_[2] & 0x00000100u) != 0;
+  return value;
+}
+inline bool CostingOptions::has_include_hov3() const {
+  return _internal_has_include_hov3();
+}
+inline void CostingOptions::clear_include_hov3() {
+  include_hov3_ = false;
+  _has_bits_[2] &= ~0x00000100u;
+}
+inline bool CostingOptions::_internal_include_hov3() const {
+  return include_hov3_;
+}
+inline bool CostingOptions::include_hov3() const {
+  // @@protoc_insertion_point(field_get:valhalla.CostingOptions.include_hov3)
+  return _internal_include_hov3();
+}
+inline void CostingOptions::_internal_set_include_hov3(bool value) {
+  _has_bits_[2] |= 0x00000100u;
+  include_hov3_ = value;
+}
+inline void CostingOptions::set_include_hov3(bool value) {
+  _internal_set_include_hov3(value);
+  // @@protoc_insertion_point(field_set:valhalla.CostingOptions.include_hov3)
+}
+
+// optional bool exclude_cash_only_tolls = 76;
+inline bool CostingOptions::_internal_has_exclude_cash_only_tolls() const {
+  bool value = (_has_bits_[2] & 0x00000200u) != 0;
+  return value;
+}
+inline bool CostingOptions::has_exclude_cash_only_tolls() const {
+  return _internal_has_exclude_cash_only_tolls();
+}
+inline void CostingOptions::clear_exclude_cash_only_tolls() {
+  exclude_cash_only_tolls_ = false;
+  _has_bits_[2] &= ~0x00000200u;
+}
+inline bool CostingOptions::_internal_exclude_cash_only_tolls() const {
+  return exclude_cash_only_tolls_;
+}
+inline bool CostingOptions::exclude_cash_only_tolls() const {
+  // @@protoc_insertion_point(field_get:valhalla.CostingOptions.exclude_cash_only_tolls)
+  return _internal_exclude_cash_only_tolls();
+}
+inline void CostingOptions::_internal_set_exclude_cash_only_tolls(bool value) {
+  _has_bits_[2] |= 0x00000200u;
+  exclude_cash_only_tolls_ = value;
+}
+inline void CostingOptions::set_exclude_cash_only_tolls(bool value) {
+  _internal_set_exclude_cash_only_tolls(value);
+  // @@protoc_insertion_point(field_set:valhalla.CostingOptions.exclude_cash_only_tolls)
+}
+
 // optional .valhalla.Costing costing = 90;
 inline bool CostingOptions::_internal_has_costing() const {
-  bool value = (_has_bits_[2] & 0x00000010u) != 0;
+  bool value = (_has_bits_[2] & 0x00000400u) != 0;
   return value;
 }
 inline bool CostingOptions::has_costing() const {
@@ -5417,7 +5674,7 @@ inline bool CostingOptions::has_costing() const {
 }
 inline void CostingOptions::clear_costing() {
   costing_ = 0;
-  _has_bits_[2] &= ~0x00000010u;
+  _has_bits_[2] &= ~0x00000400u;
 }
 inline ::valhalla::Costing CostingOptions::_internal_costing() const {
   return static_cast< ::valhalla::Costing >(costing_);
@@ -5428,7 +5685,7 @@ inline ::valhalla::Costing CostingOptions::costing() const {
 }
 inline void CostingOptions::_internal_set_costing(::valhalla::Costing value) {
   assert(::valhalla::Costing_IsValid(value));
-  _has_bits_[2] |= 0x00000010u;
+  _has_bits_[2] |= 0x00000400u;
   costing_ = value;
 }
 inline void CostingOptions::set_costing(::valhalla::Costing value) {
@@ -5505,49 +5762,49 @@ inline void CostingOptions::set_allocated_name(std::string* name) {
   // @@protoc_insertion_point(field_set_allocated:valhalla.CostingOptions.name)
 }
 
-// repeated .valhalla.AvoidEdge avoid_edges = 92;
-inline int CostingOptions::_internal_avoid_edges_size() const {
-  return avoid_edges_.size();
+// repeated .valhalla.AvoidEdge exclude_edges = 92;
+inline int CostingOptions::_internal_exclude_edges_size() const {
+  return exclude_edges_.size();
 }
-inline int CostingOptions::avoid_edges_size() const {
-  return _internal_avoid_edges_size();
+inline int CostingOptions::exclude_edges_size() const {
+  return _internal_exclude_edges_size();
 }
-inline void CostingOptions::clear_avoid_edges() {
-  avoid_edges_.Clear();
+inline void CostingOptions::clear_exclude_edges() {
+  exclude_edges_.Clear();
 }
-inline ::valhalla::AvoidEdge* CostingOptions::mutable_avoid_edges(int index) {
-  // @@protoc_insertion_point(field_mutable:valhalla.CostingOptions.avoid_edges)
-  return avoid_edges_.Mutable(index);
+inline ::valhalla::AvoidEdge* CostingOptions::mutable_exclude_edges(int index) {
+  // @@protoc_insertion_point(field_mutable:valhalla.CostingOptions.exclude_edges)
+  return exclude_edges_.Mutable(index);
 }
 inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::AvoidEdge >*
-CostingOptions::mutable_avoid_edges() {
-  // @@protoc_insertion_point(field_mutable_list:valhalla.CostingOptions.avoid_edges)
-  return &avoid_edges_;
+CostingOptions::mutable_exclude_edges() {
+  // @@protoc_insertion_point(field_mutable_list:valhalla.CostingOptions.exclude_edges)
+  return &exclude_edges_;
 }
-inline const ::valhalla::AvoidEdge& CostingOptions::_internal_avoid_edges(int index) const {
-  return avoid_edges_.Get(index);
+inline const ::valhalla::AvoidEdge& CostingOptions::_internal_exclude_edges(int index) const {
+  return exclude_edges_.Get(index);
 }
-inline const ::valhalla::AvoidEdge& CostingOptions::avoid_edges(int index) const {
-  // @@protoc_insertion_point(field_get:valhalla.CostingOptions.avoid_edges)
-  return _internal_avoid_edges(index);
+inline const ::valhalla::AvoidEdge& CostingOptions::exclude_edges(int index) const {
+  // @@protoc_insertion_point(field_get:valhalla.CostingOptions.exclude_edges)
+  return _internal_exclude_edges(index);
 }
-inline ::valhalla::AvoidEdge* CostingOptions::_internal_add_avoid_edges() {
-  return avoid_edges_.Add();
+inline ::valhalla::AvoidEdge* CostingOptions::_internal_add_exclude_edges() {
+  return exclude_edges_.Add();
 }
-inline ::valhalla::AvoidEdge* CostingOptions::add_avoid_edges() {
-  ::valhalla::AvoidEdge* _add = _internal_add_avoid_edges();
-  // @@protoc_insertion_point(field_add:valhalla.CostingOptions.avoid_edges)
+inline ::valhalla::AvoidEdge* CostingOptions::add_exclude_edges() {
+  ::valhalla::AvoidEdge* _add = _internal_add_exclude_edges();
+  // @@protoc_insertion_point(field_add:valhalla.CostingOptions.exclude_edges)
   return _add;
 }
 inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::AvoidEdge >&
-CostingOptions::avoid_edges() const {
-  // @@protoc_insertion_point(field_list:valhalla.CostingOptions.avoid_edges)
-  return avoid_edges_;
+CostingOptions::exclude_edges() const {
+  // @@protoc_insertion_point(field_list:valhalla.CostingOptions.exclude_edges)
+  return exclude_edges_;
 }
 
 // optional bool filter_closures = 93 [default = true];
 inline bool CostingOptions::_internal_has_filter_closures() const {
-  bool value = (_has_bits_[2] & 0x00000020u) != 0;
+  bool value = (_has_bits_[2] & 0x00000800u) != 0;
   return value;
 }
 inline bool CostingOptions::has_filter_closures() const {
@@ -5555,7 +5812,7 @@ inline bool CostingOptions::has_filter_closures() const {
 }
 inline void CostingOptions::clear_filter_closures() {
   filter_closures_ = true;
-  _has_bits_[2] &= ~0x00000020u;
+  _has_bits_[2] &= ~0x00000800u;
 }
 inline bool CostingOptions::_internal_filter_closures() const {
   return filter_closures_;
@@ -5565,7 +5822,7 @@ inline bool CostingOptions::filter_closures() const {
   return _internal_filter_closures();
 }
 inline void CostingOptions::_internal_set_filter_closures(bool value) {
-  _has_bits_[2] |= 0x00000020u;
+  _has_bits_[2] |= 0x00000800u;
   filter_closures_ = value;
 }
 inline void CostingOptions::set_filter_closures(bool value) {
@@ -6191,41 +6448,41 @@ Options::locations() const {
   return locations_;
 }
 
-// repeated .valhalla.Location avoid_locations = 15;
-inline int Options::_internal_avoid_locations_size() const {
-  return avoid_locations_.size();
+// repeated .valhalla.Location exclude_locations = 15;
+inline int Options::_internal_exclude_locations_size() const {
+  return exclude_locations_.size();
 }
-inline int Options::avoid_locations_size() const {
-  return _internal_avoid_locations_size();
+inline int Options::exclude_locations_size() const {
+  return _internal_exclude_locations_size();
 }
-inline ::valhalla::Location* Options::mutable_avoid_locations(int index) {
-  // @@protoc_insertion_point(field_mutable:valhalla.Options.avoid_locations)
-  return avoid_locations_.Mutable(index);
+inline ::valhalla::Location* Options::mutable_exclude_locations(int index) {
+  // @@protoc_insertion_point(field_mutable:valhalla.Options.exclude_locations)
+  return exclude_locations_.Mutable(index);
 }
 inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::Location >*
-Options::mutable_avoid_locations() {
-  // @@protoc_insertion_point(field_mutable_list:valhalla.Options.avoid_locations)
-  return &avoid_locations_;
+Options::mutable_exclude_locations() {
+  // @@protoc_insertion_point(field_mutable_list:valhalla.Options.exclude_locations)
+  return &exclude_locations_;
 }
-inline const ::valhalla::Location& Options::_internal_avoid_locations(int index) const {
-  return avoid_locations_.Get(index);
+inline const ::valhalla::Location& Options::_internal_exclude_locations(int index) const {
+  return exclude_locations_.Get(index);
 }
-inline const ::valhalla::Location& Options::avoid_locations(int index) const {
-  // @@protoc_insertion_point(field_get:valhalla.Options.avoid_locations)
-  return _internal_avoid_locations(index);
+inline const ::valhalla::Location& Options::exclude_locations(int index) const {
+  // @@protoc_insertion_point(field_get:valhalla.Options.exclude_locations)
+  return _internal_exclude_locations(index);
 }
-inline ::valhalla::Location* Options::_internal_add_avoid_locations() {
-  return avoid_locations_.Add();
+inline ::valhalla::Location* Options::_internal_add_exclude_locations() {
+  return exclude_locations_.Add();
 }
-inline ::valhalla::Location* Options::add_avoid_locations() {
-  ::valhalla::Location* _add = _internal_add_avoid_locations();
-  // @@protoc_insertion_point(field_add:valhalla.Options.avoid_locations)
+inline ::valhalla::Location* Options::add_exclude_locations() {
+  ::valhalla::Location* _add = _internal_add_exclude_locations();
+  // @@protoc_insertion_point(field_add:valhalla.Options.exclude_locations)
   return _add;
 }
 inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::Location >&
-Options::avoid_locations() const {
-  // @@protoc_insertion_point(field_list:valhalla.Options.avoid_locations)
-  return avoid_locations_;
+Options::exclude_locations() const {
+  // @@protoc_insertion_point(field_list:valhalla.Options.exclude_locations)
+  return exclude_locations_;
 }
 
 // repeated .valhalla.Location sources = 16;
@@ -7192,44 +7449,44 @@ Options::recostings() const {
   return recostings_;
 }
 
-// repeated .valhalla.Options.Ring avoid_polygons = 47;
-inline int Options::_internal_avoid_polygons_size() const {
-  return avoid_polygons_.size();
+// repeated .valhalla.Options.Ring exclude_polygons = 47;
+inline int Options::_internal_exclude_polygons_size() const {
+  return exclude_polygons_.size();
 }
-inline int Options::avoid_polygons_size() const {
-  return _internal_avoid_polygons_size();
+inline int Options::exclude_polygons_size() const {
+  return _internal_exclude_polygons_size();
 }
-inline void Options::clear_avoid_polygons() {
-  avoid_polygons_.Clear();
+inline void Options::clear_exclude_polygons() {
+  exclude_polygons_.Clear();
 }
-inline ::valhalla::Options_Ring* Options::mutable_avoid_polygons(int index) {
-  // @@protoc_insertion_point(field_mutable:valhalla.Options.avoid_polygons)
-  return avoid_polygons_.Mutable(index);
+inline ::valhalla::Options_Ring* Options::mutable_exclude_polygons(int index) {
+  // @@protoc_insertion_point(field_mutable:valhalla.Options.exclude_polygons)
+  return exclude_polygons_.Mutable(index);
 }
 inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::Options_Ring >*
-Options::mutable_avoid_polygons() {
-  // @@protoc_insertion_point(field_mutable_list:valhalla.Options.avoid_polygons)
-  return &avoid_polygons_;
+Options::mutable_exclude_polygons() {
+  // @@protoc_insertion_point(field_mutable_list:valhalla.Options.exclude_polygons)
+  return &exclude_polygons_;
 }
-inline const ::valhalla::Options_Ring& Options::_internal_avoid_polygons(int index) const {
-  return avoid_polygons_.Get(index);
+inline const ::valhalla::Options_Ring& Options::_internal_exclude_polygons(int index) const {
+  return exclude_polygons_.Get(index);
 }
-inline const ::valhalla::Options_Ring& Options::avoid_polygons(int index) const {
-  // @@protoc_insertion_point(field_get:valhalla.Options.avoid_polygons)
-  return _internal_avoid_polygons(index);
+inline const ::valhalla::Options_Ring& Options::exclude_polygons(int index) const {
+  // @@protoc_insertion_point(field_get:valhalla.Options.exclude_polygons)
+  return _internal_exclude_polygons(index);
 }
-inline ::valhalla::Options_Ring* Options::_internal_add_avoid_polygons() {
-  return avoid_polygons_.Add();
+inline ::valhalla::Options_Ring* Options::_internal_add_exclude_polygons() {
+  return exclude_polygons_.Add();
 }
-inline ::valhalla::Options_Ring* Options::add_avoid_polygons() {
-  ::valhalla::Options_Ring* _add = _internal_add_avoid_polygons();
-  // @@protoc_insertion_point(field_add:valhalla.Options.avoid_polygons)
+inline ::valhalla::Options_Ring* Options::add_exclude_polygons() {
+  ::valhalla::Options_Ring* _add = _internal_add_exclude_polygons();
+  // @@protoc_insertion_point(field_add:valhalla.Options.exclude_polygons)
   return _add;
 }
 inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::Options_Ring >&
-Options::avoid_polygons() const {
-  // @@protoc_insertion_point(field_list:valhalla.Options.avoid_polygons)
-  return avoid_polygons_;
+Options::exclude_polygons() const {
+  // @@protoc_insertion_point(field_list:valhalla.Options.exclude_polygons)
+  return exclude_polygons_;
 }
 
 #ifdef __GNUC__

@@ -29,6 +29,7 @@
 #include <google/protobuf/message_lite.h>
 #include <google/protobuf/repeated_field.h>  // IWYU pragma: export
 #include <google/protobuf/extension_set.h>  // IWYU pragma: export
+#include <google/protobuf/generated_enum_util.h>
 // @@protoc_insertion_point(includes)
 #include <google/protobuf/port_def.inc>
 #define PROTOBUF_INTERNAL_EXPORT_info_2eproto
@@ -64,6 +65,27 @@ template<> ::valhalla::Statistic* Arena::CreateMaybeMessage<::valhalla::Statisti
 PROTOBUF_NAMESPACE_CLOSE
 namespace valhalla {
 
+enum StatisticType : int {
+  count = 0,
+  gauge = 1,
+  timing = 2,
+  set = 3
+};
+bool StatisticType_IsValid(int value);
+constexpr StatisticType StatisticType_MIN = count;
+constexpr StatisticType StatisticType_MAX = set;
+constexpr int StatisticType_ARRAYSIZE = StatisticType_MAX + 1;
+
+const std::string& StatisticType_Name(StatisticType value);
+template<typename T>
+inline const std::string& StatisticType_Name(T enum_t_value) {
+  static_assert(::std::is_same<T, StatisticType>::value ||
+    ::std::is_integral<T>::value,
+    "Incorrect type passed to function StatisticType_Name.");
+  return StatisticType_Name(static_cast<StatisticType>(enum_t_value));
+}
+bool StatisticType_Parse(
+    ::PROTOBUF_NAMESPACE_ID::ConstStringParam name, StatisticType* value);
 // ===================================================================
 
 class Statistic final :
@@ -179,25 +201,27 @@ class Statistic final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kNameFieldNumber = 1,
+    kKeyFieldNumber = 1,
     kValueFieldNumber = 2,
+    kFrequencyFieldNumber = 3,
+    kTypeFieldNumber = 4,
   };
-  // optional string name = 1;
-  bool has_name() const;
+  // optional string key = 1;
+  bool has_key() const;
   private:
-  bool _internal_has_name() const;
+  bool _internal_has_key() const;
   public:
-  void clear_name();
-  const std::string& name() const;
+  void clear_key();
+  const std::string& key() const;
   template <typename ArgT0 = const std::string&, typename... ArgT>
-  void set_name(ArgT0&& arg0, ArgT... args);
-  std::string* mutable_name();
-  PROTOBUF_NODISCARD std::string* release_name();
-  void set_allocated_name(std::string* name);
+  void set_key(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_key();
+  PROTOBUF_NODISCARD std::string* release_key();
+  void set_allocated_key(std::string* key);
   private:
-  const std::string& _internal_name() const;
-  inline PROTOBUF_ALWAYS_INLINE void _internal_set_name(const std::string& value);
-  std::string* _internal_mutable_name();
+  const std::string& _internal_key() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_key(const std::string& value);
+  std::string* _internal_mutable_key();
   public:
 
   // optional double value = 2;
@@ -213,6 +237,32 @@ class Statistic final :
   void _internal_set_value(double value);
   public:
 
+  // optional float frequency = 3;
+  bool has_frequency() const;
+  private:
+  bool _internal_has_frequency() const;
+  public:
+  void clear_frequency();
+  float frequency() const;
+  void set_frequency(float value);
+  private:
+  float _internal_frequency() const;
+  void _internal_set_frequency(float value);
+  public:
+
+  // optional .valhalla.StatisticType type = 4;
+  bool has_type() const;
+  private:
+  bool _internal_has_type() const;
+  public:
+  void clear_type();
+  ::valhalla::StatisticType type() const;
+  void set_type(::valhalla::StatisticType value);
+  private:
+  ::valhalla::StatisticType _internal_type() const;
+  void _internal_set_type(::valhalla::StatisticType value);
+  public:
+
   // @@protoc_insertion_point(class_scope:valhalla.Statistic)
  private:
   class _Internal;
@@ -222,8 +272,10 @@ class Statistic final :
   typedef void DestructorSkippable_;
   ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr name_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr key_;
   double value_;
+  float frequency_;
+  int type_;
   friend struct ::TableStruct_info_2eproto;
 };
 // -------------------------------------------------------------------
@@ -342,6 +394,7 @@ class Info final :
 
   enum : int {
     kStatisticsFieldNumber = 1,
+    kErrorFieldNumber = 2,
   };
   // repeated .valhalla.Statistic statistics = 1;
   int statistics_size() const;
@@ -361,6 +414,19 @@ class Info final :
   const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::Statistic >&
       statistics() const;
 
+  // optional bool error = 2;
+  bool has_error() const;
+  private:
+  bool _internal_has_error() const;
+  public:
+  void clear_error();
+  bool error() const;
+  void set_error(bool value);
+  private:
+  bool _internal_error() const;
+  void _internal_set_error(bool value);
+  public:
+
   // @@protoc_insertion_point(class_scope:valhalla.Info)
  private:
   class _Internal;
@@ -368,8 +434,10 @@ class Info final :
   template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::Statistic > statistics_;
+  ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::valhalla::Statistic > statistics_;
+  bool error_;
   friend struct ::TableStruct_info_2eproto;
 };
 // ===================================================================
@@ -383,73 +451,73 @@ class Info final :
 #endif  // __GNUC__
 // Statistic
 
-// optional string name = 1;
-inline bool Statistic::_internal_has_name() const {
+// optional string key = 1;
+inline bool Statistic::_internal_has_key() const {
   bool value = (_has_bits_[0] & 0x00000001u) != 0;
   return value;
 }
-inline bool Statistic::has_name() const {
-  return _internal_has_name();
+inline bool Statistic::has_key() const {
+  return _internal_has_key();
 }
-inline void Statistic::clear_name() {
-  name_.ClearToEmpty();
+inline void Statistic::clear_key() {
+  key_.ClearToEmpty();
   _has_bits_[0] &= ~0x00000001u;
 }
-inline const std::string& Statistic::name() const {
-  // @@protoc_insertion_point(field_get:valhalla.Statistic.name)
-  return _internal_name();
+inline const std::string& Statistic::key() const {
+  // @@protoc_insertion_point(field_get:valhalla.Statistic.key)
+  return _internal_key();
 }
 template <typename ArgT0, typename... ArgT>
 inline PROTOBUF_ALWAYS_INLINE
-void Statistic::set_name(ArgT0&& arg0, ArgT... args) {
+void Statistic::set_key(ArgT0&& arg0, ArgT... args) {
  _has_bits_[0] |= 0x00000001u;
- name_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:valhalla.Statistic.name)
+ key_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:valhalla.Statistic.key)
 }
-inline std::string* Statistic::mutable_name() {
-  std::string* _s = _internal_mutable_name();
-  // @@protoc_insertion_point(field_mutable:valhalla.Statistic.name)
+inline std::string* Statistic::mutable_key() {
+  std::string* _s = _internal_mutable_key();
+  // @@protoc_insertion_point(field_mutable:valhalla.Statistic.key)
   return _s;
 }
-inline const std::string& Statistic::_internal_name() const {
-  return name_.Get();
+inline const std::string& Statistic::_internal_key() const {
+  return key_.Get();
 }
-inline void Statistic::_internal_set_name(const std::string& value) {
+inline void Statistic::_internal_set_key(const std::string& value) {
   _has_bits_[0] |= 0x00000001u;
-  name_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, value, GetArenaForAllocation());
+  key_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, value, GetArenaForAllocation());
 }
-inline std::string* Statistic::_internal_mutable_name() {
+inline std::string* Statistic::_internal_mutable_key() {
   _has_bits_[0] |= 0x00000001u;
-  return name_.Mutable(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArenaForAllocation());
+  return key_.Mutable(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArenaForAllocation());
 }
-inline std::string* Statistic::release_name() {
-  // @@protoc_insertion_point(field_release:valhalla.Statistic.name)
-  if (!_internal_has_name()) {
+inline std::string* Statistic::release_key() {
+  // @@protoc_insertion_point(field_release:valhalla.Statistic.key)
+  if (!_internal_has_key()) {
     return nullptr;
   }
   _has_bits_[0] &= ~0x00000001u;
-  auto* p = name_.ReleaseNonDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArenaForAllocation());
+  auto* p = key_.ReleaseNonDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArenaForAllocation());
 #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  if (name_.IsDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited())) {
-    name_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
+  if (key_.IsDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited())) {
+    key_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
   }
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   return p;
 }
-inline void Statistic::set_allocated_name(std::string* name) {
-  if (name != nullptr) {
+inline void Statistic::set_allocated_key(std::string* key) {
+  if (key != nullptr) {
     _has_bits_[0] |= 0x00000001u;
   } else {
     _has_bits_[0] &= ~0x00000001u;
   }
-  name_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), name,
+  key_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), key,
       GetArenaForAllocation());
 #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  if (name_.IsDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited())) {
-    name_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
+  if (key_.IsDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited())) {
+    key_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
   }
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:valhalla.Statistic.name)
+  // @@protoc_insertion_point(field_set_allocated:valhalla.Statistic.key)
 }
 
 // optional double value = 2;
@@ -478,6 +546,63 @@ inline void Statistic::_internal_set_value(double value) {
 inline void Statistic::set_value(double value) {
   _internal_set_value(value);
   // @@protoc_insertion_point(field_set:valhalla.Statistic.value)
+}
+
+// optional float frequency = 3;
+inline bool Statistic::_internal_has_frequency() const {
+  bool value = (_has_bits_[0] & 0x00000004u) != 0;
+  return value;
+}
+inline bool Statistic::has_frequency() const {
+  return _internal_has_frequency();
+}
+inline void Statistic::clear_frequency() {
+  frequency_ = 0;
+  _has_bits_[0] &= ~0x00000004u;
+}
+inline float Statistic::_internal_frequency() const {
+  return frequency_;
+}
+inline float Statistic::frequency() const {
+  // @@protoc_insertion_point(field_get:valhalla.Statistic.frequency)
+  return _internal_frequency();
+}
+inline void Statistic::_internal_set_frequency(float value) {
+  _has_bits_[0] |= 0x00000004u;
+  frequency_ = value;
+}
+inline void Statistic::set_frequency(float value) {
+  _internal_set_frequency(value);
+  // @@protoc_insertion_point(field_set:valhalla.Statistic.frequency)
+}
+
+// optional .valhalla.StatisticType type = 4;
+inline bool Statistic::_internal_has_type() const {
+  bool value = (_has_bits_[0] & 0x00000008u) != 0;
+  return value;
+}
+inline bool Statistic::has_type() const {
+  return _internal_has_type();
+}
+inline void Statistic::clear_type() {
+  type_ = 0;
+  _has_bits_[0] &= ~0x00000008u;
+}
+inline ::valhalla::StatisticType Statistic::_internal_type() const {
+  return static_cast< ::valhalla::StatisticType >(type_);
+}
+inline ::valhalla::StatisticType Statistic::type() const {
+  // @@protoc_insertion_point(field_get:valhalla.Statistic.type)
+  return _internal_type();
+}
+inline void Statistic::_internal_set_type(::valhalla::StatisticType value) {
+  assert(::valhalla::StatisticType_IsValid(value));
+  _has_bits_[0] |= 0x00000008u;
+  type_ = value;
+}
+inline void Statistic::set_type(::valhalla::StatisticType value) {
+  _internal_set_type(value);
+  // @@protoc_insertion_point(field_set:valhalla.Statistic.type)
 }
 
 // -------------------------------------------------------------------
@@ -524,6 +649,34 @@ Info::statistics() const {
   return statistics_;
 }
 
+// optional bool error = 2;
+inline bool Info::_internal_has_error() const {
+  bool value = (_has_bits_[0] & 0x00000001u) != 0;
+  return value;
+}
+inline bool Info::has_error() const {
+  return _internal_has_error();
+}
+inline void Info::clear_error() {
+  error_ = false;
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline bool Info::_internal_error() const {
+  return error_;
+}
+inline bool Info::error() const {
+  // @@protoc_insertion_point(field_get:valhalla.Info.error)
+  return _internal_error();
+}
+inline void Info::_internal_set_error(bool value) {
+  _has_bits_[0] |= 0x00000001u;
+  error_ = value;
+}
+inline void Info::set_error(bool value) {
+  _internal_set_error(value);
+  // @@protoc_insertion_point(field_set:valhalla.Info.error)
+}
+
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
@@ -533,6 +686,12 @@ Info::statistics() const {
 // @@protoc_insertion_point(namespace_scope)
 
 }  // namespace valhalla
+
+PROTOBUF_NAMESPACE_OPEN
+
+template <> struct is_proto_enum< ::valhalla::StatisticType> : ::std::true_type {};
+
+PROTOBUF_NAMESPACE_CLOSE
 
 // @@protoc_insertion_point(global_scope)
 

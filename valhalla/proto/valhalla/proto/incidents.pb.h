@@ -617,14 +617,16 @@ class IncidentsTile_Metadata final :
     kLongDescriptionFieldNumber = 14,
     kClearLanesFieldNumber = 15,
     kIso31661Alpha2FieldNumber = 129,
+    kIso31661Alpha3FieldNumber = 130,
     kCongestionFieldNumber = 11,
     kTypeFieldNumber = 1,
     kImpactFieldNumber = 9,
     kStartTimeFieldNumber = 6,
     kEndTimeFieldNumber = 7,
     kCreationTimeFieldNumber = 13,
-    kNumLanesBlockedFieldNumber = 16,
     kRoadClosedFieldNumber = 10,
+    kLengthFieldNumber = 17,
+    kNumLanesBlockedFieldNumber = 16,
     kIdFieldNumber = 128,
   };
   // repeated uint32 alertc_codes = 2;
@@ -757,6 +759,20 @@ class IncidentsTile_Metadata final :
   std::string* _internal_mutable_iso_3166_1_alpha2();
   public:
 
+  // string iso_3166_1_alpha3 = 130;
+  void clear_iso_3166_1_alpha3();
+  const std::string& iso_3166_1_alpha3() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_iso_3166_1_alpha3(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_iso_3166_1_alpha3();
+  PROTOBUF_NODISCARD std::string* release_iso_3166_1_alpha3();
+  void set_allocated_iso_3166_1_alpha3(std::string* iso_3166_1_alpha3);
+  private:
+  const std::string& _internal_iso_3166_1_alpha3() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_iso_3166_1_alpha3(const std::string& value);
+  std::string* _internal_mutable_iso_3166_1_alpha3();
+  public:
+
   // .valhalla.IncidentsTile.Metadata.Congestion congestion = 11;
   bool has_congestion() const;
   private:
@@ -820,15 +836,6 @@ class IncidentsTile_Metadata final :
   void _internal_set_creation_time(uint64_t value);
   public:
 
-  // uint64 num_lanes_blocked = 16;
-  void clear_num_lanes_blocked();
-  uint64_t num_lanes_blocked() const;
-  void set_num_lanes_blocked(uint64_t value);
-  private:
-  uint64_t _internal_num_lanes_blocked() const;
-  void _internal_set_num_lanes_blocked(uint64_t value);
-  public:
-
   // bool road_closed = 10;
   void clear_road_closed();
   bool road_closed() const;
@@ -836,6 +843,24 @@ class IncidentsTile_Metadata final :
   private:
   bool _internal_road_closed() const;
   void _internal_set_road_closed(bool value);
+  public:
+
+  // uint32 length = 17;
+  void clear_length();
+  uint32_t length() const;
+  void set_length(uint32_t value);
+  private:
+  uint32_t _internal_length() const;
+  void _internal_set_length(uint32_t value);
+  public:
+
+  // uint64 num_lanes_blocked = 16;
+  void clear_num_lanes_blocked();
+  uint64_t num_lanes_blocked() const;
+  void set_num_lanes_blocked(uint64_t value);
+  private:
+  uint64_t _internal_num_lanes_blocked() const;
+  void _internal_set_num_lanes_blocked(uint64_t value);
   public:
 
   // uint64 id = 128;
@@ -863,14 +888,16 @@ class IncidentsTile_Metadata final :
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr long_description_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr clear_lanes_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr iso_3166_1_alpha2_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr iso_3166_1_alpha3_;
   ::valhalla::IncidentsTile_Metadata_Congestion* congestion_;
   int type_;
   int impact_;
   uint64_t start_time_;
   uint64_t end_time_;
   uint64_t creation_time_;
-  uint64_t num_lanes_blocked_;
   bool road_closed_;
+  uint32_t length_;
+  uint64_t num_lanes_blocked_;
   uint64_t id_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_incidents_2eproto;
@@ -1763,6 +1790,26 @@ inline void IncidentsTile_Metadata::set_num_lanes_blocked(uint64_t value) {
   // @@protoc_insertion_point(field_set:valhalla.IncidentsTile.Metadata.num_lanes_blocked)
 }
 
+// uint32 length = 17;
+inline void IncidentsTile_Metadata::clear_length() {
+  length_ = 0u;
+}
+inline uint32_t IncidentsTile_Metadata::_internal_length() const {
+  return length_;
+}
+inline uint32_t IncidentsTile_Metadata::length() const {
+  // @@protoc_insertion_point(field_get:valhalla.IncidentsTile.Metadata.length)
+  return _internal_length();
+}
+inline void IncidentsTile_Metadata::_internal_set_length(uint32_t value) {
+  
+  length_ = value;
+}
+inline void IncidentsTile_Metadata::set_length(uint32_t value) {
+  _internal_set_length(value);
+  // @@protoc_insertion_point(field_set:valhalla.IncidentsTile.Metadata.length)
+}
+
 // uint64 id = 128;
 inline void IncidentsTile_Metadata::clear_id() {
   id_ = uint64_t{0u};
@@ -1832,6 +1879,57 @@ inline void IncidentsTile_Metadata::set_allocated_iso_3166_1_alpha2(std::string*
   }
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   // @@protoc_insertion_point(field_set_allocated:valhalla.IncidentsTile.Metadata.iso_3166_1_alpha2)
+}
+
+// string iso_3166_1_alpha3 = 130;
+inline void IncidentsTile_Metadata::clear_iso_3166_1_alpha3() {
+  iso_3166_1_alpha3_.ClearToEmpty();
+}
+inline const std::string& IncidentsTile_Metadata::iso_3166_1_alpha3() const {
+  // @@protoc_insertion_point(field_get:valhalla.IncidentsTile.Metadata.iso_3166_1_alpha3)
+  return _internal_iso_3166_1_alpha3();
+}
+template <typename ArgT0, typename... ArgT>
+inline PROTOBUF_ALWAYS_INLINE
+void IncidentsTile_Metadata::set_iso_3166_1_alpha3(ArgT0&& arg0, ArgT... args) {
+ 
+ iso_3166_1_alpha3_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:valhalla.IncidentsTile.Metadata.iso_3166_1_alpha3)
+}
+inline std::string* IncidentsTile_Metadata::mutable_iso_3166_1_alpha3() {
+  std::string* _s = _internal_mutable_iso_3166_1_alpha3();
+  // @@protoc_insertion_point(field_mutable:valhalla.IncidentsTile.Metadata.iso_3166_1_alpha3)
+  return _s;
+}
+inline const std::string& IncidentsTile_Metadata::_internal_iso_3166_1_alpha3() const {
+  return iso_3166_1_alpha3_.Get();
+}
+inline void IncidentsTile_Metadata::_internal_set_iso_3166_1_alpha3(const std::string& value) {
+  
+  iso_3166_1_alpha3_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, value, GetArenaForAllocation());
+}
+inline std::string* IncidentsTile_Metadata::_internal_mutable_iso_3166_1_alpha3() {
+  
+  return iso_3166_1_alpha3_.Mutable(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArenaForAllocation());
+}
+inline std::string* IncidentsTile_Metadata::release_iso_3166_1_alpha3() {
+  // @@protoc_insertion_point(field_release:valhalla.IncidentsTile.Metadata.iso_3166_1_alpha3)
+  return iso_3166_1_alpha3_.Release(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArenaForAllocation());
+}
+inline void IncidentsTile_Metadata::set_allocated_iso_3166_1_alpha3(std::string* iso_3166_1_alpha3) {
+  if (iso_3166_1_alpha3 != nullptr) {
+    
+  } else {
+    
+  }
+  iso_3166_1_alpha3_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), iso_3166_1_alpha3,
+      GetArenaForAllocation());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (iso_3166_1_alpha3_.IsDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited())) {
+    iso_3166_1_alpha3_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
+  }
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:valhalla.IncidentsTile.Metadata.iso_3166_1_alpha3)
 }
 
 // -------------------------------------------------------------------

@@ -33,6 +33,7 @@
 #include "trip.pb.h"
 #include "directions.pb.h"
 #include "info.pb.h"
+#include "status.pb.h"
 // @@protoc_insertion_point(includes)
 #include <google/protobuf/port_def.inc>
 #define PROTOBUF_INTERNAL_EXPORT_api_2eproto
@@ -183,6 +184,7 @@ class Api final :
     kTripFieldNumber = 2,
     kDirectionsFieldNumber = 3,
     kInfoFieldNumber = 4,
+    kStatusFieldNumber = 5,
   };
   // optional .valhalla.Options options = 1;
   bool has_options() const;
@@ -256,6 +258,24 @@ class Api final :
       ::valhalla::Info* info);
   ::valhalla::Info* unsafe_arena_release_info();
 
+  // optional .valhalla.Status status = 5;
+  bool has_status() const;
+  private:
+  bool _internal_has_status() const;
+  public:
+  void clear_status();
+  const ::valhalla::Status& status() const;
+  PROTOBUF_NODISCARD ::valhalla::Status* release_status();
+  ::valhalla::Status* mutable_status();
+  void set_allocated_status(::valhalla::Status* status);
+  private:
+  const ::valhalla::Status& _internal_status() const;
+  ::valhalla::Status* _internal_mutable_status();
+  public:
+  void unsafe_arena_set_allocated_status(
+      ::valhalla::Status* status);
+  ::valhalla::Status* unsafe_arena_release_status();
+
   // @@protoc_insertion_point(class_scope:valhalla.Api)
  private:
   class _Internal;
@@ -269,6 +289,7 @@ class Api final :
   ::valhalla::Trip* trip_;
   ::valhalla::Directions* directions_;
   ::valhalla::Info* info_;
+  ::valhalla::Status* status_;
   friend struct ::TableStruct_api_2eproto;
 };
 // ===================================================================
@@ -632,6 +653,94 @@ inline void Api::set_allocated_info(::valhalla::Info* info) {
   }
   info_ = info;
   // @@protoc_insertion_point(field_set_allocated:valhalla.Api.info)
+}
+
+// optional .valhalla.Status status = 5;
+inline bool Api::_internal_has_status() const {
+  bool value = (_has_bits_[0] & 0x00000010u) != 0;
+  PROTOBUF_ASSUME(!value || status_ != nullptr);
+  return value;
+}
+inline bool Api::has_status() const {
+  return _internal_has_status();
+}
+inline const ::valhalla::Status& Api::_internal_status() const {
+  const ::valhalla::Status* p = status_;
+  return p != nullptr ? *p : reinterpret_cast<const ::valhalla::Status&>(
+      ::valhalla::_Status_default_instance_);
+}
+inline const ::valhalla::Status& Api::status() const {
+  // @@protoc_insertion_point(field_get:valhalla.Api.status)
+  return _internal_status();
+}
+inline void Api::unsafe_arena_set_allocated_status(
+    ::valhalla::Status* status) {
+  if (GetArenaForAllocation() == nullptr) {
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(status_);
+  }
+  status_ = status;
+  if (status) {
+    _has_bits_[0] |= 0x00000010u;
+  } else {
+    _has_bits_[0] &= ~0x00000010u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:valhalla.Api.status)
+}
+inline ::valhalla::Status* Api::release_status() {
+  _has_bits_[0] &= ~0x00000010u;
+  ::valhalla::Status* temp = status_;
+  status_ = nullptr;
+#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
+  auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
+  temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  if (GetArenaForAllocation() == nullptr) { delete old; }
+#else  // PROTOBUF_FORCE_COPY_IN_RELEASE
+  if (GetArenaForAllocation() != nullptr) {
+    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  }
+#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
+  return temp;
+}
+inline ::valhalla::Status* Api::unsafe_arena_release_status() {
+  // @@protoc_insertion_point(field_release:valhalla.Api.status)
+  _has_bits_[0] &= ~0x00000010u;
+  ::valhalla::Status* temp = status_;
+  status_ = nullptr;
+  return temp;
+}
+inline ::valhalla::Status* Api::_internal_mutable_status() {
+  _has_bits_[0] |= 0x00000010u;
+  if (status_ == nullptr) {
+    auto* p = CreateMaybeMessage<::valhalla::Status>(GetArenaForAllocation());
+    status_ = p;
+  }
+  return status_;
+}
+inline ::valhalla::Status* Api::mutable_status() {
+  ::valhalla::Status* _msg = _internal_mutable_status();
+  // @@protoc_insertion_point(field_mutable:valhalla.Api.status)
+  return _msg;
+}
+inline void Api::set_allocated_status(::valhalla::Status* status) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
+  if (message_arena == nullptr) {
+    delete reinterpret_cast< ::PROTOBUF_NAMESPACE_ID::MessageLite*>(status_);
+  }
+  if (status) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+        ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper<
+            ::PROTOBUF_NAMESPACE_ID::MessageLite>::GetOwningArena(
+                reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(status));
+    if (message_arena != submessage_arena) {
+      status = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, status, submessage_arena);
+    }
+    _has_bits_[0] |= 0x00000010u;
+  } else {
+    _has_bits_[0] &= ~0x00000010u;
+  }
+  status_ = status;
+  // @@protoc_insertion_point(field_set_allocated:valhalla.Api.status)
 }
 
 #ifdef __GNUC__

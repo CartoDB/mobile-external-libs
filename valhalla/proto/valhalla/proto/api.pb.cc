@@ -19,7 +19,8 @@ constexpr Api::Api(
   : options_(nullptr)
   , trip_(nullptr)
   , directions_(nullptr)
-  , info_(nullptr){}
+  , info_(nullptr)
+  , status_(nullptr){}
 struct ApiDefaultTypeInternal {
   constexpr ApiDefaultTypeInternal()
     : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
@@ -53,6 +54,10 @@ class Api::_Internal {
   static void set_has_info(HasBits* has_bits) {
     (*has_bits)[0] |= 8u;
   }
+  static const ::valhalla::Status& status(const Api* msg);
+  static void set_has_status(HasBits* has_bits) {
+    (*has_bits)[0] |= 16u;
+  }
 };
 
 const ::valhalla::Options&
@@ -71,6 +76,10 @@ const ::valhalla::Info&
 Api::_Internal::info(const Api* msg) {
   return *msg->info_;
 }
+const ::valhalla::Status&
+Api::_Internal::status(const Api* msg) {
+  return *msg->status_;
+}
 void Api::clear_options() {
   if (options_ != nullptr) options_->Clear();
   _has_bits_[0] &= ~0x00000001u;
@@ -86,6 +95,10 @@ void Api::clear_directions() {
 void Api::clear_info() {
   if (info_ != nullptr) info_->Clear();
   _has_bits_[0] &= ~0x00000008u;
+}
+void Api::clear_status() {
+  if (status_ != nullptr) status_->Clear();
+  _has_bits_[0] &= ~0x00000010u;
 }
 Api::Api(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                          bool is_message_owned)
@@ -120,14 +133,19 @@ Api::Api(const Api& from)
   } else {
     info_ = nullptr;
   }
+  if (from._internal_has_status()) {
+    status_ = new ::valhalla::Status(*from.status_);
+  } else {
+    status_ = nullptr;
+  }
   // @@protoc_insertion_point(copy_constructor:valhalla.Api)
 }
 
 inline void Api::SharedCtor() {
 ::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
     reinterpret_cast<char*>(&options_) - reinterpret_cast<char*>(this)),
-    0, static_cast<size_t>(reinterpret_cast<char*>(&info_) -
-    reinterpret_cast<char*>(&options_)) + sizeof(info_));
+    0, static_cast<size_t>(reinterpret_cast<char*>(&status_) -
+    reinterpret_cast<char*>(&options_)) + sizeof(status_));
 }
 
 Api::~Api() {
@@ -143,6 +161,7 @@ inline void Api::SharedDtor() {
   if (this != internal_default_instance()) delete trip_;
   if (this != internal_default_instance()) delete directions_;
   if (this != internal_default_instance()) delete info_;
+  if (this != internal_default_instance()) delete status_;
 }
 
 void Api::ArenaDtor(void* object) {
@@ -162,7 +181,7 @@ void Api::Clear() {
   (void) cached_has_bits;
 
   cached_has_bits = _has_bits_[0];
-  if (cached_has_bits & 0x0000000fu) {
+  if (cached_has_bits & 0x0000001fu) {
     if (cached_has_bits & 0x00000001u) {
       GOOGLE_DCHECK(options_ != nullptr);
       options_->Clear();
@@ -178,6 +197,10 @@ void Api::Clear() {
     if (cached_has_bits & 0x00000008u) {
       GOOGLE_DCHECK(info_ != nullptr);
       info_->Clear();
+    }
+    if (cached_has_bits & 0x00000010u) {
+      GOOGLE_DCHECK(status_ != nullptr);
+      status_->Clear();
     }
   }
   _has_bits_.Clear();
@@ -219,6 +242,14 @@ const char* Api::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::intern
       case 4:
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 34)) {
           ptr = ctx->ParseMessage(_internal_mutable_info(), ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // optional .valhalla.Status status = 5;
+      case 5:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 42)) {
+          ptr = ctx->ParseMessage(_internal_mutable_status(), ptr);
           CHK_(ptr);
         } else
           goto handle_unusual;
@@ -286,6 +317,14 @@ uint8_t* Api::_InternalSerialize(
         4, _Internal::info(this), target, stream);
   }
 
+  // optional .valhalla.Status status = 5;
+  if (cached_has_bits & 0x00000010u) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(
+        5, _Internal::status(this), target, stream);
+  }
+
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = stream->WriteRaw(_internal_metadata_.unknown_fields<std::string>(::PROTOBUF_NAMESPACE_ID::internal::GetEmptyString).data(),
         static_cast<int>(_internal_metadata_.unknown_fields<std::string>(::PROTOBUF_NAMESPACE_ID::internal::GetEmptyString).size()), target);
@@ -303,7 +342,7 @@ size_t Api::ByteSizeLong() const {
   (void) cached_has_bits;
 
   cached_has_bits = _has_bits_[0];
-  if (cached_has_bits & 0x0000000fu) {
+  if (cached_has_bits & 0x0000001fu) {
     // optional .valhalla.Options options = 1;
     if (cached_has_bits & 0x00000001u) {
       total_size += 1 +
@@ -332,6 +371,13 @@ size_t Api::ByteSizeLong() const {
           *info_);
     }
 
+    // optional .valhalla.Status status = 5;
+    if (cached_has_bits & 0x00000010u) {
+      total_size += 1 +
+        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+          *status_);
+    }
+
   }
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     total_size += _internal_metadata_.unknown_fields<std::string>(::PROTOBUF_NAMESPACE_ID::internal::GetEmptyString).size();
@@ -354,7 +400,7 @@ void Api::MergeFrom(const Api& from) {
   (void) cached_has_bits;
 
   cached_has_bits = from._has_bits_[0];
-  if (cached_has_bits & 0x0000000fu) {
+  if (cached_has_bits & 0x0000001fu) {
     if (cached_has_bits & 0x00000001u) {
       _internal_mutable_options()->::valhalla::Options::MergeFrom(from._internal_options());
     }
@@ -366,6 +412,9 @@ void Api::MergeFrom(const Api& from) {
     }
     if (cached_has_bits & 0x00000008u) {
       _internal_mutable_info()->::valhalla::Info::MergeFrom(from._internal_info());
+    }
+    if (cached_has_bits & 0x00000010u) {
+      _internal_mutable_status()->::valhalla::Status::MergeFrom(from._internal_status());
     }
   }
   _internal_metadata_.MergeFrom<std::string>(from._internal_metadata_);
@@ -387,8 +436,8 @@ void Api::InternalSwap(Api* other) {
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(_has_bits_[0], other->_has_bits_[0]);
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(Api, info_)
-      + sizeof(Api::info_)
+      PROTOBUF_FIELD_OFFSET(Api, status_)
+      + sizeof(Api::status_)
       - PROTOBUF_FIELD_OFFSET(Api, options_)>(
           reinterpret_cast<char*>(&options_),
           reinterpret_cast<char*>(&other->options_));
