@@ -1,5 +1,5 @@
 /*
-* Botan 2.18.1 Amalgamation
+* Botan 2.18.2 Amalgamation
 * (C) 1999-2020 The Botan Authors
 *
 * Botan is released under the Simplified BSD License (see license.txt)
@@ -26793,7 +26793,7 @@ bool OS::read_env_variable(std::string& value_out, const std::string& name)
       value_out = std::string(val, req_size);
       return true;
       }
-#else
+#elif 0
    if(const char* val = std::getenv(name.c_str()))
       {
       value_out = val;

@@ -1,5 +1,5 @@
 /*
-* Botan 2.18.1 Amalgamation
+* Botan 2.18.2 Amalgamation
 * (C) 1999-2020 The Botan Authors
 *
 * Botan is released under the Simplified BSD License (see license.txt)
@@ -34,10 +34,10 @@
 #endif
 
 /*
-* Build configuration for Botan 2.18.1
+* Build configuration for Botan 2.18.2
 *
 * Automatically generated from
-* 'configure.py --compiler generic --os none --amalgamation --cc msvc --cpu generic --enable-modules=sha1,dsa,base64,hex,md5,emsa1,asn1,block,pubkey,cbc,asn1 --minimized-build'
+* 'configure.py --compiler generic --os none --amalgamation --cc msvc --cpu generic --minimized-build --enable-modules=sha1,md5,hex,base64,dsa,emsa1,asn1,block,pubkey,cbc'
 *
 * Target
 *  - Compiler: generic cl  /EHs /GR /MD /bigobj /O2 /Oi
@@ -47,7 +47,7 @@
 
 #define BOTAN_VERSION_MAJOR 2
 #define BOTAN_VERSION_MINOR 18
-#define BOTAN_VERSION_PATCH 1
+#define BOTAN_VERSION_PATCH 2
 #define BOTAN_VERSION_DATESTAMP 0
 
 
@@ -78,6 +78,7 @@
 
 
 
+//#define BOTAN_BUILD_COMPILER_IS_MSVC
 
 
 

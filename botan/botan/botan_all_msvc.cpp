@@ -1,5 +1,5 @@
 /*
-* Botan 2.18.1 Amalgamation
+* Botan 2.18.2 Amalgamation
 * (C) 1999-2020 The Botan Authors
 *
 * Botan is released under the Simplified BSD License (see license.txt)
