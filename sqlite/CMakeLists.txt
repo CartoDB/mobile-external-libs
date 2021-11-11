@@ -6,7 +6,7 @@ set(sqlite_FLAGS "-DSQLITE_TEMP_STORE=2" "-DSQLITE_THREADSAFE=2" "-DSQLITE_ENABL
 if(WIN32)
   set(sqlite_FLAGS ${sqlite_FLAGS} "-DSQLITE_OS_WINRT")
 elseif(ANDROID OR APPLE)
-  set(sqlite_FLAGS ${sqlite_FLAGS} "-Wno-conversion" "-Wno-implicit-int-float-conversion" "-Wno-ambiguous-macro")
+  set(sqlite_FLAGS ${sqlite_FLAGS} "-DHAVE_GETHOSTUUID=0" "-Wno-conversion" "-Wno-implicit-int-float-conversion" "-Wno-ambiguous-macro")
 endif()
 
 set(sqlite_INCLUDE_DIRS "${PROJECT_SOURCE_DIR}" PARENT_SCOPE)
