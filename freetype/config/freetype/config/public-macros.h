@@ -114,6 +114,23 @@ FT_BEGIN_HEADER
 #endif
 
 
+  /*
+   * Support for casts in both C and C++.
+   */
+#ifdef __cplusplus
+#define FT_STATIC_CAST( type, var )       static_cast<type>(var)
+#define FT_REINTERPRET_CAST( type, var )  reinterpret_cast<type>(var)
+
+#define FT_STATIC_BYTE_CAST( type, var )                         \
+          static_cast<type>( static_cast<unsigned char>( var ) )
+#else
+#define FT_STATIC_CAST( type, var )       (type)(var)
+#define FT_REINTERPRET_CAST( type, var )  (type)(var)
+
+#define FT_STATIC_BYTE_CAST( type, var )  (type)(unsigned char)(var)
+#endif
+
+
 FT_END_HEADER
 
 #endif  /* FREETYPE_CONFIG_PUBLIC_MACROS_H_ */
