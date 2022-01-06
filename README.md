@@ -1,4 +1,4 @@
-# External dependencies for Carto Mobile SDK
+# External dependencies for CARTO Mobile SDK
 
 Here are copies of external libraries used on CARTO Mobile SDK. Some projects are modified to port them to work on all required mobile platforms.
 
